@@ -1,0 +1,89 @@
+{
+  "tickets": [
+    {
+      "id": 3,
+      "price": 1000,
+      "startPoint": "Da Nang",
+      "endPoint": "Quang Binh",
+      "startDate": "2022-06-06",
+      "startHour": "20:00",
+      "brand": {
+        "id": 1,
+        "name": "Phuong Trang"
+      },
+      "number": 0
+    },
+    {
+      "id": 4,
+      "price": 1000,
+      "startPoint": "Da Nang",
+      "endPoint": "Quang Binh",
+      "startDate": "2022-06-06",
+      "startHour": "20:00",
+      "brand": {
+        "id": 1,
+        "name": "Phuong Trang"
+      },
+      "number": 8
+    },
+    {
+      "id": 5,
+      "price": 1000,
+      "startPoint": "Da Nang",
+      "endPoint": "Quang Binh",
+      "startDate": "2022-06-06",
+      "startHour": "20:00",
+      "brand": {
+        "id": 1,
+        "name": "Phuong Trang"
+      },
+      "number": 8
+    },
+    {
+      "startPoint": "Quang Binh",
+      "endPoint": "Hue",
+      "startDate": "2022-07-29",
+      "startHour": "21:200",
+      "brand": {
+        "id": 1,
+        "name": "Phuong Trang"
+      },
+      "number": "10",
+      "price": "1000",
+      "id": 6
+    },
+    {
+      "startPoint": "Quang Ngai",
+      "endPoint": "Da Nang",
+      "startDate": "2022-07-29",
+      "startHour": "20:00",
+      "brand": {
+        "id": 1,
+        "name": "Phuong Trang"
+      },
+      "number": "10",
+      "price": "1000",
+      "id": 7
+    },
+    {
+      "startPoint": "Quang Ngai",
+      "endPoint": "Quang Tri",
+      "startDate": "2022-07-29",
+      "startHour": "21:00",
+      "brand": "",
+      "number": "9",
+      "price": "2000",
+      "id": 8
+    }
+  ],
+  "brands": [
+    {
+      "id": 1,
+      "name": "Phuong Trang"
+    },
+    {
+      "id": 2,
+      "name": "Thanh Buoi"
+    }
+  ]
+}
