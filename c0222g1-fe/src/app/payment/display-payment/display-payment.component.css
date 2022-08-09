@@ -1,0 +1,62 @@
+th, td {
+  font-size: 13px;
+  text-align: center !important;
+  vertical-align: middle;
+}
+
+th {
+  color: white;
+}
+
+td {
+  color: #9a9a9a;
+}
+
+table {
+  padding: 0 10px;
+}
+
+.table-container {
+  margin: 0 10px;
+}
+
+td.hiddenText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #121212;
+}
+
+/*Paging*/
+.center {
+  text-align: center;
+}
+
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: #9a9a9a;
+  float: left;
+  padding: 4px 10px;
+  text-decoration: none;
+  transition: background-color .3s;
+  margin: 0 2px;
+  border: 0;
+}
+
+.pagination a.active {
+  background-color: #ddd;
+  color: black;
+  border: 1px solid #ddd;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+}
