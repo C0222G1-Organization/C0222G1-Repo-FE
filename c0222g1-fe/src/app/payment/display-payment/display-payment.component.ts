@@ -1,3 +1,12 @@
+/*
+* Created by: LuanND
+* Date created: 09/08/2022
+* function : render excute load plugin paypal fill block
+* @param id : the place will be render load plugin paypal
+* @param currency: unit currency payment
+* @param value: total money need payment
+* @param onApprove: it'll be excute when payment has approved
+* */
 import { Component, OnInit } from '@angular/core';
 import {render} from 'creditcardpayments/creditCardPayments'
 

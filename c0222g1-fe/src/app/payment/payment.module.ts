@@ -5,7 +5,6 @@ import { PaymentRoutingModule } from './payment-routing.module';
 import {PaymentService} from './service/payment.service';
 import { PaymentDetailComponent } from './payment-detail/payment-detail.component';
 
-
 @NgModule({
   declarations: [PaymentDetailComponent],
   imports: [
