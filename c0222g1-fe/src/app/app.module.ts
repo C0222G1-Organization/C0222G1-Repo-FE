@@ -16,6 +16,14 @@ import { NotAuthorizedComponent } from './common-component/not-authorized/not-au
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
+import {PaymentModule} from "./payment/payment.module";
+import {AuthenticationModule} from "./authentication/authentication.module";
+import {CustomerModule} from "./customer/customer.module";
+import {EmployeeModule} from "./employee/employee.module";
+import {GameModule} from "./game/game.module";
+import {NewsModule} from "./news/news.module";
+import {ComputerModule} from "./computer/computer.module";
+import {ProductModule} from "./product/product.module";
 
 @NgModule({
   declarations: [
@@ -42,6 +50,14 @@ import { environment } from '../environments/environment';
       progressBar: true,
       positionClass: 	'toast-top-right',
     }),
+    PaymentModule,
+    AuthenticationModule,
+    CustomerModule,
+    EmployeeModule,
+    GameModule,
+    NewsModule,
+    ComputerModule,
+    ProductModule
   ],
   providers: [],
   bootstrap: [AppComponent]
