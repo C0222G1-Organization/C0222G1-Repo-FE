@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Game} from "../model/game";
-import {ToastrService} from "ngx-toastr";
-import {Title} from "@angular/platform-browser";
-import {GameService} from "../service/game.service";
+// @ts-ignore
+import {Game} from '../model/game';
+import {ToastrService} from 'ngx-toastr';
+import {Title} from '@angular/platform-browser';
+import {GameService} from '../service/game.service';
 
 @Component({
   selector: 'app-home-page',

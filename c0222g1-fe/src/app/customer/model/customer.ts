@@ -1,3 +1,5 @@
+import {Commune} from './commune';
+
 export interface Customer {
   id: number;
   name: string;
@@ -11,8 +13,5 @@ export interface Customer {
     userName: string;
     password: string;
   };
-  commune: {
-    id: number;
-    name: string;
-  };
+  commune: Commune;
 }

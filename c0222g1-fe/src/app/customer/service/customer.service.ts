@@ -22,4 +22,10 @@ export class CustomerService {
   public findCustomerById(id: number): Observable<Customer> {
     return this.httpClient.get<Customer>(`${this.ApiUrl_8080}/${id}`);
   }
+
+  public getAllCustomer(page): Observable<Customer> {
+    return this.httpClient.get<Customer>('http://localhost:8080/customer/getAll/' + page);
+
+  }
+
 }
