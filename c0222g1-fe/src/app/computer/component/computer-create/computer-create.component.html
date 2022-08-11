@@ -1,0 +1,108 @@
+<div class="login-form">
+  <h6 class="text-center mt-4">Thêm mới máy tính</h6>
+  <form [formGroup]="formComputer" (ngSubmit)="submitCreate()" >
+    <div class="form-floating textbox mb-4">
+      <input type="text" class="form-control input" id="ma" placeholder="Mã máy" formControlName="code">
+      <label for="vi-tri" style="color: white">
+        Mã máy
+        <span class="text-danger">*</span>
+      </label>
+    </div>
+    <div class="form-floating textbox mb-4">
+      <select class="form-select select input" aria-haspopup="true"
+              id="status" formControlName="status">
+        <option value="">Chọn tình trạng</option>
+        <option value="0">Bảo trì</option>
+        <option value="1">Ổn định</option>
+      </select>
+      <label for="status" style="color: white">
+        Trạng thái sử dụng
+        <span class="text-danger">*</span>
+      </label>
+    </div>
+
+    <div class="form-floating textbox mb-4">
+      <input type="text" class="form-control input" id="vi-tri" placeholder="Tài khoản" formControlName="location">
+      <label for="vi-tri" style="color: white">
+        Vị trí máy
+        <span class="text-danger">*</span>
+      </label>
+    </div>
+
+    <div class="form-floating textbox mb-4">
+      <input type="date" class="form-control input" id="start"
+             placeholder="ngày hoạt động"
+             required formControlName="startUsedDate">
+      <label for="start" style="color: white">
+        Ngày đưa vào hoạt động
+        <span class="text-danger">*</span>
+      </label>
+    </div>
+
+    <div class="form-floating textbox mb-3">
+      <input type="text" class="form-control input" id="setting" placeholder="cấu hình" formControlName="configuration">
+      <label for="setting" style="color: white">
+        Cấu hình
+        <span class="text-danger">*</span>
+      </label>
+    </div>
+
+    <div class="space-between form-floating textbox mb-4">
+      <div style="width: 32%; float: left">
+        <div class="form-floating textbox" formControlName="computerType">
+          <select class="form-select select input" aria-haspopup="true"
+                  id="city" formControlName="id">
+            <option value="" disabled>Chọn loại máy</option>
+            <option *ngFor="let type of computerType" [value]="type.id">{{type.name}}</option>
+          </select>
+          <label for="city" style="color: white">
+            Loại máy
+            <span class="text-danger">*</span>
+          </label>
+        </div>
+      </div>
+      <div style="width: 32%; float: left">
+        <div class="form-floating textbox">
+          <select class="form-select select input" aria-haspopup="true"
+                  id="district" formControlName="manufacturer">
+            <option value="" class="option" style="height: 50px">Chọn hãng máy</option>
+            <option value="Máy thường">Dell</option>
+            <option value="Máy thường">Asus</option>
+            <option value="Máy thường">Asus</option>
+            <option value="Máy thường">Asus</option>
+            <option value="Máy thường">Asus</option>
+            <option value="Máy thường">Asus</option>
+            <option value="Máy thường">Asus</option>
+          </select>
+          <label for="district" style="color: white">
+            Hãng
+            <span class="text-danger">*</span>
+          </label>
+        </div>
+      </div>
+      <div style="width: 32%; float: left">
+        <div class="form-floating textbox">
+          <select class="form-select select input" aria-haspopup="true"
+                  id="ward" formControlName="warranty" >
+            <option value="" class="option" style="height: 50px">Thời gian bảo hành</option>
+            <option value="1" class="option">2 năm</option>
+            <option value="2" class="option">3 năm</option>
+            <option value="3" class="option">4 năm</option>
+          </select>
+          <label for="ward" style="color: white">
+            Bảo hành
+            <span class="text-danger">*</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4" style="text-align: center">
+        <button name="button" class="btn btn-primary btn-responsive">Sửa</button>
+        <button name="button" class="btn btn-primary btn-responsive">Hủy</button>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </form>
+</div>
