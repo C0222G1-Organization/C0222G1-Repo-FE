@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Game} from "../model/game";
+import {Game} from "../../game/model/game";
 import {ToastrService} from "ngx-toastr";
 import {Title} from "@angular/platform-browser";
 import {GameService} from "../service/game.service";
