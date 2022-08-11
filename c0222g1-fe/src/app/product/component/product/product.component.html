@@ -1,0 +1,73 @@
+<body>
+<h2 class="text-center text-title text-white my-2" style="font-size: 2.2rem">DANH SÁCH DỊCH VỤ</h2>
+<div class="container mt-4">
+  <div class="d-flex justify-content-center row">
+    <div class="col-10">
+      <div class="d-flex justify-content-between w-100">
+        <div class="w-50 d-flex px-0">
+          <input type="text" class="input-search form-control w-50" [(ngModel)]="name" placeholder="Nhập tên dịch vụ">
+
+          <button class="btn btn-outline-secondary mx-4" (click)="search()">Tìm kiếm</button>
+        </div>
+        <div>
+          <button class="btn btn-outline-secondary"
+                  data-bs-toggle="modal" data-bs-target="#form-create" style="float: right">Thêm mới
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3"
+             *ngFor="let product of productList | paginate: { itemsPerPage: 4, currentPage: page + 1, totalItems: totalElements }">
+          <div class="card w-90 bg-card mt-5">
+            <img src="{{product.imageUrl}}"
+                 class="card-img-top">
+            <div class="card-body">
+              <h4>{{product.name}}</h4>
+              <span class="card-detail-badge" style="font-size: 16px">{{product.prices}}<sup>vnd</sup></span>
+              <button class="btn btn-outline-secondary" style="float: right;"
+                      data-bs-toggle="modal"
+                      data-bs-target="#deleteModal"><i style=" font-size: 1rem"
+                                                       class="fa-solid fa-trash"></i>
+              </button>
+              <button class="btn btn-outline-secondary" style="margin-left: 45px">
+                <i style=" font-size: 1rem" class="fa-solid fa-pencil"></i>
+              </button>
+              <div *ngIf="product.quantity <= 5">
+                <span class="card-notify-year-custom">x{{product.quantity}}</span>
+              </div>
+              <div *ngIf="product.quantity > 5">
+                <span class="card-notify-year">x{{product.quantity}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+<br>
+<div class="container">
+  <div class="col-md-1"></div>
+  <div class="col-md-10 d-flex">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <pagination-controls (pageChange)="getPage($event)"  style="float: right"></pagination-controls>
+    </div>
+    <div class="col-md-4"></div>
+
+  </div>
+  <div class="col-md-1"></div>
+</div>
+
+
+
+</body>
