@@ -10,7 +10,7 @@ import {ProductCategory} from '../../model/ProductCategory';
 })
 export class ProductComponent implements OnInit {
 
-  name = '';
+  nameProduct = '';
 
   productList: Product[];
 
@@ -27,11 +27,11 @@ export class ProductComponent implements OnInit {
   }
 
   getAllProduct() {
-    this.productService.findAllProduct(this.name, this.page).subscribe((value: any) => {
+    this.productService.findAllProduct(this.nameProduct, this.page).subscribe((value: any) => {
       this.productList = value.content;
       this.totalElements = value.totalElements;
       // this.productList.sort((a, b) => a.quantity - b.quantity);
-      console.log(this.name);
+      console.log(value.totalElements);
       console.log(value);
     }, error => {
     });
@@ -44,15 +44,21 @@ export class ProductComponent implements OnInit {
   }
 
   search() {
-    this.productService.findAllProduct(this.name, this.page).subscribe(value => {
-      this.productList = value;
+    if (this.page !== 0) {
       this.page = 0;
+    }
+
+    this.productService.findAllProduct(this.nameProduct, this.page).subscribe((value: any) => {
+      this.productList = value.content;
+      this.totalElements = value.totalElements;
+      this.page = 0;
+      console.log(this.nameProduct);
+      console.log(value);
     });
   }
 
   getPage(event: number) {
     this.page = event - 1;
-    console.log(event);
     this.getAllProduct();
   }
 }
