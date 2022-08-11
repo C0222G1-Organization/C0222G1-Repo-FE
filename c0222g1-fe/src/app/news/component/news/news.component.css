@@ -1,0 +1,66 @@
+a:hover {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: #727272;
+}
+
+.search {
+  border-radius: 2em;
+  background-color: rgba(0,0,0,0);
+  border: none;
+  background-color: #2A2A2A;
+}
+
+.search:focus {
+  color: #ffff;
+}
+
+.bg {
+  background-color:  #121212;
+}
+
+.search:focus {
+  outline: none !important;
+  border: none !important;
+}
+
+.card {
+  cursor: pointer;
+  border: none;
+  background-color: rgba(0,0,0,0) !important;
+}
+
+.card:hover img {
+  opacity: .8;
+  transition: .3s;
+}
+
+.card:hover a {
+  color: #fff;
+  transition: .3s;
+}
+
+hr {
+  color: #cccc;
+}
+
+.news:hover img {
+  opacity: .8;
+  transition: .3s;
+}
+
+.news:hover a {
+  color: #fff;
+  transition: .3s;
+}
+
+.news:hover {
+  cursor: pointer;
+}
+
+.clear {
+  background-color: rgba(0,0,0,0);
+}
