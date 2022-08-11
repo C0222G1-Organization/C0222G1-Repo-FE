@@ -1,0 +1,129 @@
+<div class="container mt-5" id="table-computer">
+  <div class="row">
+    <h2 class="text-center text-white">Danh sách máy</h2>
+  </div>
+  <div class="row d-flex">
+    <div class="">
+      <div class="container-input">
+        <div class="form">
+          <div class="fields">
+            <div class="input-field input-search">
+              <label>Mã máy</label>
+              <input type="text" class="input-search" placeholder="Nhập mã máy">
+            </div>
+            <div class="input-field">
+              <label>Vị trí</label>
+              <input type="text" class="input-search" placeholder="Nhập vị trí máy">
+            </div>
+            <div class="input-field">
+              <label>Ngày bắt đầu</label>
+              <input type="date" class="input-search">
+            </div>
+            <div class="input-field">
+              <label>Ngày kết thúc</label>
+              <input type="date" class="input-search">
+            </div>
+            <div class="input-field">
+              <label>Trạng thái</label>
+              <select style="min-width: 100px" class="input-search form-select">
+                <option value="">--Chọn trạng thái--</option>
+                <option value="">Bình thường</option>
+                <option value="">Bảo trì</option>
+              </select>
+            </div>
+            <div class="input-field">
+              <label>Loại máy</label>
+              <select style="min-width: 100px" class="input-search form-select">
+                <option value="">--Chọn loại máy--</option>
+                <option value="">Vip</option>
+                <option value="">Thường</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-field">
+            <button class="btn btn-outline-secondary" style="right: 0">Tìm kiếm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+
+    <div class="container">
+      <table class="table table-dark w-100">
+        <thead>
+        <tr>
+          <th scope="col">
+            <input type="checkbox">
+            #
+          </th>
+          <th scope="col">ID Máy</th>
+          <th scope="col">Trạng thái</th>
+          <th scope="col">Vị trí</th>
+          <th scope="col">Thời gian bắt đầu</th>
+          <th scope="col">Cấu hình</th>
+          <th scope="col">Loại máy</th>
+          <th scope="col">Nhà sản xuất</th>
+          <th scope="col">Bảo hành</th>
+          <th scope="col">Chức năng</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let computer of computers | paginate : { itemsPerPage: 2, currentPage: page}">
+          <td>
+            <input type="checkbox">
+            {{computer.id}}
+          </td>
+          <td>{{computer.code}}</td>
+          <td>{{computer.location}}</td>
+          <td>{{computer.startUsedDate}}</td>
+          <td>{{computer.status}}</td>
+          <td>{{computer.configuration}}</td>
+          <td>{{computer.computerType.name}}</td>
+          <td>{{computer.manufacturer}}</td>
+          <td>{{computer.warranty}}</td>
+          <td>
+            <button class="btn btn-outline-secondary mx-2 "><i class="fa-solid fa-pencil"></i></button>
+            <button class="btn btn-outline-secondary " (click)="getInfo(computer)" data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row d-flex" id="btn-outside">
+    <div class="col-4">
+      <button class="btn btn-primary m-2">Thêm mới máy</button>
+    </div>
+    <div class="col-4"></div>
+    <div class="col-4">
+      <div class="float-end">
+        <button class="btn btn-danger" data-bs-toggle="modal"
+                data-bs-target="#deleteModal">Xóa</button>
+      </div>
+    </div>
+  </div>
+<!--  <div style="justify-content: space-around;display: flex;">-->
+<!--    <pagination-controls (pageChange)="page = $event"></pagination-controls>-->
+<!--  </div>-->
+</div>
+
+<!--Start Delete Modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel1">Xác nhận thông tin vé</h5>
+      </div>
+      <div class="modal-body">
+        Bạn có chắc chắn muốn xóa máy có ID là <span style="font-weight: bold; color: #ff4146">{{computerIdDelete}}</span> không?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Delete Modal-->
