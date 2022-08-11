@@ -7,15 +7,10 @@ import {CustomerRoutingModule} from "./customer/customer-routing.module";
 import {EmployeeRoutingModule} from "./employee/employee-routing.module";
 import {GameRoutingModule} from "./game/game-routing.module";
 import {NewsRoutingModule} from "./news/news-routing.module";
-import {HeaderComponent} from "./common-component/header/header.component";
-import {IndexRoutingModule} from "./index/index-routing.module";
 import {RegistrationRoutingModule} from "./registration/registration-routing.module";
 
 const routes: Routes = [
-  {
-    path: '',
-    component: HeaderComponent
-  }];
+];
 
 @NgModule({
   declarations: [],
@@ -29,8 +24,7 @@ const routes: Routes = [
     GameRoutingModule,
     NewsRoutingModule,
     PaymentRoutingModule,
-    IndexRoutingModule,
-    RegistrationRoutingModule
+    RegistrationRoutingModule,
   ],
   exports: [RouterModule]
 })

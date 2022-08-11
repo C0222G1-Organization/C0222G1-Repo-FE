@@ -23,7 +23,6 @@ import {GameModule} from "./game/game.module";
 import {NewsModule} from "./news/news.module";
 import {ComputerModule} from "./computer/computer.module";
 import {ProductModule} from "./product/product.module";
-import {IndexModule} from "./index/index.module";
 import {RegistrationModule} from "./registration/registration.module";
 
 @NgModule({
@@ -31,7 +30,7 @@ import {RegistrationModule} from "./registration/registration.module";
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    NotAuthorizedComponent
+    NotAuthorizedComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,8 +57,7 @@ import {RegistrationModule} from "./registration/registration.module";
     NewsModule,
     ComputerModule,
     ProductModule,
-    IndexModule,
-    RegistrationModule
+    RegistrationModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
