@@ -1,3 +1,8 @@
+/**
+ * Create by: DuyNT
+ * Date Create: 11/08/2022
+ * function: create interface customer
+ */
 export interface Customer {
   id: number;
   name: string;
@@ -14,5 +19,13 @@ export interface Customer {
   commune: {
     id: number;
     name: string;
+    district: {
+      id: number;
+      name: string;
+      province: {
+        id: number;
+        name: string;
+      }
+    }
   };
 }

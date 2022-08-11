@@ -19,6 +19,11 @@ export class CustomerService {
     return this.httpClient.post<void>(this.ApiUrl_8080 + '/create', customer);
   }
 
+  /**
+   * Create by: DuyNT
+   * Date Create: 11/08/2022
+   * function: get info of customer by id from database
+   */
   public findCustomerById(id: number): Observable<Customer> {
     return this.httpClient.get<Customer>(`${this.ApiUrl_8080}/${id}`);
   }
