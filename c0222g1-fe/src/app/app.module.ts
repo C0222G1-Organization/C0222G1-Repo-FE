@@ -25,6 +25,7 @@ import {ComputerModule} from "./computer/computer.module";
 import {ProductModule} from "./product/product.module";
 import {RegistrationModule} from "./registration/registration.module";
 import {HomePageModule} from "./home-page/home-page.module";
+import {StatisticModule} from "./statistic/statistic.module";
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import {HomePageModule} from "./home-page/home-page.module";
     ComputerModule,
     ProductModule,
     RegistrationModule,
-    HomePageModule
+    HomePageModule,
+    StatisticModule
   ],
   providers: [],
   bootstrap: [AppComponent]
