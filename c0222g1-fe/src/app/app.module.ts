@@ -23,15 +23,16 @@ import {GameModule} from "./game/game.module";
 import {NewsModule} from "./news/news.module";
 import {ComputerModule} from "./computer/computer.module";
 import {ProductModule} from "./product/product.module";
-import {IndexModule} from "./index/index.module";
 import {RegistrationModule} from "./registration/registration.module";
+import {HomePageModule} from "./home-page/home-page.module";
+import {StatisticModule} from "./statistic/statistic.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    NotAuthorizedComponent
+    NotAuthorizedComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,8 +59,9 @@ import {RegistrationModule} from "./registration/registration.module";
     NewsModule,
     ComputerModule,
     ProductModule,
-    IndexModule,
-    RegistrationModule
+    RegistrationModule,
+    HomePageModule,
+    StatisticModule
   ],
   providers: [],
   bootstrap: [AppComponent]
