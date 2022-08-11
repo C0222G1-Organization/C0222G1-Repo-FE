@@ -9,6 +9,7 @@ import {GameRoutingModule} from "./game/game-routing.module";
 import {NewsRoutingModule} from "./news/news-routing.module";
 import {HeaderComponent} from "./common-component/header/header.component";
 import {IndexRoutingModule} from "./index/index-routing.module";
+import {RegistrationRoutingModule} from "./registration/registration-routing.module";
 
 const routes: Routes = [
   {
@@ -28,7 +29,8 @@ const routes: Routes = [
     GameRoutingModule,
     NewsRoutingModule,
     PaymentRoutingModule,
-    IndexRoutingModule
+    IndexRoutingModule,
+    RegistrationRoutingModule
   ],
   exports: [RouterModule]
 })
