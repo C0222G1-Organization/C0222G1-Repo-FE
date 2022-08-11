@@ -1,0 +1,186 @@
+<body>
+<div class="login-form">
+
+  <h6 class="text-center mt-4">CHỈNH SỬA THÔNG TIN KHÁCH HÀNG</h6>
+  <form>
+    <div class="row my-4">
+      <div class="col-4 ">
+        <div class="form-floating textbox mb-4">
+          <input type="text" class="form-control input" id="full-name" placeholder="Họ và tên" value="Trần Mạnh Cường">
+          <label for="full-name" style="color: white">
+            Họ và tên
+            <span class="text-danger">*</span>
+          </label>
+          <!--          <div class="mb-3 text-danger"-->
+          <!--               *ngIf="customerForm.controls.code.hasError('required')&& customerForm.controls.code.dirty">-->
+          <!--            <small>Trường này không được để trống!</small>-->
+          <!--          </div>-->
+        </div>
+
+      </div>
+      <div class="col-4">
+        <div class="form-floating textbox mb-4">
+          <input type="date" value="1997-01-28" class="form-control input" id="date-of-birth" placeholder="Ngày sinh" >
+          <label for="date-of-birth" style="color: white">
+            Ngày sinh
+            <span class="text-danger">*</span>
+          </label>
+          <!--          <div class="mb-3 text-danger"-->
+          <!--               *ngIf="customerForm.controls.code.hasError('required')&& customerForm.controls.code.dirty">-->
+          <!--            <small>Trường này không được để trống!</small>-->
+          <!--          </div>-->
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-floating textbox mb-4">
+          <input type="email" class="form-control input" id="email" placeholder="email" value="cuong@gmail.com" >
+          <label for="email" style="color: white">
+            Email
+            <span class="text-danger">*</span>
+          </label>
+          <!--          <div class="mb-3 text-danger"-->
+          <!--               *ngIf="customerForm.controls.code.hasError('required')&& customerForm.controls.code.dirty">-->
+          <!--            <small>Trường này không được để trống!</small>-->
+          <!--          </div>-->
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-4 ">
+        <div class="form-floating textbox mb-4">
+          <input type="text" class="form-control input" id="phone-number" placeholder="số điện thoại" value="+840989768768">
+          <label for="phone-number" style="color: white">
+            Số điện thoại
+            <span class="text-danger">*</span>
+          </label>
+          <!--          <div class="mb-3 text-danger"-->
+          <!--               *ngIf="customerForm.controls.code.hasError('required')&& customerForm.controls.code.dirty">-->
+          <!--            <small>Trường này không được để trống!</small>-->
+          <!--          </div>-->
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="form-floating textbox mb-4">
+          <input type="text" class="form-control input" id="user-name" placeholder="tài khoản" value="cuongtran" >
+          <label for="user-name" style="color: white">
+            Tài khoản
+            <span class="text-danger">*</span>
+          </label>
+          <!--          <div class="mb-3 text-danger"-->
+          <!--               *ngIf="customerForm.controls.code.hasError('required')&& customerForm.controls.code.dirty">-->
+          <!--            <small>Trường này không được để trống!</small>-->
+          <!--          </div>-->
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="form-floating textbox mb-4">
+          <div class="form-floating textbox">
+            <input type="password" class="form-control input" id="pass-word" placeholder="mật khau" value="123@abc">
+            <label for="pass-word" style="color: white">
+              Mật khẩu
+              <span class="text-danger">*</span>
+            </label>
+            <!--            <div class="mb-3 text-danger"-->
+            <!--                 *ngIf="customerForm.controls.code.hasError('required')&& customerForm.controls.code.dirty">-->
+            <!--              <small>Trường này không được để trống!</small>-->
+            <!--            </div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-5">
+      <div class="col-4">
+        <div class="form-floating textbox">
+          <select class="form-select select input"  aria-haspopup="true" id="city">
+            <option value="" class="option" style="height: 50px">Chọn thành phố</option>
+            <option value="1" selected class="option">Đà Nẵng</option>
+            <option value="2" class="option">Huế</option>
+            <option value="3" class="option">Quảng Bình</option>
+          </select>
+          <label for="city" style="color: white">
+            Thành phố
+            <span class="text-danger">*</span>
+          </label>
+          <!--          <div class="mb-3 text-danger"-->
+          <!--               *ngIf="customerForm.controls.code.hasError('required')&& customerForm.controls.code.dirty">-->
+          <!--            <small>Trường này không được để trống!</small>-->
+          <!--          </div>-->
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="form-floating textbox">
+          <select class="form-select select input" aria-haspopup="true" id="district">
+            <option value="" class="option" style="height: 50px">Chọn quận</option>
+            <option value="1" class="option">Thanh Khê</option>
+            <option value="2" selected class="option">Hải Châu</option>
+            <option value="3" class="option">Sơn Trà</option>
+          </select>
+          <label for="district" style="color: white">
+            Quận
+            <span class="text-danger">*</span>
+          </label>
+          <!--          <div class="mb-3 text-danger"-->
+          <!--               *ngIf="customerForm.controls.code.hasError('required')&& customerForm.controls.code.dirty">-->
+          <!--            <small>Trường này không được để trống!</small>-->
+          <!--          </div>-->
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="form-floating textbox">
+          <select class="form-select select input" aria-haspopup="true" id="ward">
+            <option value="" class="option" style="height: 50px">Chọn phường</option>
+            <option value="1" class="option">Thạc gián</option>
+            <option value="2" selected class="option">Phước Ninh</option>
+            <option value="3" class="option">Mân Thái</option>
+          </select>
+          <label for="ward" style="color: white">
+            Phường
+            <span class="text-danger">*</span>
+          </label>
+          <!--          <div class="mb-3 text-danger"-->
+          <!--               *ngIf="customerForm.controls.code.hasError('required')&& customerForm.controls.code.dirty">-->
+          <!--            <small>Trường này không được để trống!</small>-->
+          <!--          </div>-->
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-floating textbox">
+          <select sel class="form-select select input" aria-haspopup="true" id="status">
+            <option value="" class="option" style="height: 50px">Chọn trạng thái</option>
+            <option value="1" selected class="option">Doing</option>
+            <option value="2" class="option">Block</option>
+          </select>
+          <label for="status" style="color: white">
+            Trạng thái
+            <span class="text-danger">*</span>
+          </label>
+<!--          <div class="mb-3 text-danger"-->
+<!--               *ngIf="customerForm.controls.code.hasError('required')&& customerForm.controls.code.dirty">-->
+<!--            <small>Trường này không được để trống!</small>-->
+<!--          </div>-->
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-4"></div>
+        <div class="col-md-4" style="text-align: center">
+          <button name="button" class="btn btn-primary btn-responsive w-25">Lưu</button>
+          <button name="button" class="btn btn-outline-light btn-responsive w-25 ms-3">Hủy</button>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+    </div>
+  </form>
+</div>
+</body>
+
+
