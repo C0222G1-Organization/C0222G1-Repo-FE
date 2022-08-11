@@ -36,13 +36,6 @@
       $('html, body').animate({scrollTop: 0}, '50');
     });
   })
-  const items = document.querySelectorAll("ul li");
-  items.forEach((item) => {
-    item.addEventListener("click", () => {
-      document.querySelector("li.active").classList.remove("active");
-      item.classList.add("active");
-    });
-  });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
