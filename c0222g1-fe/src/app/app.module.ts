@@ -24,6 +24,7 @@ import {NewsModule} from "./news/news.module";
 import {ComputerModule} from "./computer/computer.module";
 import {ProductModule} from "./product/product.module";
 import {RegistrationModule} from "./registration/registration.module";
+import {HomePageModule} from "./home-page/home-page.module";
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import {RegistrationModule} from "./registration/registration.module";
     ComputerModule,
     ProductModule,
     RegistrationModule,
+    HomePageModule
   ],
   providers: [],
   bootstrap: [AppComponent]
