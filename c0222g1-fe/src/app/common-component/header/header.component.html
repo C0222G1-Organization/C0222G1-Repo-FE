@@ -32,8 +32,17 @@
             <li class="nav-item">
               <a class="nav-link" style="color: #a8a8a8" href="#">Danh Sách Máy</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" style="color: #a8a8a8" href="#">Game</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link" href="#" id="navbarDropdownGame" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
+                Game
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" routerLink="games">Danh sách</a>
+                <a class="dropdown-item" routerLink="games/create">Thêm mới</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Tác vụ khác</a>
+              </div>
             </li>
             <li class="nav-item">
               <a class="nav-link" style="color: #a8a8a8" href="#">Tin Tức</a>

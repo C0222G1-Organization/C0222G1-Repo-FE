@@ -19,4 +19,16 @@ export class GameService {
   //   return this.http.patch(this.baseUrl + '/' + id, customer);
   // }
 
+  getAllGames(page: number): Observable<Game[]> {
+    return this.http.get<Game[]>(API_URL + `/games?page=${page}`);
+  }
+
+  searchGameByName(name: string): Observable<Game[]> {
+    return this.http.get<Game[]>(API_URL + `/games/search?name=${name}`);
+  }
+
+  deleteGameById(id: number): Observable<Game> {
+    return this.http.delete<Game>(API_URL + `/games/${id}`);
+  }
+
 }
