@@ -15,6 +15,6 @@ export class ComputerTypeService {
   }
 
   getAll(): Observable<ComputerType[]> {
-    return this.http.get<ComputerType[]>(API_URL + '/list-computer-type')
+    return this.http.get<ComputerType[]>(API_URL + '/list/computer-type')
   }
 }
