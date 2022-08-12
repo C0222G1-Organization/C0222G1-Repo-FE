@@ -75,7 +75,7 @@ export class ComputerCreateComponent implements OnInit {
     this.computerService.createComputer(this.formComputer.value).subscribe(value => {
       this.toast.success('Thêm mới thành công!', 'Computer')
       this.formComputer.reset();
-      // this.route.navigateByUrl('/computer/list')
+      // this.route.navigateByUrl('/computer')
     })
   }
 }

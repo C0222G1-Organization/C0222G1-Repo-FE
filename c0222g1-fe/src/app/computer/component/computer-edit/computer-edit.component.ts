@@ -78,6 +78,9 @@ export class ComputerEditComponent implements OnInit {
   submit() {
     this.computerService.editComputer(this.id, this.formEditComputer.value).subscribe(value => {
       this.toast.success('Sửa thành công', 'Computer')
-    })
+    },
+      error => {
+      this.toast.error('Sửa thất bại','Computer')
+      })
   }
 }
