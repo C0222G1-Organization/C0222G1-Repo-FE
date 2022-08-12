@@ -88,15 +88,15 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let temp of listCustomer | paginate: {itemsPerPage: 1, currentPage: page+1, totalItems: element }" >
+        <tr *ngFor="let temp of listCustomer | paginate: {itemsPerPage: 1, currentPage: page+1, totalItems: element };let i = index" >
 <!--          <td><label>-->
 <!--            <input type="checkbox">-->
 <!--          <td>-->
+          <td>{{i+1}}</td>
           <td>{{temp.name}}</td>
           <td>{{temp.email}}</td>
           <td>{{temp.dateOfBirth}}</td>
-          <td>{{temp.commune.name}} </td>
-          <td>{{temp.phoneNumber}}</td>
+          <td>{{temp.nameCommune}} - {{temp.nameDistrict}} - {{temp.nameProvince}} </td>
           <td>{{temp.activeStatus}}</td>
 <!--          <td>-->
 <!--            <button class="btn btn-outline-secondary  ">-->

@@ -1,6 +1,6 @@
 import {Commune} from './commune';
 
-export interface Customer {
+export interface CustomerDTO {
   id: number;
   name: string;
   phoneNumber: string;
@@ -9,9 +9,7 @@ export interface Customer {
   activeStatus: number;
   deleteStatus: number;
   remainingTime: number;
-  user: {
-    userName: string;
-    password: string;
-  };
-  commune: Commune;
+  nameCommune: string;
+  nameDistrict: string;
+  nameProvince: string;
 }

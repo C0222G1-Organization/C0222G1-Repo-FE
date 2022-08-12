@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../enviroment';
 import {HttpClient} from '@angular/common/http';
-import {Customer} from '../model/customer';
+import {CustomerDTO} from '../model/customerDTO';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -14,17 +14,8 @@ export class CustomerService {
 
   constructor(private httpClient: HttpClient) {
   }
-
-  saveCustomer(customer: Customer): Observable<void> {
-    return this.httpClient.post<void>(this.ApiUrl_8080 + '/create', customer);
-  }
-
-  public findCustomerById(id: number): Observable<Customer> {
-    return this.httpClient.get<Customer>(`${this.ApiUrl_8080}/${id}`);
-  }
-
-  public getAllCustomer(page): Observable<Customer> {
-    return this.httpClient.get<Customer>('http://localhost:8080/customer/getAll/' + page);
+  public getAllCustomer(page): Observable<CustomerDTO> {
+    return this.httpClient.get<CustomerDTO>('http://localhost:8080/customer/getAll/' + page);
 
   }
 

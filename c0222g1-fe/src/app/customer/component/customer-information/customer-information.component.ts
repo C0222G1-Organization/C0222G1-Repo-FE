@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Customer} from '../../model/customer';
+import {CustomerDTO} from '../../model/customerDTO';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CustomerService} from '../../service/customer.service';
@@ -12,7 +12,7 @@ import {CustomValidators} from './custom-validators';
 })
 export class CustomerInformationComponent implements OnInit {
 
-  customer: Customer;
+  customer: CustomerDTO;
   content = '';
   inputType: string;
   confirmInputType: string;

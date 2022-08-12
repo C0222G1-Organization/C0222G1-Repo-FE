@@ -15,14 +15,16 @@ export class CustomerListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-     this.customerService.getAllCustomer(this.page).subscribe((data: any) => {
+    this.customerService.getAllCustomer(this.page).subscribe((data: any) => {
+      console.log(data);
       this.listCustomer = data.content;
-      console.log(this.listCustomer);
-      this.element = data.totalItems;
+      this.element = data.totalElements;
     });
   }
 
-  getPage($event: any) {
-
+  getPage(page: number) {
+    this.page = page - 1;
+    console.log(this.page);
+    this.ngOnInit();
   }
 }
