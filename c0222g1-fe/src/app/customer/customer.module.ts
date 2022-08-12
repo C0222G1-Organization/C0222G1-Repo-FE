@@ -1,16 +1,21 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-import { CustomerRoutingModule } from './customer-routing.module';
-import { CreateCustomerComponent } from './component/create-customer/create-customer.component';
-import { EidtCustomerComponent } from './component/eidt-customer/eidt-customer.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {CustomerRoutingModule} from './customer-routing.module';
+import {CreateCustomerComponent} from './component/create-customer/create-customer.component';
+import {CustomerInformationComponent} from './component/customer-information/customer-information.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { EditCustomerComponent } from './component/edit-customer/edit-customer.component';
 
 
 @NgModule({
-  declarations: [CreateCustomerComponent, EidtCustomerComponent],
+  declarations: [CustomerInformationComponent, CreateCustomerComponent, EditCustomerComponent],
+
   imports: [
     CommonModule,
-    CustomerRoutingModule
+    CustomerRoutingModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
-export class CustomerModule { }
+export class CustomerModule {
+}
