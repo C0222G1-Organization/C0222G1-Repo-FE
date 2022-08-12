@@ -1,22 +1,20 @@
 <div class="container-fluid">
   <div class="container">
     <!--   carousel-->
-    <div class="row">
+    <div class="row" style="margin-bottom: 2rem">
       <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12">
         <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
           <div class="carousel-inner">
             <div class="carousel-item active container-img-carousel">
-              <img [src]="popularGames[0].imageUrl" class="d-block w-100 image" alt="...">
+              <img [src]="popularGames[0].imageUrl" class="d-block image" alt="...">
               <button class="btn-image-carousel">Chơi ngay</button>
             </div>
             <div class="carousel-item container-img-carousel">
-              <img [src]="popularGames[1].imageUrl" class="d-block w-100" alt="...">
+              <img [src]="popularGames[1].imageUrl" class="d-block" alt="...">
               <button class="btn-image-carousel">Chơi ngay</button>
             </div>
             <div class="carousel-item container-img-carousel">
-              <img [src]="popularGames[2].imageUrl" style="width: 300px"
-                   class="d-block w-100"
-                   alt="...">
+              <img [src]="popularGames[2].imageUrl" class="d-block" alt="...">
               <button class="btn-image-carousel">Chơi ngay</button>
             </div>
           </div>
@@ -91,7 +89,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="row" style="flex-wrap: wrap; justify-content: space-between">
+      <div class="row" style="flex-wrap: wrap; justify-content: start">
         <div *ngFor="let game of popularGames" class="card zoom container-img bg-dark card-game">
           <img class="card-img-top image"
                [src]="game.imageUrl"
@@ -100,7 +98,8 @@
             <a href="edit.html">
               <button class="btn-second">Edit</button>
             </a>
-            <button class="btn-second" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+            <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
+                    data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
           </div>
           <div class="card-body row" style="justify-items: center">
             <div class="row">
@@ -157,7 +156,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="row" style="flex-wrap: wrap; justify-content: space-between">
+      <div class="row" style="flex-wrap: wrap; justify-content: start">
         <div *ngFor="let game of newGames" class="card zoom container-img bg-dark card-game">
           <img class="card-img-top image"
                [src]="game.imageUrl"
@@ -195,11 +194,11 @@
           <h5 class="modal-title text-white" id="exampleModalLabel">Thông báo</h5>
         </div>
         <div class="modal-body text-white">
-          Bạn có chắc muốn xóa game này hay không?
+          Bạn có chắc chắn muốn xóa game {{this.selectedName}} hay không?
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn-second" data-bs-dismiss="modal">Đóng</button>
-          <button type="button" class="btn-main-border text-white">Xóa</button>
+          <button type="button" class="btn-second-non-border" data-bs-dismiss="modal">Đóng</button>
+          <button type="button" class="btn-main text-white" data-bs-dismiss="modal">Xóa</button>
         </div>
       </div>
     </div>

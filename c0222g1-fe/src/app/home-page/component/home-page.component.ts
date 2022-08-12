@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Game} from "../../game/model/game";
 import {ToastrService} from "ngx-toastr";
 import {Title} from "@angular/platform-browser";
-import {GameService} from "../service/game.service";
+import {HomePageService} from "../service/home-page.service";
+import {GameService} from "../../game/service/game.service";
 
 @Component({
   selector: 'app-home-page',
@@ -11,11 +12,14 @@ import {GameService} from "../service/game.service";
 })
 export class HomePageComponent implements OnInit {
   page = 0;
+  selectedId: number;
+  selectedName: string;
   popularGames: Game[];
   newGames: Game[];
   hotGames: Game[];
   constructor(private toastr: ToastrService,
               private title: Title,
+              private homePageService: HomePageService,
               private gameService: GameService) {
     this.title.setTitle('C02G1 | Home');
   }
@@ -27,22 +31,35 @@ export class HomePageComponent implements OnInit {
   }
 
   getAllPopularGames() {
-    this.gameService.getAllPopularGames(this.page).subscribe((games: any) => {
+    this.homePageService.getAllPopularGames(this.page).subscribe((games: any) => {
       console.log(games.content);
       this.popularGames = games.content;
     });
   }
 
   getAllNewGames() {
-    this.gameService.getAllNewGames(this.page).subscribe((games: any) => {
+    this.homePageService.getAllNewGames(this.page).subscribe((games: any) => {
       this.newGames = games.content;
     });
   }
 
   getAllHotGames() {
-    this.gameService.getAllHotGame(this.page).subscribe((games: any) => {
+    this.homePageService.getAllHotGame(this.page).subscribe((games: any) => {
       this.hotGames = games.content;
     });
   }
 
+  getInfoGame(id: number, name: string) {
+    this.selectedId = id;
+    this.selectedName = name;
+  }
+
+  deleteGameById() {
+    this.gameService.deleteGameById(this.selectedId).subscribe(res => {
+      this.getAllPopularGames();
+      this.getAllNewGames();
+      this.getAllHotGames();
+      this.toastr.success('Xóa thành công!', 'Game');
+    });
+  }
 }

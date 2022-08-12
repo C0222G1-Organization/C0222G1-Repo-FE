@@ -8,7 +8,7 @@ const API_URL = `${environment.apiUrl}`;
 @Injectable({
   providedIn: 'root'
 })
-export class GameService {
+export class HomePageService {
   constructor(private http: HttpClient) { }
 
   getAllPopularGames(page: number): Observable<Game[]> {
