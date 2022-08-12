@@ -1,5 +1,3 @@
-import {ComputerType} from "./computer-type";
-
 export interface Computer {
   id?: number;
   code?: string;

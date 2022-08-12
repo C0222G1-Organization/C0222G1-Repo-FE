@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Computer} from '../../model/computer';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ComputerService} from '../../service/computer.service';
+import {SearchDto} from '../../model/search-dto';
 
 @Component({
   selector: 'app-computer-list',
@@ -12,23 +12,17 @@ export class ComputerListComponent implements OnInit {
   formSearch: FormGroup = new FormGroup({
     code: new FormControl(''),
     location: new FormControl(''),
-    start: new FormControl('1900-10-10'),
-    end: new FormControl('2200-10-10'),
+    start: new FormControl(''),
+    end: new FormControl(''),
     status: new FormControl(''),
     typeId: new FormControl('')
   });
-  // code = '';
-  // location = '';
-  // start = '1900-10-10';
-  // end = '2200-10-10';
-  // status = '';
-  // typeId = '';
-  computers: Computer[] = [];
-  computer: Computer;
+  computers: SearchDto[] = [];
+  computer: SearchDto;
   page = 1;
   totalItems: any;
   itemsPerPage = 2;
-  computerIdDelete: number;
+  computerIdDelete: string;
 
   constructor(private computerService: ComputerService) {
   }
@@ -39,6 +33,12 @@ export class ComputerListComponent implements OnInit {
 
   findAll() {
     const value = this.formSearch.value;
+    if (value.start == '') {
+      value.start = '1900-10-10';
+    }
+    if (value.end == '') {
+      value.end = '2200-10-10';
+    }
     this.computerService.findAll(this.page - 1,
       value.code,
       value.location,
@@ -46,11 +46,8 @@ export class ComputerListComponent implements OnInit {
       value.end,
       value.status,
       value.typeId).subscribe((list: any) => {
-      // console.log(this.location);
-      // console.log('start = ' + this.start);
-      // console.log('end = ' + this.end);
-      // console.log(this.status);
-      // console.log(this.typeId);
+      console.log(value);
+      console.log(list);
       this.computers = list.content;
       this.totalItems = list.totalElements;
       this.page = 1;
@@ -59,9 +56,9 @@ export class ComputerListComponent implements OnInit {
     });
   }
 
-  getInfo(computer: Computer) {
-    this.computer = computer;
-    this.computerIdDelete = computer.id;
+  getInfo(searchDto: SearchDto) {
+    this.computer = searchDto;
+    this.computerIdDelete = searchDto.id;
   }
 
 }

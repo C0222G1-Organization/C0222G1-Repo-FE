@@ -1,8 +1,12 @@
 export interface SearchDto {
-  code?: string;
-  location?: string;
+  status?: string;
+  configuration?: string;
+  warranty?: string;
   start?: string;
-  end?: string;
-  status?: number;
-  typeId: number;
+  manufacturer?: string;
+  code?: string;
+  delete?: string;
+  location?: string;
+  id?: string;
+  type?: string;
 }
