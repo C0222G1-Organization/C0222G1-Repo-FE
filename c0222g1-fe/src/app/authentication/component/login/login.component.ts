@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Ilogin} from '../../model/ilogin';
-import {LoginService} from '../../service/login.service';
+import {AuthService} from '../../service/auth.service';
 import {ToastrService} from 'ngx-toastr';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,12 +13,13 @@ import {ToastrService} from 'ngx-toastr';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  valueServerReponse: any;
   login: Ilogin = {
     username: '',
     password: ''
   };
-  constructor(private loginService: LoginService, private toartrs: ToastrService) { }
+
+  constructor(private authService: AuthService, private toartrs: ToastrService, private router: Router) {
+  }
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -27,19 +29,27 @@ export class LoginComponent implements OnInit {
   }
 
   submitLogin() {
-    if (this.loginForm.controls.username.hasError('required')) {
-      this.toartrs.error('username rỗng', 'THÔNG BÁO');
-    }
     this.login = this.loginForm.value;
-    this.loginService.requestLogin(this.login).subscribe(value => {
-      if (value !== undefined) {
-        // @ts-ignore
-        this.toartrs.success(value.message, 'THÔNG BÁO');
-      }
-    }, error => {
-      console.log(error);
-      this.toartrs.error(error.error.message, 'THÔNG BÁO');
+    this.authService.requestLogin(this.login).subscribe(value => {
+        if (value !== undefined) {
+          sessionStorage.setItem('username', this.login.username);
+          const tokenStr = 'Bearer ' + value.token;
+          sessionStorage.setItem('token', tokenStr);
+          sessionStorage.setItem('roles', JSON.stringify(value.roles[0].authority));
+          if (value.roles[0].authority === 'ADMIN') {
+            this.router.navigate(['']);
+          } else if (value.roles[0].authority === 'EMPLOYEE') {
+            this.router.navigate(['']);
+          } else {
+            this.router.navigate(['home-page-customer']);  // CUSTOMER
+          }
+          this.toartrs.success('Đăng nhập thành công', 'THÔNG BÁO');
+        }
+      }, error => {
+        console.log(error);
+        this.toartrs.error('Đăng nhập không thành công', 'THÔNG BÁO');
       }
     );
   }
+
 }
