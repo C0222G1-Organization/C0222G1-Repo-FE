@@ -18,31 +18,31 @@
               </div>
               <div class="input-field">
                 <label>Ngày bắt đầu</label>
-                <input type="date" formControlName="code" class="input-search">
+                <input type="date" formControlName="start" class="input-search">
               </div>
               <div class="input-field">
                 <label>Ngày kết thúc</label>
-                <input type="date" class="input-search">
+                <input type="date" formControlName="end" class="input-search">
               </div>
               <div class="input-field">
                 <label>Trạng thái</label>
-                <select style="min-width: 100px" class="input-search form-select">
+                <select style="min-width: 100px" formControlName="status" class="input-search form-select">
                   <option value="">--Chọn trạng thái--</option>
-                  <option value="">Bình thường</option>
-                  <option value="">Bảo trì</option>
+                  <option value="0">Bình thường</option>
+                  <option value="1">Bảo trì</option>
                 </select>
               </div>
               <div class="input-field">
                 <label>Loại máy</label>
                 <select style="min-width: 100px" class="input-search form-select">
                   <option value="">--Chọn loại máy--</option>
-                  <option value="">Vip</option>
-                  <option value="">Thường</option>
+                  <option value="1">Máy Vip</option>
+                  <option value="2">Máy Thường</option>
                 </select>
               </div>
             </div>
             <div class="input-field">
-              <button class="btn btn-outline-secondary" style="right: 0">Tìm kiếm</button>
+              <button class="btn btn-outline-secondary" (click)="findAll()" style="right: 0">Tìm kiếm</button>
             </div>
           </div>
         </div>
@@ -76,13 +76,16 @@
             {{computer.id}}
           </td>
           <td>{{computer.code}}</td>
+          <td *ngIf="computer.status.includes('false',0)">Bình thường</td>
+          <td *ngIf="computer.status.includes('true',0)">Bảo trì</td>
           <td>{{computer.location}}</td>
-          <td>{{computer.startUsedDate}}</td>
-          <td>{{computer.status}}</td>
+          <td>{{computer.start | date: "dd/MM/yyyy"}}</td>
           <td>{{computer.configuration}}</td>
-          <td>{{computer.computerType.name}}</td>
+          <td *ngIf="computer.type.includes('1',0)">Vip</td>
+          <td *ngIf="computer.type.includes('2',0)">Thường</td>
+<!--          <td>{{computer.type}}</td>-->
           <td>{{computer.manufacturer}}</td>
-          <td>{{computer.warranty}}</td>
+          <td>{{computer.warranty}} năm</td>
           <td>
             <button class="btn btn-outline-secondary mx-2 "><i class="fa-solid fa-pencil"></i></button>
             <button class="btn btn-outline-secondary " (click)="getInfo(computer)" data-bs-toggle="modal"
@@ -105,7 +108,7 @@
       </div>
     </div>
   </div>
-  <div style="justify-content: space-around;display: flex;">
+  <div *ngIf="computers.length > 0" style="justify-content: space-around;display: flex;">
     <pagination-controls (pageChange)="page = $event"></pagination-controls>
   </div>
 </div>
