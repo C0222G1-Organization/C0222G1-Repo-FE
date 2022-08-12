@@ -1,0 +1,47 @@
+<div class="d-flex justify-content-center">
+  <div class="h-auto pl-5 pr-5 pt-2 pb-2" style="border-radius: 10px; background-color: #2a2a2a; max-width: 50%">
+    <h1 class="text-center text-white pt-4 pb-4 pl-4 pr-4" style="font-family: 'Roboto', sans-serif;">HOÁ ĐƠN THANH TOÁN</h1>
+    <div class="container pb-3">
+      <div class="row mt-2 mb-2">
+        <div class="col-4 text-white">Mã số hoá đơn:</div>
+        <div class="col-8 text-white">{{data.id}}</div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-4 text-white">Trạng thái hoá đơn:</div>
+        <div class="col-8 text-white">{{data.status}}</div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-4 text-white">Tổng thanh toán:</div>
+        <div class="col-8 text-white">{{data.purchase_units[0]['amount']['value']}}</div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-4 text-white">Địa chỉ email:</div>
+        <div class="col-8 text-white hiddenText">{{data.purchase_units[0]['payee']['email_address']}}</div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-4 text-white">Họ và tên:</div>
+        <div class="col-8 text-white">{{data.purchase_units[0]['shipping']['name']['full_name']}}</div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-4 text-white">Địa chỉ:</div>
+        <div class="col-8 text-white">{{data.purchase_units[0]['shipping']['address']['address_line_1']}}</div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-4 text-white">Thành phố:</div>
+        <div class="col-8 text-white">{{data.purchase_units[0]['shipping']['address']['admin_area_1']}}</div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-4 text-white">Tỉnh:</div>
+        <div class="col-8 text-white">{{data.purchase_units[0]['shipping']['address']['admin_area_2']}}</div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-4 text-white">Zipcode:</div>
+        <div class="col-8 text-white">{{data.purchase_units[0]['shipping']['address']['postal_code']}}</div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-4 text-white">Quốc gia:</div>
+        <div class="col-8 text-white">{{data.purchase_units[0]['shipping']['address']['country_code']}}</div>
+      </div>
+    </div>
+  </div>
+</div>

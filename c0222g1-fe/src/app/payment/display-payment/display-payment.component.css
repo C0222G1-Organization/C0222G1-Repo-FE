@@ -16,6 +16,14 @@ table {
   padding: 0 10px;
 }
 
+.hiddenPaypal {
+  display: none;
+}
+
+.displayPaypal {
+  display: block;
+}
+
 .table-container {
   margin: 0 10px;
 }
