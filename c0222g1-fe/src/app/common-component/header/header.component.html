@@ -8,7 +8,7 @@
                 aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand text-white" href="#"> <img src="../../../assets/img/logo.png" width="30"/></a>
+        <a class="navbar-brand text-white" href="#"> <img src="../../../assets/img/logo.png" width="80"/></a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item active">
@@ -30,13 +30,24 @@
               <a class="nav-link" style="color: #a8a8a8" href="#">Khách Hàng</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" style="color: #a8a8a8" routerLink="/product-list">Dịch Vụ</a>
+              <a class="nav-link" style="color: #a8a8a8" href="#">Danh Sách Máy</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" style="color: #a8a8a8" href="#">Game Hot</a>
+              <a class="nav-link" style="color: #a8a8a8" href="#">Game</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" style="color: #a8a8a8" href="#">Tin Tức</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" style="color: #a8a8a8" routerLink="/products">Dịch Vụ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" style="color: #a8a8a8" href="#">Thống Kê</a>
             </li>
           </ul>
           <form class="d-flex">
+            <!--                        <button class="btn-main text-white">Employee</button>-->
+            <!--                        <a class="nav-link" style="color: #a8a8a8" href="#">Đăng Xuất</a>-->
             <a class="nav-link" style="color: #a8a8a8" href="#">Đăng Ký</a>
             <button class="btn-main text-white">Đăng Nhập</button>
           </form>
@@ -45,12 +56,3 @@
     </nav>
   </div>
 </div>
-<script>
-  const items = document.querySelectorAll("ul li");
-  items.forEach((item) => {
-    item.addEventListener("click", () => {
-      document.querySelector("li.active").classList.remove("active");
-      item.classList.add("active");
-    });
-  });
-</script>

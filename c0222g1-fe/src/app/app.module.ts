@@ -15,6 +15,8 @@ import { NotAuthorizedComponent } from './common-component/not-authorized/not-au
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
+// import {IndexModule} from './index/index.module';
+
 import {PaymentModule} from './payment/payment.module';
 import {AuthenticationModule} from './authentication/authentication.module';
 import {CustomerModule} from './customer/customer.module';
@@ -23,15 +25,17 @@ import {GameModule} from './game/game.module';
 import {NewsModule} from './news/news.module';
 import {ComputerModule} from './computer/computer.module';
 import {ProductModule} from './product/product.module';
-import {IndexModule} from './index/index.module';
 import {RegistrationModule} from './registration/registration.module';
+import {HomePageModule} from './home-page/home-page.module';
+import {StatisticModule} from './statistic/statistic.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    NotAuthorizedComponent
+    NotAuthorizedComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,8 +62,9 @@ import {RegistrationModule} from './registration/registration.module';
     NewsModule,
     ComputerModule,
     ProductModule,
-    IndexModule,
-    RegistrationModule
+    RegistrationModule,
+    HomePageModule,
+    StatisticModule
   ],
   providers: [],
   bootstrap: [AppComponent]

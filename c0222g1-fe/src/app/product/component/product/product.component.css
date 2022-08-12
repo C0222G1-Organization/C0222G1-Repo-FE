@@ -95,6 +95,20 @@ h4 {
   padding: 15px 0 0 0;
 }
 
+.card-notify-year-checkbox {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  background: #aa9999;
+  border-radius: 50%;
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  width: 25px;
+  height: 25px;
+  padding: 15px 0 0 0;
+}
+
 .card-notify-year-custom {
   position: absolute;
   right: -10px;

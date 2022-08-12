@@ -22,4 +22,12 @@ export class ProductService {
   findAllProductCategory(): Observable<ProductCategory[]> {
     return this.http.get<Product[]>(this.API_CATE);
   }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(this.API + '/list/delete/' + id);
+  }
+
+  deleteAll(id: number[]): Observable<any> {
+    return this.http.delete<any>(this.API + '/list/delete/' + id.length);
+  }
 }

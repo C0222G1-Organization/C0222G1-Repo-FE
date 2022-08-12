@@ -11,7 +11,8 @@ export interface Product {
   quantity: number;
   unit: string;
   prices: number;
-  image: string;
+  imageUrl: string;
   deleteStatus: number;
   idProductCategory: ProductCategory;
+  checked?: boolean;
 }
