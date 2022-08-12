@@ -13,8 +13,14 @@ export class ComputerService {
 
   constructor(private http: HttpClient) {}
 
-  findAll(page: number, searchDto): Observable<Computer[]> {
-    const params = new HttpParams().set('searchDto', searchDto);
+  findAll(page: number, code, location, start, end, status, typeId): Observable<Computer[]> {
+    let params = new HttpParams();
+    params = params.append('code', code);
+    params = params.append('location', location);
+    params = params.append('start', start);
+    params = params.append('end', code);
+    params = params.append('status', status);
+    params = params.append('typeId', typeId);
     return this.http.get<Computer[]>(API_URL + `/computer/${page}`, {params});
   }
 }

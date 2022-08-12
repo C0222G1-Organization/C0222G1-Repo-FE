@@ -1,5 +1,5 @@
 export interface SearchDto {
-  code?: number;
+  code?: string;
   location?: string;
   start?: string;
   end?: string;

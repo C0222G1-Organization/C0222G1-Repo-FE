@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Computer} from '../../model/computer';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ComputerService} from '../../service/computer.service';
@@ -17,6 +17,12 @@ export class ComputerListComponent implements OnInit {
     status: new FormControl(''),
     typeId: new FormControl('')
   });
+  // code = '';
+  // location = '';
+  // start = '1900-10-10';
+  // end = '2200-10-10';
+  // status = '';
+  // typeId = '';
   computers: Computer[] = [];
   computer: Computer;
   page = 1;
@@ -24,17 +30,32 @@ export class ComputerListComponent implements OnInit {
   itemsPerPage = 2;
   computerIdDelete: number;
 
-  constructor(private computerService: ComputerService) { }
+  constructor(private computerService: ComputerService) {
+  }
 
   ngOnInit(): void {
     this.findAll();
   }
 
   findAll() {
-    this.computerService.findAll(this.page - 1, this.formSearch.value).subscribe((list: any) => {
+    const value = this.formSearch.value;
+    this.computerService.findAll(this.page - 1,
+      value.code,
+      value.location,
+      value.start,
+      value.end,
+      value.status,
+      value.typeId).subscribe((list: any) => {
+      // console.log(this.location);
+      // console.log('start = ' + this.start);
+      // console.log('end = ' + this.end);
+      // console.log(this.status);
+      // console.log(this.typeId);
       this.computers = list.content;
       this.totalItems = list.totalElements;
       this.page = 1;
+    }, error => {
+      console.log(error);
     });
   }
 
@@ -42,6 +63,5 @@ export class ComputerListComponent implements OnInit {
     this.computer = computer;
     this.computerIdDelete = computer.id;
   }
-
 
 }
