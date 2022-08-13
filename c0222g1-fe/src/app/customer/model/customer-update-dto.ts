@@ -12,4 +12,5 @@ export interface UpdateCustomerDto {
   userName: UserDto;
   password: string;
   commune: Commune;
+  activeStatus: 1;
 }
