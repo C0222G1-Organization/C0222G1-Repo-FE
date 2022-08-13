@@ -48,8 +48,7 @@ import {StatisticModule} from "./statistic/statistic.module";
     ToastrModule.forRoot({
       timeOut: 2000,
       closeButton: true,
-      progressBar: true,
-      positionClass: 	'toast-top-right',
+      positionClass: 	'toast-top-center',
     }),
     PaymentModule,
     AuthenticationModule,

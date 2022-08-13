@@ -26,4 +26,13 @@ export class HomePageService {
   deleteGameById(id: number): Observable<Game> {
     return this.http.delete<Game>(API_URL + `/games/${id}`);
   }
+
+  findById(id: number): Observable<Game> {
+    return this.http.get<Game>(API_URL + `/games/${id}`);
+  }
+
+  updateGame(id: number, game: Game): Observable<Game> {
+    console.log(game)
+    return this.http.put<Game>(API_URL + `/games/${id}`, game);
+  }
 }
