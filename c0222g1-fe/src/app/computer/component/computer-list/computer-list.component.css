@@ -170,6 +170,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   margin: 8px 0;
 }
 
+tbody,thead.hiddenText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
 @media (max-width: 750px) {
   .form .fields .input-field {
     width: calc(100% / 2 - 15px);
