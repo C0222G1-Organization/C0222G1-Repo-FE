@@ -16,7 +16,7 @@ export class ProductService {
   private API_CATE = 'http://localhost:8080/product/listCategory';
 
   findAllProduct(name: string, page: number): Observable<Product[]> {
-    return this.http.get<Product[]>(this.API + '/list&' + name + '?page=' + page);
+    return this.http.get<Product[]>(this.API + '/list?name=' + name + '&page=' + page);
   }
 
   findAllProductCategory(): Observable<ProductCategory[]> {
