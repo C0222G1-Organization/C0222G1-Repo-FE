@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment} from '../../enviroment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Computer} from '../model/computer';
-import {SearchDto} from "../model/search-dto";
+import {SearchDto} from '../model/search-dto';
 
 const API_URL = `${environment.apiUrl}`;
 
@@ -12,9 +12,16 @@ const API_URL = `${environment.apiUrl}`;
 })
 export class ComputerService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
-  findAll(page: number, code, location, start, end, status, typeId): Observable<SearchDto[]> {
+  findAll(page: number, code: string, location: string, start: string, end: string, status: string, typeId: string): Observable<SearchDto[]> {
+    if (start === '') {
+      start = '1900-10-10';
+    }
+    if (end === '') {
+      end = '2200-10-10';
+    }
     console.log('service');
     console.log(code);
     console.log(location);
@@ -22,13 +29,18 @@ export class ComputerService {
     console.log(end);
     console.log(status);
     console.log(typeId);
+    console.log('service');
     let params = new HttpParams();
     params = params.append('code', code);
     params = params.append('location', location);
     params = params.append('start', start);
-    params = params.append('end', code);
+    params = params.append('end', end);
     params = params.append('status', status);
     params = params.append('typeId', typeId);
     return this.http.get<SearchDto[]>(API_URL + `/computer/${page}`, {params});
+  }
+
+  delete(id): Observable<void> {
+    return this.http.delete<void>(`${API_URL}/computer/${id}`);
   }
 }
