@@ -12,7 +12,7 @@ body {
 }
 
 .object {
-  background-color: #2A2A2A;
+  background-color: #2a2a2a;
   margin: 2rem 0;
   padding-left: 2rem;
   padding-right: 2rem;
@@ -64,7 +64,7 @@ body {
 }
 
 .btn-main {
-  background-color:  #0078f2;
+  background-color:  #0078f2 !important;
   border: none;
   padding: 5px 10px;
 }
@@ -74,6 +74,20 @@ body {
   border: none;
   border-radius: 3px;
   padding: 5px 10px;
+}
+
+.btn-second-non-border {
+  background-color:  white;
+  border: none;
+  padding: 5px 10px;
+}
+
+.btn-opacity-border {
+  width:100%;
+  padding: 9px 0;
+  background-color: #121212;
+  border:1px solid white;
+  border-radius: 5px;
 }
 
 ul li {
@@ -112,7 +126,7 @@ li.active::after {
 }
 
 .list-image-game {
-  width: 150px;
+  width: 35rem;
   margin-right: 1rem;
   border-radius: 10px;
 }
@@ -229,5 +243,38 @@ li.active::after {
 
 #myBtn:hover {
   background-color: #555;
+}
+
+.search {
+  border-radius: 2em;
+  background-color: rgba(0,0,0,0);
+  border: none;
+  background-color: #2A2A2A;
+  padding: 0.5rem;
+}
+
+.search:focus {
+  color: #ffff;
+}
+
+.search:focus {
+  outline: none !important;
+  border: none !important;
+}
+
+.ngx-pagination .current {
+  padding: 0.1875rem 0.625rem;
+  background-color: #0078f2;
+  color: #fefefe;
+  cursor: default;
+}
+
+.page-link {
+  color: white !important;
+}
+
+.ngx-pagination a, .ngx-pagination button {
+  cursor: pointer;
+  color: white !important;
 }
 
