@@ -82,6 +82,14 @@ body {
   padding: 5px 10px;
 }
 
+.btn-opacity-border {
+  width:100%;
+  padding: 9px 0;
+  background-color: #121212;
+  border:1px solid white;
+  border-radius: 5px;
+}
+
 ul li {
   cursor: pointer;
   position: relative;
