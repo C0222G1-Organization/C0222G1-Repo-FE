@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {GameCategory} from "../../model/game-category";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {GameService} from "../../service/game.service";
-import {GameCategoryService} from "../../service/game-category.service";
-import {ToastrService} from "ngx-toastr";
-import {AngularFireStorage} from "@angular/fire/storage";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Observable} from "rxjs";
-import {finalize} from "rxjs/operators";
+import {GameCategory} from '../../model/game-category';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {GameService} from '../../service/game.service';
+import {GameCategoryService} from '../../service/game-category.service';
+import {ToastrService} from 'ngx-toastr';
+import {AngularFireStorage} from '@angular/fire/storage';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-game-update',

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Game} from "../../model/game";
-import {GameService} from "../../service/game.service";
-import {Title} from "@angular/platform-browser";
-import {ToastrService} from "ngx-toastr";
+import {Game} from '../../model/game';
+import {GameService} from '../../service/game.service';
+import {Title} from '@angular/platform-browser';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-game',
@@ -17,7 +17,7 @@ export class GameComponent implements OnInit {
   selectedName: string;
   games: Game[];
   gameName = '';
-  playedTimes: number;
+  playedTimes =  1;
   constructor(private gameService: GameService,
               private title: Title,
               private toastr: ToastrService) {
@@ -26,7 +26,6 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.getGames();
-    this.changePlayedTime();
   }
 
   getGames() {
@@ -68,7 +67,7 @@ export class GameComponent implements OnInit {
       this.toastr.success('Xóa thành công!', 'Game');
     });
   }
+
   changePlayedTime() {
-    this.playedTimes = this.playedTimes + 1;
   }
 }

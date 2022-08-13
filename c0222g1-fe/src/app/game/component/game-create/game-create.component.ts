@@ -99,5 +99,6 @@ export class GameCreateComponent implements OnInit {
         });
     this.gameForm.reset();
   }
+
 }
 
