@@ -1,7 +1,7 @@
 <body>
 <div class="login-form">
   <h6 class="text-center mt-4"> Tạo mới thông tin game </h6>
-  <form [formGroup]="gameForm" (ngSubmit)="submit()" class="needs-validation p-4" novalidate>
+  <form [formGroup]="gameForm" (ngSubmit)="addNewGame()" class="needs-validation p-4" novalidate>
     <div class="form-floating textbox mb-4">
       <input type="text" class="form-control input" id="full-name"
              placeholder="tên game" formControlName="name" value="" required>
@@ -17,17 +17,18 @@
       </p>
     </div>
 
-    <div class="form-floating textbox mb-4">
-      <input type="date" class="form-control input" id="date-of-birth"
-             placeholder="ngày tạo" required formControlName="createDate">
-      <label for="date-of-birth" style="color: white">
-        Ngày tạo
-        <span class="text-warning">*</span>
-      </label>
-      <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('createDate').touched
-                && gameForm.hasError('required', 'createDate')">Create Date is required
-      </p>
-    </div>
+<!--    <div class="form-floating textbox mb-4">-->
+<!--      <input type="date" class="form-control input" id="date-of-birth"-->
+<!--             placeholder="ngày tạo" required formControlName="createDate">-->
+<!--      <label for="date-of-birth" style="color: white">-->
+<!--        Ngày tạo-->
+<!--        <span class="text-warning">*</span>-->
+<!--      </label>-->
+<!--      <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('createDate').touched-->
+<!--                && gameForm.hasError('required', 'createDate')">Create Date is required-->
+<!--      </p>-->
+<!--    </div>-->
+
 
     <div class="form-floating textbox mb-4">
       <input type="text" class="form-control input"
@@ -42,21 +43,19 @@
     </div>
 
 
-    <div class="form-floating textbox mb-4 ">
+    <div class="form-floating textbox mb-4 " formGroupName="gameCategory">
       <div class="form-floating textbox ">
         <select class="form-select select input" aria-haspopup="true"
-                id="type" formControlName="gameCategory">
+                 formControlName="id" id ="gameCategory">
           <option class="option" style="height: 50px">Chọn thể loại game</option>
-          <option value="1" class="option">Game hot</option>
-          <option value="2" class="option">Game mới</option>
-          <option value="3" class="option">Game thịnh hành</option>
+          <option *ngFor="let gameCategory of gameCategory" [value]="gameCategory.id">{{gameCategory.name}}</option>
         </select>
-        <label for="type" style="color: white">
+        <label style="color: white">
           Loại game
           <span class="text-warning">*</span>
         </label>
         <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('gameCategory').touched
-                && gameForm.hasError('required', 'gameCategory')">Create Date is required
+                && gameForm.hasError('required', 'gameCategory')">Game category is required
         </p>
       </div>
     </div>
@@ -72,12 +71,14 @@
       <!--        </label>-->
       <!--        <input type="text" class="form-control input" readonly style="background: #2b2b2b; width: 85%; color: #2a2a2a">-->
       <!--      </div>-->
-      <label for="formFileMultiple" class="form-label">Multiple files input example</label>
-      <input class="form-control" type="file" id="formFileMultiple" multiple formControlName="imageUrl">
+      <label for="formFileMultiple" class="form-label"></label>
+      <input class="form-control" type="file" id="formFileMultiple"
+             multiple (change)="onFileSelected($event)" name="image" autocomplete="off">
       <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('imageUrl').touched
                 && gameForm.hasError('required', 'imageUrl')">Create Date is required
       </p>
     </div>
+
 
 
     <div class="form-floating textbox mb-4 mt-2">
@@ -104,12 +105,15 @@
           <button type="button" class="btn btn-secondary w-auto "><i
             class="fa-solid fa-arrows-rotate"></i>Làm mới
           </button>
-          &nbsp;
         </div>
-        <div class="col-md-4 col-sm-4 d-flex justify-content-center">
-          <button type="submit" class="btn btn-secondary w-auto"><i class="fa-solid fa-plus"></i>Thêm mới
-          </button>
-        </div>
+
+        <!--        {{count}}-->
+        <!--        <button type="submit" (click)="changeCount()" class="btn btn-secondary w-auto"><i class="fa-solid fa-plus"></i>test-->
+        <!--        </button>-->
+                <div class="col-md-4 col-sm-4 d-flex justify-content-center">
+                  <button type="submit" class="btn btn-secondary w-auto"><i class="fa-solid fa-plus"></i>Thêm mới
+                  </button>
+                </div>
       </div>
       <div class="col-1"></div>
     </div>
