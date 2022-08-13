@@ -137,9 +137,11 @@ export class ProductComponent implements OnInit {
       }, error => {
       }, () => {
         console.log(this.productList.length);
-        this.toast.success('Xóa sản phẩm thành công');
         this.ngOnInit();
       });
+    }
+    if (this.selectedProducts.length > 0) {
+      this.toast.success('Xóa sản phẩm thành công');
     }
   }
 }
