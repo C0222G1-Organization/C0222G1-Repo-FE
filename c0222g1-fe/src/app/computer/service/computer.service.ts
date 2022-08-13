@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {environment} from '../../enviroment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
@@ -13,6 +13,19 @@ const API_URL = `${environment.apiUrl}`;
 export class ComputerService {
 
   constructor(private http: HttpClient) {
+  }
+
+  createComputer(computer: Computer): Observable<Computer> {
+    return this.http.post<Computer>(API_URL + '/computer/create-computer', computer)
+  }
+
+
+  findById(id: number) {
+    return this.http.get<Computer>(API_URL + `/computer/list/${id}`)
+  }
+
+  editComputer(id: number, computer: Computer) {
+    return this.http.patch<Computer>(API_URL + `/computer/edit-computer/${id}`, computer)
   }
 
   findAll(page: number, code: string, location: string, start: string, end: string, status: string, typeId: string): Observable<SearchDto[]> {
