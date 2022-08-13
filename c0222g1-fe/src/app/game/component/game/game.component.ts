@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Game} from "../../model/game";
 import {GameService} from "../../service/game.service";
 import {Title} from "@angular/platform-browser";
@@ -16,7 +16,8 @@ export class GameComponent implements OnInit {
   selectedId: number;
   selectedName: string;
   games: Game[];
-  gameName = "";
+  gameName = '';
+  game: Game;
   constructor(private gameService: GameService,
               private title: Title,
               private toastr: ToastrService) {
@@ -45,12 +46,13 @@ export class GameComponent implements OnInit {
   }
 
   searchGameByName() {
-    if (this.gameName == "") {
+    if (this.gameName == '') {
       this.getGames();
     }
-    this.gameService.searchGameByName(this.gameName).subscribe(games => {
-      this.games = games;
+    this.gameService.searchGameByName(this.gameName).subscribe((games: any) => {
+      this.games = games.content;
       this.page = 1;
+      this.totalItems = games.totalElements;
     });
   }
 
@@ -63,7 +65,25 @@ export class GameComponent implements OnInit {
     this.gameService.deleteGameById(this.selectedId).subscribe(res => {
       this.page = 1;
       this.getGames();
-      this.toastr.success('Xóa thành công!', 'Game');
+      this.toastr.success("Xóa thành công");
     });
   }
+
+  updatePlayedTimes(id: number) {
+    this.gameService.updateGame(id, this.game).subscribe(res => {
+      console.log('ok');
+      this.getGames();
+    })
+  }
+
+  getGameAndUpdate(id: number) {
+    this.gameService.findById(id).subscribe(game => {
+      this.game = game;
+      this.game.playedTimes += 1;
+      this.updatePlayedTimes(id);
+    }, error => {
+      console.log('error')
+    });
+  }
+
 }

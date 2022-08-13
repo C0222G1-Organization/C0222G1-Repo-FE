@@ -15,9 +15,13 @@ export class GameService {
     return this.http.post<any>(API_URL + '/games', game);
   }
 
-  // editCustomer(id: string, customer: ICustomer): Observable<any> {
-  //   return this.http.patch(this.baseUrl + '/' + id, customer);
-  // }
+  updateGame(id: number, game: Game): Observable<Game> {
+    console.log('check 2:' + id);
+    return this.http.put<Game>(API_URL + `/games/${id}`, game);
+  }
+  findById(id: number): Observable<Game> {
+    return this.http.get<Game>(API_URL + `/games/${id}`);
+  }
 
   getAllGames(page: number): Observable<Game[]> {
     return this.http.get<Game[]>(API_URL + `/games?page=${page}`);
