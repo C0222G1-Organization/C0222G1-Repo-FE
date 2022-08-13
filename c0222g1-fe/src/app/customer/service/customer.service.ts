@@ -14,9 +14,15 @@ export class CustomerService {
 
   constructor(private httpClient: HttpClient) {
   }
-  public getAllCustomer(page): Observable<CustomerDTO> {
-    return this.httpClient.get<CustomerDTO>('http://localhost:8080/customer/getAll/' + page);
 
+  public getAllCustomer(page, address, name, startDay, endDay, activeStatus): Observable<CustomerDTO> {
+    return this.httpClient.get<CustomerDTO>('http://localhost:8080/customer/searchCustomer?page=' + page
+      + '&address=' + address + '&name=' + name + '&starDay=' + startDay + '&endDay=' + endDay + '&activeStatus=' + activeStatus);
   }
+  /**
+   * Create by: DuyNT
+   * Date Create: 11/08/2022
+   * function: get info of customer by id from database
+   */
 
 }

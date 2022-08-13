@@ -12,4 +12,8 @@ export interface CustomerDTO {
   nameCommune: string;
   nameDistrict: string;
   nameProvince: string;
+  starDate?: string;
+  endDate?: string;
+  address?: string;
+  nameCustomer?: string;
 }
