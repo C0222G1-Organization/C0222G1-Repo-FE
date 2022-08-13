@@ -1,4 +1,4 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UpdateCustomerDto} from '../../model/customer-update-dto';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Commune} from '../../model/commune';
@@ -6,6 +6,7 @@ import {District} from '../../model/district';
 import {Province} from '../../model/province';
 import {CreateCustomerService} from '../../service/create-customer.service';
 import {Router} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-create-customer-hao-nh',
@@ -21,7 +22,6 @@ export class CreateCustomerHaoNHComponent implements OnInit {
     province: new FormControl('', Validators.required)
   });
   customerForm: FormGroup = new FormGroup({
-    id: new FormControl(),
     // tslint:disable-next-line:max-line-length
     name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s?]+$'), Validators.required]),
     dateOfBirth: new FormControl('', [Validators.pattern('^[a-zA-Z\\s?]+$'), this.check16Age]),
@@ -29,7 +29,7 @@ export class CreateCustomerHaoNHComponent implements OnInit {
       email: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+@[A-Za-z0-9]+(\\.[A-Za-z0-9]+){1,2}$'), Validators.required])
     }),
     phoneNumber: new FormGroup({
-      phoneNumber: new FormControl('' , [Validators.pattern('^[0-9]{10,12}$'), Validators.required])
+      phone: new FormControl('' , [Validators.pattern('^[0-9]{10,12}$'), Validators.required])
     }),
     userName: new FormGroup({
       userName: new FormControl('', Validators.required)
@@ -43,8 +43,11 @@ export class CreateCustomerHaoNHComponent implements OnInit {
     district: new FormControl('', Validators.required),
     commune: new FormControl('', Validators.required)
   });
+
   constructor(private customerService: CreateCustomerService,
-              private router: Router) { }
+              private router: Router,
+              private toast: ToastrService) {
+  }
 
   ngOnInit(): void {
     this.customerService.getAllProvince().subscribe(value => this.provinceList = value);
@@ -72,7 +75,7 @@ export class CreateCustomerHaoNHComponent implements OnInit {
   }
 
   getPhone() {
-    return this.customerForm.get('phoneNumber').get('phoneNumber');
+    return this.customerForm.get('phoneNumber').get('phone');
   }
 
   getEmail() {
@@ -110,8 +113,21 @@ export class CreateCustomerHaoNHComponent implements OnInit {
   submit() {
     this.updateCustomerDto = this.customerForm.value;
     this.updateCustomerDto.password = this.customerForm.value.password.password;
-    // this.customerService.createCustomer(this.updateCustomerDto).subscribe(
-    //   value => {this.router.navigate('/'); }
-    // )
+    this.customerService.createCustomer(this.updateCustomerDto).subscribe(
+      value => {
+        this.toast.success('Đăng ký thành công');
+      },
+      error => {
+        if (error.error.email !== undefined) {
+          this.toast.error(error.error.email);
+        }
+        if (error.error.userName !== undefined) {
+          this.toast.error(error.error.userName);
+        }
+        if (error.error.phoneNumber !== undefined) {
+          this.toast.error(error.error.phoneNumber);
+        }
+      }
+    );
   }
 }
