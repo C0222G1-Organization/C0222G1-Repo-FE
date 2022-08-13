@@ -7,15 +7,15 @@
           <div class="carousel-inner">
             <div class="carousel-item active container-img-carousel">
               <img [src]="popularGames[0].imageUrl" class="d-block image" alt="...">
-              <button class="btn-image-carousel">Chơi ngay</button>
+              <button (click)="getGameAndUpdate(popularGames[0].id)" class="btn-image-carousel">Chơi ngay</button>
             </div>
             <div class="carousel-item container-img-carousel">
               <img [src]="popularGames[1].imageUrl" class="d-block" alt="...">
-              <button class="btn-image-carousel">Chơi ngay</button>
+              <button (click)="getGameAndUpdate(popularGames[0].id)" class="btn-image-carousel">Chơi ngay</button>
             </div>
             <div class="carousel-item container-img-carousel">
               <img [src]="popularGames[2].imageUrl" class="d-block" alt="...">
-              <button class="btn-image-carousel">Chơi ngay</button>
+              <button (click)="getGameAndUpdate(popularGames[0].id)" class="btn-image-carousel">Chơi ngay</button>
             </div>
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"
@@ -107,7 +107,7 @@
             </div>
             <div class="row">
               <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">
-                <button class="btn-second btn-sm">Chơi</button>
+                <button (click)="getGameAndUpdate(game.id)" class="btn-second btn-sm">Chơi</button>
               </div>
               <div class="col-xl-9 col-lg-9 col-md-0 col-sm-0">
                 <p class="card-text text-content">{{game.playedTimes}} lượt chơi</p>
@@ -173,7 +173,7 @@
             </div>
             <div class="row">
               <div class="col-xl-3 col-md-3">
-                <button (click)="play(game.id)" class="btn-second btn-sm">Chơi</button>
+                <button (click)="getGameAndUpdate(game.id)" class="btn-second btn-sm">Chơi</button>
               </div>
               <div class="col-xl-9 col-md-9">
                 <p class="card-text text-content">{{game.playedTimes}} lượt chơi</p>

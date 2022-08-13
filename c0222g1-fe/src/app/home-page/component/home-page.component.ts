@@ -33,7 +33,7 @@ export class HomePageComponent implements OnInit {
 
   getAllPopularGames() {
     this.homePageService.getAllPopularGames(this.page).subscribe((games: any) => {
-      console.log(games.content);
+      this.toastr.success("Tải trang thành công");
       this.popularGames = games.content;
     });
   }
@@ -60,11 +60,26 @@ export class HomePageComponent implements OnInit {
       this.getAllPopularGames();
       this.getAllNewGames();
       this.getAllHotGames();
-      this.toastr.success('Xóa thành công!', 'Game');
+      this.toastr.success("Xóa thành công");
     });
   }
 
-  play(id: number) {
+  updatePlayedTimes(id: number) {
+    this.homePageService.updateGame(id, this.game).subscribe(res => {
+      console.log('ok');
+      this.getAllHotGames();
+      this.getAllNewGames();
+      this.getAllPopularGames();
+    })
+  }
 
+  getGameAndUpdate(id: number) {
+    this.homePageService.findById(id).subscribe(game => {
+      this.game = game;
+      this.game.playedTimes += 1;
+      this.updatePlayedTimes(id);
+    }, error => {
+      console.log('error')
+    });
   }
 }

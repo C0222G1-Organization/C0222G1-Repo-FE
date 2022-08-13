@@ -17,7 +17,7 @@ export class GameComponent implements OnInit {
   selectedName: string;
   games: Game[];
   gameName = '';
-  playedTimes: number;
+  game: Game;
   constructor(private gameService: GameService,
               private title: Title,
               private toastr: ToastrService) {
@@ -26,7 +26,6 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.getGames();
-    this.changePlayedTime();
   }
 
   getGames() {
@@ -66,10 +65,25 @@ export class GameComponent implements OnInit {
     this.gameService.deleteGameById(this.selectedId).subscribe(res => {
       this.page = 1;
       this.getGames();
-      this.toastr.success('Xóa thành công!', 'Game');
+      this.toastr.success("Xóa thành công");
     });
   }
-  changePlayedTime() {
-    this.playedTimes = this.playedTimes + 1;
+
+  updatePlayedTimes(id: number) {
+    this.gameService.updateGame(id, this.game).subscribe(res => {
+      console.log('ok');
+      this.getGames();
+    })
   }
+
+  getGameAndUpdate(id: number) {
+    this.gameService.findById(id).subscribe(game => {
+      this.game = game;
+      this.game.playedTimes += 1;
+      this.updatePlayedTimes(id);
+    }, error => {
+      console.log('error')
+    });
+  }
+
 }
