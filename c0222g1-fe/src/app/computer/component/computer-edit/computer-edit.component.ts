@@ -77,7 +77,7 @@ export class ComputerEditComponent implements OnInit {
 
   cancel() {
     this.toast.error("Sửa thất bại", 'Computer')
-    this.route.navigateByUrl("/computer")
+    this.route.navigateByUrl("/computers")
   }
 
   submit() {
