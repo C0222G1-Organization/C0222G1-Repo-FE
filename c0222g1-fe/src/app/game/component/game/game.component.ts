@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Game} from "../../model/game";
 import {GameService} from "../../service/game.service";
 import {Title} from "@angular/platform-browser";
@@ -16,7 +16,8 @@ export class GameComponent implements OnInit {
   selectedId: number;
   selectedName: string;
   games: Game[];
-  gameName = "";
+  gameName = '';
+  playedTimes: number;
   constructor(private gameService: GameService,
               private title: Title,
               private toastr: ToastrService) {
@@ -25,6 +26,7 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.getGames();
+    this.changePlayedTime();
   }
 
   getGames() {
@@ -45,7 +47,7 @@ export class GameComponent implements OnInit {
   }
 
   searchGameByName() {
-    if (this.gameName == "") {
+    if (this.gameName == '') {
       this.getGames();
     }
     this.gameService.searchGameByName(this.gameName).subscribe(games => {
@@ -65,5 +67,8 @@ export class GameComponent implements OnInit {
       this.getGames();
       this.toastr.success('Xóa thành công!', 'Game');
     });
+  }
+  changePlayedTime() {
+    this.playedTimes = this.playedTimes + 1;
   }
 }
