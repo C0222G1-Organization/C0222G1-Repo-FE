@@ -64,6 +64,10 @@ export class ComputerCreateComponent implements OnInit {
     }
   }
 
+  cancel() {
+    this.toast.error("Sửa thất bại", 'Computer')
+    this.route.navigateByUrl("/computers")
+  }
   submitCreate() {
     const computer = this.formComputer.value;
     for (const i of this.computerType) {
@@ -77,5 +81,6 @@ export class ComputerCreateComponent implements OnInit {
       this.formComputer.reset();
       // this.route.navigateByUrl('/computer')
     })
+    this.route.navigateByUrl("/computers")
   }
 }

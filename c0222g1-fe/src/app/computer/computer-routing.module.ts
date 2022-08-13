@@ -6,9 +6,9 @@ import {ComputerListComponent} from './component/computer-list/computer-list.com
 
 
 const routes: Routes = [
-  {path: 'computer', component: ComputerListComponent},
-  {path: 'computer/create-computer', component: ComputerCreateComponent},
-  {path: 'computer/edit-computer/:id', component: ComputerEditComponent}
+  {path: 'computers', component: ComputerListComponent},
+  {path: 'computers/create', component: ComputerCreateComponent},
+  {path: 'computers/edit/:id', component: ComputerEditComponent}
 ];
 
 @NgModule({

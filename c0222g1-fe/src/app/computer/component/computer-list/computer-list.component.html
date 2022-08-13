@@ -84,7 +84,7 @@
           <td>{{computer.manufacturer}}</td>
           <td>{{computer.warranty}}</td>
           <td>
-            <button class="btn btn-outline-secondary mx-2 "><i class="fa-solid fa-pencil"></i></button>
+            <button class="btn btn-outline-secondary mx-2" routerLink="/computers/edit/{{computer.id}}"><i class="fa-solid fa-pencil"></i></button>
             <button class="btn btn-outline-secondary " (click)="getInfo(computer)" data-bs-toggle="modal"
                     data-bs-target="#deleteModal"><i class="fa-solid fa-trash"></i></button>
           </td>
@@ -95,7 +95,7 @@
   </div>
   <div class="row d-flex" id="btn-outside">
     <div class="col-4">
-      <button class="btn btn-primary m-2">Thêm mới máy</button>
+      <button class="btn btn-primary m-2" routerLink="/computers/create">Thêm mới máy</button>
     </div>
     <div class="col-4"></div>
     <div class="col-4">
