@@ -1,4 +1,4 @@
-import {GameCategory} from "./game-category";
+import {GameCategory} from './game-category';
 
 export interface Game {
   id: number;
@@ -8,5 +8,5 @@ export interface Game {
   trailerUrl: string;
   imageUrl: string;
   content: string;
-  gameCategory: GameCategory
+  gameCategory: GameCategory;
 }
