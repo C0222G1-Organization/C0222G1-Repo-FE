@@ -3,7 +3,7 @@ import {Game} from "../../game/model/game";
 import {ToastrService} from "ngx-toastr";
 import {Title} from "@angular/platform-browser";
 import {HomePageService} from "../service/home-page.service";
-import {GameService} from "../../game/service/game.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-home-page',
@@ -14,13 +14,14 @@ export class HomePageComponent implements OnInit {
   page = 0;
   selectedId: number;
   selectedName: string;
+  game: Game;
   popularGames: Game[];
   newGames: Game[];
   hotGames: Game[];
   constructor(private toastr: ToastrService,
               private title: Title,
               private homePageService: HomePageService,
-              private gameService: GameService) {
+              private activatedRoute: ActivatedRoute) {
     this.title.setTitle('C02G1 | Home');
   }
 
@@ -55,11 +56,15 @@ export class HomePageComponent implements OnInit {
   }
 
   deleteGameById() {
-    this.gameService.deleteGameById(this.selectedId).subscribe(res => {
+    this.homePageService.deleteGameById(this.selectedId).subscribe(res => {
       this.getAllPopularGames();
       this.getAllNewGames();
       this.getAllHotGames();
       this.toastr.success('Xóa thành công!', 'Game');
     });
+  }
+
+  play(id: number) {
+
   }
 }

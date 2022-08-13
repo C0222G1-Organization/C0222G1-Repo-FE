@@ -173,7 +173,7 @@
             </div>
             <div class="row">
               <div class="col-xl-3 col-md-3">
-                <button class="btn-second btn-sm">Chơi</button>
+                <button (click)="play(game.id)" class="btn-second btn-sm">Chơi</button>
               </div>
               <div class="col-xl-9 col-md-9">
                 <p class="card-text text-content">{{game.playedTimes}} lượt chơi</p>
@@ -198,7 +198,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-second-non-border" data-bs-dismiss="modal">Đóng</button>
-          <button type="button" class="btn-main text-white" data-bs-dismiss="modal">Xóa</button>
+          <button type="button" (click)="deleteGameById()" class="btn-main text-white" data-bs-dismiss="modal">Xóa</button>
         </div>
       </div>
     </div>

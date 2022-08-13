@@ -50,9 +50,10 @@ export class GameComponent implements OnInit {
     if (this.gameName == '') {
       this.getGames();
     }
-    this.gameService.searchGameByName(this.gameName).subscribe(games => {
-      this.games = games;
+    this.gameService.searchGameByName(this.gameName).subscribe((games: any) => {
+      this.games = games.content;
       this.page = 1;
+      this.totalItems = games.totalElements;
     });
   }
 
