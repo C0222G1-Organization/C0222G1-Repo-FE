@@ -7,12 +7,12 @@
       <div class="row container-fluid m-0 p-0">
         <div class="col-12 d-flex input-form">
           <div class="col-3 p-0">
-            <label class="col-form-label text-right" readonly>Tên đăng nhập</label>
+            <label class="col-form-label text-right">Tên đăng nhập</label>
           </div>
           <div class="sub-info form-group row col-7" id="userNameEdit" formGroupName="user">
             <div class="col-12 p-0">
               <input formControlName="username" type="text" class="form-control"
-                     placeholder="Enter user name" readonly>
+                     placeholder="Enter user name" disabled>
             </div>
           </div>
         </div>
@@ -76,6 +76,9 @@
               <div [hidden]="!customerForm.controls.dateOfBirth.errors.pattern">
                 Ngày sinh phải ở định dạng dd/MM/yyyy!
               </div>
+              <div [hidden]="!customerForm.controls.dateOfBirth.hasError('not16')">
+                Bạn chưa đủ 16 tuổi, vui lòng xem xét lại!
+              </div>
             </div>
           </div>
           <div class="col-1 ml-2">
@@ -119,6 +122,71 @@
         </div>
 
         <div class="col-12 d-flex input-form">
+          <!--          <div class="col-4">-->
+          <!--            <div class="textbox ">-->
+          <!--              <select class="select input" aria-haspopup="true"-->
+          <!--                      id="city" style="padding: 10px 15px 0 15px ; height: 60px"-->
+          <!--                      (change)="getDistrictList($event.target.value)"-->
+          <!--                      formControlName="province">-->
+          <!--                <option value="">Chọn thành phố</option>-->
+          <!--                <option class="option"-->
+          <!--                        value="{{province.id}}"-->
+          <!--                        *ngFor="let province of provinceList"-->
+          <!--                        style="height: 50px">{{province.name}}</option>-->
+          <!--              </select>-->
+          <!--              <label for="city" style="color: white">-->
+          <!--                Thành phố-->
+          <!--                <span class="text-danger">*</span>-->
+          <!--                <span class="text-danger" *ngIf="customerForm.controls.province.hasError('required') &&-->
+          <!--                                      (customerForm.controls.province.dirty || customerForm.controls.province.touched)">-->
+          <!--              Bắt buộc!-->
+          <!--            </span>-->
+          <!--              </label>-->
+          <!--            </div>-->
+          <!--          </div>-->
+
+          <!--          <div class="col-4">-->
+          <!--            <div>-->
+          <!--              <select class="select input" aria-haspopup="true"-->
+          <!--                      id="district" style="padding: 10px 15px 0 15px; height: 60px"-->
+          <!--                      (change)="getCommuneList($event.target.value)"-->
+          <!--                      formControlName="district">-->
+          <!--                <option value="">Chọn quận</option>-->
+          <!--                <option value="{{district.id}}"-->
+          <!--                        *ngFor="let district of districtList"-->
+          <!--                        class="option" style="height: 50px">{{district.districtName}}</option>-->
+          <!--              </select>-->
+          <!--              <label for="district" style="color: white">-->
+          <!--                Quận-->
+          <!--                <span class="text-danger">*</span>-->
+          <!--                <span class="text-danger" *ngIf="customerForm.controls.district.hasError('required') &&-->
+          <!--                                      (customerForm.controls.district.dirty || customerForm.controls.district.touched)">-->
+          <!--              Bắt buộc!-->
+          <!--            </span>-->
+          <!--              </label>-->
+          <!--            </div>-->
+          <!--          </div>-->
+
+          <!--          <div class="col-4">-->
+          <!--            <div class="textbox">-->
+          <!--              <select class="select input" aria-haspopup="true"-->
+          <!--                      id="ward" style="padding: 10px 15px 0 15px; height: 60px" formControlName="commune">-->
+          <!--                <option value="">Chọn phường</option>-->
+          <!--                <option [ngValue]="commune"-->
+          <!--                        *ngFor="let commune of communeList"-->
+          <!--                        class="option" style="height: 50px">{{commune.name}}</option>-->
+          <!--              </select>-->
+          <!--              <label for="ward" style="color: white">-->
+          <!--                Phường-->
+          <!--                <span class="text-danger">*</span>-->
+          <!--                <span class="text-danger" *ngIf="customerForm.controls.commune.hasError('required') &&-->
+          <!--                                      (customerForm.controls.commune.dirty || customerForm.controls.commune.touched)">-->
+          <!--              Bắt buộc!-->
+          <!--            </span>-->
+          <!--              </label>-->
+          <!--            </div>-->
+          <!--          </div>-->
+          <!--        </div>-->
           <div class="col-3 p-0">
             <label class="col-form-label text-right">Địa chỉ</label>
           </div>
@@ -171,7 +239,7 @@
                 Vui lòng nhập số điện thoại!
               </div>
               <div [hidden]="!customerForm.controls.phoneNumber.errors.pattern">
-                Số điện thoại phải từ 10 - 12 số!
+                Số điện thoại không đúng định dạng, vui lòng nhập lại!
               </div>
             </div>
           </div>
@@ -182,75 +250,75 @@
           </div>
         </div>
 
-        <div class="col-12 d-flex input-form">
-          <div class="col-3 p-0">
-            <label class="col-form-label text-right">Mật khẩu</label>
-          </div>
-          <div *ngIf="content!==customer.user.password" class="sub-info form-group row col-7" formGroupName="user">
-            <div class="col-12 p-0">
-              <input formControlName="password" type="password" class="form-control"
-                     placeholder="Enter full name" readonly>
-            </div>
-          </div>
-          <div *ngIf="content===customer.user.password" class="sub-info form-group row col-7" formGroupName="user">
-            <div class="col-12 p-0">
-              <input formControlName="password" type="{{inputType}}"
-                     class="form-control bg-dark text-white border-white"
-                     placeholder="Enter password">
-            </div>
-            <div class="text-small text-white p-0"
-                 *ngIf="!customerForm.controls.password?.valid
-                && (customerForm.controls.password?.dirty ||customerForm.controls.password?.touched)">
-              <div [hidden]="!customerForm.controls.password.errors.required">
-                Vui lòng nhập mật khẩu!
-              </div>
-              <div [hidden]="!customerForm.controls.password.errors.pattern">
-                Mật khẩu phải chứa các ký tự in thường, in hoa và các ký tự số!
-              </div>
-            </div>
-          </div>
-          <div *ngIf="content!==customer.user.password" class="col-1 ml-2">
-            <a class="btn">
-              <i class="fa-solid fa-pen-to-square text-white" (click)=activeEdit(customer.user.password)></i>
-            </a>
-          </div>
-          <div *ngIf="content===customer.user.password" class="col-1 ml-2">
-            <a class="btn">
-              <i class="fa-solid fa-eye text-white" (click)="setType()"></i>
-            </a>
-          </div>
-        </div>
+        <!--        <div class="col-12 d-flex input-form">-->
+        <!--          <div class="col-3 p-0">-->
+        <!--            <label class="col-form-label text-right">Mật khẩu</label>-->
+        <!--          </div>-->
+        <!--          <div *ngIf="content!==customer.user.password" class="sub-info form-group row col-7" formGroupName="user">-->
+        <!--            <div class="col-12 p-0">-->
+        <!--              <input formControlName="password" type="password" class="form-control"-->
+        <!--                     placeholder="Enter full name" readonly>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--          <div *ngIf="content===customer.user.password" class="sub-info form-group row col-7" formGroupName="user">-->
+        <!--            <div class="col-12 p-0">-->
+        <!--              <input formControlName="password" type="{{inputType}}"-->
+        <!--                     class="form-control bg-dark text-white border-white"-->
+        <!--                     placeholder="Enter password">-->
+        <!--            </div>-->
+        <!--            <div class="text-small text-white p-0"-->
+        <!--                 *ngIf="!customerForm.controls.password?.valid-->
+        <!--                && (customerForm.controls.password?.dirty ||customerForm.controls.password?.touched)">-->
+        <!--              <div [hidden]="!customerForm.controls.password.errors.required">-->
+        <!--                Vui lòng nhập mật khẩu!-->
+        <!--              </div>-->
+        <!--              <div [hidden]="!customerForm.controls.password.errors.pattern">-->
+        <!--                Mật khẩu phải chứa các ký tự in thường, in hoa và các ký tự số!-->
+        <!--              </div>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--          <div *ngIf="content!==customer.user.password" class="col-1 ml-2">-->
+        <!--            <a class="btn">-->
+        <!--              <i class="fa-solid fa-pen-to-square text-white" (click)=activeEdit(customer.user.password)></i>-->
+        <!--            </a>-->
+        <!--          </div>-->
+        <!--          <div *ngIf="content===customer.user.password" class="col-1 ml-2">-->
+        <!--            <a class="btn">-->
+        <!--              <i class="fa-solid fa-eye text-white" (click)="setType()"></i>-->
+        <!--            </a>-->
+        <!--          </div>-->
+        <!--        </div>-->
 
-        <div *ngIf="content===customer.user.password" class="col-12 d-flex input-form">
-          <div class="col-3 p-0">
-            <label class="col-form-label text-right">Xác nhận</label>
-          </div>
-          <div class="sub-info form-group row col-7" formGroupName="user">
-            <div class="col-12 p-0">
-              <input formControlName="confirmPassword" type="{{confirmInputType}}"
-                     class="form-control bg-dark text-white border-white"
-                     placeholder="Enter confirm password">
-            </div>
-            <div class="text-small text-white p-0"
-                 *ngIf="!customerForm.controls.confirmPassword?.valid
-                && (customerForm.controls.confirmPassword?.dirty ||customerForm.controls.confirmPassword?.touched)">
-              <div [hidden]="!customerForm.controls.confirmPassword.errors.required">
-                Vui lòng nhập mật khẩu xác nhận!
-              </div>
-              <div [hidden]="!customerForm.controls.confirmPassword.errors.pattern">
-                Mật khẩu phải chứa các ký tự in thường, in hoa và các ký tự số!
-              </div>
-              <div [hidden]="!customerForm.controls.confirmPassword.errors.mustMatch">
-                Mật khẩu xác nhận chưa trùng khớp!
-              </div>
-            </div>
-          </div>
-          <div *ngIf="content===customer.user.password" class="col-1 ml-2">
-            <a class="btn">
-              <i class="fa-solid fa-eye text-white" (click)="setConfirmType()"></i>
-            </a>
-          </div>
-        </div>
+        <!--        <div *ngIf="content===customer.user.password" class="col-12 d-flex input-form">-->
+        <!--          <div class="col-3 p-0">-->
+        <!--            <label class="col-form-label text-right">Xác nhận</label>-->
+        <!--          </div>-->
+        <!--          <div class="sub-info form-group row col-7" formGroupName="user">-->
+        <!--            <div class="col-12 p-0">-->
+        <!--              <input formControlName="confirmPassword" type="{{confirmInputType}}"-->
+        <!--                     class="form-control bg-dark text-white border-white"-->
+        <!--                     placeholder="Enter confirm password">-->
+        <!--            </div>-->
+        <!--            <div class="text-small text-white p-0"-->
+        <!--                 *ngIf="!customerForm.controls.confirmPassword?.valid-->
+        <!--                && (customerForm.controls.confirmPassword?.dirty ||customerForm.controls.confirmPassword?.touched)">-->
+        <!--              <div [hidden]="!customerForm.controls.confirmPassword.errors.required">-->
+        <!--                Vui lòng nhập mật khẩu xác nhận!-->
+        <!--              </div>-->
+        <!--              <div [hidden]="!customerForm.controls.confirmPassword.errors.pattern">-->
+        <!--                Mật khẩu phải chứa các ký tự in thường, in hoa và các ký tự số!-->
+        <!--              </div>-->
+        <!--              <div [hidden]="!customerForm.controls.confirmPassword.errors.mustMatch">-->
+        <!--                Mật khẩu xác nhận chưa trùng khớp!-->
+        <!--              </div>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--          <div *ngIf="content===customer.user.password" class="col-1 ml-2">-->
+        <!--            <a class="btn">-->
+        <!--              <i class="fa-solid fa-eye text-white" (click)="setConfirmType()"></i>-->
+        <!--            </a>-->
+        <!--          </div>-->
+        <!--        </div>-->
 
         <div class="text-center">
           <a class="btn btn-outline-light btn-sm mb-3" routerLink="/home-page-customer">QUAY LẠI</a>

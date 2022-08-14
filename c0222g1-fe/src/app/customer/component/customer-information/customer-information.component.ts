@@ -1,9 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Customer} from '../../model/customer';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CustomerService} from '../../service/customer.service';
 import {CustomValidators} from './custom-validators';
+import {Province} from '../../model/province';
+import {District} from '../../model/district';
+import {Commune} from '../../model/commune';
+import {CreateCustomerService} from '../../service/create-customer.service';
 
 @Component({
   selector: 'app-customer-information',
@@ -21,9 +25,14 @@ export class CustomerInformationComponent implements OnInit {
   hour: any;
   minutes: any;
 
+  provinceList: Province[];
+  districtList: District[];
+  communeList: Commune[];
+
   constructor(private activatedRoute: ActivatedRoute,
               private route: Router,
-              private customerService: CustomerService) {
+              private customerService: CustomerService,
+              private createCustomerService: CreateCustomerService) {
   }
 
   /**
@@ -34,10 +43,11 @@ export class CustomerInformationComponent implements OnInit {
 
   customerForm: FormGroup = new FormGroup({
     id: new FormControl(0),
-    name: new FormControl('', [Validators.required]),
+    // tslint:disable-next-line:max-line-length
+    name: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s?]+$')]),
     // phoneNumber: new FormControl('', [Validators.required, Validators.pattern('^(091|090|\\(\\+84\\)90|\\(\\+84\\)91)\\d{7}$')]),
     phoneNumber: new FormControl('', [Validators.required, Validators.pattern('^\\d{10,12}$')]),
-    dateOfBirth: new FormControl('', [Validators.required, Validators.pattern('^\\d{4}-\\d{2}-\\d{2}$')]),
+    dateOfBirth: new FormControl('', [Validators.required, Validators.pattern('^\\d{4}-\\d{2}-\\d{2}$'), this.check16Age]),
     email: new FormControl('', [Validators.required, Validators.email]),
     remainingTime: new FormControl(0, [Validators.required, Validators.pattern('^\\d{9}$')]),
     commune: new FormGroup({
@@ -100,7 +110,7 @@ export class CustomerInformationComponent implements OnInit {
    */
   saveUpdateUser() {
     this.customer = this.customerForm.value;
-    // console.log(this.customer);
+    console.log(this.customer);
     this.content = '';
     // const updateUser = this.userForm.value;
     // this.userService.saveUser(updateUser).subscribe(value => {
@@ -152,4 +162,35 @@ export class CustomerInformationComponent implements OnInit {
     }
   }
 
+  private check16Age(abstractControl: AbstractControl): any {
+    const today = new Date();
+    const birthDate = new Date(abstractControl.value);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return (age >= 16) ? null : {not16: true};
+  }
+
+  getDistrictList($event: Event) {
+    // @ts-ignore
+    if ($event === '') {
+      this.districtList = [];
+      this.communeList = [];
+    } else {
+      this.createCustomerService.getAllDistrict(Number($event)).subscribe(
+        value => this.districtList = value);
+    }
+  }
+
+  getCommuneList($event: Event) {
+    // @ts-ignore
+    if ($event === '') {
+      this.communeList = [];
+    } else {
+      this.createCustomerService.getAllCommune(Number($event)).subscribe(
+        value => this.communeList = value);
+    }
+  }
 }
