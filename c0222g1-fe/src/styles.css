@@ -1,4 +1,4 @@
-@import "../node_modules/ngx-toastr/toastr.css";
+@import "toastr.css";
 
 body {
   font-family: 'Arimo', sans-serif;
@@ -82,6 +82,14 @@ body {
   padding: 5px 10px;
 }
 
+.btn-opacity-border {
+  width:100%;
+  padding: 9px 0;
+  background-color: #121212;
+  border:1px solid white;
+  border-radius: 5px;
+}
+
 ul li {
   cursor: pointer;
   position: relative;
@@ -152,6 +160,7 @@ li.active::after {
 
 .container-img-carousel .btn-image-carousel {
   position: absolute;
+  z-index: 1;
   top: 93%;
   left: 10.2%;
   transform: translate(-50%, -50%);
@@ -204,11 +213,26 @@ li.active::after {
   text-align: center;
 }
 
+.middle-md {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
 .container-img:hover .image {
   opacity: 1;
 }
 
 .container-img:hover .middle {
+  opacity: 1;
+}
+
+.container-img:hover .middle-md {
   opacity: 1;
 }
 
@@ -218,7 +242,7 @@ li.active::after {
 
 .card-game {
   width: 24%;
-  margin-right: 0.5rem;
+  margin: 0rem 0.3rem;
 }
 
 

@@ -3,26 +3,30 @@ import {Game} from "../../game/model/game";
 import {ToastrService} from "ngx-toastr";
 import {Title} from "@angular/platform-browser";
 import {HomePageService} from "../service/home-page.service";
-import {GameService} from "../../game/service/game.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.css']
+  styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent implements OnInit {
   page = 0;
   selectedId: number;
   selectedName: string;
+  game: Game;
   popularGames: Game[];
   newGames: Game[];
   hotGames: Game[];
+  isOpen = true;
+
   constructor(private toastr: ToastrService,
               private title: Title,
               private homePageService: HomePageService,
-              private gameService: GameService) {
+              private activatedRoute: ActivatedRoute) {
     this.title.setTitle('C02G1 | Home');
   }
+
 
   ngOnInit(): void {
     this.getAllPopularGames();
@@ -32,7 +36,6 @@ export class HomePageComponent implements OnInit {
 
   getAllPopularGames() {
     this.homePageService.getAllPopularGames(this.page).subscribe((games: any) => {
-      console.log(games.content);
       this.popularGames = games.content;
     });
   }
@@ -55,11 +58,31 @@ export class HomePageComponent implements OnInit {
   }
 
   deleteGameById() {
-    this.gameService.deleteGameById(this.selectedId).subscribe(res => {
+    this.homePageService.deleteGameById(this.selectedId).subscribe(res => {
       this.getAllPopularGames();
       this.getAllNewGames();
       this.getAllHotGames();
-      this.toastr.success('Xóa thành công!', 'Game');
+      this.toastr.success("Xóa thành công");
+    });
+  }
+
+  updatePlayedTimes(id: number) {
+    this.homePageService.updateGame(id, this.game).subscribe(res => {
+      this.toastr.success("Đang khởi động game");
+      this.getAllHotGames();
+      this.getAllNewGames();
+      this.getAllPopularGames();
+    })
+  }
+
+  getGameAndUpdate(id: number) {
+    console.log('dang bam')
+    this.homePageService.findById(id).subscribe(game => {
+      this.game = game;
+      this.game.playedTimes += 1;
+      this.updatePlayedTimes(id);
+    }, error => {
+      console.log('error')
     });
   }
 }

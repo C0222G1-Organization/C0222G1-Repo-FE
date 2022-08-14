@@ -1,1 +1,100 @@
-<p>game-update works!</p>
+<body>
+<div class="login-form">
+  <h6 class="text-center mt-4"> Update thông tin game </h6>
+  <form [formGroup]="gameForm" (ngSubmit)="submit()" class="needs-validation p-4" novalidate>
+    <div class="form-floating textbox mb-4">
+      <input type="text" class="form-control input" id="full-name"
+             placeholder="tên game" formControlName="name" value="" required>
+      <label for="full-name" style="color: white">
+        Tên game
+        <span class="text-warning">*</span>
+      </label>
+      <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('name').touched
+                && gameForm.hasError('required', 'name')">Name of game is required
+      </p>
+      <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('name').touched
+                && gameForm.hasError('pattern', 'name')">* Name of game is invalid
+      </p>
+    </div>
+
+
+    <div class="form-floating textbox mb-4">
+      <input type="text" class="form-control input"
+             id="user-name" placeholder="link youtube" formControlName="trailerUrl">
+      <label for="user-name" style="color: white">
+        Giới thiệu
+        <span class="text-warning">*</span>
+      </label>
+      <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('trailerUrl').touched
+                && gameForm.hasError('required', 'trailerUrl')">Create Date is required
+      </p>
+    </div>
+
+
+    <div class="form-floating textbox mb-4 " formGroupName="gameCategory">
+      <div class="form-floating textbox ">
+        <select class="form-select select input" aria-haspopup="true"
+                formControlName="id" id ="gameCategory">
+          <option class="option" style="height: 50px">Chọn thể loại game</option>
+          <option *ngFor="let gameCategory of gameCategory" [value]="gameCategory.id">{{gameCategory.name}}</option>
+        </select>
+        <label style="color: white">
+          Loại game
+          <span class="text-warning">*</span>
+        </label>
+        <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('gameCategory').touched
+                && gameForm.hasError('required', 'gameCategory')">Game category is required
+        </p>
+      </div>
+    </div>
+
+    <div class="form-floating textbox mb-4 mt-4">
+      <label for="formFileMultiple" class="form-label"></label>
+      <input class="form-control" type="file" id="formFileMultiple"
+             multiple (change)="onFileSelected($event)" name="image" autocomplete="off">
+      <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('imageUrl').touched
+                && gameForm.hasError('required', 'imageUrl')">Create Date is required
+      </p>
+    </div>
+
+
+
+    <div class="form-floating textbox mb-4 mt-2">
+      <input type="text" class="form-control input" formControlName="content">
+      <label for="user-name" style="color: white">
+        Nội dung
+        <span class="text-warning">*</span>
+      </label>
+      <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('content').touched
+                && gameForm.hasError('required', 'content')">Create Date is required
+      </p>
+    </div>
+
+    <div class="row mx-auto mb4">
+      <div class="col-1"></div>
+      <div class="col-10 d-flex">
+        <div class="col-md-4 col-sm-4 d-flex justify-content-center">
+          <button type="button" class="btn btn-secondary w-auto"><i
+            class="fa-solid fa-arrow-left-long"></i>Trở về
+          </button>
+          &nbsp;
+        </div>
+        <div class="col-md-4 col-sm-4 d-flex justify-content-center">
+          <button type="button" class="btn btn-secondary w-auto "><i
+            class="fa-solid fa-arrows-rotate"></i>Làm mới
+          </button>
+        </div>
+
+        <!--        {{count}}-->
+        <!--        <button type="submit" (click)="changeCount()" class="btn btn-secondary w-auto"><i class="fa-solid fa-plus"></i>test-->
+        <!--        </button>-->
+        <div class="col-md-4 col-sm-4 d-flex justify-content-center">
+          <button type="submit" class="btn btn-secondary w-auto"><i class="fa-solid fa-pen-to-square"></i>Update
+          </button>
+        </div>
+      </div>
+      <div class="col-1"></div>
+    </div>
+  </form>
+</div>
+</body>
