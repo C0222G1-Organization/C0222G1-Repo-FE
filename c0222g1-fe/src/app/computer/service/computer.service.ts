@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {environment} from '../../enviroment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Computer} from '../model/computer';
 import {SearchDto} from '../model/search-dto';
+import {ComputerType} from '../model/computer-type';
 
 const API_URL = `${environment.apiUrl}`;
 
@@ -15,6 +15,10 @@ export class ComputerService {
   constructor(private http: HttpClient) {
   }
 
+  /**
+   * Created by: PhucNQ
+   * Date created: 10/08/2022
+   * Function: findAll
   createComputer(computer: Computer): Observable<Computer> {
     return this.http.post<Computer>(API_URL + '/computers/create', computer)
   }
@@ -35,14 +39,6 @@ export class ComputerService {
     if (end === '') {
       end = '2200-10-10';
     }
-    console.log('service');
-    console.log(code);
-    console.log(location);
-    console.log(start);
-    console.log(end);
-    console.log(status);
-    console.log(typeId);
-    console.log('service');
     let params = new HttpParams();
     params = params.append('code', code);
     params = params.append('location', location);
@@ -53,7 +49,21 @@ export class ComputerService {
     return this.http.get<SearchDto[]>(API_URL + `/computers/${page}`, {params});
   }
 
+  /**
+   * Created by: PhucNQ
+   * Date created: 10/08/2022
+   * Function: delete(id)
+   */
   delete(id): Observable<void> {
     return this.http.delete<void>(`${API_URL}/computer/${id}`);
+  }
+
+  /**
+   * Created by: PhucNQ
+   * Date created: 14/08/2022
+   * Function: getAll(id)
+   */
+  getAll(): Observable<ComputerType[]> {
+    return this.http.get<ComputerType[]>(API_URL + '/computer/list/computer-type');
   }
 }
