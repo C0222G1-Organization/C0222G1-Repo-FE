@@ -141,7 +141,7 @@ export class ProductComponent implements OnInit {
       });
     }
     if (this.selectedProducts.length > 0) {
-      this.toast.success('Xóa sản phẩm thành công');
+      this.toast.success('Xóa dịch vụ thành công');
     }
   }
 }
