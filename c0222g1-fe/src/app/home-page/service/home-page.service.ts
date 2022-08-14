@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
-import {environment} from "../../enviroment";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Game} from "../model/game";
+import {Injectable} from '@angular/core';
+import {environment} from '../../enviroment';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Game} from '../../game/model/game';
 
 const API_URL = `${environment.apiUrl}`;
+
 @Injectable({
   providedIn: 'root'
 })
 export class HomePageService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   getAllPopularGames(page: number): Observable<Game[]> {
     return this.http.get<Game[]>(API_URL + `/games/popular?page=${page}`);
@@ -32,7 +34,7 @@ export class HomePageService {
   }
 
   updateGame(id: number, game: Game): Observable<Game> {
-    console.log(game)
+    console.log(game);
     return this.http.put<Game>(API_URL + `/games/${id}`, game);
   }
 }
