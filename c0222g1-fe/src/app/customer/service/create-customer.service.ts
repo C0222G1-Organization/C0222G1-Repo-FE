@@ -25,7 +25,6 @@ export class CreateCustomerService {
     return this.http.get<Commune[]>(this.API_URL + 'address/commune/' + districtId);
   }
   createCustomer(updateCustomerDto: UpdateCustomerDto): Observable<void> {
-    console.log(updateCustomerDto);
     return this.http.post<void>(this.API_URL + 'customer', updateCustomerDto);
   }
 }
