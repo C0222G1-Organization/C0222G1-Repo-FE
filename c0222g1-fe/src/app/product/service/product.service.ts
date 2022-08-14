@@ -20,7 +20,7 @@ export class ProductService {
   }
 
   findAllProductCategory(): Observable<ProductCategory[]> {
-    return this.http.get<Product[]>(this.API_CATE);
+    return this.http.get<ProductCategory[]>(this.API_CATE + '/listCategory');
   }
 
   delete(id: number): Observable<any> {
