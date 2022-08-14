@@ -24,4 +24,5 @@ export interface Employee {
   commune?: Commune;
   district?: District;
   province?: Province;
+  workf: string;
 }

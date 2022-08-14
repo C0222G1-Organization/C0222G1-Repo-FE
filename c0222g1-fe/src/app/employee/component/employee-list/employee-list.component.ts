@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {EmployeeService} from '../../service/employee.service';
 import {Employee} from '../../model/employee';
 import {Position} from '../../model/position';
-import {ToastrService} from "ngx-toastr";
+import {ToastrService} from 'ngx-toastr';
 
 
 @Component({
@@ -25,11 +25,9 @@ export class EmployeeListComponent implements OnInit {
   address = '';
   idDelete: number;
   nameDelete: string;
-
-  employeeDelete: Employee = {
-    id: 0,
-    name: ''
-  };
+  selectEmployee: Array<any>;
+  level: Date = new Date();
+  countLevel: number;
 
   constructor(private employeeService: EmployeeService,
               private toastr: ToastrService) {
@@ -63,6 +61,7 @@ export class EmployeeListComponent implements OnInit {
     this.employeeService.getEmployeeList(this.page, this.code, this.name, this.dobfrom,
       this.dobe, this.workf, this.workt, this.position, this.address).subscribe((value: any) => {
       this.employees = value.content;
+      console.log(this.employees[0].workf.substr(0, 4));
       this.totalElements = value.totalElements;
     });
   }
@@ -78,12 +77,55 @@ export class EmployeeListComponent implements OnInit {
   }
 
   deleteEmployee() {
-    this.employeeService.deleteEmployee(this.idDelete).subscribe(value => {
-
-      this.toastr.success('Thành công', 'Xóa nhân viên');
-      this.getAll();
+    this.employeeService.deleteEmployee(this.idDelete).subscribe((value: any) => {
+      if (this.employees.length === 1) {
+        if (this.page === 0) {
+          this.page = 0;
+        } else {
+          this.page -= 1;
+        }
+      }
+      this.toastr.success('Xóa nhân viên thành công');
     }, error => {
       console.log(error);
+    }, () => {
+      this.ngOnInit();
     });
+  }
+
+  isAllCheckBoxChecked() {
+    return this.employees.every(p => p.checked);
+  }
+
+  checkAllCheckBox(event) {
+    this.employees.forEach(x => x.checked = event.target.checked);
+  }
+
+  deleteAll() {
+    const selectEmployee = this.employees.filter(employee => employee.checked).map(p => p.id);
+    for (const employee of selectEmployee) {
+      this.idDelete = employee;
+      this.employeeService.deleteEmployee(this.idDelete).subscribe(value => {
+        if (this.employees.length === 1) {
+          if (this.page === 0) {
+            this.page = 0;
+          } else {
+            this.page -= 1;
+          }
+        }
+      }, error => {
+      }, () => {
+        this.ngOnInit();
+      });
+    }
+  }
+
+  exp(employee: Employee): number {
+
+    const koko = this.level.getFullYear() - Number(employee.workf.substr(0, 4));
+    return koko + 1;
+  }
+
+  enable() {
   }
 }
