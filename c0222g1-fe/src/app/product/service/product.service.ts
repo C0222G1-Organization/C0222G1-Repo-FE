@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Product} from '../model/Product';
@@ -19,9 +19,18 @@ export class ProductService {
     return this.http.get<Product[]>(this.API + '/list?name=' + name + '&page=' + page);
   }
 
-  findAllProductCategory(): Observable<ProductCategory[]> {
-    return this.http.get<ProductCategory[]>(this.API_CATE + '/listCategory');
+  findAllProductForOrder(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.API + '/order');
   }
+
+  findAllProductCategory(): Observable<ProductCategory[]> {
+    return this.http.get<ProductCategory[]>(this.API_CATE);
+  }
+
+  findProductListByCategoryId(id: number): Observable<Product[]> {
+    return this.http.get<Product[]>(this.API + '/order/' + id);
+  }
+
 
   delete(id: number): Observable<any> {
     return this.http.delete<any>(this.API + '/list/delete/' + id);
@@ -29,5 +38,9 @@ export class ProductService {
 
   deleteAll(id: number[]): Observable<any> {
     return this.http.delete<any>(this.API + '/list/delete/' + id.length);
+  }
+
+  loadInfoProductById(id: number): Observable<Product> {
+    return this.http.get<Product>(this.API + '/' + id);
   }
 }

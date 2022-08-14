@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {DisplayPaymentComponent} from "./component/display-payment/display-payment.component";
+import {DisplayPaymentComponent} from './component/display-payment/display-payment.component';
+import {PaymentDetailComponent} from './component/payment-detail/payment-detail.component';
 
 
 const routes: Routes = [
@@ -9,6 +10,9 @@ const routes: Routes = [
   },
   {
     path: 'display', component: DisplayPaymentComponent
+  },
+  {
+    path: 'order', component: PaymentDetailComponent
   }
 ];
 
