@@ -3,136 +3,135 @@
     <h2 class="text-center text-white">Danh sách nhân viên</h2>
     <div class="container text-white my-5">
 
-      <div class="row mb-4">
-        <div class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex ">
-          <div class="col-5 col-sm-5 col-md-5 col-lg-5">
-            <span class="w-25">Mã nhân viên</span>
-          </div>
-          <div class="col-7 col-sm-7 col-md-7 col-lg-7 p-0" style="margin-right: 0">
-            <label for="id" class="form-check-label">
-              <input id="id" type="text" class="input-search form-control m-0" style="margin-right: 0"
-                     placeholder="Nhập mã" [(ngModel)]="code">
-            </label>
-          </div>
-        </div>
-        <div class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex">
-<!--          <div class="col-1 col-sm-1 col-md-1 col-lg-1"></div>-->
-          <div class="col-5 col-sm-5 col-md-5 col-lg-5">
-            <span class="w-auto m-0">Ngày sinh bắt đầu</span>
-          </div>
-          <div class="col-5 col-sm-5 col-md-5 col-lg-5">
-            <input type="date" class="form-control input-search" [(ngModel)]="dobfrom">
-          </div>
-<!--          <div class="col-1 col-sm-1 col-md-1 col-lg-1"></div>-->
-        </div>
-        <div class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex">
-          <div class="col-5 col-sm-5 col-md-5 col-lg-5">
-            <span class="w-auto">Ngày bắt đầu</span>
-          </div>
-          <div class="col-4 col-sm-4 col-md-4 col-lg-4">
-            <input type="date" class="form-control input-search" [(ngModel)]="workf">
-          </div>
-        </div>
-        <div class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex">
-          <div class="col-5 col-sm-5 col-md-5 col-lg-5">
-            <span>Vị trí</span>
-          </div>
-          <div class="col-7 col-sm-7 col-md-7 col-lg-7">
-            <select class="input-search-position-employee w-100 form-select" [(ngModel)]="position">
-              <option selected value="">--Select--</option>
-              <option *ngFor="let item of positions" [ngValue]="item.id">{{item.name}}</option>
-            </select>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6">
+          <div class="row mb-4">
+            <div class=" col-lg-3 col-xl-3 w-15">
+              <div>
+                <label style="color: white" for="id" class="col-form-label fontFamily">Nhập mã: </label>
+                <input id="id" type="text" class="input-search form-control m-0" style="margin-right: 0"
+                       placeholder="Nhập mã" [(ngModel)]="code">
+              </div>
+            </div>
+            <div class="col-lg-3 col-xl-3 w-15">
+              <div>
+                <label style="color: white" for="id" class="col-form-label fontFamily">Ngày sinh bắt đầu: </label>
+                <input type="date" class="form-control input-search" [(ngModel)]="dobfrom">
+              </div>
+            </div>
+            <div class="col-lg-3 col-xl-3 w-15">
+              <div>
+                <label style="color: white" for="id" class="col-form-label fontFamily">Ngày bắt đầu: </label>
+                <input type="date" class="form-control input-search" [(ngModel)]="workf">
+              </div>
+            </div>
+            <div class="col-lg-3 col-xl-3 w-15">
+              <div>
+                <label style="color: white" for="id" class="col-form-label fontFamily">Vị trí: </label>
+                <select class="input-search-position-employee w-100 form-select" [(ngModel)]="position">
+                  <option selected value="">--Select--</option>
+                  <option *ngFor="let item of positions" [ngValue]="item.id">{{item.name}}</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row ">
-        <div class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex">
-          <div class="col-5 col-sm-5 col-md-5 col-lg-5">
-            <span>Địa chỉ</span>
-          </div>
-          <div class="col-7 col-sm-7 col-md-7 col-lg-7 p-0" style="margin-right: 0">
-            <label for="address" class="form-check-label">
-              <input id="address" type="text" class="input-search form-control m-0" style="margin-right: 0"
-                     placeholder="Nhập địa chỉ" [(ngModel)]="address">
-            </label>
-          </div>
-        </div>
-        <div class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex">
-<!--          <div class="col-1 col-sm-1 col-md-1 col-lg-1"></div>-->
-          <div class="col-5 col-sm-5 col-md-5 col-lg-5">
-            <span>Ngày sinh đến</span>
-          </div>
-          <div class="col-5 col-sm-5 col-md-5 col-lg-5">
-            <input type="date" class="input-search form-control" [ngModel]="dobe">
-          </div>
-<!--          <div class="col-1 col-sm-1 col-md-1 col-lg-1"></div>-->
-        </div>
-        <div class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex">
-          <div class="col-5 col-sm-5 col-md-5 col-lg-5">
-            <span>Đến</span>
-          </div>
-          <div class="col-7 col-sm-7 col-md-7 col-lg-7 p-0">
-            <input type="date" class="form-control input-search" [ngModel]="workt">
-          </div>
-        </div>
-        <div class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex">
-          <div class="col-5 col-sm-5 col-md-5 col-lg-5">
-            <span class="w-25">Tên nhân viên</span>
-          </div>
-          <div class="col-7 col-sm-7 col-md-7 col-lg-7 p-0" style="margin-right: 0">
-            <label for="nameE" class="form-check-label">
-              <input id="nameE" type="text" class="input-search form-control m-0" style="margin-right: 0"
-                     placeholder="Nhập tên nhân viên" [(ngModel)]="name">
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="col-8 col-sm-8 col-md-8 col-lg-8">
-        <button class="btn btn-outline-secondary" (click)="search()" style="right: 0">Tìm kiếm</button>
-      </div>
-      <div class="col-4 col-sm-4 col-md-4 col-lg-4">
 
+        <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6">
+          <div class="row">
+            <div class="col-lg-3 col-xl-3 w-15">
+              <div>
+                <label style="color: white" for="id" class="col-form-label fontFamily">Địa chỉ: </label>
+                <input id="address" type="text" class="input-search form-control m-0" style="margin-right: 0"
+                       placeholder="Nhập địa chỉ" [(ngModel)]="address">
+              </div>
+            </div>
+            <div class="col-lg-3 col-xl-3 w-15">
+              <div>
+                <label style="color: white" for="id" class="col-form-label fontFamily">Ngày sinh đến: </label>
+                <input type="date" class="input-search form-control" [ngModel]="dobe">
+              </div>
+            </div>
+            <div class="col-lg-3 col-xl-3 w-15">
+              <div>
+                <label style="color: white" for="id" class="col-form-label fontFamily">Đến: </label>
+                <input type="date" class="form-control input-search" [ngModel]="workt">
+              </div>
+            </div>
+            <div class="col-lg-3 col-xl-3 w-15">
+              <div>
+                <label style="color: white" for="id" class="col-form-label fontFamily">Tên nhân viên: </label>
+                <input id="nameE" type="text" class="input-search form-control m-0" style="margin-right: 0"
+                       placeholder="Nhập tên nhân viên" [(ngModel)]="name">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-8 col-sm-8 col-md-8 col-lg-8 mt-3">
+          <button class="btn btn-outline-secondary" (click)="search()" style="right: 0">Tìm kiếm</button>
+        </div>
+        <div class="col-4 col-sm-4 col-md-4 col-lg-4">
+        </div>
       </div>
     </div>
-    <div class="container">
-      <table class="table table-dark w-100">
-        <thead class="hiddenText">
-        <tr>
-          <input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)">
-          <th scope="col">Mã nhân viên</th>
-          <th scope="col">Họ và tên</th>
-          <th scope="col">Địa chỉ</th>
-          <th scope="col">Ngày sinh</th>
-          <th scope="col">Email</th>
-          <th scope="col">Số điện thoại</th>
-          <th scope="col">Vị trí</th>
-          <th scope="col">Level</th>
-          <th scope="col">Chức năng</th>
-        </tr>
-        </thead>
-        <tbody class="hiddenText">
-        <tr
-          *ngFor="let employee of employees| paginate:{itemsPerPage:2, currentPage: page +1, totalItems: totalElements}, let i = index">
-          <td><input class="card-notify-year-checkbox" type="checkbox" value="{{employee.id}}"
-                     [(ngModel)]="employees[i].checked" id="check" (click)="enable()"></td>
-          <td>{{employee.code}}</td>
-          <td>{{employee.name}}</td>
-          <td>{{employee.cmName}},{{employee.disName}},{{employee.proName}}</td>
-          <td>{{employee.dob}}</td>
-          <td>{{employee.email}}</td>
-          <td>{{employee.phone}}</td>
-          <td>{{employee.posiName}}</td>
-          <td>{{exp(employee)}}</td>
-          <td>
-            <button class="btn btn-outline-warning "><i class="fa-solid fa-pencil"></i></button>
-            <button class="btn btn-outline-danger " data-bs-toggle="modal"
-                    data-bs-target="#deleteModal" (click)="getEmployee(employee)"><i class="fa-solid fa-trash"></i>
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="container">
+          <table class="table table-dark w-100">
+            <thead class="hiddenText">
+            <tr>
+              <input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)">
+              <th scope="col">Mã nhân viên</th>
+              <th scope="col">Họ và tên</th>
+              <th scope="col">Địa chỉ</th>
+              <th scope="col">Ngày sinh</th>
+              <th scope="col">Email</th>
+              <th scope="col">Số điện thoại</th>
+              <th scope="col">Vị trí</th>
+              <th scope="col">Level</th>
+              <th scope="col">Chức năng</th>
+            </tr>
+            </thead>
+            <tbody class="hiddenText">
+            <tr
+              *ngFor="let employee of employees| paginate:{itemsPerPage:2, currentPage: page +1, totalItems: totalElements}, let i = index">
+              <td><input class="card-notify-year-checkbox" type="checkbox" value="{{employee.id}}"
+                         [(ngModel)]="employees[i].checked" id="check" (click)="enable()"></td>
+              <td>{{employee.code}}</td>
+              <td>{{employee.name}}</td>
+              <td>{{employee.cmName}},{{employee.disName}},{{employee.proName}}</td>
+              <td>{{employee.dob}}</td>
+              <td>{{employee.email}}</td>
+              <td>{{employee.phone}}</td>
+              <td>{{employee.posiName}}</td>
+              <td>{{exp(employee)}}</td>
+              <td>
+                <button class="btn btn-outline-warning "><i class="fa-solid fa-pencil"></i></button>
+                <button class="btn btn-outline-danger " data-bs-toggle="modal"
+                        data-bs-target="#deleteModal" (click)="getEmployee(employee)"><i class="fa-solid fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <pagination-controls (pageChange)="getPage($event)"></pagination-controls>
     </div>
+    <div class="col-md-3"></div>
   </div>
   <div class="row d-flex" id="btn-outside">
     <div class="col-4 col-sm-4 col-md-4 col-lg-4">
@@ -142,20 +141,12 @@
     <div class="col-4 col-sm-4 col-md-4 col-lg-4">
       <div class="float-end">
         <button class="btn btn-outline-danger " data-bs-toggle="modal"
-                data-bs-target="#deleteGroupModal" id="btn" [disabled]="!isAllCheckBoxChecked()">Xóa tất cả</button>
+                data-bs-target="#deleteGroupModal" id="btn" [disabled]="!isAllCheckBoxChecked()">Xóa tất cả
+        </button>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
-      <pagination-controls (pageChange)="getPage($event)"></pagination-controls>
-    </div>
-    <div class="col-md-3"></div>
-  </div>
-
 </div>
-
 
 
 <!--Start Delete Modal-->
@@ -167,7 +158,7 @@
       </div>
       <div class="modal-body">
         Bạn có chắc chắn muốn xóa nhân viên có tên là <span style="font-weight: bold; color: #ff4146"
-                                                           id="name">{{nameDelete}}</span> không?
+                                                            id="name">{{nameDelete}}</span> không?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>

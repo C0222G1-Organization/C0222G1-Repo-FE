@@ -3,7 +3,7 @@
     <h2 class="text-center text-white">Danh sách máy</h2>
   </div>
   <div class="row d-flex">
-    <div class="">
+    <div class="w-100">
       <form [formGroup]="formSearch">
         <div class="container-input">
           <div class="form">
@@ -70,7 +70,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let computer of computers | paginate : { itemsPerPage: 2, currentPage: page}">
+        <tr *ngFor="let computer of computers | paginate : { itemsPerPage: 3, currentPage: page + 1, totalItems: totalItems}">
           <td>
             <input type="checkbox">
             {{computer.id}}
@@ -83,11 +83,10 @@
           <td>{{computer.configuration}}</td>
           <td *ngIf="computer.type.includes('1',0)">Vip</td>
           <td *ngIf="computer.type.includes('2',0)">Thường</td>
-<!--          <td>{{computer.type}}</td>-->
           <td>{{computer.manufacturer}}</td>
           <td>{{computer.warranty}} năm</td>
           <td>
-            <button class="btn btn-outline-secondary mx-2 "><i class="fa-solid fa-pencil"></i></button>
+            <button class="btn btn-outline-secondary mx-2" routerLink="/computers/edit/{{computer.id}}"><i class="fa-solid fa-pencil"></i></button>
             <button class="btn btn-outline-secondary " (click)="getInfo(computer)" data-bs-toggle="modal"
                     data-bs-target="#deleteModal"><i class="fa-solid fa-trash"></i></button>
           </td>
@@ -98,7 +97,7 @@
   </div>
   <div class="row d-flex" id="btn-outside">
     <div class="col-4">
-      <button class="btn btn-primary m-2">Thêm mới máy</button>
+      <button class="btn btn-primary m-2" routerLink="/computers/create">Thêm mới máy</button>
     </div>
     <div class="col-4"></div>
     <div class="col-4">
@@ -109,7 +108,7 @@
     </div>
   </div>
   <div *ngIf="computers.length > 0" style="justify-content: space-around;display: flex;">
-    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    <pagination-controls (pageChange)="getPage($event)"></pagination-controls>
   </div>
 </div>
 
@@ -121,11 +120,11 @@
         <h5 class="modal-title" id="exampleModalLabel1">Xác nhận thông tin vé</h5>
       </div>
       <div class="modal-body">
-        Bạn có chắc chắn muốn xóa máy có ID là <span style="font-weight: bold; color: #ff4146">{{computerIdDelete}}</span> không?
+        Bạn có chắc chắn muốn xóa máy có ID là <span style="font-weight: bold; color: #ff4146">{{computerCodeDelete}}</span> không?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Xóa</button>
+        <button type="button" class="btn btn-primary" (click) = "delete()" data-bs-dismiss="modal">Xóa</button>
       </div>
     </div>
   </div>
