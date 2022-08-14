@@ -8,6 +8,8 @@ import {EmployeeRoutingModule} from "./employee/employee-routing.module";
 import {GameRoutingModule} from "./game/game-routing.module";
 import {NewsRoutingModule} from "./news/news-routing.module";
 import {RegistrationRoutingModule} from "./registration/registration-routing.module";
+import {HomePageRoutingModule} from "./home-page/home-page-routing.module";
+import {StatisticRoutingModule} from "./statistic/statistic-routing.module";
 
 const routes: Routes = [
 ];
@@ -25,6 +27,8 @@ const routes: Routes = [
     NewsRoutingModule,
     PaymentRoutingModule,
     RegistrationRoutingModule,
+    StatisticRoutingModule,
+    HomePageRoutingModule
   ],
   exports: [RouterModule]
 })
