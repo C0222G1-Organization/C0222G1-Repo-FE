@@ -40,9 +40,7 @@
       <div class="row mt-4">
         <div class="col-lg-12 px-3">
           <div class="m-0">
-            <input type="file" id="upload"
-                   multiple (change)="onFileSelected($event)" name="image" autocomplete="off" hidden>
-
+            <input  type="file" id="upload" multiple (change)="onFileSelected($event); " name="image" autocomplete="off" hidden>
             <label for="upload" class="input-img w-100 rounded">Hình ảnh:<span class="text-danger"> *</span></label>
             <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('imageUrl').touched
                 && gameForm.hasError('required', 'imageUrl')">Image Url is required

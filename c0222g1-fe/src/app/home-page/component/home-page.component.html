@@ -1,21 +1,21 @@
 <div class="container-fluid">
   <div class="container">
     <!--   carousel-->
-    <div class="row" style="margin-bottom: 2rem">
+    <div class="row" >
       <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12">
         <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
           <div class="carousel-inner">
             <div class="carousel-item active container-img-carousel">
               <img [src]="popularGames[0].imageUrl" class="d-block image" alt="...">
-              <button class="btn-image-carousel">Chơi ngay</button>
+              <button (click)="getGameAndUpdate(popularGames[0].id)" class="btn-image-carousel">Chơi ngay</button>
             </div>
             <div class="carousel-item container-img-carousel">
               <img [src]="popularGames[1].imageUrl" class="d-block" alt="...">
-              <button class="btn-image-carousel">Chơi ngay</button>
+              <button (click)="getGameAndUpdate(popularGames[0].id)" class="btn-image-carousel">Chơi ngay</button>
             </div>
             <div class="carousel-item container-img-carousel">
               <img [src]="popularGames[2].imageUrl" class="d-block" alt="...">
-              <button class="btn-image-carousel">Chơi ngay</button>
+              <button (click)="getGameAndUpdate(popularGames[0].id)" class="btn-image-carousel">Chơi ngay</button>
             </div>
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"
@@ -33,8 +33,8 @@
       <div class="col-xl-3 col-lg-3 col-md-0 col-sm-0">
         <div class="row">
           <div class="row list-row">
-            <button class="btn-main text-white btn-block">Game Thịnh Hành Nhất</button>
-            <button class="btn-second  btn-block">Top 1</button>
+<!--            <button class="btn-main text-white btn-block">Game Thịnh Hành Nhất</button>-->
+            <button class="btn-opacity-border text-white btn-block">Top 1</button>
           </div>
           <div class="row list-row" style="align-items: center">
             <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7">
@@ -49,7 +49,7 @@
             </div>
           </div>
           <div class="row list-row">
-            <button class="btn-second">Top 2</button>
+            <button class="btn-opacity-border text-white btn-block">Top 2</button>
           </div>
           <div class="row list-row" style="align-items: center">
             <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7">
@@ -64,7 +64,7 @@
             </div>
           </div>
           <div class="row list-row">
-            <button class="btn-second">Top 3</button>
+            <button class="btn-opacity-border text-white btn-block">Top 3</button>
           </div>
           <div class="row list-row" style="align-items: center">
             <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7">
@@ -107,7 +107,7 @@
             </div>
             <div class="row">
               <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">
-                <button class="btn-second btn-sm">Chơi</button>
+                <button (click)="getGameAndUpdate(game.id)" class="btn-second btn-sm">Chơi</button>
               </div>
               <div class="col-xl-9 col-lg-9 col-md-0 col-sm-0">
                 <p class="card-text text-content">{{game.playedTimes}} lượt chơi</p>
@@ -173,7 +173,7 @@
             </div>
             <div class="row">
               <div class="col-xl-3 col-md-3">
-                <button class="btn-second btn-sm">Chơi</button>
+                <button (click)="getGameAndUpdate(game.id)" class="btn-second btn-sm">Chơi</button>
               </div>
               <div class="col-xl-9 col-md-9">
                 <p class="card-text text-content">{{game.playedTimes}} lượt chơi</p>
@@ -198,7 +198,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-second-non-border" data-bs-dismiss="modal">Đóng</button>
-          <button type="button" class="btn-main text-white" data-bs-dismiss="modal">Xóa</button>
+          <button type="button" (click)="deleteGameById()" class="btn-main text-white" data-bs-dismiss="modal">Xóa</button>
         </div>
       </div>
     </div>
