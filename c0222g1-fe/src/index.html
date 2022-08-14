@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Arimo&family=Playfair+Display&family=Roboto&display=swap"
         rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <script src="https://kit.fontawesome.com/b29d237812.js" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
@@ -18,6 +19,13 @@
   <app-root></app-root>
   <button id="myBtn" title="Go to top"><i class="fa-solid fa-arrow-up" style="font-size: 2rem"></i></button>
 </body>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  AOS.init({
+    offset:50,
+    duration: 1000
+  });
+</script>
 <script>
   window.onscroll = function () {
     scrollFunction()
