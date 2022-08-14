@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../enviroment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Computer} from '../model/computer';
 import {SearchDto} from '../model/search-dto';
 import {ComputerType} from '../model/computer-type';
 
