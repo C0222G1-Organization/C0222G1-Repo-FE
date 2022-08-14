@@ -1,0 +1,77 @@
+<body>
+<div class="container mt-5" style="background-color: #2A2A2A; border-radius: 15px">
+  <div class="pt-3" style="font-size: 18px;">
+    <div class="row">
+      <div class="col-xl-4 col-lg-4 pt-0" style="color: white">
+        <form [formGroup]="statisticForm" class="p-3">
+          <div class="form-row justify-content-around">
+            <div class="form-group input">
+              <label style="color: white" for="startDate" class="col-form-label fontFamily">Ngày bắt đầu: </label>
+              <input type="date" id="startDate"
+                     class="form-control input"
+                     formControlName="startDate"
+                     [ngClass]="statisticForm.valid? '':'is-invalid'">
+              <small class="fontError text-danger"
+                     *ngIf="statisticForm.hasError('dateNotValid')">
+                Ngày bắt đầu phải nhỏ hơn ngày kết thúc ít nhất 1 ngày!
+              </small>
+            </div>
+            <div class="form-group input">
+              <label style="color: white" for="endDate" class="col-form-label fontFamily">Ngày kết thúc: </label>
+              <input type="date" id="endDate" class="form-control input"
+                     formControlName="endDate"
+                     [ngClass]="statisticForm.valid? '':'is-invalid'">
+              <small class="fontError text-danger" style="margin-top: 42px"
+                     *ngIf="statisticForm.controls.endDate.hasError('futureDate')">
+                Ngày kết thúc không được sau ngày hôm nay
+              </small>
+            </div>
+            <div class="form-group input">
+              <label style="color: white" for="statisticTime" class="col-form-label fontFamily ">Thời gian thống
+                kê: </label>
+              <select id="statisticTime" class="form-control input"
+                      (change)="onChange($event.target.value)">
+                <option value='1 week'>1 Tuần</option>
+                <option value="2 week">2 Tuần</option>
+                <option value="1 month" selected>1 Tháng</option>
+                <option value="2 month">2 Tháng</option>
+                <option value="1 quarter">1 Quý</option>
+                <option value="2 quarter">2 Quý</option>
+                <option value="1 year">1 Năm</option>
+              </select>
+            </div>
+            <div class="form-group input">
+              <label style="color: white" for="statisticWith" class="col-form-label fontFamily">Thống kê theo: </label>
+              <select id="statisticWith" class="form-control input"
+                      formControlName="type">
+                <option value="computer" selected>Máy tính</option>
+                <option value="month">Tháng</option>
+                <option value="account">Tài khoản</option>
+              </select>
+            </div>
+            <div class="form-group input">
+              <label style="color: white" for="statisticWith" class="col-form-label fontFamily">Sắp xếp theo: </label>
+              <select id="sort" class="form-control input"
+                      formControlName="sort">
+                <option selected value="none">Không sắp xếp</option>
+                <option value="ascending">Tăng dần</option>
+                <option value="decrease">Giảm dần</option>
+              </select>
+            </div>
+            <div class="form-group pt-5">
+              <button type="button" class="btn btn-outline-light"
+                      [disabled]="statisticForm.invalid" (click)="onSubmit()">Thống kê
+              </button>
+            </div>
+          </div>
+          <div style="color: red" class="fontError pt-3" [hidden]="errorList">Không có dữ liệu!</div>
+          <div style="color: red" class="fontError pt-3" [hidden]="errorServer">Không thể kết nối tới Server!</div>
+        </form>
+      </div>
+      <div class="col-xl-8 col-lg-8 mt-4" [hidden]="errorChart">
+        <canvas style="background-color: white; padding-right: 20px; border-radius: 15px" id="myChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
