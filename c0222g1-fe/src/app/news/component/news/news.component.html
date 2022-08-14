@@ -3,10 +3,10 @@
     <header>
       <div class="row d-flex justify-content-between">
         <div class="p-0 col-6">
-          <input class="search form-control-sm me-2" type="search" placeholder="  tìm kiếm" aria-label="Search">
+          <input [(ngModel)]="searchTitle" (change)="getAllNews()" class="search form-control-sm me-2" type="search" placeholder="tìm kiếm" aria-label="Search" >
         </div>
         <div class="p-0 col-6 d-flex justify-content-end">
-          <button type="button" class="btn btn-outline-secondary rounded-pill">thêm mới tin</button>
+          <button type="button" routerLink="/create-news" class="btn btn-outline-secondary rounded-pill">thêm mới tin</button>
         </div>
       </div>
     </header>
@@ -14,9 +14,11 @@
       <h6 class="text-light">Bản tin</h6>
     </div>
     <div class="row">
-      <div *ngFor="let item of listNews, let i = index"  class="col-md-6 col-sm-12">
-        <div *ngIf="i < 2" class="card w-100" style="width: 18rem;">
-          <img src="{{item.imageUrl}}" class="card-img-top rounded">
+      <div *ngFor="let item of topNews, let i = index"  class="col-md-6 col-sm-12">
+        <div (click)="updateViews(item.id)" routerLink="/detail-news/{{item.id}}" *ngIf="i < 2" class="card w-100 " style="width: 18rem;">
+          <div class="box-img-new rounded">
+            <img src="{{item.imageUrl}}" class="card-img-top img-fit">
+          </div>
           <div class="card-body px-0">
             <small><p class="card-text text-secondary">{{item.createDate}}</p></small>
             <small><p class="card-text text-light mt-2">{{item.title}}</p></small>
@@ -25,44 +27,31 @@
         </div>
       </div>
     </div>
-<!--    *ngFor="let item of listNews, let i = index"-->
-    <div class="row mx-1 news mt-4">
-      <div class="row">
+    <div *ngFor="let item of listNews | paginate :
+          {itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems }"
+         class="row mx-1 news mt-2">
+      <div (click)="updateViews(item.id)" routerLink="/detail-news/{{item.id}}" class="row">
         <div class="p-0">
           <hr>
         </div>
-        <div class="col-md-2 col-sm-6 p-0">
-          <img src="https://cdn2.unrealengine.com/ea-sports-fifa-23-is-coming-to-the-epic-games-store-1920x1080-398e19351a82.jpg" class="card-img-top rounded">
+        <div class="col-md-2 col-sm-6 p-0 mt-2 img-sub">
+          <div class="box-img-sub rounded img-fixed">
+            <img src="{{item.imageUrl}}" class="card-img-top img-t">
+          </div>
         </div>
         <div class="col-5">
           <div>
-            <small><p class="card-text text-secondary">12 ngày trước</p></small>
-            <small><p class="card-text text-light"> Bàn thắng! EA SPORTS ™ FIFA 23 sắp có mặt trên Epic Games Store</p></small>
+            <small><p class="card-text text-secondary">{{item.createDate}}</p></small>
+            <small><p class="card-text text-light">{{item.title}}</p></small>
           </div>
           <a class="read-more">Đọc thêm</a>
         </div>
       </div>
     </div>
-  </div>
-  <div class="row m-0 d-flex justify-content-center">
-    <div class="col-1">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">
-          <li class="page-item">
-            <a class="page-link clear text-secondary border-0" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li class="page-item "><a class="page-link clear text-secondary border-0" href="#">1</a></li>
-          <li class="page-item"><a class="page-link clear text-secondary border-0" href="#">2</a></li>
-          <li class="page-item"><a class="page-link clear text-secondary border-0" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link clear text-secondary border-0" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+    <div class="row mt-3">
+      <div class="col-12 d-flex justify-content-center">
+        <pagination-controls (pageChange)="getPage(page = $event)"></pagination-controls>
+      </div>
     </div>
   </div>
 </div>

@@ -6,13 +6,18 @@ import { NewsComponent } from './component/news/news.component';
 import { CreateComponent } from './component/create/create.component';
 import { DetailComponent } from './component/detail/detail.component';
 import {NewsService} from './service/news.service';
+import {NgxPaginationModule} from 'ngx-pagination';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
   declarations: [NewsComponent, CreateComponent, DetailComponent],
   imports: [
     CommonModule,
-    NewsRoutingModule
+    NewsRoutingModule,
+    NgxPaginationModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [NewsService]
 })
