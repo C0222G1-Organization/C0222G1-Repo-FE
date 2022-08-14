@@ -8,7 +8,7 @@ import {ActivatedRoute} from "@angular/router";
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.css']
+  styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent implements OnInit {
   page = 0;
@@ -18,12 +18,15 @@ export class HomePageComponent implements OnInit {
   popularGames: Game[];
   newGames: Game[];
   hotGames: Game[];
+  isOpen = true;
+
   constructor(private toastr: ToastrService,
               private title: Title,
               private homePageService: HomePageService,
               private activatedRoute: ActivatedRoute) {
     this.title.setTitle('C02G1 | Home');
   }
+
 
   ngOnInit(): void {
     this.getAllPopularGames();
@@ -33,7 +36,6 @@ export class HomePageComponent implements OnInit {
 
   getAllPopularGames() {
     this.homePageService.getAllPopularGames(this.page).subscribe((games: any) => {
-      this.toastr.success("Tải trang thành công");
       this.popularGames = games.content;
     });
   }
@@ -66,7 +68,7 @@ export class HomePageComponent implements OnInit {
 
   updatePlayedTimes(id: number) {
     this.homePageService.updateGame(id, this.game).subscribe(res => {
-      console.log('ok');
+      this.toastr.success("Đang khởi động game");
       this.getAllHotGames();
       this.getAllNewGames();
       this.getAllPopularGames();
@@ -74,6 +76,7 @@ export class HomePageComponent implements OnInit {
   }
 
   getGameAndUpdate(id: number) {
+    console.log('dang bam')
     this.homePageService.findById(id).subscribe(game => {
       this.game = game;
       this.game.playedTimes += 1;
