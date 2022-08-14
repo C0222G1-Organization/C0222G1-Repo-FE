@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {DisplayPaymentComponent} from './display-payment/display-payment.component';
+import {DisplayPaymentComponent} from "./component/display-payment/display-payment.component";
 
 
 const routes: Routes = [
   {
-    path: '', pathMatch: 'full', redirectTo: 'display'
+    path: 'payment', pathMatch: 'full', redirectTo: 'display'
   },
   {
     path: 'display', component: DisplayPaymentComponent
