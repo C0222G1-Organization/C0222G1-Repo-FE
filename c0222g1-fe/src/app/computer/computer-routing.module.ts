@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {ComputerCreateComponent} from "./component/computer-create/computer-create.component";
-import {ComputerEditComponent} from "./component/computer-edit/computer-edit.component";
+import {ComputerCreateComponent} from './component/computer-create/computer-create.component';
+import {ComputerEditComponent} from './component/computer-edit/computer-edit.component';
 import {ComputerListComponent} from './component/computer-list/computer-list.component';
 
 

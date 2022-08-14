@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {DatePipe} from "@angular/common";
-import {Title} from "@angular/platform-browser";
-import {InputStatistic} from "../../model/input-statistic";
-import {AbstractControl, FormControl, FormGroup} from "@angular/forms";
+import {DatePipe} from '@angular/common';
+import {Title} from '@angular/platform-browser';
+import {InputStatistic} from '../../model/input-statistic';
+import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
 import {Chart, registerables} from 'chart.js';
-import {StatisticService} from "../../service/statistic/statistic.service";
+import {StatisticService} from '../../service/statistic/statistic.service';
 
 Chart.register(...registerables);
 
@@ -85,10 +85,10 @@ export class StatisticComponent implements OnInit {
             }
           }, () => {
             if (this.statisticInput.sort === 'ascending') {
-              this.listStatisticByComputer.sort((a, b) => (a.hour > b.hour) ? 1 : -1);
+              this.listStatisticByComputer.sort((a, b) => (a.hour < b.hour) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'decrease') {
-              this.listStatisticByComputer.sort((a, b) => (a.hour < b.hour) ? 1 : -1);
+              this.listStatisticByComputer.sort((a, b) => (a.hour > b.hour) ? 1 : -1);
             }
             this.destroyChart();
             this.createChartComputer();
@@ -148,10 +148,10 @@ export class StatisticComponent implements OnInit {
           },
           () => {
             if (this.statisticInput.sort === 'ascending') {
-              this.listStatisticByAccount.sort((a, b) => (a.total > b.total) ? 1 : -1);
+              this.listStatisticByAccount.sort((a, b) => (a.revenue > b.revenue) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'decrease') {
-              this.listStatisticByAccount.sort((a, b) => (a.total < b.total) ? 1 : -1);
+              this.listStatisticByAccount.sort((a, b) => (a.revenue < b.revenue) ? 1 : -1);
             }
             this.destroyChart();
             this.createChartAccount();
@@ -314,7 +314,6 @@ export class StatisticComponent implements OnInit {
               xAxisKey: 'month',
               yAxisKey: 'total',
             },
-            yAxisID: 'y1',
             backgroundColor: [
               '#696969'
             ],
@@ -344,7 +343,7 @@ export class StatisticComponent implements OnInit {
             display: true,
             title: {
               display: true,
-              text: 'Month',
+              text: 'Tháng',
               color: '#3EB595',
               font: {
                 family: 'roboto',
@@ -353,27 +352,6 @@ export class StatisticComponent implements OnInit {
                 lineHeight: 1.0
               },
               padding: {top: 0, bottom: 10}
-            }
-          },
-          y1: {
-            type: 'linear',
-            position: 'right',
-            grid: {
-              display: false
-            },
-            beginAtZero: true,
-            display: true,
-            title: {
-              display: true,
-              text: 'Tiền (VND)',
-              color: '#3EB595',
-              font: {
-                family: 'roboto',
-                size: 15,
-                style: 'normal',
-                lineHeight: 1.0
-              },
-              padding: {top: 10, bottom: 0}
             }
           }
         },
@@ -422,6 +400,7 @@ export class StatisticComponent implements OnInit {
             backgroundColor: [
               '#3EB595'
             ],
+            yAxisID: 'y1',
             borderWidth: 1
           }]
       },
@@ -432,7 +411,7 @@ export class StatisticComponent implements OnInit {
             display: true,
             title: {
               display: true,
-              text: 'Tiền (VND)',
+              text: '(VNĐ)',
               color: '#3EB595',
               font: {
                 family: 'roboto',
@@ -448,7 +427,7 @@ export class StatisticComponent implements OnInit {
             display: true,
             title: {
               display: true,
-              text: 'Tài khoản',
+              text: 'Tài Khoản',
               color: '#3EB595',
               font: {
                 family: 'roboto',
@@ -457,19 +436,19 @@ export class StatisticComponent implements OnInit {
                 lineHeight: 1.0
               },
               padding: {top: 0, bottom: 10}
-            }
+            },
           },
           y1: {
             type: 'linear',
             position: 'right',
             grid: {
-              display: false
+              drawOnChartArea: false
             },
             beginAtZero: true,
             display: true,
             title: {
               display: true,
-              text: 'Giờ chơi',
+              text: 'Giờ Chơi',
               color: '#3EB595',
               font: {
                 family: 'roboto',
@@ -477,8 +456,10 @@ export class StatisticComponent implements OnInit {
                 style: 'normal',
                 lineHeight: 1.0
               },
-              padding: {top: 10, bottom: 0}
-            }
+              padding: {top: 5, bottom: 5}
+            },
+            min: 0,
+            max: this.listStatisticByAccount.max
           }
         },
         plugins: {
