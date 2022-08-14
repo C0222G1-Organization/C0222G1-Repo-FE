@@ -20,9 +20,7 @@
                [src]="game.imageUrl"
                alt="Card image cap">
           <div class="middle">
-
             <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Edit</button>
-
             <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
                     data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
           </div>
