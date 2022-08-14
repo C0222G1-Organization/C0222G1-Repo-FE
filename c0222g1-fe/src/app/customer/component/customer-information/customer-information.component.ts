@@ -45,7 +45,7 @@ export class CustomerInformationComponent implements OnInit {
       name: new FormControl('', [Validators.required])
     }),
     user: new FormGroup({
-      userName: new FormControl('', [Validators.required]),
+      username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
     }),
     deleteStatus: new FormControl(1),
@@ -57,6 +57,11 @@ export class CustomerInformationComponent implements OnInit {
     this.loadInfoCustomer();
   }
 
+  /**
+   * Create by: DuyNT
+   * Date Create: 11/08/2022
+   * function: load customer form DB
+   */
   loadInfoCustomer() {
     // this.customer = this.customerForm.value;
     // console.log(this.customer);
@@ -87,6 +92,12 @@ export class CustomerInformationComponent implements OnInit {
     });
   }
 
+
+  /**
+   * Create by: DuyNT
+   * Date Create: 11/08/2022
+   * function: save customer after edit
+   */
   saveUpdateUser() {
     this.customer = this.customerForm.value;
     // console.log(this.customer);
@@ -97,6 +108,11 @@ export class CustomerInformationComponent implements OnInit {
     // })
   }
 
+  /**
+   * Create by: DuyNT
+   * Date Create: 11/08/2022
+   * function: active edit on each input item
+   */
   activeEdit(item: any) {
     this.typePassword = true;
     this.typeConfirmPassword = true;
@@ -106,6 +122,11 @@ export class CustomerInformationComponent implements OnInit {
     this.setConfirmType();
   }
 
+  /**
+   * Create by: DuyNT
+   * Date Create: 11/08/2022
+   * function: set type to show or hidden password
+   */
   setType() {
     console.log(this.typePassword);
     this.typePassword = !this.typePassword;
@@ -116,6 +137,11 @@ export class CustomerInformationComponent implements OnInit {
     }
   }
 
+  /**
+   * Create by: DuyNT
+   * Date Create: 11/08/2022
+   * function: set type to show or hidden confirm password
+   */
   setConfirmType() {
     console.log(this.typeConfirmPassword);
     this.typeConfirmPassword = !this.typeConfirmPassword;

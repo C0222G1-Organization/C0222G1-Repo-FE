@@ -1,0 +1,48 @@
+<div class="container-fluid">
+  <div class="d-flex">
+    <div class="col-6 d-flex justify-content-end">
+      <div class="bg-button-back p-2">
+<!--        <button type="button" class="btn btn-outline-secondary ">Quay lại</button>-->
+      </div>
+      <img src="assets/img/img-login/banner-login.jpg" alt="banner" class="float-right" height="415">
+    </div>
+    <div class="col-6">
+      <div class="login-form">
+        <h6 class="text-center mt-4">Đăng nhập </h6>
+        <form [formGroup]="loginForm">
+          <div class="form-floating textbox">
+            <input type="text" class="form-control btn-outline-secondary" formControlName="username" id="inputUsername"
+                   placeholder="Tài khoản hoặc Email" style="padding-top: 10px">
+            <label for="inputUsername" style="color: white">Tài khoản hoặc Email</label>
+          </div>
+
+          <div class="form-floating textbox">
+            <input type="password" class="form-control btn-outline-secondary" formControlName="password" id="inputPassword"
+                   placeholder="Mật khẩu" style="padding-top: 10px">
+            <label for="inputPassword" style="color: white">Mật khẩu</label>
+          </div>
+
+          <div class="options">
+            <label class="remember-me">
+                    <span class="checkbox">
+                        <input type="checkbox">
+                        <span class="checked"></span>
+                    </span>
+              Nhớ mật khẩu
+            </label>
+            <!--                <a href="">Lấy lại mật khẩu</a>-->
+          </div>
+          <button type="button" class="btn btn-outline-secondary login-btn text-light" [disabled]="loginForm.invalid" (click)="submitLogin()" >Đăng nhập</button>
+
+
+        </form>
+
+        <div class="dont-have-account">
+          Bạn chưa có tài khoản ?
+          <a href="">Đăng ký</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

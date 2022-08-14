@@ -5,7 +5,7 @@ import {DisplayPaymentComponent} from "./component/display-payment/display-payme
 
 const routes: Routes = [
   {
-    path: '', pathMatch: 'full', redirectTo: 'display'
+    path: 'payment', pathMatch: 'full', redirectTo: 'display'
   },
   {
     path: 'display', component: DisplayPaymentComponent

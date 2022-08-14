@@ -11,7 +11,7 @@
           </div>
           <div class="sub-info form-group row col-7" id="userNameEdit" formGroupName="user">
             <div class="col-12 p-0">
-              <input formControlName="userName" type="text" class="form-control"
+              <input formControlName="username" type="text" class="form-control"
                      placeholder="Enter user name" readonly>
             </div>
           </div>
@@ -125,13 +125,13 @@
           <div *ngIf="content!==customer.commune.name" class="sub-info form-group row col-7" formGroupName="commune">
             <div class="col-12 p-0">
               <input formControlName="name" type="text" class="form-control"
-                     placeholder="Enter address" readonly>
+                     placeholder="Nhập địa chỉ" readonly>
             </div>
           </div>
           <div *ngIf="content===customer.commune.name" class="sub-info form-group row col-7" formGroupName="commune">
             <div class="col-12 p-0">
               <input formControlName="name" type="text" class="form-control bg-dark text-white border-white"
-                     placeholder="Enter address">
+                     placeholder="Nhập địa chỉ">
             </div>
             <div class="text-small text-white p-0"
                  *ngIf="!customerForm.controls.commune?.valid
@@ -253,7 +253,7 @@
         </div>
 
         <div class="text-center">
-          <a class="btn btn-outline-light btn-sm mb-3" href="">QUAY LẠI</a>
+          <a class="btn btn-outline-light btn-sm mb-3" routerLink="/home-page-customer">QUAY LẠI</a>
           <button class="btn btn-outline-light btn-sm mb-3" (click)="saveUpdateUser()">
             LƯU THAY ĐỔI
           </button>
