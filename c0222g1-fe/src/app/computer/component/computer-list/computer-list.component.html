@@ -4,49 +4,46 @@
   </div>
   <div class="row d-flex">
     <div class="w-100">
-      <form [formGroup]="formSearch">
-        <div class="container-input">
-          <div class="form">
-            <div class="fields">
-              <div class="input-field input-search">
-                <label>Mã máy</label>
-                <input type="text" class="input-search" formControlName="code" placeholder="Nhập mã máy">
-              </div>
-              <div class="input-field">
-                <label>Vị trí</label>
-                <input type="text" class="input-search" formControlName="location" placeholder="Nhập vị trí máy">
-              </div>
-              <div class="input-field">
-                <label>Ngày bắt đầu</label>
-                <input type="date" formControlName="start" class="input-search">
-              </div>
-              <div class="input-field">
-                <label>Ngày kết thúc</label>
-                <input type="date" formControlName="end" class="input-search">
-              </div>
-              <div class="input-field">
-                <label>Trạng thái</label>
-                <select style="min-width: 100px" formControlName="status" class="input-search form-select">
-                  <option value="">--Chọn trạng thái--</option>
-                  <option value="0">Bình thường</option>
-                  <option value="1">Bảo trì</option>
-                </select>
-              </div>
-              <div class="input-field">
-                <label>Loại máy</label>
-                <select style="min-width: 100px" class="input-search form-select">
-                  <option value="">--Chọn loại máy--</option>
-                  <option value="1">Máy Vip</option>
-                  <option value="2">Máy Thường</option>
-                </select>
-              </div>
+      <div class="container-input">
+        <div class="form">
+          <div class="fields">
+            <div class="input-field input-search">
+              <label>Mã máy</label>
+              <input type="text" class="input-search" [(ngModel)]="code" placeholder="Nhập mã máy">
             </div>
             <div class="input-field">
-              <button class="btn btn-outline-secondary" (click)="findAll()" style="right: 0">Tìm kiếm</button>
+              <label>Vị trí</label>
+              <input type="text" class="input-search" [(ngModel)]="location" placeholder="Nhập vị trí máy">
+            </div>
+            <div class="input-field">
+              <label>Ngày bắt đầu</label>
+              <input type="date" [(ngModel)]="start" class="input-search">
+            </div>
+            <div class="input-field">
+              <label>Ngày kết thúc</label>
+              <input type="date" [(ngModel)]="end" class="input-search">
+            </div>
+            <div class="input-field">
+              <label>Trạng thái</label>
+              <select style="min-width: 100px" [(ngModel)]="status" class="input-search form-select">
+                <option value="">--Chọn trạng thái--</option>
+                <option value="0">Bình thường</option>
+                <option value="1">Bảo trì</option>
+              </select>
+            </div>
+            <div class="input-field">
+              <label>Loại máy</label>
+              <select style="min-width: 100px" [(ngModel)]="typeId" class="input-search form-select">
+                <option value="">--Chọn loại máy--</option>
+                <option *ngFor="let type of computerTypes" value="{{type.id}}">{{type.name}}</option>
+              </select>
             </div>
           </div>
+          <div class="input-field">
+            <button class="btn btn-outline-secondary" (click)="findAll()" style="right: 0">Tìm kiếm</button>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -55,7 +52,7 @@
         <thead>
         <tr>
           <th scope="col">
-            <input type="checkbox">
+            <input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)">
             #
           </th>
           <th scope="col">ID Máy</th>
@@ -70,9 +67,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let computer of computers | paginate : { itemsPerPage: 3, currentPage: page + 1, totalItems: totalItems}">
+        <tr
+          *ngFor="let computer of computers | paginate : { itemsPerPage: 3, currentPage: page + 1, totalItems: totalItems}; index as i">
           <td>
-            <input type="checkbox">
+            <input class="card-notify-year-checkbox" type="checkbox" value="{{computer.id}}"
+                   [(ngModel)]="computers[i].checked">
             {{computer.id}}
           </td>
           <td>{{computer.code}}</td>
@@ -103,7 +102,8 @@
     <div class="col-4">
       <div class="float-end">
         <button class="btn btn-danger" data-bs-toggle="modal"
-                data-bs-target="#deleteModal">Xóa</button>
+                data-bs-target="#deleteAllModal">Xóa
+        </button>
       </div>
     </div>
   </div>
@@ -117,14 +117,38 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel1">Xác nhận thông tin vé</h5>
+        <h5 class="modal-title" id="exampleModalLabel1">Xác nhận thông tin máy</h5>
       </div>
       <div class="modal-body">
-        Bạn có chắc chắn muốn xóa máy có ID là <span style="font-weight: bold; color: #ff4146">{{computerCodeDelete}}</span> không?
+        Bạn có chắc chắn muốn xóa máy có mã máy là <span
+        style="font-weight: bold; color: #ff4146">{{computerCodeDelete}}</span> không?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" (click) = "delete()" data-bs-dismiss="modal">Xóa</button>
+        <button type="button" class="btn btn-primary" (click)="delete()" data-bs-dismiss="modal">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Delete Modal-->
+
+<!--Start Delete Modal-->
+<div class="modal fade" id="deleteAllModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xác nhận thông tin vé</h5>
+      </div>
+      <div class="modal-body">
+        Bạn có chắc chắn muốn xóa các máy này
+        <div *ngFor="let c of computerDeleteList; index as i">
+          <span style="font-weight: bold; color: #ff4146">{{c}}, </span>
+        </div>
+        không?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-primary" (click)="deleteMultiComputer()" data-bs-dismiss="modal">Xóa</button>
       </div>
     </div>
   </div>
