@@ -1,0 +1,215 @@
+<div class="container-fluid">
+  <div class="container">
+    <!--   carousel-->
+    <div class="row">
+      <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12">
+        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active container-img-carousel">
+              <img [src]="popularGames[0].imageUrl" class="d-block image" alt="...">
+              <button (click)="getGameAndUpdate(popularGames[0].id)" class="btn-image-carousel">Chơi ngay</button>
+            </div>
+            <div class="carousel-item container-img-carousel">
+              <img [src]="popularGames[1].imageUrl" class="d-block" alt="...">
+              <button (click)="getGameAndUpdate(popularGames[0].id)" class="btn-image-carousel">Chơi ngay</button>
+            </div>
+            <div class="carousel-item container-img-carousel">
+              <img [src]="popularGames[2].imageUrl" class="d-block" alt="...">
+              <button (click)="getGameAndUpdate(popularGames[0].id)" class="btn-image-carousel">Chơi ngay</button>
+            </div>
+          </div>
+<!--          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"-->
+<!--                  data-bs-slide="prev">-->
+<!--            <span class="" aria-hidden="true"></span>-->
+<!--            <span class="visually-hidden">Previous</span>-->
+<!--          </button>-->
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"
+                  data-bs-slide="next">
+            <span class="" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-3 col-md-0 col-sm-0">
+        <div class="row">
+          <div class="row list-row">
+            <button class="btn-opacity-border text-white btn-block">Top 1</button>
+          </div>
+          <div class="row list-row" style="align-items: center">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7">
+              <div class="row">
+                <img [src]="popularGames[0].imageUrl" class="list-image-game" alt="...">
+              </div>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5">
+              <div class="row">
+                <p class="text-white">{{popularGames[0].name}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row list-row">
+            <button class="btn-opacity-border text-white btn-block">Top 2</button>
+          </div>
+          <div class="row list-row" style="align-items: center">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7">
+              <div class="row">
+                <img [src]="popularGames[1].imageUrl" class="list-image-game" alt="...">
+              </div>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5">
+              <div class="row">
+                <p class="text-white">{{popularGames[1].name}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row list-row">
+            <button class="btn-opacity-border text-white btn-block">Top 3</button>
+          </div>
+          <div class="row list-row" style="align-items: center">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7">
+              <div class="row">
+                <img [src]="popularGames[2].imageUrl" class="list-image-game" alt="...">
+              </div>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5">
+              <div class="row">
+                <p class="text-white">{{popularGames[2].name}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--  popular games-->
+    <div class="row">
+      <div class="row">
+        <h4 class="text-white"><i class="fa-solid icon-body fa-fire-flame-curved"></i>Game thịnh hành</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="row" style="flex-wrap: wrap; justify-content: start">
+        <div *ngFor="let game of popularGames" class="card zoom container-img bg-dark card-game" data-aos = "fade-left">
+          <img class="card-img-top image"
+               [src]="game.imageUrl"
+               alt="Card image cap">
+          <div class="middle">
+            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Edit</button>
+            <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
+                    data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+          </div>
+          <div class="card-body row" style="justify-items: center">
+            <div class="row">
+              <p class="text-white text-title-sm">{{game.name}}</p>
+            </div>
+            <div class="row">
+              <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">
+                <button (click)="getGameAndUpdate(game.id)" class="btn-second btn-sm">Chơi</button>
+              </div>
+              <div class="col-xl-9 col-lg-9 col-md-0 col-sm-0">
+                <p class="card-text text-content">{{game.playedTimes}} lượt chơi</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- recommended games-->
+    <div class="row object">
+      <div class="row mb-2">
+        <h4 class="text-white"><i class="fa-solid icon-body fa-gift"></i>Game đề xuất</h4>
+      </div>
+      <div class="row">
+        <div class="col-6 container-img" data-aos = "fade-right">
+          <div class="row mb-3">
+            <img [src]="hotGames[0].imageUrl"
+                 class="d-block image" alt="...">
+          </div>
+          <div class="middle-md">
+            <button class="btn-second" routerLink="/games/edit/{{hotGames[0].id}}"> Edit</button>
+            <button class="btn-second" (click)="getInfoGame(hotGames[0].id, hotGames[0].name)"
+                    data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+          </div>
+          <div class="row">
+            <p class="text-white">{{hotGames[0].name}}</p>
+          </div>
+          <div class="row">
+              <span class="card-text text-content"> <button (click)="getGameAndUpdate(hotGames[0].id)"
+                                                            class="btn-second btn-sm">Chơi</button>  {{ hotGames[0].playedTimes}} lượt chơi</span>
+          </div>
+        </div>
+        <div class="col-6 container-img" data-aos = "fade-right">
+          <div class="row mb-3">
+            <img [src]="hotGames[1].imageUrl" class="d-block  image" alt="...">
+          </div>
+          <div class="middle-md">
+            <button class="btn-second" routerLink="/games/edit/{{hotGames[0].id}}"> Edit</button>
+            <button class="btn-second" (click)="getInfoGame(hotGames[0].id, hotGames[0].name)"
+                    data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+          </div>
+          <div class="row">
+            <p class="text-white">{{hotGames[1].name}}</p>
+          </div>
+          <div class="row">
+                <span class="card-text text-content"> <button (click)="getGameAndUpdate(hotGames[0].id)"
+                                                              class="btn-second btn-sm">Chơi</button>  {{ hotGames[0].playedTimes}} lượt chơi</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  new games-->
+    <div class="row">
+      <div class="row">
+        <h4 class="text-white"><i class="fa-solid icon-body fa-wand-sparkles"></i>Game mới</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="row" style="flex-wrap: wrap; justify-content: start">
+        <div *ngFor="let game of newGames" class="card zoom container-img bg-dark card-game" data-aos = "fade-left">
+          <img class="card-img-top image"
+               [src]="game.imageUrl"
+               alt="Card image cap">
+          <div class="middle">
+            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Edit</button>
+            <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
+                    data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+          </div>
+          <div class="card-body row" style="justify-items: center">
+            <div class="row">
+              <p class="text-white text-title-sm">{{game.name}}</p>
+            </div>
+            <div class="row">
+              <div class="col-xl-3 col-md-3">
+                <button (click)="getGameAndUpdate(game.id)" class="btn-second btn-sm">Chơi</button>
+              </div>
+              <div class="col-xl-9 col-md-9">
+                <p class="card-text text-content">{{game.playedTimes}} lượt chơi</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button id="myBtn" title="Go to top"><i class="fa-solid fa-arrow-up" style="font-size: 2rem"></i></button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content object">
+        <div class="modal-header">
+          <h5 class="modal-title text-white" id="exampleModalLabel">Thông báo</h5>
+        </div>
+        <div class="modal-body text-white">
+          Bạn có chắc chắn muốn xóa game {{this.selectedName}} hay không?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-second-non-border" data-bs-dismiss="modal">Đóng</button>
+          <button type="button" (click)="deleteGameById()" class="btn-main text-white" data-bs-dismiss="modal">Xóa
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
