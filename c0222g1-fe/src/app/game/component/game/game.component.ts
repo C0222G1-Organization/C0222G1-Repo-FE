@@ -83,7 +83,7 @@ export class GameComponent implements OnInit {
       this.game.playedTimes += 1;
       this.updatePlayedTimes(id);
     }, error => {
-      console.log('error');
+      console.log('error!');
     });
   }
 }
