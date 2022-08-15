@@ -1,0 +1,89 @@
+<div class="container-fluid">
+  <div class="d-flex ">
+    <div class="col-3 bg-menu ">
+      <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-menu ">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none t">
+          <span class="fs-4 text-center text-white">Menu khách hàng</span>
+        </a>
+        <hr class="text-primary">
+        <ul class="nav nav-pills flex-column mb-auto list-group menu-left">
+          <li class="nav-item">
+            <a href="#" class="nav-link list-group-item-action" aria-current="page">
+              <i class="fa-solid fa-hand-holding-dollar"></i>
+              Bảng giá
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link list-group-item-action">
+              <i class="fa-solid fa-gamepad"></i>
+              Dịch vụ
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link list-group-item-action">
+              <i class="fa-solid fa-circle-user"></i>
+              Tài khoản
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link list-group-item-action">
+              <i class="fa-solid fa-money-check-dollar"></i>
+              Thanh toán
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link list-group-item-action">
+              <i class="fa-solid fa-thumbs-up"></i>
+              Game yêu thích
+            </a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+    <div class="col-9 body-center">
+      <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-menu">
+        <span class="fs-4 text-left text-white">Thông tin khách hàng</span>
+        <div class="d-flex col-12">
+          <div class="col-8">
+            <hr class="text-primary">
+            <table>
+              <tr class="bordered">
+                <th scope="row" class="text-center title-td">Tên tài khoản</th>
+                <td class="text-center content-td">{{jwtReponseCustomer.customer.name}}</td>
+              </tr>
+              <tr class="bordered">
+                <th scope="row" class="text-center title-td">Thời gian bắt đầu</th>
+                <td class="text-center content-td">{{jwtReponseCustomer.startTime}}</td>
+              </tr>
+              <tr class="bordered">
+                <th scope="row" class="text-center title-td">Thời gian kết thúc</th>
+                <td class="text-center content-td">{{jwtReponseCustomer.endTime}}</td>
+              </tr>
+              <tr class="bordered">
+                <th scope="row" class="text-center title-td">Máy đang sử dụng</th>
+                <td class="text-center content-td">{{jwtReponseCustomer.computerCode}}</td>
+              </tr>
+              <tr class="bordered">
+                <th scope="row" class="text-center title-td">Giảm giá</th>
+                <td class="text-center content-td">10%</td>
+              </tr>
+              <tr class="bordered">
+                <th scope="row" class="text-center title-td">Mô tả</th>
+                <td class="text-center content-td">1 giờ/ 20,000 vnđ * số giờ chơi</td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-4">
+            <div>
+              <img src="assets/img/home-page-customer/user.png" alt="logo" class="img-user">
+              <div class="text-center mt-3">
+                <button type="button" class="btn btn-outline-primary">Sửa thông tin <i class="fa-solid fa-user-pen"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
