@@ -1,3 +1,8 @@
+/**
+ * Created by: PhucNQ
+ * Date created: 14/08/2022
+ * Interface: Computer
+ */
 export interface Computer {
   id?: number;
   code?: string;
