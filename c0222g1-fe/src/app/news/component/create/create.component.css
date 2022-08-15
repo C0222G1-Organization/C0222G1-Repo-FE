@@ -463,8 +463,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .img-box {
-  height: 18.3675em ;
-  width:  31.125em ;
+  height: 18em ;
   overflow: hidden;
 }
 

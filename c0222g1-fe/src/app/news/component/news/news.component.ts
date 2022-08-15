@@ -22,7 +22,6 @@ export class NewsComponent implements OnInit {
   ngOnInit(): void {
     this.getAllTopNews();
     this.getAllNews();
-    this.toastr.success('Đăng bài thàng công.');
   }
 
   getAllTopNews() {

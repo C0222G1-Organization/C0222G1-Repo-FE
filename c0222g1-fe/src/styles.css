@@ -1,4 +1,4 @@
-@import "../node_modules/ngx-toastr/toastr.css";
+@import "toastr.css";
 
 body {
   font-family: 'Arimo', sans-serif;
@@ -12,7 +12,7 @@ body {
 }
 
 .object {
-  background-color: #2A2A2A;
+  background-color: #2a2a2a;
   margin: 2rem 0;
   padding-left: 2rem;
   padding-right: 2rem;
@@ -64,7 +64,7 @@ body {
 }
 
 .btn-main {
-  background-color:  #0078f2;
+  background-color:  #0078f2 !important;
   border: none;
   padding: 5px 10px;
 }
@@ -74,6 +74,20 @@ body {
   border: none;
   border-radius: 3px;
   padding: 5px 10px;
+}
+
+.btn-second-non-border {
+  background-color:  white;
+  border: none;
+  padding: 5px 10px;
+}
+
+.btn-opacity-border {
+  width:100%;
+  padding: 9px 0;
+  background-color: #121212;
+  border:1px solid white;
+  border-radius: 5px;
 }
 
 ul li {
@@ -112,7 +126,7 @@ li.active::after {
 }
 
 .list-image-game {
-  width: 150px;
+  width: 35rem;
   margin-right: 1rem;
   border-radius: 10px;
 }
@@ -146,6 +160,7 @@ li.active::after {
 
 .container-img-carousel .btn-image-carousel {
   position: absolute;
+  z-index: 1;
   top: 93%;
   left: 10.2%;
   transform: translate(-50%, -50%);
@@ -198,11 +213,26 @@ li.active::after {
   text-align: center;
 }
 
+.middle-md {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
 .container-img:hover .image {
   opacity: 1;
 }
 
 .container-img:hover .middle {
+  opacity: 1;
+}
+
+.container-img:hover .middle-md {
   opacity: 1;
 }
 
@@ -212,7 +242,7 @@ li.active::after {
 
 .card-game {
   width: 24%;
-  margin-right: 0.5rem;
+  margin: 0rem 0.3rem;
 }
 
 
@@ -230,4 +260,38 @@ li.active::after {
 #myBtn:hover {
   background-color: #555;
 }
+
+.search {
+  border-radius: 2em;
+  background-color: rgba(0,0,0,0);
+  border: none;
+  background-color: #2A2A2A;
+  padding: 0.5rem;
+}
+
+.search:focus {
+  color: #ffff;
+}
+
+.search:focus {
+  outline: none !important;
+  border: none !important;
+}
+
+.ngx-pagination .current {
+  padding: 0.1875rem 0.625rem;
+  background-color: #0078f2;
+  color: #fefefe;
+  cursor: default;
+}
+
+.page-link {
+  color: white !important;
+}
+
+.ngx-pagination a, .ngx-pagination button {
+  cursor: pointer;
+  color: white !important;
+}
+
 
