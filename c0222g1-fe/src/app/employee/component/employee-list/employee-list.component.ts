@@ -11,6 +11,13 @@ import {ToastrService} from 'ngx-toastr';
   styleUrls: ['./employee-list.component.css']
 })
 export class EmployeeListComponent implements OnInit {
+
+  collection = {count: 60, data: []};
+  config = {
+    itemsPerPage: 5,
+    currentPage: 1,
+    totalItems: this.collection.count
+  };
   page = 0;
   totalElements: any;
   employees: any;
@@ -18,7 +25,7 @@ export class EmployeeListComponent implements OnInit {
   code = '';
   name = '';
   dobfrom = '';
-  dobe = '';
+  dobend = '';
   workf = '';
   workt = '';
   position = '';
@@ -35,12 +42,12 @@ export class EmployeeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPosition();
-    this.search();
+    this.getAll();
   }
 
   getAll() {
     this.employeeService.getEmployeeList(this.page, this.code, this.name, this.dobfrom,
-      this.dobe, this.workf, this.workt, this.position, this.address).subscribe((value: any) => {
+      this.dobend, this.workf, this.workt, this.position, this.address).subscribe((value: any) => {
       console.log(this.page);
       this.employees = value.content;
       console.log(value);
@@ -57,11 +64,18 @@ export class EmployeeListComponent implements OnInit {
   }
 
   search() {
+    if (this.page !== 0) {
+      this.page = 0;
+    }
     console.log(this.position);
     this.employeeService.getEmployeeList(this.page, this.code, this.name, this.dobfrom,
-      this.dobe, this.workf, this.workt, this.position, this.address).subscribe((value: any) => {
+      this.dobend, this.workf, this.workt, this.position, this.address).subscribe((value: any) => {
       this.employees = value.content;
+      if (this.employees.isEmpty) {
+        this.toastr.warning('Không có dữ liệu phù hợp.');
+      }
       console.log(this.employees[0].workf.substr(0, 4));
+      console.log(this.dobend);
       this.totalElements = value.totalElements;
     });
   }

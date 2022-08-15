@@ -28,11 +28,11 @@ export class EmployeeService {
                   address: string): Observable<Employee[]> {
 
     if (dobfrom === '') {
-      dobfrom = '0000-00-00';
+      dobfrom = '1900-01-01';
     }
 
     if (dobend === '') {
-      dobend = '9999-12-31';
+      dobend = '2200-12-31';
     }
     if (workf === '') {
       workf = '0000-00-00';
