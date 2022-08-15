@@ -3,8 +3,7 @@ import {CustomerService} from '../../service/customer.service';
 import {ToastrService} from 'ngx-toastr';
 import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
 import {CustomerDTO} from '../../model/customerDTO';
-import {keyframes} from "@angular/animations";
-
+import {Title} from "@angular/platform-browser";
 @Component({
   selector: 'app-customer-list',
   templateUrl: './customer-list.component.html',
@@ -24,7 +23,8 @@ export class CustomerListComponent implements OnInit {
   id: number
   checked: boolean
 
-  constructor(private customerService: CustomerService, private toast: ToastrService) {
+  constructor(private customerService: CustomerService, private toast: ToastrService,private title: Title) {
+    this.title.setTitle('Danh sách khách hàng')
   }
   color = 'red'
 
@@ -86,28 +86,6 @@ export class CustomerListComponent implements OnInit {
     this.ngOnInit();
   }
 
-  getValue() {
-    console.log(this.formSearch.value);
-
-  }
-
-  // getIdCheck(tem: CustomerDTO, checked: any) {
-  //
-  //   console.log("chahahahahahahha")
-  //   if (checked === true) {
-  //     this.map.set(tem.id, tem);
-  //     console.log("12312313 true     " + this.map.size)
-  //
-  //   } else {
-  //     this.map.delete(tem.id)
-  //     console.log("12312313 fales     " + this.map.size)
-  //   }
-  //   console.log(this.listCustomer.length + "lenght")
-  //   console.log(this.map.size + "size map")
-  //
-  // }
-
-
   getIdDeleteInTable(customer: CustomerDTO) {
     console.log(customer);
     this.idCustomerDelete = customer;
@@ -139,26 +117,6 @@ export class CustomerListComponent implements OnInit {
     console.log(this.map.size)
   }
 
-  // checkAll(listCustomer: CustomerDTO[], checked: boolean) {
-  //   for (let i = 0; i < this.listCustomer.length; i++) {
-  //     this.getIdCheck(this.listCustomer[i], checked)
-  //   }
-  //   this.statusCheckBox = checked
-  //
-  // }
-
-
-  // getCustomerCheck(){
-  //   this.listCustomer.forEach(value => {
-  //     if (value.checked == true){
-  //       this.map.set(value.id,value)
-  //     }else {
-  //       this.map.delete(value.id)
-  //     }
-  //   })
-  //   console.log(this.map)
-  // }
-  ////trường
   isAllCheckBoxChecked() {
     this.listCustomer.forEach(value => {
       if (value.checked == true && value.deleteStatus == 0) {
@@ -179,10 +137,6 @@ export class CustomerListComponent implements OnInit {
 
   }
 
-
-  buttonDelete() {
-
-  }
 
 
 }

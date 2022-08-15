@@ -95,3 +95,11 @@ label.hiddenText {
   text-overflow: ellipsis;
   max-width: 100px;
 }
+.buttonPagination :hover{
+  background-color: black !important;
+}
+/*.ngx-pagination .disabled {*/
+/*  padding: 0.1875rem 0.625rem;*/
+/*  color: #100d0d !important;*/
+/*  cursor: default;*/
+/*}*/

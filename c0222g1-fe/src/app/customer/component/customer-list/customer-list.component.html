@@ -112,7 +112,7 @@
           <td class="w-10">{{temp.phoneNumber}}</td>
           <td class="w-10">{{temp.activeStatus == 1 ? 'Đang hoạt động' : 'Ngưng hoạt động'}}</td>
           <td class="w-5">
-            <button class="btn btn-outline-secondary  ">
+            <button class="btn btn-outline-secondary" routerLink="/customers/edit/{{temp.id}}">
               <i class="fa-solid fa-pencil"></i>
             </button>
           </td>
@@ -128,19 +128,19 @@
 
   <div class="row d-flex" id="btn-outside">
     <div class="col-4">
-      <button class="btn btn-outline-secondary m-2">Thêm mới khách hàng</button>
+      <button routerLink="/customers/create" class="btn btn-primary m-2">Thêm mới khách hàng</button>
     </div>
     <div class="col-4"></div>
     <div class="col-4">
       <div style="text-align: right" *ngIf="map.size!==0">
-        <button style="margin-right: 11px" class="btn btn-primary " (click)="buttonDelete()" data-bs-toggle="modal"
+        <button style="margin-right: 11px" class="btn btn-primary "  data-bs-toggle="modal"
                 data-bs-target="#deleteModal">Xóa
         </button>
       </div>
     </div>
   </div>
-  <div *ngIf="element!==0">
-    <pagination-controls (pageChange)=getPage($event)></pagination-controls>
+  <div *ngIf="element!==0" >
+    <pagination-controls class="buttonPagination"  style="background-color: black" (pageChange)=getPage($event)></pagination-controls>
   </div>
 
 
