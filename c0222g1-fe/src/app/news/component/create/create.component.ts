@@ -64,10 +64,10 @@ export class CreateComponent implements OnInit {
           this.newsService.createNews(this.formNews.value).subscribe(
             () => {
               this.router.navigateByUrl('news');
-              this.toastr.success('đăng bài thàng công!');
+              this.toastr.success('Đăng bài thàng công.');
             },
             error => {
-              this.toastr.error('đăng bài thất bại, hãy thử lại!');
+              this.toastr.error('Đăng bài thất bại, hãy thử lại.');
             }
           );
         });

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="db42e3b1-4e4a-4ce8-aafa-b14ec0fe66d1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/news/component/create/create.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/news/component/create/create.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/news/component/news/news.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/news/component/news/news.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/environments/environment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/environments/environment.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2DC10OgICIGbIChEp3QdkJN4jTh" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="C:\Users\Admin\Documents\C0222G1-huynh_kim_hieu_M6\front_end\C0222G1-Repo-FE\c0222g1-fe\node_modules\typescript\lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="db42e3b1-4e4a-4ce8-aafa-b14ec0fe66d1" name="Changes" comment="" />
+      <created>1660188028845</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1660188028845</updated>
+      <workItem from="1660188031048" duration="39000" />
+      <workItem from="1660188123030" duration="14300000" />
+      <workItem from="1660226348903" duration="3923000" />
+      <workItem from="1660266166805" duration="15796000" />
+      <workItem from="1660318858804" duration="7128000" />
+      <workItem from="1660356139659" duration="34665000" />
+      <workItem from="1660461361290" duration="22664000" />
+      <workItem from="1660492122024" duration="1485000" />
+      <workItem from="1660531951026" duration="314000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
