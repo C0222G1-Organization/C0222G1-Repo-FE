@@ -1,6 +1,6 @@
 <div class="container mt-5" id="table-computer">
   <div class="row">
-    <h2 class="text-center text-white">Danh sách máy</h2>
+    <h2 class="text-center text-white">DANH SÁCH MÁY</h2>
   </div>
   <div class="row">
     <div class="container">
@@ -70,7 +70,7 @@
         </thead>
         <tbody>
         <tr
-          *ngFor="let computer of computers | paginate : { itemsPerPage: 3, currentPage: page + 1, totalItems: totalItems}; index as i">
+          *ngFor="let computer of computers | paginate : { itemsPerPage: 4, currentPage: page + 1, totalItems: totalItems}; index as i">
           <td>
             <input class="card-notify-year-checkbox" type="checkbox" value="{{computer.id}}"
                    [(ngModel)]="computers[i].checked">
@@ -87,7 +87,7 @@
           <td>{{computer.manufacturer}}</td>
           <td>{{computer.warranty}} năm</td>
           <td>
-            <button class="btn btn-outline-secondary mx-2" routerLink="/computers/edit/{{computer.id}}"><i class="fa-solid fa-pencil"></i></button>
+            <button class="btn btn-outline-secondary color-icon" routerLink="/computers/edit/{{computer.id}}"><i class="fa-solid fa-pencil"></i></button>
             <button class="btn btn-outline-secondary " (click)="getInfo(computer)" data-bs-toggle="modal"
                     data-bs-target="#deleteModal"><i class="fa-solid fa-trash"></i></button>
           </td>
