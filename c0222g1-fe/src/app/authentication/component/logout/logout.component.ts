@@ -13,11 +13,13 @@ export class LogoutComponent implements OnInit {
   constructor(private authService: AuthService, private toartrs: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
+    this.logout();
   }
 
   logout() {
     sessionStorage.clear();
-    this.toartrs.success('Đã đăng xuất', 'THÔNG BÁO');
+    this.authService.sendData('login', false);
+    this.toartrs.success('Đã đăng xuất', );
     this.router.navigate(['']);
   }
 
