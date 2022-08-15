@@ -2,45 +2,47 @@
   <div class="row">
     <h2 class="text-center text-white">Danh sách máy</h2>
   </div>
-  <div class="row d-flex">
-    <div class="w-100">
-      <div class="container-input">
-        <div class="form">
-          <div class="fields">
-            <div class="input-field input-search">
-              <label>Mã máy</label>
-              <input type="text" class="input-search" [(ngModel)]="code" placeholder="Nhập mã máy">
+  <div class="row">
+    <div class="container">
+      <div class="">
+        <div class="container-input">
+          <div class="form">
+            <div class="fields">
+              <div class="input-field input-search">
+                <label>Mã máy</label>
+                <input type="text" class="input-search" [(ngModel)]="code" placeholder="Nhập mã máy">
+              </div>
+              <div class="input-field">
+                <label>Vị trí</label>
+                <input type="text" class="input-search" [(ngModel)]="location" placeholder="Nhập vị trí máy">
+              </div>
+              <div class="input-field">
+                <label>Ngày bắt đầu</label>
+                <input type="date" [(ngModel)]="start" class="input-search">
+              </div>
+              <div class="input-field">
+                <label>Ngày kết thúc</label>
+                <input type="date" [(ngModel)]="end" class="input-search">
+              </div>
+              <div class="input-field">
+                <label>Trạng thái</label>
+                <select style="min-width: 100px" [(ngModel)]="status" class="input-search form-select">
+                  <option value="">--Chọn trạng thái--</option>
+                  <option value="0">Bình thường</option>
+                  <option value="1">Bảo trì</option>
+                </select>
+              </div>
+              <div class="input-field">
+                <label>Loại máy</label>
+                <select style="min-width: 100px" [(ngModel)]="typeId" class="input-search form-select">
+                  <option value="">--Chọn loại máy--</option>
+                  <option *ngFor="let type of computerTypes" value="{{type.id}}">Máy {{type.name}}</option>
+                </select>
+              </div>
             </div>
             <div class="input-field">
-              <label>Vị trí</label>
-              <input type="text" class="input-search" [(ngModel)]="location" placeholder="Nhập vị trí máy">
+              <button class="btn btn-outline-secondary mb-2" (click)="findAll()" style="right: 0">Tìm kiếm</button>
             </div>
-            <div class="input-field">
-              <label>Ngày bắt đầu</label>
-              <input type="date" [(ngModel)]="start" class="input-search">
-            </div>
-            <div class="input-field">
-              <label>Ngày kết thúc</label>
-              <input type="date" [(ngModel)]="end" class="input-search">
-            </div>
-            <div class="input-field">
-              <label>Trạng thái</label>
-              <select style="min-width: 100px" [(ngModel)]="status" class="input-search form-select">
-                <option value="">--Chọn trạng thái--</option>
-                <option value="0">Bình thường</option>
-                <option value="1">Bảo trì</option>
-              </select>
-            </div>
-            <div class="input-field">
-              <label>Loại máy</label>
-              <select style="min-width: 100px" [(ngModel)]="typeId" class="input-search form-select">
-                <option value="">--Chọn loại máy--</option>
-                <option *ngFor="let type of computerTypes" value="{{type.id}}">{{type.name}}</option>
-              </select>
-            </div>
-          </div>
-          <div class="input-field">
-            <button class="btn btn-outline-secondary" (click)="findAll()" style="right: 0">Tìm kiếm</button>
           </div>
         </div>
       </div>
@@ -101,7 +103,7 @@
     <div class="col-4"></div>
     <div class="col-4">
       <div class="float-end">
-        <button class="btn btn-danger" data-bs-toggle="modal"
+        <button class="btn btn-primary" data-bs-toggle="modal"
                 data-bs-target="#deleteAllModal">Xóa
         </button>
       </div>
