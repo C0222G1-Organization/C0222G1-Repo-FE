@@ -6,6 +6,7 @@ import {formatDate} from '@angular/common';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {finalize} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-create',
@@ -16,7 +17,8 @@ export class CreateComponent implements OnInit {
 
   constructor(private newsService: NewsService,
               private storage: AngularFireStorage,
-              private router: Router) {}
+              private router: Router,
+              private toastr: ToastrService) {}
   selectedFile: File = null;
   gameCateList: GameCategory[];
   formNews = new FormGroup({
@@ -62,6 +64,10 @@ export class CreateComponent implements OnInit {
           this.newsService.createNews(this.formNews.value).subscribe(
             () => {
               this.router.navigateByUrl('news');
+              this.toastr.success('đăng bài thàng công!');
+            },
+            error => {
+              this.toastr.error('đăng bài thất bại, hãy thử lại!');
             }
           );
         });

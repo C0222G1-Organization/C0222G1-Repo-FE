@@ -27,8 +27,8 @@
           </div>
         <div *ngIf="url != null" class="row mt-4">
           <div class="col-lg-5 px-3 mx-auto">
-            <div class="m-0">
-              <div><img class="preview-img rounded" [src]="url" *ngIf="url" alt=""></div>
+            <div class="m-0 img-box">
+              <div><img class="preview-img rounded img-fit" [src]="url" *ngIf="url" alt=""></div>
             </div>
           </div>
         </div>
@@ -64,7 +64,7 @@
         <div class="row mt-4">
           <div class="col-lg-4 px-3">
             <div class="form-floating">
-              <button type="button" class="button w-100 h-100 rounded text-light">Thêm nội dung</button>
+              <button type="button" routerLink="/news" class="button w-100 h-100 rounded text-light">Trở về</button>
             </div>
           </div>
           <div class="col-lg-8 px-3">

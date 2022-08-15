@@ -461,3 +461,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .preview-img {
   width: 100%;
 }
+
+.img-box {
+  height: 18.3675em ;
+  width:  31.125em ;
+  overflow: hidden;
+}
+
+.img-fit {
+  object-fit: cover;
+  height: 100% ;
+  width:  100%;
+}
+
