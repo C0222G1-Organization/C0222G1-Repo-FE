@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Computer} from "../../model/computer";
-import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
-import {ComputerService} from "../../service/computer.service";
-import {ToastrService} from "ngx-toastr";
-import {ComputerTypeService} from "../../service/computer-type.service";
-import {ComputerType} from "../../model/computer-type";
-import {Router} from "@angular/router";
+import {Computer} from '../../model/computer';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ComputerService} from '../../service/computer.service';
+import {ToastrService} from 'ngx-toastr';
+import {ComputerTypeService} from '../../service/computer-type.service';
+import {ComputerType} from '../../model/computer-type';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -14,8 +14,8 @@ import {Router} from "@angular/router";
   styleUrls: ['./computer-create.component.css']
 })
 export class ComputerCreateComponent implements OnInit {
-  computerType: ComputerType[]
-  computer: Computer[]
+  computerType: ComputerType[];
+  computer: Computer[];
   formComputer = new FormGroup({
       id: new FormControl(),
       code: new FormControl('', [Validators.required,
@@ -35,11 +35,7 @@ export class ComputerCreateComponent implements OnInit {
         name: new FormControl('', Validators.required)
       })
     }, this.checkStartDate, this.checkLocation
-  )
-
-  // get start() {
-  //   return this.formComputer.get('startUsedDate');
-  // }
+  );
 
   constructor(private computerService: ComputerService,
               private toast: ToastrService,
@@ -50,23 +46,23 @@ export class ComputerCreateComponent implements OnInit {
   getAllComputerType() {
     this.computerTypeService.getAll().subscribe(value => {
       this.computerType = value;
-      console.log(value)
-    })
+      console.log(value);
+    });
   }
 
   ngOnInit(): void {
-    this.getAllComputerType()
+    this.getAllComputerType();
   }
 
   checkLocation(abstractControl: AbstractControl): any {
-    const location = this.formComputer
+    const location = this.formComputer;
     // const locations = this.formComputer.get('location').value
     // if ()
   }
 
   checkStartDate(abstractControl: AbstractControl): any {
     const date = new Date(abstractControl.value.startUsedDate);
-    console.log(date + 'aaaaa')
+    console.log(date + 'aaaaa');
     const now = new Date();
     console.log(date);
     console.log(now);
@@ -79,13 +75,13 @@ export class ComputerCreateComponent implements OnInit {
 
 
   cancel() {
-    this.toast.error("Sửa thất bại", 'Computer')
-    this.route.navigateByUrl("/computers")
+    this.toast.error('Sửa thất bại', 'Computer');
+    this.route.navigateByUrl('/computers');
   }
 
   submitCreate() {
     const computer = this.formComputer.value;
-    console.log(computer)
+    console.log(computer);
     for (const i of this.computerType) {
       if (i.id == computer.computerType.id) {
         computer.computerType.name = i.name;
@@ -93,16 +89,15 @@ export class ComputerCreateComponent implements OnInit {
       }
     }
     this.computerService.createComputer(this.formComputer.value).subscribe(value => {
-      this.toast.success('Thêm mới thành công!', 'Computer')
+      this.toast.success('Thêm mới thành công!', 'Computer');
       this.formComputer.reset();
-      this.route.navigateByUrl('/computers')
-    })
+      this.route.navigateByUrl('/computers');
+    });
   }
 
   checkYear(abstractControl: AbstractControl) {
     const sYear = abstractControl.value.substr(0, 4);
-    // const curYear=new Date().getFullYear()
-    console.log(sYear)
-    return sYear >= 2000 ? null : {not2000: true}
+    console.log(sYear);
+    return sYear >= 2000 ? null : {not2000: true};
   }
 }

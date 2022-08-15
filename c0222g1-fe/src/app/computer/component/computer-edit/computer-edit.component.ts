@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
-import {ComputerService} from "../../service/computer.service";
-import {ComputerTypeService} from "../../service/computer-type.service";
-import {Computer} from "../../model/computer";
-import {ComputerType} from "../../model/computer-type";
-import {ActivatedRoute, Router} from "@angular/router";
-import {ToastrService} from "ngx-toastr";
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ComputerService} from '../../service/computer.service';
+import {ComputerTypeService} from '../../service/computer-type.service';
+import {Computer} from '../../model/computer';
+import {ComputerType} from '../../model/computer-type';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-computer-edit',
@@ -20,8 +20,8 @@ export class ComputerEditComponent implements OnInit {
       status: new FormControl('', Validators.required),
       location: new FormControl('', [Validators.required,
         Validators.pattern('^(A)[0-9]{3}$')]),
-      startUsedDate: new FormControl('', [Validators.required,this.checkYear]),
-      configuration: new FormControl('', [Validators.required,Validators.pattern('^[A-Za-z]|[0-9]$')]),
+      startUsedDate: new FormControl('', [Validators.required, this.checkYear]),
+      configuration: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z]|[0-9]$')]),
       manufacturer: new FormControl('', [Validators.required, Validators.minLength(1),
         Validators.maxLength(20)]),
       deleteStatus: new FormControl(''),
@@ -32,9 +32,9 @@ export class ComputerEditComponent implements OnInit {
       })
 
     }, this.checkStartDate
-  )
+  );
   id: number;
-  computerType: ComputerType[]
+  computerType: ComputerType[];
 
   constructor(private computerService: ComputerService,
               private computerTypeService: ComputerTypeService,
@@ -45,8 +45,8 @@ export class ComputerEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = Number(this.activatedRoute.snapshot.params.id);
-    this.getAll()
-    this.findById(this.id)
+    this.getAll();
+    this.findById(this.id);
   }
 
   checkStartDate(abstractControl: AbstractControl): any {
@@ -65,33 +65,34 @@ export class ComputerEditComponent implements OnInit {
     this.computerTypeService.getAll().subscribe(value => {
       this.computerType = value;
       console.log(value);
-    })
+    });
   }
 
   findById(id) {
     this.computerService.findById(id).subscribe(value => {
-      this.formEditComputer.patchValue(value)
+      this.formEditComputer.patchValue(value);
       console.log(value);
-    })
+    });
   }
 
   cancel() {
-    this.toast.error("Sửa thất bại", 'Computer')
-    this.route.navigateByUrl("/computers")
+    this.toast.error('Sửa thất bại', 'Computer');
+    this.route.navigateByUrl('/computers');
   }
 
   submit() {
     this.computerService.editComputer(this.id, this.formEditComputer.value).subscribe(value => {
-        this.toast.success('Sửa thành công', 'Computer')
-        this.route.navigateByUrl("/computer")
+        this.toast.success('Sửa thành công', 'Computer');
+        this.route.navigateByUrl('/computer');
       },
       error => {
-        this.toast.error('Sửa thất bại', 'Computer')
-      })
+        this.toast.error('Sửa thất bại', 'Computer');
+      });
   }
-  checkYear(abstractControl:AbstractControl){
-    const sYear=abstractControl.value.substr(6,9);
+
+  checkYear(abstractControl: AbstractControl) {
+    const sYear = abstractControl.value.substr(6, 9);
     // const curYear=new Date().getFullYear()
-    return sYear<=2000 ?null:{not2000:true}
+    return sYear <= 2000 ? null : {not2000: true};
   }
 }
