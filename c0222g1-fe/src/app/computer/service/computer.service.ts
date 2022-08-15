@@ -61,6 +61,12 @@ export class ComputerService {
     if (end === '') {
       end = '2200-10-10';
     }
+    if (status === null) {
+      status = '';
+    }
+    if (typeId === null) {
+      typeId = '';
+    }
     let params = new HttpParams();
     params = params.append('code', code);
     params = params.append('location', location);
@@ -68,6 +74,7 @@ export class ComputerService {
     params = params.append('end', end);
     params = params.append('status', status);
     params = params.append('typeId', typeId);
+    console.log(params);
     return this.http.get<SearchDto[]>(API_URL + `/computers/${page}`, {params});
   }
 
