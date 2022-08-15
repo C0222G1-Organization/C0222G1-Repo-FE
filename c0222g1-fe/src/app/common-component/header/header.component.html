@@ -14,7 +14,7 @@
             <li class="nav-item active">
               <a class="nav-link" style="color: #a8a8a8" href="#">Trang chủ</a>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" *ngIf="employeeCard">
               <a class="nav-link" href="#" id="navbarDropdown" role="button"
                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
                 Nhân Viên
@@ -26,7 +26,7 @@
                 <a class="dropdown-item" href="#">Tác vụ khác</a>
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" *ngIf="computerCard">
               <a class="nav-link" href="#" id="navbarDropdownCustomer" role="button"
                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
                 Khách Hàng
@@ -38,7 +38,7 @@
                 <a class="dropdown-item" href="#">Tác vụ khác</a>
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" *ngIf="computerCard">
               <a class="nav-link" href="#" id="navbarDropdownComputer" role="button"
                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
                 Danh Sách Máy
@@ -50,7 +50,7 @@
                 <a class="dropdown-item" href="#">Tác vụ khác</a>
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" *ngIf="gameCard">
               <a class="nav-link" href="#" id="navbarDropdownGame" role="button"
                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
                 Game
@@ -62,7 +62,7 @@
                 <a class="dropdown-item" href="#">Tác vụ khác</a>
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" *ngIf="newsCard">
               <a class="nav-link" href="#" id="navbarDropdownNews" role="button"
                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
                 Tin Tức
@@ -74,7 +74,7 @@
                 <a class="dropdown-item" href="#">Tác vụ khác</a>
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" *ngIf="serviceCard">
               <a class="nav-link" href="#" id="navbarDropdownProduct" role="button"
                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
                 Dịch Vụ
@@ -86,15 +86,19 @@
                 <a class="dropdown-item" href="#">Tác vụ khác</a>
               </div>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="statisticalCard">
               <a class="nav-link" style="color: #a8a8a8" routerLink="statistic">Thống Kê</a>
             </li>
           </ul>
-          <form class="d-flex">
-            <!--                        <button class="btn-main text-white">Employee</button>-->
-            <!--                        <a class="nav-link" style="color: #a8a8a8" href="#">Đăng Xuất</a>-->
-            <a class="nav-link" style="color: #a8a8a8" routerLink="sign-up">Đăng Ký</a>
-            <button class="btn-main text-white" routerLink="sign-in">Đăng Nhập</button>
+          <form class="d-flex" *ngIf="login">
+                                    <a class="btn-main text-white" routerLink="home-page-customer">{{username}}</a>
+                                    <a class="nav-link" style="color: #a8a8a8" routerLink="sign-out">Đăng Xuất</a>
+<!--            <a class="nav-link" style="color: #a8a8a8" routerLink="sign-up">Đăng Ký</a>-->
+<!--            <button class="btn-main text-white" routerLink="sign-in">Đăng Nhập</button>-->
+          </form>
+          <form class="d-flex" *ngIf="login==false">
+                        <a class="nav-link" style="color: #a8a8a8" routerLink="sign-up">Đăng Ký</a>
+                        <button class="btn-main text-white" routerLink="sign-in">Đăng Nhập</button>
           </form>
         </div>
       </div>
