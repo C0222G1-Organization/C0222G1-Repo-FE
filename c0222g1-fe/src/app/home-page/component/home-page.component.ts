@@ -63,6 +63,8 @@ export class HomePageComponent implements OnInit {
       this.getAllNewGames();
       this.getAllHotGames();
       this.toastr.success("Xóa thành công");
+    }, error => {
+      this.toastr.error("Xóa thất bại");
     });
   }
 
@@ -72,6 +74,8 @@ export class HomePageComponent implements OnInit {
       this.getAllHotGames();
       this.getAllNewGames();
       this.getAllPopularGames();
+    }, error => {
+      this.toastr.error("Khởi động thất bại");
     })
   }
 
