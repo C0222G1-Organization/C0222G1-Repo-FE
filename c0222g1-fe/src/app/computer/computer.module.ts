@@ -10,13 +10,13 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
-  declarations: [ComputerCreateComponent, ComputerEditComponent,ComputerListComponent],
+  declarations: [ComputerCreateComponent, ComputerEditComponent, ComputerListComponent],
   imports: [
     CommonModule,
     ComputerRoutingModule,
     NgxPaginationModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule
   ]

@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment} from '../../enviroment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {SearchDto} from '../model/search-dto';
 import {ComputerType} from '../model/computer-type';
+import {Computer} from '../model/computer';
 
 const API_URL = `${environment.apiUrl}`;
 
@@ -19,17 +20,18 @@ export class ComputerService {
    * Created by: PhucNQ
    * Date created: 10/08/2022
    * Function: findAll
+   */
   createComputer(computer: Computer): Observable<Computer> {
-    return this.http.post<Computer>(API_URL + '/computers/create', computer)
+    return this.http.post<Computer>(API_URL + '/computers/create', computer);
   }
 
 
   findById(id: number) {
-    return this.http.get<Computer>(API_URL + `/computers/list/${id}`)
+    return this.http.get<Computer>(API_URL + `/computers/list/${id}`);
   }
 
   editComputer(id: number, computer: Computer) {
-    return this.http.patch<Computer>(API_URL + `/computers/edit/${id}`, computer)
+    return this.http.patch<Computer>(API_URL + `/computers/edit/${id}`, computer);
   }
 
   findAll(page: number, code: string, location: string, start: string, end: string, status: string, typeId: string): Observable<SearchDto[]> {
