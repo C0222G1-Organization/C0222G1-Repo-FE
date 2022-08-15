@@ -27,6 +27,7 @@ import {RegistrationModule} from "./registration/registration.module";
 import {HomePageModule} from "./home-page/home-page.module";
 import {StatisticModule} from "./statistic/statistic.module";
 import {JwtInterceptor} from "./authentication/service/jwt.interceptor";
+import { ServerErrorComponent } from './common-component/server-error/server-error.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import {JwtInterceptor} from "./authentication/service/jwt.interceptor";
     HeaderComponent,
     FooterComponent,
     NotAuthorizedComponent,
+    ServerErrorComponent,
   ],
   imports: [
     BrowserModule,
