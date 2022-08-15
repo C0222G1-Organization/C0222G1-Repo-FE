@@ -66,13 +66,17 @@ export class GameComponent implements OnInit {
       this.page = 1;
       this.getGames();
       this.toastr.success("Xóa thành công");
+    }, error => {
+      this.toastr.error("Xóa thất bại");
     });
   }
 
   updatePlayedTimes(id: number) {
     this.gameService.updateGame(id, this.game).subscribe(res => {
-      console.log('ok');
       this.getGames();
+      this.toastr.success("Đang khởi động game")
+    }, error => {
+      this.toastr.error("Khởi động thất bại");
     })
   }
 
