@@ -116,8 +116,9 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   }
 
   getRecordById() {
-    if (sessionStorage.getItem('token')) {
-      const id = Number(sessionStorage.getItem('recordId'));
+    if (!sessionStorage.getItem('token')) {
+      // const id = Number(sessionStorage.getItem('recordId'));
+      const id = 1;
       this.paymentDetailService.loadInfoRecordById(id).subscribe(value => {
         this.record = value;
         console.log(this.record);
@@ -155,11 +156,9 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   }
 
   orderToDatabase() {
-    // console.log(this.paymentAfterOrder.record);
-    // this.paymentAfterOrder.record = this.record;
     this.paymentService.savePayment(this.record).subscribe(value => {
       console.log(value);
-      this.toast.success('GỬI YÊU CẦU THÀNH CÔNG.');
+      this.toast.success('YÊU CẦU THÀNH CÔNG.');
 
       // tslint:disable-next-line:prefer-for-of
       for (let i = 0; i < this.orderProductList.length; i++) {
@@ -169,12 +168,11 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
           amount: this.orderProductList[i].quantity,
         };
         this.paymentDetailService.savePaymentDetail(paymentDetail).subscribe(value1 => {
-          console.log('LUAN');
+          if (i === this.orderProductList.length - 1) {
+            this.route.navigateByUrl('/display/' + value.id);
+          }
         });
       }
-      setInterval(() => {
-        this.route.navigateByUrl('/display/' + value.id);
-      }, 2000);
     });
   }
 }
