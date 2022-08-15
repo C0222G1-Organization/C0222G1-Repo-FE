@@ -3,6 +3,7 @@ import {DatePipe} from '@angular/common';
 import {Title} from '@angular/platform-browser';
 import {InputStatistic} from '../../model/input-statistic';
 import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+
 import {Chart, registerables} from 'chart.js';
 import {StatisticService} from '../../service/statistic/statistic.service';
 

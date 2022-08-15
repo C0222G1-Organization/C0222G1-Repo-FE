@@ -32,7 +32,7 @@ export class EmployeeService {
     }
 
     if (dobend === '') {
-      dobend = '9999-12-31';
+      dobend = '2200-12-31';
     }
     if (workf === '') {
       workf = '0000-00-00';

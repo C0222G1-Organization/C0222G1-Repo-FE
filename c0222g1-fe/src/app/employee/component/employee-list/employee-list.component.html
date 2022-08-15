@@ -1,6 +1,6 @@
 <div class="container mt-5" id="table-computer">
   <div class="row">
-    <h2 class="text-center text-white">Danh sách nhân viên</h2>
+    <h2 class="text-center text-white">DANH SÁCH NHÂN VIÊN</h2>
     <div class="container text-white my-5">
 
       <div class="row">
@@ -8,28 +8,28 @@
           <div class="row mb-4">
             <div class=" col-lg-3 col-xl-3 w-15">
               <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Nhập mã: </label>
-                <input id="id" type="text" class="input-search form-control m-0" style="margin-right: 0"
+                <label style="color: white"  class="col-form-label fontFamily">Nhập mã: </label>
+                <input id="codeE" type="text" class="input-search form-control m-0" style="margin-right: 0"
                        placeholder="Nhập mã" [(ngModel)]="code">
               </div>
             </div>
             <div class="col-lg-3 col-xl-3 w-15">
               <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Ngày sinh bắt đầu: </label>
+                <label style="color: white"  class="col-form-label fontFamily">Ngày sinh bắt đầu: </label>
                 <input type="date" class="form-control input-search" [(ngModel)]="dobfrom">
               </div>
             </div>
             <div class="col-lg-3 col-xl-3 w-15">
               <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Ngày bắt đầu: </label>
+                <label style="color: white"  class="col-form-label fontFamily">Ngày bắt đầu: </label>
                 <input type="date" class="form-control input-search" [(ngModel)]="workf">
               </div>
             </div>
-            <div class="col-lg-3 col-xl-3 w-15">
+            <div class="col-lg-3 col-xl-3 w-15 form-group">
               <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Vị trí: </label>
+                <label style="color: white"  class="col-form-label fontFamily">Vị trí: </label>
                 <select class="input-search-position-employee w-100 form-select" [(ngModel)]="position">
-                  <option selected value="">--Select--</option>
+                  <option selected value="" class="w-100">Vui lòng chọn</option>
                   <option *ngFor="let item of positions" [ngValue]="item.id">{{item.name}}</option>
                 </select>
               </div>
@@ -41,26 +41,26 @@
           <div class="row">
             <div class="col-lg-3 col-xl-3 w-15">
               <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Địa chỉ: </label>
+                <label style="color: white"  class="col-form-label fontFamily">Địa chỉ: </label>
                 <input id="address" type="text" class="input-search form-control m-0" style="margin-right: 0"
                        placeholder="Nhập địa chỉ" [(ngModel)]="address">
               </div>
             </div>
             <div class="col-lg-3 col-xl-3 w-15">
               <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Ngày sinh đến: </label>
-                <input type="date" class="input-search form-control" [ngModel]="dobe">
+                <label style="color: white" class="col-form-label fontFamily">Ngày sinh đến: </label>
+                <input type="date" class="input-search form-control" [(ngModel)]="dobend">
               </div>
             </div>
             <div class="col-lg-3 col-xl-3 w-15">
               <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Đến: </label>
-                <input type="date" class="form-control input-search" [ngModel]="workt">
+                <label style="color: white" class="col-form-label fontFamily">Đến: </label>
+                <input type="date" class="form-control input-search" [(ngModel)]="workt">
               </div>
             </div>
             <div class="col-lg-3 col-xl-3 w-15">
               <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Tên nhân viên: </label>
+                <label style="color: white" class="col-form-label fontFamily">Tên nhân viên: </label>
                 <input id="nameE" type="text" class="input-search form-control m-0" style="margin-right: 0"
                        placeholder="Nhập tên nhân viên" [(ngModel)]="name">
               </div>
@@ -104,7 +104,7 @@
                          [(ngModel)]="employees[i].checked" id="check" (click)="enable()"></td>
               <td>{{employee.code}}</td>
               <td>{{employee.name}}</td>
-              <td>{{employee.cmName}},{{employee.disName}},{{employee.proName}}</td>
+              <td class="hiddenText">{{employee.cmName}},{{employee.disName}},{{employee.proName}}</td>
               <td>{{employee.dob}}</td>
               <td>{{employee.email}}</td>
               <td>{{employee.phone}}</td>
