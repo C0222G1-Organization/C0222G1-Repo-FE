@@ -70,7 +70,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let computer of computers | paginate : { itemsPerPage: 3, currentPage: page + 1, totalItems: totalItems}">
+        <tr *ngFor="let computer of computers | paginate : { itemsPerPage: 4, currentPage: page + 1, totalItems: totalItems}">
           <td>
             <input type="checkbox">
             {{computer.id}}
@@ -81,6 +81,7 @@
           <td>{{computer.location}}</td>
           <td>{{computer.start | date: "dd/MM/yyyy"}}</td>
           <td>{{computer.configuration}}</td>
+          <td>{{computer.type}}</td>
           <td *ngIf="computer.type.includes('1',0)">Vip</td>
           <td *ngIf="computer.type.includes('2',0)">Thường</td>
           <td>{{computer.manufacturer}}</td>
