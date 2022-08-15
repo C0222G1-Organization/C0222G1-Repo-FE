@@ -73,33 +73,25 @@ export class CustomerInformationComponent implements OnInit {
    * function: load customer form DB
    */
   loadInfoCustomer() {
-    // this.customer = this.customerForm.value;
-    // console.log(this.customer);
-    // const idFromRoute = Number(this.activatedRoute.snapshot.params.id);
-    // this.userService.findById(idFromRoute).subscribe(result => {
-    //   console.log(result)
-    //   if (result === undefined) {
-    //     this.route.navigate(['/error']);
-    //   }
-    //   this.userForm.patchValue(result);
-    // });
-    // const customerIdFromRoute = Number(this.activatedRoute.snapshot.params.id);
-    const customerIdFromRoute = 3;
-    this.customerService.findCustomerById(customerIdFromRoute).subscribe(value => {
-      console.log(value);
-      this.customerForm.patchValue(value);
-      this.customer = value;
-      // console.log(this.customer);
-      this.minutes = this.customer.remainingTime % 60;
-      if (this.minutes < 10) {
-        this.minutes = '0' + this.minutes;
-      }
-      this.hour = (this.customer.remainingTime - this.minutes) / 60;
-      if (this.hour < 10) {
-        this.hour = '0' + this.hour;
-      }
-      // console.log(this.customer.user.password);
-    });
+    if (sessionStorage.getItem('token')) {
+      const customerIdFromRoute = sessionStorage.getItem('customerId');
+      alert(customerIdFromRoute);
+      this.customerService.findCustomerById(Number(customerIdFromRoute)).subscribe(value => {
+        console.log(value);
+        this.customerForm.patchValue(value);
+        this.customer = value;
+        // console.log(this.customer);
+        this.minutes = this.customer.remainingTime % 60;
+        if (this.minutes < 10) {
+          this.minutes = '0' + this.minutes;
+        }
+        this.hour = (this.customer.remainingTime - this.minutes) / 60;
+        if (this.hour < 10) {
+          this.hour = '0' + this.hour;
+        }
+        // console.log(this.customer.user.password);
+      });
+    }
   }
 
 

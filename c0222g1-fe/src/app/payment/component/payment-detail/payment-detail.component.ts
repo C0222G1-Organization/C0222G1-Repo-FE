@@ -4,6 +4,8 @@ import {ToastrService} from 'ngx-toastr';
 import {ProductCategory} from '../../../product/model/ProductCategory';
 import {Product} from '../../../product/model/Product';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {PaymentDetailService} from '../../service/payment-detail.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-payment-detail',
@@ -27,7 +29,10 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
 
   productCategoryList: ProductCategory[];
 
-  constructor(private productService: ProductService, private toast: ToastrService) {
+  constructor(private productService: ProductService,
+              private toast: ToastrService,
+              private paymentDetailService: PaymentDetailService,
+              private route: Router) {
     this.getProductCategoryList();
     this.getAllProductForOrder();
   }
@@ -122,9 +127,15 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
         this.orderProductList.splice(i, 1);
       }
     }
+    this.toast.success('XÓA THÀNH CÔNG.');
   }
 
   getIdDelete(id: number) {
     this.idDelete = id;
+  }
+
+  orderToDatabase() {
+    console.log('order record');
+    this.toast.success('GỬI YÊU CẦU THÀNH CÔNG.');
   }
 }
