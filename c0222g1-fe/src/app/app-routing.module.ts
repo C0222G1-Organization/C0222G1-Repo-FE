@@ -15,6 +15,10 @@ import {ServerErrorComponent} from "./common-component/server-error/server-error
 const routes: Routes = [
   {
     path: '500', component: ServerErrorComponent
+
+  },
+  {path: 'payment',
+    loadChildren: () => import('./payment/payment.module').then(module => module.PaymentModule)
   }
 ];
 
