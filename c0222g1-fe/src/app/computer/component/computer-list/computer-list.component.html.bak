@@ -67,10 +67,16 @@
         </tr>
         </thead>
         <tbody>
+<<<<<<< HEAD
+<<<<<<< HEAD
         <tr *ngFor="let computer of computers | paginate : { itemsPerPage: 4, currentPage: page + 1, totalItems: totalItems}">
+=======
         <tr
           *ngFor="let computer of computers | paginate : { itemsPerPage: 3, currentPage: page + 1, totalItems: totalItems}; index as i">
+>>>>>>> 51b1a685cf2fe88a5590a0cef7f94a1cbd71d54f
+=======
         <tr *ngFor="let computer of computers | paginate : { itemsPerPage: 3, currentPage: page + 1, totalItems: totalItems}">
+>>>>>>> parent of 84237ea (Hoang update)
           <td>
             <input class="card-notify-year-checkbox" type="checkbox" value="{{computer.id}}"
                    [(ngModel)]="computers[i].checked">

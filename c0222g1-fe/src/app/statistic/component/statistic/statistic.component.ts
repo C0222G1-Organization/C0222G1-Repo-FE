@@ -27,7 +27,7 @@ export class StatisticComponent implements OnInit {
   pastDay = this.datePipe.transform(new Date().setDate(new Date().getDate() - 30), 'yyyy-MM-dd');
   today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   statisticForm = new FormGroup({
-    startDate: new FormControl(this.pastDay, this.invalidDate),
+    startDate: new FormControl(this.pastDay),
     endDate: new FormControl(this.today, this.dateInFuture),
     sort: new FormControl('none'),
     type: new FormControl('computer')
@@ -47,9 +47,6 @@ export class StatisticComponent implements OnInit {
     end.setDate(end.getDate() - 1);
     if (start > end) {
       return {dateNotValid: true};
-    }
-    if (start > new Date()) {
-      return {futureDate: true};
     } else {
       return null;
     }
@@ -88,10 +85,10 @@ export class StatisticComponent implements OnInit {
             }
           }, () => {
             if (this.statisticInput.sort === 'ascending') {
-              this.listStatisticByComputer.sort((a, b) => (a.hour > b.hour) ? 1 : -1);
+              this.listStatisticByComputer.sort((a, b) => (a.hour < b.hour) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'decrease') {
-              this.listStatisticByComputer.sort((a, b) => (a.hour < b.hour) ? 1 : -1);
+              this.listStatisticByComputer.sort((a, b) => (a.hour > b.hour) ? 1 : -1);
             }
             this.destroyChart();
             this.createChartComputer();
@@ -216,7 +213,7 @@ export class StatisticComponent implements OnInit {
       type: 'bar',
       data: {
         datasets: [{
-          label: 'Giờ Hoạt Động',
+          label: 'Giờ',
           data: this.listStatisticByComputer,
           parsing: {
             xAxisKey: 'computer',
@@ -235,7 +232,7 @@ export class StatisticComponent implements OnInit {
             display: true,
             title: {
               display: true,
-              text: 'Giờ Hoạt Động',
+              text: 'Giờ',
               color: '#3EB595',
               font: {
                 family: 'roboto',
@@ -287,7 +284,7 @@ export class StatisticComponent implements OnInit {
       type: 'bar',
       data: {
         datasets: [{
-          label: 'Doanh Thu Dịch Vụ',
+          label: 'Tiền dịch vụ',
           data: this.listStatisticByMonth,
           parsing: {
             xAxisKey: 'month',
@@ -299,7 +296,7 @@ export class StatisticComponent implements OnInit {
           borderWidth: 1
         },
           {
-            label: 'Doanh Thu Máy Tính',
+            label: 'Tiền máy tính',
             data: this.listStatisticByMonth,
             parsing: {
               xAxisKey: 'month',
@@ -311,7 +308,7 @@ export class StatisticComponent implements OnInit {
             borderWidth: 1
           },
           {
-            label: 'Tổng Doanh Thu',
+            label: 'Tổng',
             data: this.listStatisticByMonth,
             parsing: {
               xAxisKey: 'month',
@@ -330,7 +327,7 @@ export class StatisticComponent implements OnInit {
             display: true,
             title: {
               display: true,
-              text: 'Doanh Thu (VNĐ)',
+              text: 'Tiền (VND)',
               color: '#3EB595',
               font: {
                 family: 'roboto',
@@ -382,7 +379,7 @@ export class StatisticComponent implements OnInit {
       type: 'bar',
       data: {
         datasets: [{
-          label: 'Doanh Thu (VNĐ)',
+          label: 'Doanh thu',
           data: this.listStatisticByAccount,
           parsing: {
             xAxisKey: 'account',
@@ -394,7 +391,7 @@ export class StatisticComponent implements OnInit {
           borderWidth: 1
         },
           {
-            label: 'Số Giờ Chơi',
+            label: 'Số giờ chơi',
             data: this.listStatisticByAccount,
             parsing: {
               xAxisKey: 'account',
@@ -414,7 +411,7 @@ export class StatisticComponent implements OnInit {
             display: true,
             title: {
               display: true,
-              text: 'Doanh Thu (VNĐ)',
+              text: '(VNĐ)',
               color: '#3EB595',
               font: {
                 family: 'roboto',

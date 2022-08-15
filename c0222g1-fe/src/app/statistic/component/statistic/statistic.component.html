@@ -1,3 +1,4 @@
+
 <div class="container mt-5" style="background-color: #2A2A2A; border-radius: 15px">
   <div class="pt-3" style="font-size: 18px;">
     <div class="row">
@@ -12,11 +13,7 @@
                      [ngClass]="statisticForm.valid? '':'is-invalid'">
               <small class="fontError text-danger"
                      *ngIf="statisticForm.hasError('dateNotValid')">
-                Ngày bắt đầu phải nhỏ hơn ngày kết thúc ít nhất 1 ngày.
-              </small>
-              <small class="fontError text-danger" style="margin-top: 42px"
-                     *ngIf="statisticForm.hasError('futureDate')">
-                Ngày bắt đầu không được sau ngày {{today|date: "dd-MM-yyyy"}}.
+                Ngày bắt đầu phải nhỏ hơn ngày kết thúc ít nhất 1 ngày!
               </small>
             </div>
             <div class="form-group input">
@@ -26,7 +23,7 @@
                      [ngClass]="statisticForm.valid? '':'is-invalid'">
               <small class="fontError text-danger" style="margin-top: 42px"
                      *ngIf="statisticForm.controls.endDate.hasError('futureDate')">
-                Ngày kết thúc phải trước ngày {{today|date: "dd-MM-yyyy"}}.
+                Ngày kết thúc không được sau ngày hôm nay
               </small>
             </div>
             <div class="form-group input">
@@ -53,7 +50,7 @@
               </select>
             </div>
             <div class="form-group input">
-              <label style="color: white" for="sort" class="col-form-label fontFamily">Sắp xếp theo: </label>
+              <label style="color: white" for="statisticWith" class="col-form-label fontFamily">Sắp xếp theo: </label>
               <select id="sort" class="form-control input"
                       formControlName="sort">
                 <option selected value="none">Không sắp xếp</option>
@@ -67,16 +64,12 @@
               </button>
             </div>
           </div>
+          <div style="color: red" class="fontError pt-3" [hidden]="errorList">Không có dữ liệu!</div>
+          <div style="color: red" class="fontError pt-3" [hidden]="errorServer">Không thể kết nối tới Server!</div>
         </form>
       </div>
       <div class="col-xl-8 col-lg-8 mt-4" [hidden]="errorChart">
         <canvas style="background-color: white; padding-right: 20px; border-radius: 15px" id="myChart"></canvas>
-      </div>
-      <div class="col-xl-8 col-lg-8 mt-4" [hidden]="errorList">
-        <div style="color: red" class="fontError pt-3">Không có dữ liệu.</div>
-      </div>
-      <div class="col-xl-8 col-lg-8 mt-4" [hidden]="errorServer">
-        <div style="color: red" class="fontError pt-3">Không thể kết nối đến Server.</div>
       </div>
     </div>
   </div>
