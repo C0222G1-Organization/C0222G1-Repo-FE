@@ -16,9 +16,12 @@
         <div *ngFor="let game of games | paginate :
           {itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}"
              class="card zoom container-img bg-dark card-game">
-          <img class="card-img-top image"
-               [src]="game.imageUrl"
-               alt="Card image cap">
+          <div class="box-img-game">
+            <img class=" img-fit"
+                 [src]="game.imageUrl"
+                 alt="Card image cap">
+          </div>
+
           <div class="middle">
             <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Edit</button>
             <button class="btn-second" (click)="getInfoGame(game.id, game.name)"

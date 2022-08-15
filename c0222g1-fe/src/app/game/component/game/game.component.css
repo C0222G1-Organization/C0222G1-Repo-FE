@@ -1,0 +1,10 @@
+.box-img-game{
+  width:  17.814375em ;
+  height: 23.765625em ;
+  overflow: hidden;
+}
+.img-fit {
+  object-fit: cover;
+  height: 100% ;
+  width:  100%;
+}

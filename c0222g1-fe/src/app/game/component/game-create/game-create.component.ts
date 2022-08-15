@@ -24,6 +24,8 @@ export class GameCreateComponent implements OnInit {
   selectedFile: File = null;
   fb;
   downloadURL: Observable<string>;
+  url: any;
+  msg = '';
 
   constructor(private gameService: GameService,
               private gameCategoryService: GameCategoryService,
@@ -57,7 +59,29 @@ export class GameCreateComponent implements OnInit {
   getCurrentDateTime(): string {
     return formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss', 'en-US');
   }
+  // show image
+  selectFile(event: any) {
+    if (!event.target.files[0] || event.target.files[0].length === 0) {
+      this.msg = 'You must select an image';
+      return;
+    }
 
+    const mimeType = event.target.files[0].type;
+
+    if (mimeType.match(/image\/*/) == null) {
+      this.msg = 'Only images are supported';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+
+    // tslint:disable-next-line:variable-name
+    reader.onload = (_event) => {
+      this.msg = '';
+      this.url = reader.result;
+    };
+  }
   // firebase
   onFileSelected(event) {
     const n = Date.now();
@@ -86,13 +110,14 @@ export class GameCreateComponent implements OnInit {
         }
       });
   }
+
   addNewGame() {
     console.log(this.gameForm.value);
     this.gameService.createGame(this.gameForm.value)
       .subscribe(
         response => {
           console.log(response);
-          this.toastr.success('Created successfully!!', 'Game');
+          this.toastr.success('Tạo mới thành công!!');
         },
         error => {
           console.log(error);
