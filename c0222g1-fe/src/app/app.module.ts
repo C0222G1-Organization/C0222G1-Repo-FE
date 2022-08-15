@@ -50,7 +50,7 @@ import {JwtInterceptor} from "./authentication/service/jwt.interceptor";
     ToastrModule.forRoot({
       timeOut: 3000,
       closeButton: true,
-      positionClass: 	'toast-top-center',
+      positionClass: 'toast-top-center',
     }),
     PaymentModule,
     AuthenticationModule,

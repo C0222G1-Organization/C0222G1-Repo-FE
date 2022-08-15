@@ -8,7 +8,7 @@ import {AngularFireStorage} from '@angular/fire/storage';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {finalize} from 'rxjs/operators';
-import {formatDate} from "@angular/common";
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-game-update',
