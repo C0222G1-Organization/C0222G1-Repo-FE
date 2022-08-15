@@ -22,10 +22,12 @@
             <div class="col-4">
               <label for="starDate">Ngày sinh từ</label>
             </div>
-            <div class="col-5">
+            <div class="col-6">
               <input formControlName="starDate" id="starDate" type="date" class="form-control input-search">
+              <div style="font-size: small" class="text-danger" *ngIf="formSearch.hasError('errorDate') && formSearch.touched">ngày không hợp lệ để tìm kiếm (lớn hơn ngày bên dưới) </div>
+<!--              <div class=" text-danger" style="font-size: small;float: right"  *ngIf="!formSearch.invalid && formSearch.touched">00</div>-->
             </div>
-            <div class="col-1"></div>
+
           </div>
           <div class="col-3 d-flex">
             <div class="col-4">
@@ -34,8 +36,9 @@
             <div class="col-4">
               <select id="status" style="min-width: 100px" class="input-search form-control"
                       formControlName="activeStatus">
-                <option value="">Đang hoạt động</option>
-                <option value="">Ngưng hoạt động</option>
+                <option value="">Tất cả</option>
+                <option value="1">Đang hoạt động</option>
+                <option value="0">Ngưng hoạt động</option>
               </select>
             </div>
           </div>
@@ -56,15 +59,16 @@
             <div class="col-4">
               <label for="endDate">Đến</label>
             </div>
-            <div class="col-5">
+            <div class="col-6">
               <input formControlName="endDate" id="endDate" type="date" class="input-search form-control">
+              <div style="font-size: small" class="text-danger" *ngIf="formSearch.hasError('errorDate') && formSearch.touched">ngày không hợp lệ để tìm kiếm (lớn hơn ngày bên trên) </div>
             </div>
-            <div class="col-1"></div>
+<!--            <div class="col-1"></div>-->
           </div>
           <div class="col-3 d-flex">
             <div class="col-4"></div>
             <div class="col-6">
-              <button class="btn btn-outline-secondary w-20" (click)="getAllCustomer()">Tìm kiếm</button>
+              <button  [disabled]="formSearch.invalid" class="btn btn-outline-secondary w-20" (click)="getAllCustomer()">Tìm kiếm</button>
             </div>
 
           </div>
@@ -72,66 +76,73 @@
         </div>
       </div>
     </div>
+  </div>
     <div class="container">
       <table class="table table-dark w-100">
         <thead>
         <tr>
-          <!--          <th scope="col">-->
-          <!--            <input type="checkbox">-->
 
-          <!--          </th>-->
+          <th class="w-5">
+            <div>
+<!--              <input type="checkbox" [checked]="listCustomer.length === map.size" (click)="checkAll(listCustomer,$event.target.checked)">-->
+              <input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)">
+            </div>
+          </th>
           <th>#</th>
           <th scope="col">Họ và tên</th>
           <th scope="col">Email</th>
           <th scope="col">Ngày sinh</th>
-          <th scope="col">Địa chỉ</th>
+          <th class="w-10" scope="col">Địa chỉ</th>
           <th scope="col">SĐT</th>
-          <!--          <th scope="col">Trạng thái</th>-->
-          <!--          <th scope="col">Chức năng</th>-->
+          <th scope="col">Trạng thái</th>
+          <th colspan="2" scope="col">Chức năng</th>
         </tr>
         </thead>
         <tbody>
         <tr
           *ngFor="let temp of listCustomer | paginate: {itemsPerPage: 2, currentPage: page+1, totalItems: element};let i = index">
-          <!--          <td><label>-->
-          <!--            <input type="checkbox">-->
-          <!--          <td>-->
-          <td>{{i + 1}}</td>
-          <td>{{temp.name}}</td>
-          <td>{{temp.email}}</td>
-          <td>{{temp.dateOfBirth}}</td>
+<!--          <td><input type="checkbox" [checked]="statusCheckBox" (change)="getIdCheck(temp,$event.target.checked)"></td>-->
+          <td><input class="card-notify-year-checkbox" type="checkbox" value="{{temp.id}}"
+                     [(ngModel)]="listCustomer[i].checked "></td>
+          <td class="w-5">{{i + 1}}</td>
+          <td class="w-10">{{temp.name}}</td>
+          <td class="w-10">{{temp.email}}</td>
+          <td class="w-10">{{temp.dateOfBirth}}</td>
           <td>{{temp.nameCommune}} - {{temp.nameDistrict}} - {{temp.nameProvince}} </td>
-          <td>{{temp.activeStatus}}</td>
-          <!--          <td>-->
-          <!--            <button class="btn btn-outline-secondary  ">-->
-          <!--              <i class="fa-solid fa-pencil"></i>-->
-          <!--            </button>-->
-
-          <!--            <button class="btn btn-outline-secondary "  data-bs-toggle="modal"-->
-          <!--                    data-bs-target="#deleteModal" onclick="getName('trung')"><i class="fa-solid fa-trash"></i></button>-->
-          <!--          </td>-->
-
+          <td class="w-10">{{temp.phoneNumber}}</td>
+          <td class="w-10">{{temp.activeStatus == 1 ? 'Đang hoạt động' : 'Ngưng hoạt động'}}</td>
+          <td class="w-5">
+            <button class="btn btn-outline-secondary  ">
+              <i class="fa-solid fa-pencil"></i>
+            </button>
+          </td>
+          <td class="w-5">
+            <button [disabled]="map.size!==0" class="btn btn-outline-secondary ml-2" data-bs-toggle="modal"
+                    data-bs-target="#deleteModal" (click)="getIdDeleteInTable(temp)"><i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
         </tr>
         </tbody>
       </table>
     </div>
-  </div>
+
   <div class="row d-flex" id="btn-outside">
     <div class="col-4">
       <button class="btn btn-outline-secondary m-2">Thêm mới khách hàng</button>
     </div>
     <div class="col-4"></div>
     <div class="col-4">
-      <div class="float-end">
-        <button class="btn btn-primary b m-2">Lưu</button>
-        <button class="btn btn-outline-secondary">Xóa</button>
+      <div style="text-align: right" *ngIf="map.size!==0">
+        <button style="margin-right: 11px" class="btn btn-primary " (click)="buttonDelete()" data-bs-toggle="modal"
+                data-bs-target="#deleteModal">Xóa
+        </button>
       </div>
     </div>
   </div>
   <div *ngIf="element!==0">
     <pagination-controls (pageChange)=getPage($event)></pagination-controls>
   </div>
-</div>
+
 
 
 <!--Start Delete Modal-->
@@ -141,23 +152,42 @@
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel1">Xóa khách hàng</h5>
       </div>
-      <div class="modal-body">
-        Bạn có chắc chắn muốn xóa khách hàng <span style="font-weight: bold; color: #ff4146" id="name"> </span> không?
+      <div class="modal-body" *ngIf="map.size==0">
+        Bạn có chắc chắn muốn xóa khách hàng <span
+        style="font-weight: bold; color: #ff4146">{{idCustomerDelete.name}} </span> không?
+      </div>
+      <div class="modal-body" *ngIf="map.size!==0">
+        <table class="table table-dark">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Tên</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let customer of map | keyvalue ; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{customer.value.name}}</td>
+          </tr>
+          </tbody>
+        </table>
+
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Xóa</button>
+        <button (click)="close()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button *ngIf="map.size ==0" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                (click)="deleteCustomer()">Xóa
+        </button>
+        <button *ngIf="map.size!==0" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                (click)="DeleteById()">Xóa1
+        </button>
       </div>
     </div>
   </div>
 </div>
 <div style="justify-content: space-around;display: flex;">
 </div>
-<script>
-  function getName(name) {
-    document.getElementById("name").innerHTML = name
-  }
-</script>
+</div>
 
 
 </body>

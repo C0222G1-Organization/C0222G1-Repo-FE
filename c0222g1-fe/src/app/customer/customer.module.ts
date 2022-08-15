@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerInformationComponent } from './component/customer-information/customer-information.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CustomerListComponent } from './component/customer-list/customer-list.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 
@@ -14,7 +14,8 @@ import {NgxPaginationModule} from 'ngx-pagination';
         CommonModule,
         CustomerRoutingModule,
         ReactiveFormsModule,
-        NgxPaginationModule
+        NgxPaginationModule,
+        FormsModule
     ]
 })
 export class CustomerModule { }
