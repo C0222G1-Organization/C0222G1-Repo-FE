@@ -3,7 +3,13 @@ import {ProductService} from '../../../product/service/product.service';
 import {ToastrService} from 'ngx-toastr';
 import {ProductCategory} from '../../../product/model/ProductCategory';
 import {Product} from '../../../product/model/Product';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {PaymentDetailService} from '../../service/payment-detail.service';
+import {Router} from '@angular/router';
+import {Record} from '../../model/record';
+import {Payment} from '../../model/payment';
+import {PaymentService} from '../../service/payment.service';
+import {PaymentDetail} from '../../model/payment-detail';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-payment-detail',
@@ -12,6 +18,8 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class PaymentDetailComponent implements OnInit, OnChanges {
   product: Product = null;
+  record: Record = null;
+  paymentAfterOrder: Payment;
   productUnit = '';
   productPrice = 0;
   orderProduct: Product = null;
@@ -27,7 +35,13 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
 
   productCategoryList: ProductCategory[];
 
-  constructor(private productService: ProductService, private toast: ToastrService) {
+  constructor(private productService: ProductService,
+              private toast: ToastrService,
+              private paymentDetailService: PaymentDetailService,
+              private paymentService: PaymentService,
+              private route: Router,
+              private title: Title) {
+    this.title.setTitle('YÊU CẦU DỊCH VỤ');
     this.getProductCategoryList();
     this.getAllProductForOrder();
   }
@@ -98,6 +112,18 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.getRecordById();
+  }
+
+  getRecordById() {
+    if (!sessionStorage.getItem('token')) {
+      // const id = Number(sessionStorage.getItem('recordId'));
+      const id = 1;
+      this.paymentDetailService.loadInfoRecordById(id).subscribe(value => {
+        this.record = value;
+        console.log(this.record);
+      });
+    }
   }
 
   resetValue() {
@@ -122,9 +148,31 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
         this.orderProductList.splice(i, 1);
       }
     }
+    this.toast.success('XÓA THÀNH CÔNG.');
   }
 
   getIdDelete(id: number) {
     this.idDelete = id;
+  }
+
+  orderToDatabase() {
+    this.paymentService.savePayment(this.record).subscribe(value => {
+      console.log(value);
+      this.toast.success('YÊU CẦU THÀNH CÔNG.');
+
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < this.orderProductList.length; i++) {
+        const paymentDetail: PaymentDetail = {
+          payment: value,
+          product: this.orderProductList[i],
+          amount: this.orderProductList[i].quantity,
+        };
+        this.paymentDetailService.savePaymentDetail(paymentDetail).subscribe(value1 => {
+          if (i === this.orderProductList.length - 1) {
+            this.route.navigateByUrl('/display/' + value.id);
+          }
+        });
+      }
+    });
   }
 }

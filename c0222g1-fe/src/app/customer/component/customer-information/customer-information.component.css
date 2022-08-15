@@ -3,7 +3,7 @@ body {
   font-family: 'Arimo', sans-serif;
   font-family: 'Playfair Display', serif;
   font-family: 'Roboto', sans-serif;
-  background-color: #121212!important;
+  background-color: #121212 !important;
   color: #9a9a9a;
 }
 
@@ -40,7 +40,12 @@ input {
   /*background: #ffe8a1;*/
 }
 
-.form-control{
+.form-control {
   background: #343a40;
   color: white;
+}
+
+.option-button {
+  width: 20%;
+  padding: 0.5em 0;
 }
