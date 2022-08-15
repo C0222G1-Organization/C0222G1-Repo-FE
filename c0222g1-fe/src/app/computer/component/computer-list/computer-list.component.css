@@ -61,6 +61,7 @@ thead > tr {
   color: #fff;
 }
 .color-icon {
+  margin-right: 10px;
   color: #fff;
 }
 
@@ -132,6 +133,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .container-input .form {
+  width: 100%;
   position: relative;
   margin-top: 1rem;
   min-height: 100px;

@@ -48,14 +48,14 @@ export class ComputerListComponent implements OnInit {
       this.end,
       this.status,
       this.typeId).subscribe((list: any) => {
-      console.log('findAll');
-      console.log(list);
-      console.log('length ' + this.computers.length);
-      this.computers = list.content;
-      this.totalItems = list.totalElements;
-      console.log('findAll');
+        console.log('findAll');
+        console.log(list);
+        console.log('length ' + this.computers.length);
+        this.computers = list.content;
+        this.totalItems = list.totalElements;
+        console.log('findAll');
     }, error => {
-      console.log(error);
+      this.toastr.error('Không tìm thấy');
     });
   }
 
