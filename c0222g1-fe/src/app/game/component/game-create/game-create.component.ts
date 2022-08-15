@@ -89,7 +89,7 @@ export class GameCreateComponent implements OnInit {
     const filePath = `RoomsImages/${n}`;
     const fileRef = this.storage.ref(filePath);
     const task = this.storage.upload(`RoomsImages/${n}`, file);
-    console.log('check');
+    console.log('check!');
     task
       .snapshotChanges()
       .pipe(
