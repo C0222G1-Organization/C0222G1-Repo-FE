@@ -11,6 +11,12 @@ import {ToastrService} from 'ngx-toastr';
   styleUrls: ['./employee-list.component.css']
 })
 export class EmployeeListComponent implements OnInit {
+
+  collection = { count: 60, data: [] };
+  config = {
+    itemsPerPage: 5,
+    currentPage: 1,
+    totalItems: this.collection.count};
   page = 0;
   totalElements: any;
   employees: any;
