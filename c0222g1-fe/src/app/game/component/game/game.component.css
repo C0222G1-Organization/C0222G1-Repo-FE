@@ -1,0 +1,46 @@
+.box {
+  display: flex;
+}
+.label-custom {
+  margin: auto;
+}
+input[id="html"] + label {
+  width: 110px;
+  height: 38px;
+  border: 1px solid white;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+input[id="html"]:checked + label:after {
+  position: relative;
+  top: -4px;
+  left: 2px;
+  content: '\2714';
+  font-size: 14px;
+}
+input[id="cb1"] {
+  display: none;
+}
+.form-group label {
+  /* style the label as a circle etc. */
+  background-color: #121212;
+
+}
+.form-group input:checked + label:hover {
+  /* selected style */
+  background-color: #121212;
+}
+
+.card-notify-year-checkbox {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  background: #aa9999;
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  width: 15px;
+  height: 15px;
+  padding: 15px 0 0 0;
+}
