@@ -16,6 +16,11 @@ export class ComputerService {
   constructor(private http: HttpClient) {
   }
 
+  /**
+   * Created by: PhucNQ
+   * Date created: 10/08/2022
+   * Function: findAll
+   */
 
   createComputer(computer: Computer): Observable<Computer> {
     return this.http.post<Computer>(API_URL + '/computers/create', computer);
