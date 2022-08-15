@@ -7,6 +7,7 @@ import {Province} from '../../model/province';
 import {District} from '../../model/district';
 import {Commune} from '../../model/commune';
 import {ToastrService} from 'ngx-toastr';
+import {Title} from '@angular/platform-browser';
 
 
 @Component({
@@ -56,7 +57,9 @@ export class EditCustomerComponent implements OnInit {
   constructor(private customerService: CustomerService,
               private activatedRoute: ActivatedRoute,
               private route: Router,
-              private toast: ToastrService) {
+              private toast: ToastrService,
+              private titleService: Title) {
+    this.titleService.setTitle('Chỉnh sửa thông tin khách hàng');
   }
 
   ngOnInit(): void {
