@@ -12,10 +12,10 @@ import {HomePageRoutingModule} from './home-page/home-page-routing.module';
 import {StatisticRoutingModule} from './statistic/statistic-routing.module';
 
 const routes: Routes = [
-  // {
-  //   path: 'payment',
-  //   loadChildren: () => import('./payment/payment.module').then(module => module.PaymentModule)
-  // }
+  {
+    path: 'payment',
+    loadChildren: () => import('./payment/payment.module').then(module => module.PaymentModule)
+  }
 ];
 
 @NgModule({
