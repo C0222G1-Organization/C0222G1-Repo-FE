@@ -48,7 +48,7 @@ import {JwtInterceptor} from "./authentication/service/jwt.interceptor";
     AngularFirestoreModule,
     HttpClientModule,
     ToastrModule.forRoot({
-      timeOut: 3000,
+      timeOut: 5000,
       closeButton: true,
       positionClass: 'toast-top-center',
     }),

@@ -9,4 +9,5 @@ export interface Game {
   imageUrl: string;
   content: string;
   gameCategory: GameCategory;
+  checked?: boolean;
 }
