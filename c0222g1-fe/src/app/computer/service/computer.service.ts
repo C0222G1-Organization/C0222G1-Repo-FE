@@ -17,19 +17,28 @@ export class ComputerService {
   }
 
   /**
-   * Created by: PhucNQ
+   * Created by: TuanHD
    * Date created: 10/08/2022
-   * Function: findAll
+   * Function: createComputer
    */
   createComputer(computer: Computer): Observable<Computer> {
     return this.http.post<Computer>(API_URL + '/computers/create', computer);
   }
 
-
+  /**
+   * Created by: TuanHD
+   * Date created: 10/08/2022
+   * Function: findById
+   */
   findById(id: number) {
     return this.http.get<Computer>(API_URL + `/computers/list/${id}`);
   }
 
+  /**
+   * Created by: TuanHD
+   * Date created: 10/08/2022
+   * Function: editComputer
+   */
   editComputer(id: number, computer: Computer) {
     return this.http.patch<Computer>(API_URL + `/computers/edit/${id}`, computer);
   }
@@ -37,7 +46,7 @@ export class ComputerService {
   /**
    * Created by: PhucNQ
    * Date created: 10/08/2022
-   * Function: delete(id)
+   * Function: findAll
    */
   findAll(page: number,
           code: string,
