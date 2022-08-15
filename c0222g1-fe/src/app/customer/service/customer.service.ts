@@ -3,10 +3,10 @@ import {environment} from '../../enviroment';
 import {HttpClient} from '@angular/common/http';
 import {Customer} from '../model/customer';
 import {Observable} from 'rxjs';
-import {Province} from '../model/province';
-import {District} from '../model/district';
-import {Commune} from '../model/commune';
-import {UpdateCustomerDto} from '../model/customer-update-dto';
+import { UpdateCustomerDto } from '../model/customer-update-dto';
+import { Province } from '../model/province';
+import { District } from '../model/district';
+import { Commune } from '../model/commune';
 
 @Injectable({
   providedIn: 'root'
@@ -18,14 +18,18 @@ export class CustomerService {
 
   constructor(private httpClient: HttpClient) {
   }
+  /**
+   * Create by: DuyNT
+   * Date Create: 11/08/2022
+   * function: get info of customer by id from database
+   */
+  public findCustomerById(id: number): Observable<Customer> {
+    return this.httpClient.get<Customer>(`${this.ApiUrl_8080}/${id}`);
+  }
 
   saveCustomer(customerDTO: UpdateCustomerDto): Observable<void> {
     console.log(customerDTO);
     return this.httpClient.post<void>(this.ApiUrl_8080 , customerDTO);
-  }
-
-  findCustomerById(id: number): Observable<Customer> {
-    return this.httpClient.get<Customer>(`${this.ApiUrl_8080}/${id}`);
   }
   getAllProvince(): Observable<Province[]> {
     return this.httpClient.get<Province[]>(this.ApiUrl_8080 + '/address/province');

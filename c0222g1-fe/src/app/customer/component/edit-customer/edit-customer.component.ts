@@ -15,6 +15,8 @@ import {ToastrService} from 'ngx-toastr';
   styleUrls: ['./edit-customer.component.css']
 })
 export class EditCustomerComponent implements OnInit {
+  // @ts-ignore
+  // @ts-ignore
   customerEdit: UpdateCustomerDto = {
     id: 0,
     name: '',

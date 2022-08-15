@@ -32,7 +32,7 @@ export class CreateCustomerComponent implements OnInit {
     userName: new FormGroup({
       userName: new FormControl('', Validators.required)
     }),
-      // tslint:disable-next-line:max-line-length
+    // tslint:disable-next-line:max-line-length
     password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
     activeStatus: new  FormControl(1),
     province: new FormControl('', Validators.required),

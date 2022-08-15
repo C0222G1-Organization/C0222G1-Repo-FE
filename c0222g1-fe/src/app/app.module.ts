@@ -24,6 +24,9 @@ import {NewsModule} from './news/news.module';
 import {ComputerModule} from './computer/computer.module';
 import {ProductModule} from './product/product.module';
 import {RegistrationModule} from './registration/registration.module';
+import {HomePageModule} from './home-page/home-page.module';
+import {StatisticModule} from './statistic/statistic.module';
+import {JwtInterceptor} from './authentication/service/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -44,10 +47,9 @@ import {RegistrationModule} from './registration/registration.module';
     AngularFirestoreModule,
     HttpClientModule,
     ToastrModule.forRoot({
-      timeOut: 2000,
+      timeOut: 3000,
       closeButton: true,
-      progressBar: true,
-      positionClass: 'toast-top-right',
+      positionClass: 	'toast-top-center',
     }),
     PaymentModule,
     AuthenticationModule,
@@ -58,8 +60,14 @@ import {RegistrationModule} from './registration/registration.module';
     ComputerModule,
     ProductModule,
     RegistrationModule,
+    HomePageModule,
+    StatisticModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: JwtInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

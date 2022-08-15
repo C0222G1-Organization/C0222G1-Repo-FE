@@ -7,8 +7,9 @@ body {
   color: #9a9a9a;
 }
 
-label {
+label, p {
   padding-left: 1em;
+  color: #9a9a9a;
 }
 
 .input-form {
