@@ -92,7 +92,7 @@ export class GameCreateComponent implements OnInit {
       .subscribe(
         response => {
           console.log(response);
-          this.toastr.success('Created successfully!', 'Game');
+          this.toastr.success('Created successfully!!', 'Game');
         },
         error => {
           console.log(error);
