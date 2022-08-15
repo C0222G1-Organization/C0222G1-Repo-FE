@@ -3,6 +3,8 @@ import {EmployeeService} from '../../service/employee.service';
 import {Employee} from '../../model/employee';
 import {Position} from '../../model/position';
 import {ToastrService} from 'ngx-toastr';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Title} from "@angular/platform-browser";
 
 
 @Component({
@@ -22,14 +24,8 @@ export class EmployeeListComponent implements OnInit {
   totalElements: any;
   employees: any;
   positions: Position[];
-  code = '';
-  name = '';
-  dobfrom = '';
-  dobend = '';
-  workf = '';
-  workt = '';
-  position = '';
-  address = '';
+  formSearch: FormGroup;
+
   idDelete: number;
   nameDelete: string;
   selectEmployee: Array<any>;
@@ -37,7 +33,19 @@ export class EmployeeListComponent implements OnInit {
   countLevel: number;
 
   constructor(private employeeService: EmployeeService,
-              private toastr: ToastrService) {
+              private toastr: ToastrService,
+              private title: Title) {
+    this.title.setTitle('Nhân viên');
+    this.formSearch = new FormGroup({
+      code: new FormControl('', Validators.pattern('^[A-Za-z0-9]+$')),
+      name: new FormControl('', Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s?]+$')),
+      dobfrom: new FormControl('', [this.check18, this.check100]),
+      dobend: new FormControl('', this.check18, this.check100),
+      workf: new FormControl('', this.dateInFuture),
+      workt: new FormControl('', this.dateInFuture),
+      position: new FormControl(''),
+      address: new FormControl('', Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s0-9?]+$')),
+    }, [this.invalidDate, this.dobInvalidDate]);
   }
 
   ngOnInit(): void {
@@ -46,8 +54,10 @@ export class EmployeeListComponent implements OnInit {
   }
 
   getAll() {
-    this.employeeService.getEmployeeList(this.page, this.code, this.name, this.dobfrom,
-      this.dobend, this.workf, this.workt, this.position, this.address).subscribe((value: any) => {
+    const getFormSearch = this.formSearch.value;
+    this.employeeService.getEmployeeList(this.page, getFormSearch.code, getFormSearch.name, getFormSearch.dobfrom,
+      getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
+      getFormSearch.address).subscribe((value: any) => {
       console.log(this.page);
       this.employees = value.content;
       console.log(value);
@@ -64,18 +74,17 @@ export class EmployeeListComponent implements OnInit {
   }
 
   search() {
+    const getFormSearch = this.formSearch.value;
     if (this.page !== 0) {
       this.page = 0;
     }
-    console.log(this.position);
-    this.employeeService.getEmployeeList(this.page, this.code, this.name, this.dobfrom,
-      this.dobend, this.workf, this.workt, this.position, this.address).subscribe((value: any) => {
+    this.employeeService.getEmployeeList(this.page, getFormSearch.code, getFormSearch.name, getFormSearch.dobfrom,
+      getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
+      getFormSearch.address).subscribe((value: any) => {
       this.employees = value.content;
       if (this.employees.isEmpty) {
         this.toastr.warning('Không có dữ liệu phù hợp.');
       }
-      console.log(this.employees[0].workf.substr(0, 4));
-      console.log(this.dobend);
       this.totalElements = value.totalElements;
     });
   }
@@ -136,10 +145,63 @@ export class EmployeeListComponent implements OnInit {
 
   exp(employee: Employee): number {
 
-    const koko = this.level.getFullYear() - Number(employee.workf.substr(0, 4));
-    return koko + 1;
+    const exp = this.level.getFullYear() - Number(employee.workf.substr(0, 4));
+    return exp + 1;
   }
 
-  enable() {
+  dateInFuture(abstractControl: AbstractControl) {
+    const v = abstractControl.value;
+    const end = new Date(v);
+    if (end > new Date()) {
+      return {futureDate: true};
+    } else {
+      return null;
+    }
+  }
+
+  invalidDate(abstractControl: AbstractControl) {
+    const v = abstractControl.value;
+    const start = new Date(v.workf);
+    const end = new Date(v.workt);
+    end.setDate(end.getDate() - 1);
+    if (start > end) {
+      return {dateNotValid: true};
+    } else {
+      return null;
+    }
+  }
+
+  dobInvalidDate(abstractControl: AbstractControl) {
+    const v = abstractControl.value;
+    const start = new Date(v.dobfrom);
+    const end = new Date(v.dobend);
+    end.setDate(end.getDate() - 1);
+    if (start > end) {
+      return {dobNotValid: true};
+    } else {
+      return null;
+    }
+  }
+
+  private check18(abstractControl: AbstractControl): any {
+    const today = new Date();
+    const birthDate = new Date(abstractControl.value);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const old = today.getMonth() - birthDate.getMonth();
+    if (old < 0 || (old === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return (age >= 18) ? null : {not18: true};
+  }
+
+  private check100(abstractControl: AbstractControl): any {
+    const today = new Date();
+    const birthDate = new Date(abstractControl.value);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const old = today.getMonth() - birthDate.getMonth();
+    if (old < 0 || (old === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return (age <= 100) ? null : {not100: true};
   }
 }

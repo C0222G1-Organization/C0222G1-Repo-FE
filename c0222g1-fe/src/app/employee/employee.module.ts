@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { EmployeeListComponent } from './component/employee-list/employee-list.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 
@@ -13,7 +13,8 @@ import {NgxPaginationModule} from 'ngx-pagination';
     CommonModule,
     EmployeeRoutingModule,
     FormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    ReactiveFormsModule
   ]
 })
 export class EmployeeModule { }
