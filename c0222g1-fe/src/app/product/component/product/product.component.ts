@@ -20,7 +20,8 @@ export class ProductComponent implements OnInit {
   page = 0;
   totalElements: number;
   pages: any;
-  selectedProducts: any[] = [];
+  selectedIdProducts: any[] = [];
+  selectedNameProducts: any[] = [];
 
   constructor(private productService: ProductService, private toast: ToastrService) {
   }
@@ -104,19 +105,27 @@ export class ProductComponent implements OnInit {
   }
 
   isAllCheckBoxChecked() {
+    console.log(14);
     if (this.productList.length !== 0) {
       return this.productList.every(p => p.checked);
     }
+    console.log(512);
   }
 
   checkAllCheckBox(event: any) {
+    console.log(5678);
     this.productList.forEach(x => x.checked = event.target.checked);
   }
 
   deleteProductList() {
-    this.selectedProducts = this.productList.filter(product => product.checked).map(p => p.id);
-
-    for (const product of this.selectedProducts) {
+    this.selectedIdProducts = this.productList.filter(product => product.checked).map(p => p.id);
+    this.selectedNameProducts = this.productList.filter(product => product.checked).map(p => p.nameProduct);
+    for (const productName of this.selectedNameProducts) {
+      this.nameProduct = productName;
+    }
+    console.log(this.selectedIdProducts);
+    console.log(this.selectedNameProducts);
+    for (const product of this.selectedIdProducts) {
       this.id = product;
       this.productService.delete(this.id).subscribe(value => {
 
@@ -140,7 +149,7 @@ export class ProductComponent implements OnInit {
         this.ngOnInit();
       });
     }
-    if (this.selectedProducts.length > 0) {
+    if (this.selectedIdProducts.length > 0) {
       this.toast.success('Xóa sản phẩm thành công');
     }
   }

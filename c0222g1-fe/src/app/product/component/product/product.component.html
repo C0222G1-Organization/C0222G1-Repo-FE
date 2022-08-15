@@ -85,7 +85,9 @@
     <div class="col-md-4">
       <div *ngIf="productList.length !== 0">
         <div>
-          <pagination-controls (pageChange)="getPage($event)" style="float: right"></pagination-controls>
+        <pagination-controls nextLabel="Trang kế" previousLabel="Trang trước" (pageChange)="getPage($event)" style="float: right">
+
+        </pagination-controls>
         </div>
       </div>
     </div>
@@ -120,7 +122,7 @@
         <p style="text-align: center; font-size: 1.5rem" class="modal-title w-100 text-center">Xóa
           dịch vụ</p>
       </div>
-      <p style="text-align: center; font-size: 20px">Bạn có muốn xóa dịch vụ
+      <p style="text-align: center; font-size: 20px">Bạn có muốn xóa dịch vụ không?
       </p>
       <div class="modal-footer">
         <button type="button" class="btn btn-dark " data-bs-dismiss="modal">Đóng</button>
