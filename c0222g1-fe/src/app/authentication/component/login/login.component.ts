@@ -49,6 +49,8 @@ export class LoginComponent implements OnInit {
             sessionStorage.setItem('endTime', value.endTime);
             sessionStorage.setItem('computerCode', value.computerCode);
             sessionStorage.setItem('name', value.customer.name);
+            sessionStorage.setItem('recordId', value.recordId);
+            sessionStorage.setItem('customerId', value.customer.id);
           } else {
             sessionStorage.setItem('name', value.employee.name);
           }
