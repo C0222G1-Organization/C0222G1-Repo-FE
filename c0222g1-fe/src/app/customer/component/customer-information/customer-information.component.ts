@@ -8,6 +8,7 @@ import {Province} from '../../model/province';
 import {District} from '../../model/district';
 import {Commune} from '../../model/commune';
 import {CreateCustomerService} from '../../service/create-customer.service';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-customer-information',
@@ -32,7 +33,9 @@ export class CustomerInformationComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
               private route: Router,
               private customerService: CustomerService,
-              private createCustomerService: CreateCustomerService) {
+              private createCustomerService: CreateCustomerService,
+              private title: Title) {
+    this.title.setTitle('THÔNG TIN CÁ NHÂN');
   }
 
   /**
@@ -73,33 +76,21 @@ export class CustomerInformationComponent implements OnInit {
    * function: load customer form DB
    */
   loadInfoCustomer() {
-    // this.customer = this.customerForm.value;
-    // console.log(this.customer);
-    // const idFromRoute = Number(this.activatedRoute.snapshot.params.id);
-    // this.userService.findById(idFromRoute).subscribe(result => {
-    //   console.log(result)
-    //   if (result === undefined) {
-    //     this.route.navigate(['/error']);
-    //   }
-    //   this.userForm.patchValue(result);
-    // });
-    // const customerIdFromRoute = Number(this.activatedRoute.snapshot.params.id);
-    const customerIdFromRoute = 3;
-    this.customerService.findCustomerById(customerIdFromRoute).subscribe(value => {
-      console.log(value);
-      this.customerForm.patchValue(value);
-      this.customer = value;
-      // console.log(this.customer);
-      this.minutes = this.customer.remainingTime % 60;
-      if (this.minutes < 10) {
-        this.minutes = '0' + this.minutes;
-      }
-      this.hour = (this.customer.remainingTime - this.minutes) / 60;
-      if (this.hour < 10) {
-        this.hour = '0' + this.hour;
-      }
-      // console.log(this.customer.user.password);
-    });
+    if (sessionStorage.getItem('token')) {
+      const customerId = sessionStorage.getItem('customerId');
+      this.customerService.findCustomerById(Number(customerId)).subscribe(value => {
+        this.customerForm.patchValue(value);
+        this.customer = value;
+        this.minutes = this.customer.remainingTime % 60;
+        if (this.minutes < 10) {
+          this.minutes = '0' + this.minutes;
+        }
+        this.hour = (this.customer.remainingTime - this.minutes) / 60;
+        if (this.hour < 10) {
+          this.hour = '0' + this.hour;
+        }
+      });
+    }
   }
 
 
