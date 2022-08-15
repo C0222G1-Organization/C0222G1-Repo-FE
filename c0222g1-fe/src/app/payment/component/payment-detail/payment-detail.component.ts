@@ -3,9 +3,13 @@ import {ProductService} from '../../../product/service/product.service';
 import {ToastrService} from 'ngx-toastr';
 import {ProductCategory} from '../../../product/model/ProductCategory';
 import {Product} from '../../../product/model/Product';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {PaymentDetailService} from '../../service/payment-detail.service';
 import {Router} from '@angular/router';
+import {Record} from '../../model/record';
+import {Payment} from '../../model/payment';
+import {PaymentService} from '../../service/payment.service';
+import {PaymentDetail} from '../../model/payment-detail';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-payment-detail',
@@ -14,6 +18,8 @@ import {Router} from '@angular/router';
 })
 export class PaymentDetailComponent implements OnInit, OnChanges {
   product: Product = null;
+  record: Record = null;
+  paymentAfterOrder: Payment;
   productUnit = '';
   productPrice = 0;
   orderProduct: Product = null;
@@ -32,7 +38,10 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   constructor(private productService: ProductService,
               private toast: ToastrService,
               private paymentDetailService: PaymentDetailService,
-              private route: Router) {
+              private paymentService: PaymentService,
+              private route: Router,
+              private title: Title) {
+    this.title.setTitle('YÊU CẦU DỊCH VỤ');
     this.getProductCategoryList();
     this.getAllProductForOrder();
   }
@@ -103,6 +112,17 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.getRecordById();
+  }
+
+  getRecordById() {
+    if (sessionStorage.getItem('token')) {
+      const id = Number(sessionStorage.getItem('recordId'));
+      this.paymentDetailService.loadInfoRecordById(id).subscribe(value => {
+        this.record = value;
+        console.log(this.record);
+      });
+    }
   }
 
   resetValue() {
@@ -135,7 +155,26 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   }
 
   orderToDatabase() {
-    console.log('order record');
-    this.toast.success('GỬI YÊU CẦU THÀNH CÔNG.');
+    // console.log(this.paymentAfterOrder.record);
+    // this.paymentAfterOrder.record = this.record;
+    this.paymentService.savePayment(this.record).subscribe(value => {
+      console.log(value);
+      this.toast.success('GỬI YÊU CẦU THÀNH CÔNG.');
+
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < this.orderProductList.length; i++) {
+        const paymentDetail: PaymentDetail = {
+          payment: value,
+          product: this.orderProductList[i],
+          amount: this.orderProductList[i].quantity,
+        };
+        this.paymentDetailService.savePaymentDetail(paymentDetail).subscribe(value1 => {
+          console.log('LUAN');
+        });
+      }
+      setInterval(() => {
+        this.route.navigateByUrl('/display/' + value.id);
+      }, 2000);
+    });
   }
 }

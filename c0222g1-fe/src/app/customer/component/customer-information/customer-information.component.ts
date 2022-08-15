@@ -8,6 +8,7 @@ import {Province} from '../../model/province';
 import {District} from '../../model/district';
 import {Commune} from '../../model/commune';
 import {CreateCustomerService} from '../../service/create-customer.service';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-customer-information',
@@ -32,7 +33,9 @@ export class CustomerInformationComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
               private route: Router,
               private customerService: CustomerService,
-              private createCustomerService: CreateCustomerService) {
+              private createCustomerService: CreateCustomerService,
+              private title: Title) {
+    this.title.setTitle('THÔNG TIN CÁ NHÂN');
   }
 
   /**
@@ -74,13 +77,10 @@ export class CustomerInformationComponent implements OnInit {
    */
   loadInfoCustomer() {
     if (sessionStorage.getItem('token')) {
-      const customerIdFromRoute = sessionStorage.getItem('customerId');
-      alert(customerIdFromRoute);
-      this.customerService.findCustomerById(Number(customerIdFromRoute)).subscribe(value => {
-        console.log(value);
+      const customerId = sessionStorage.getItem('customerId');
+      this.customerService.findCustomerById(Number(customerId)).subscribe(value => {
         this.customerForm.patchValue(value);
         this.customer = value;
-        // console.log(this.customer);
         this.minutes = this.customer.remainingTime % 60;
         if (this.minutes < 10) {
           this.minutes = '0' + this.minutes;
@@ -89,7 +89,6 @@ export class CustomerInformationComponent implements OnInit {
         if (this.hour < 10) {
           this.hour = '0' + this.hour;
         }
-        // console.log(this.customer.user.password);
       });
     }
   }
