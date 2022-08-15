@@ -9,9 +9,9 @@
           <div class="col-3 p-0">
             <label class="col-form-label text-right">Tên đăng nhập</label>
           </div>
-          <div class="sub-info form-group row col-7" id="userNameEdit" formGroupName="user">
+          <div class="sub-info form-group row col-7" id="userNameEdit" formGroupName="userName">
             <div class="col-12 p-0">
-              <input formControlName="username" type="text" class="form-control"
+              <input formControlName="userName" type="text" class="form-control"
                      placeholder="Enter user name" disabled>
             </div>
           </div>
@@ -92,13 +92,14 @@
           <div class="col-3 p-0">
             <label class="col-form-label text-right" for="email">Email</label>
           </div>
-          <div *ngIf="content!==customer.email" class="sub-info form-group row col-7">
+          <div *ngIf="content!==customer.email" class="sub-info form-group row col-7"
+          formGroupName="email">
             <div class="col-12 p-0">
               <input formControlName="email" type="text" class="form-control"
                      placeholder="Enter email" readonly>
             </div>
           </div>
-          <div *ngIf="content===customer.email" class="sub-info form-group row col-7">
+          <div *ngIf="content===customer.email" class="sub-info form-group row col-7" formGroupName="email">
             <div class="col-12 p-0">
               <input formControlName="email" type="text" id="email" class="form-control bg-dark text-white border-white"
                      placeholder="Enter email">
@@ -121,124 +122,81 @@
           </div>
         </div>
 
-        <div class="col-12 d-flex input-form">
-          <!--          <div class="col-4">-->
-          <!--            <div class="textbox ">-->
-          <!--              <select class="select input" aria-haspopup="true"-->
-          <!--                      id="city" style="padding: 10px 15px 0 15px ; height: 60px"-->
-          <!--                      (change)="getDistrictList($event.target.value)"-->
-          <!--                      formControlName="province">-->
-          <!--                <option value="">Chọn thành phố</option>-->
-          <!--                <option class="option"-->
-          <!--                        value="{{province.id}}"-->
-          <!--                        *ngFor="let province of provinceList"-->
-          <!--                        style="height: 50px">{{province.name}}</option>-->
-          <!--              </select>-->
-          <!--              <label for="city" style="color: white">-->
-          <!--                Thành phố-->
-          <!--                <span class="text-danger">*</span>-->
-          <!--                <span class="text-danger" *ngIf="customerForm.controls.province.hasError('required') &&-->
-          <!--                                      (customerForm.controls.province.dirty || customerForm.controls.province.touched)">-->
-          <!--              Bắt buộc!-->
-          <!--            </span>-->
-          <!--              </label>-->
-          <!--            </div>-->
-          <!--          </div>-->
-
-          <!--          <div class="col-4">-->
-          <!--            <div>-->
-          <!--              <select class="select input" aria-haspopup="true"-->
-          <!--                      id="district" style="padding: 10px 15px 0 15px; height: 60px"-->
-          <!--                      (change)="getCommuneList($event.target.value)"-->
-          <!--                      formControlName="district">-->
-          <!--                <option value="">Chọn quận</option>-->
-          <!--                <option value="{{district.id}}"-->
-          <!--                        *ngFor="let district of districtList"-->
-          <!--                        class="option" style="height: 50px">{{district.districtName}}</option>-->
-          <!--              </select>-->
-          <!--              <label for="district" style="color: white">-->
-          <!--                Quận-->
-          <!--                <span class="text-danger">*</span>-->
-          <!--                <span class="text-danger" *ngIf="customerForm.controls.district.hasError('required') &&-->
-          <!--                                      (customerForm.controls.district.dirty || customerForm.controls.district.touched)">-->
-          <!--              Bắt buộc!-->
-          <!--            </span>-->
-          <!--              </label>-->
-          <!--            </div>-->
-          <!--          </div>-->
-
-          <!--          <div class="col-4">-->
-          <!--            <div class="textbox">-->
-          <!--              <select class="select input" aria-haspopup="true"-->
-          <!--                      id="ward" style="padding: 10px 15px 0 15px; height: 60px" formControlName="commune">-->
-          <!--                <option value="">Chọn phường</option>-->
-          <!--                <option [ngValue]="commune"-->
-          <!--                        *ngFor="let commune of communeList"-->
-          <!--                        class="option" style="height: 50px">{{commune.name}}</option>-->
-          <!--              </select>-->
-          <!--              <label for="ward" style="color: white">-->
-          <!--                Phường-->
-          <!--                <span class="text-danger">*</span>-->
-          <!--                <span class="text-danger" *ngIf="customerForm.controls.commune.hasError('required') &&-->
-          <!--                                      (customerForm.controls.commune.dirty || customerForm.controls.commune.touched)">-->
-          <!--              Bắt buộc!-->
-          <!--            </span>-->
-          <!--              </label>-->
-          <!--            </div>-->
-          <!--          </div>-->
-          <!--        </div>-->
-          <div class="col-3 p-0">
-            <label class="col-form-label text-right">Địa chỉ</label>
-          </div>
-          <div *ngIf="content!==customer.commune.name" class="sub-info form-group row col-7" formGroupName="commune">
-            <div class="col-12 p-0">
-              <input formControlName="name" type="text" class="form-control"
-                     placeholder="Nhập địa chỉ" readonly>
-            </div>
-          </div>
-          <div *ngIf="content===customer.commune.name" class="sub-info form-group row col-7" formGroupName="commune">
-            <div class="col-12 p-0">
-              <input formControlName="name" type="text" class="form-control bg-dark text-white border-white"
-                     placeholder="Nhập địa chỉ">
-            </div>
-            <div class="text-small text-white p-0"
-                 *ngIf="!customerForm.controls.commune?.valid
-                && (customerForm.controls.commune?.dirty ||customerForm.controls.commune?.touched)">
-              <div [hidden]="!customerForm.controls.commune.errors.required">
-                Vui lòng nhập địa chỉ!
-              </div>
-            </div>
-          </div>
-          <div class="col-1 ml-2">
-            <a class="btn">
-              <i class="fa-solid fa-pen-to-square text-white" (click)=activeEdit(customer.commune.name)></i>
-            </a>
-          </div>
-        </div>
+<!--        <div class="col-12 d-flex input-form">-->
+<!--          <div class="col-3 p-0">-->
+<!--            <label class="col-form-label text-right">Địa chỉ</label>-->
+<!--          </div>-->
+<!--          <div *ngIf="content!==customer.commune.name" class="sub-info form-group row col-7">-->
+<!--            <div class="col-12 p-0 d-flex">-->
+<!--              <div class="col-3" formGroupName="province">-->
+<!--                <select id="province" (change)="getDistrictList($event.target.value)" formControlName="id">-->
+<!--                  <option value="" >Tỉnh/ thành phố</option>-->
+<!--                  <option class="options" value="{{province.id}}"-->
+<!--                          *ngFor="let province of provinceList"-->
+<!--                          style="height: 50px">{{province.name}}</option>-->
+<!--                </select>-->
+<!--              </div>-->
+<!--              <div class="col-3" formGroupName="district">-->
+<!--                <select id="district" (change)="getCommuneList($event.target.value)" formControlName="id">-->
+<!--                  <option value="" >Quận/ huyện</option>-->
+<!--                  <option class="options" value="{{district.id}}"-->
+<!--                          *ngFor="let district of districtList"-->
+<!--                          style="height: 50px">{{district.name}}</option>-->
+<!--                </select>-->
+<!--              </div>-->
+<!--              <div class="col-3" formGroupName="commune">-->
+<!--                <select id="commune" formControlName="id">-->
+<!--                  <option value="" >Phường / xã</option>-->
+<!--                  <option class="options" value="{{commune.id}}"-->
+<!--                          *ngFor="let commune of communeList"-->
+<!--                          style="height: 50px">{{commune.name}}</option>-->
+<!--                </select>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div *ngIf="content===customer.commune.name" class="sub-info form-group row col-7" formGroupName="commune">-->
+<!--            <div class="col-12 p-0">-->
+<!--              <input formControlName="name" type="text" class="form-control bg-dark text-white border-white"-->
+<!--                     placeholder="Nhập địa chỉ">-->
+<!--            </div>-->
+<!--            <div class="text-small text-white p-0"-->
+<!--                 *ngIf="!customerForm.controls.commune?.valid-->
+<!--                && (customerForm.controls.commune?.dirty ||customerForm.controls.commune?.touched)">-->
+<!--              <div [hidden]="!customerForm.controls.commune.errors.required">-->
+<!--                Vui lòng nhập địa chỉ!-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="col-1 ml-2">-->
+<!--            <a class="btn">-->
+<!--              <i class="fa-solid fa-pen-to-square text-white" (click)=activeEdit(customer.commune.name)></i>-->
+<!--            </a>-->
+<!--          </div>-->
+<!--        </div>-->
 
         <div class="col-12 d-flex input-form">
           <div class="col-3 p-0">
             <label class="col-form-label text-right" for="phoneNumber">Số điện thoại</label>
           </div>
-          <div *ngIf="content!==customer.phoneNumber" class="sub-info form-group row col-7">
+          <div *ngIf="content!==customer.phoneNumber" class="sub-info form-group row col-7" formGroupName="phoneNumber">
             <div class="col-12 p-0">
-              <input formControlName="phoneNumber" type="text" class="form-control"
+              <input formControlName="phone" type="text" class="form-control"
                      placeholder="Enter full name" readonly>
             </div>
           </div>
-          <div *ngIf="content===customer.phoneNumber" class="sub-info form-group row col-7">
+          <div *ngIf="content===customer.phoneNumber" class="sub-info form-group row col-7" formGroupName="phoneNumber">
             <div class="col-12 p-0">
-              <input formControlName="phoneNumber" type="text" id="phoneNumber"
+              <input formControlName="phone" type="text" id="phoneNumber"
                      class="form-control bg-dark text-white border-white"
                      placeholder="Enter phone number">
             </div>
             <div class="text-small text-white p-0"
-                 *ngIf="!customerForm.controls.phoneNumber?.valid
-                && (customerForm.controls.phoneNumber?.dirty ||customerForm.controls.phoneNumber?.touched)">
-              <div [hidden]="!customerForm.controls.phoneNumber.errors.required">
+                 *ngIf="!customerForm.controls.phone?.valid
+                && (customerForm.controls.phone?.dirty ||customerForm.controls.phone?.touched)">
+              <div [hidden]="!customerForm.controls.phone.errors.required">
                 Vui lòng nhập số điện thoại!
               </div>
-              <div [hidden]="!customerForm.controls.phoneNumber.errors.pattern">
+              <div [hidden]="!customerForm.controls.phone.errors.pattern">
                 Số điện thoại không đúng định dạng, vui lòng nhập lại!
               </div>
             </div>
@@ -321,8 +279,8 @@
         <!--        </div>-->
 
         <div class="text-center">
-          <a class="btn btn-outline-light btn-sm mb-3" routerLink="/home-page-customer">QUAY LẠI</a>
-          <button class="btn btn-outline-light btn-sm mb-3" (click)="saveUpdateUser()">
+          <a class="btn btn-outline-light btn-sm mb-3 option-button" routerLink="/home-page-customer">QUAY LẠI</a>
+          <button class="btn btn-outline-light btn-sm mb-3 option-button" (click)="onsubmit()">
             LƯU THAY ĐỔI
           </button>
         </div>
@@ -339,7 +297,7 @@
           <!--          </button>-->
         </div>
         <div class="col-7 text-center">
-          <p style="font-weight: bold">
+          <p style="font-weight: bold; color: white">
             THỜI GIAN CÒN LẠI
           </p>
           <p>
