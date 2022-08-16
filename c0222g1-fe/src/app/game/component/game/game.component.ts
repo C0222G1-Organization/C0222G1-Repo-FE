@@ -3,6 +3,7 @@ import {Game} from "../../model/game";
 import {GameService} from "../../service/game.service";
 import {Title} from "@angular/platform-browser";
 import {ToastrService} from "ngx-toastr";
+import {Route, Router} from "@angular/router";
 
 @Component({
   selector: 'app-game',
@@ -12,26 +13,25 @@ import {ToastrService} from "ngx-toastr";
 export class GameComponent implements OnInit {
   page = 0;
   totalItems: any;
-  itemsPerPage = 2;
+  itemsPerPage = 8;
   totalPages;
   selectedId: number;
   selectedGames: any[] = [];
   selectedName: string;
-  games: Game[];
+  games: Game[] = [];
   gameName = '';
   game: Game;
   checked: boolean;
-  deleteState: boolean;
 
   constructor(private gameService: GameService,
               private title: Title,
-              private toastr: ToastrService) {
+              private toastr: ToastrService,
+              private route: Router) {
     this.title.setTitle('C02G1 | Game');
   }
 
   ngOnInit(): void {
     this.getGames();
-    this.deleteState = true;
   }
 
   getGames() {
@@ -39,6 +39,8 @@ export class GameComponent implements OnInit {
       this.games = games.content;
       this.totalItems = games.totalElements;
       this.totalPages = games.totalPages;
+    }, error => {
+      this.route.navigateByUrl('/500');
     });
   }
 
@@ -59,6 +61,7 @@ export class GameComponent implements OnInit {
     if (this.gameName == '') {
       this.getGames();
     }
+    this.gameName = this.gameName.trim();
     this.gameService.searchGameByName(this.gameName).subscribe((games: any) => {
       this.games = games.content;
       this.page = 1;
@@ -76,7 +79,7 @@ export class GameComponent implements OnInit {
     this.gameService.deleteGameById(this.selectedId).subscribe(res => {
       this.page = 1;
       this.getGames();
-      this.toastr.success("Xóa thành công");
+      this.toastr.success('Xóa thành công');
     }, error => {
       this.toastr.error("Xóa thất bại");
     });
@@ -101,6 +104,16 @@ export class GameComponent implements OnInit {
     });
   }
 
+  checkGame(id: number) {
+    for (const game of this.games) {
+      if (game.id == id){
+        game.checked = game.checked != true;
+        break;
+      }
+    }
+    this.getSelectedGames();
+  }
+
   isAllCheckBoxChecked() {
     if (this.games.length !== 0) {
       return this.games.every(g => g.checked);
@@ -109,6 +122,7 @@ export class GameComponent implements OnInit {
 
   checkMultipleCheckBox(event: any) {
     this.games.forEach(x => x.checked = event.target.checked);
+    this.getSelectedGames();
   }
 
   getSelectedGames() {
@@ -125,7 +139,6 @@ export class GameComponent implements OnInit {
         console.log('Xóa thất bại');
       });
     }
-    this.deleteState = false;
     this.toastr.success("Xóa thành công");
   }
 }
