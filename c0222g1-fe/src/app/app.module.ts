@@ -29,6 +29,7 @@ import {StatisticModule} from "./statistic/statistic.module";
 import {JwtInterceptor} from "./authentication/service/jwt.interceptor";
 import { ServerErrorComponent } from './common-component/server-error/server-error.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +52,7 @@ import { ServerErrorComponent } from './common-component/server-error/server-err
     ToastrModule.forRoot({
       timeOut: 5000,
       closeButton: true,
-      positionClass: 	'toast-top-center',
+      positionClass: 'toast-top-center',
     }),
     PaymentModule,
     AuthenticationModule,

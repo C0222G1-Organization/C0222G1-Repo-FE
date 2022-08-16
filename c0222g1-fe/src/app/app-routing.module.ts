@@ -26,7 +26,6 @@ const routes: Routes = [
   declarations: [],
   imports: [
     RouterModule.forRoot(routes),
-    PaymentRoutingModule,
     AuthenticationRoutingModule,
     ComputerRoutingModule,
     CustomerRoutingModule,
