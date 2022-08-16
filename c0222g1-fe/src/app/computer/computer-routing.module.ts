@@ -6,7 +6,9 @@ import {ComputerListComponent} from './component/computer-list/computer-list.com
 
 
 const routes: Routes = [
-  {path: 'computers', component: ComputerListComponent},
+  {path: 'computers', component: ComputerListComponent
+  // admin, employee PhucNQ
+  },
   {path: 'computers/create', component: ComputerCreateComponent},
   {path: 'computers/edit/:id', component: ComputerEditComponent}
 ];

@@ -65,6 +65,7 @@ export class ComputerService {
     params = params.append('end', end);
     params = params.append('status', status);
     params = params.append('typeId', typeId);
+    console.log('page = ' + page);
     console.log(params);
     return this.http.get<SearchDto[]>(API_URL + `/computers/${page}`, {params});
   }
