@@ -73,7 +73,7 @@ export class GameCreateComponent implements OnInit {
 
   selectFile(event: any) {
     if (!event.target.files[0] || event.target.files[0].length === 0) {
-      this.msg = 'You must select an image';
+      this.msg = 'Bạn phải chọn ảnh';
       return;
     }
 
