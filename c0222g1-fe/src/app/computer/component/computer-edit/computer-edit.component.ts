@@ -6,6 +6,7 @@ import {Computer} from '../../model/computer';
 import {ComputerType} from '../../model/computer-type';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-computer-edit',
@@ -40,7 +41,9 @@ export class ComputerEditComponent implements OnInit {
               private computerTypeService: ComputerTypeService,
               private activatedRoute: ActivatedRoute,
               private toast: ToastrService,
-              private route: Router) {
+              private route: Router,
+              private title: Title) {
+    this.title.setTitle('Trang chỉnh sửa');
   }
 
   ngOnInit(): void {
@@ -72,6 +75,8 @@ export class ComputerEditComponent implements OnInit {
     this.computerService.findById(id).subscribe(value => {
       this.formEditComputer.patchValue(value);
       console.log(value);
+    }, error => {
+      this.route.navigateByUrl('/500');
     });
   }
 
@@ -83,7 +88,7 @@ export class ComputerEditComponent implements OnInit {
   submit() {
     this.computerService.editComputer(this.id, this.formEditComputer.value).subscribe(value => {
         this.toast.success('Sửa thành công', 'Computer');
-        this.route.navigateByUrl('/computer');
+        this.route.navigateByUrl('/computers');
       },
       error => {
         this.toast.error('Sửa thất bại', 'Computer');

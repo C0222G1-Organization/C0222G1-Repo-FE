@@ -77,8 +77,8 @@
             {{computer.id}}
           </td>
           <td>{{computer.code}}</td>
-          <td *ngIf="computer.status.includes('false',0)">Bình thường</td>
-          <td *ngIf="computer.status.includes('true',0)">Bảo trì</td>
+          <td *ngIf="computer.status.includes('true',0)">Bình thường</td>
+          <td *ngIf="computer.status.includes('false',0)">Bảo trì</td>
           <td>{{computer.location}}</td>
           <td>{{computer.start | date: "dd/MM/yyyy"}}</td>
           <td>{{computer.configuration}}</td>
