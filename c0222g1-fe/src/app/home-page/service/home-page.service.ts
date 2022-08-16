@@ -12,6 +12,10 @@ const API_URL = `${environment.apiUrl}`;
 export class HomePageService {
   constructor(private http: HttpClient) { }
 
+  getTop3Games(page: number): Observable<Game[]> {
+    return this.http.get<Game[]>(API_URL + `/games/top-3?page=${page}`);
+  }
+
   getAllPopularGames(page: number): Observable<Game[]> {
     return this.http.get<Game[]>(API_URL + `/games/popular?page=${page}`);
   }

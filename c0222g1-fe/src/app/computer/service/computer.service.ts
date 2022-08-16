@@ -17,29 +17,55 @@ export class ComputerService {
   }
 
   /**
-   * Created by: PhucNQ
+   * Created by: TuanHD
    * Date created: 10/08/2022
-   * Function: findAll
+   * Function: createComputer
    */
   createComputer(computer: Computer): Observable<Computer> {
     return this.http.post<Computer>(API_URL + '/computers/create', computer);
   }
 
-
+  /**
+   * Created by: TuanHD
+   * Date created: 10/08/2022
+   * Function: findById
+   */
   findById(id: number) {
     return this.http.get<Computer>(API_URL + `/computers/list/${id}`);
   }
 
+  /**
+   * Created by: TuanHD
+   * Date created: 10/08/2022
+   * Function: editComputer
+   */
   editComputer(id: number, computer: Computer) {
     return this.http.patch<Computer>(API_URL + `/computers/edit/${id}`, computer);
   }
 
-  findAll(page: number, code: string, location: string, start: string, end: string, status: string, typeId: string): Observable<SearchDto[]> {
+  /**
+   * Created by: PhucNQ
+   * Date created: 10/08/2022
+   * Function: findAll
+   */
+  findAll(page: number,
+          code: string,
+          location: string,
+          start: string,
+          end: string,
+          status: string,
+          typeId: string): Observable<SearchDto[]> {
     if (start === '') {
       start = '1900-10-10';
     }
     if (end === '') {
       end = '2200-10-10';
+    }
+    if (status === null) {
+      status = '';
+    }
+    if (typeId === null) {
+      typeId = '';
     }
     let params = new HttpParams();
     params = params.append('code', code);
@@ -48,6 +74,7 @@ export class ComputerService {
     params = params.append('end', end);
     params = params.append('status', status);
     params = params.append('typeId', typeId);
+    console.log(params);
     return this.http.get<SearchDto[]>(API_URL + `/computers/${page}`, {params});
   }
 
@@ -57,7 +84,7 @@ export class ComputerService {
    * Function: delete(id)
    */
   delete(id): Observable<void> {
-    return this.http.delete<void>(`${API_URL}/computer/${id}`);
+    return this.http.delete<void>(`${API_URL}/computers/${id}`);
   }
 
   /**
@@ -66,6 +93,7 @@ export class ComputerService {
    * Function: getAll(id)
    */
   getAll(): Observable<ComputerType[]> {
-    return this.http.get<ComputerType[]>(API_URL + '/computer/list/computer-type');
+    return this.http.get<ComputerType[]>(API_URL + '/computers/list/computer-type');
   }
+
 }
