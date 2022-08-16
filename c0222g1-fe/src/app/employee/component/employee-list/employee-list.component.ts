@@ -8,7 +8,7 @@ import {Title} from "@angular/platform-browser";
 
 import {Router} from '@angular/router';
 import {isDate} from "rxjs/internal-compatibility";
-import { DatePipe } from '@angular/common';
+import {DatePipe} from '@angular/common';
 
 
 @Component({
@@ -29,7 +29,7 @@ export class EmployeeListComponent implements OnInit {
   employees: any;
   positions: Position[];
   formSearch: FormGroup;
-
+  id: number;
   idDelete: number;
   nameDelete: string;
   level: Date = new Date();
@@ -37,6 +37,10 @@ export class EmployeeListComponent implements OnInit {
   totalPages: any;
   map = new Map;
   today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+  // dobFromSearch = this.datePipe.transform(new Date('1970-01-01'), 'yyyy-MM-dd');
+  // dobEndSearch = this.datePipe.transform(new Date('2004-08-16'), 'yyyy-MM-dd');
+  // workFromSearch = this.datePipe.transform(new Date('2010-01-01'), 'yyyy-MM-dd');
+
   constructor(private employeeService: EmployeeService,
               private title: Title,
               private toastr: ToastrService,
@@ -51,21 +55,22 @@ export class EmployeeListComponent implements OnInit {
       workf: new FormControl('', this.dateInFuture),
       workt: new FormControl(this.today, this.dateInFuture),
       position: new FormControl(''),
-      address: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'),Validators.maxLength(20)]),
+      address: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'), Validators.maxLength(20)]),
     }, [this.invalidDate, this.dobInvalidDate]);
   }
 
   ngOnInit(): void {
     this.getPosition();
     this.getAll();
+    console.log("123")
   }
 
   getAll() {
     const getFormSearch = this.formSearch.value;
+
     this.employeeService.getEmployeeList(this.page, getFormSearch.code, getFormSearch.name, getFormSearch.dobfrom,
       getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
       getFormSearch.address).subscribe((value: any) => {
-        console.log(getFormSearch.workt);
         this.employees = value.content;
         this.totalElements = value.totalElements;
       }, error => {
@@ -99,26 +104,32 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
-  //
-  // getPage(event: number) {
-  //   this.page = event - 1;
-  //   this.ngOnInit();
-  // }
 
   getEmployee(employee: Employee) {
     this.idDelete = employee.id;
     this.nameDelete = employee.name;
   }
 
+  deleteEmployeeList() {
+    this.selectedEmployee = this.employees.filter(employee => employee.checked).map(p => p.id);
+    for (const employee of this.selectedEmployee) {
+      this.id = employee;
+      this.employeeService.deleteEmployee(this.id).subscribe(value => {
+        this.page = 0;
+      }, error => {
+      }, () => {
+        console.log(this.employees.length);
+        this.getAll();
+      });
+    }
+    if (this.selectedEmployee.length > 0) {
+      this.toastr.success('Xóa nhân viên thành công');
+    }
+  }
+
   deleteEmployee() {
     this.employeeService.deleteEmployee(this.idDelete).subscribe((value: any) => {
-      if (this.employees.length === 1) {
-        if (this.page === 0) {
-          this.page = 0;
-        } else {
-          this.page -= 1;
-        }
-      }
+      this.page = 0;
       this.toastr.success('Xóa nhân viên thành công');
     }, error => {
       console.log(error);
@@ -144,10 +155,10 @@ export class EmployeeListComponent implements OnInit {
     const end = new Date(v);
     if (end > new Date()) {
       return {futureDate: true};
-    }if (!isDate(end)) {
-      return {dateNotExist: true};
     }
-    else {
+    if (!isDate(end)) {
+      return {dateNotExist: true};
+    } else {
       return null;
     }
   }
@@ -217,7 +228,7 @@ export class EmployeeListComponent implements OnInit {
   checkEmployee(id: number) {
     for (const employee of this.employees) {
       console.log(id)
-      if (employee.id == id){
+      if (employee.id == id) {
         employee.checked = employee.checked != true;
         break;
       }
@@ -233,7 +244,7 @@ export class EmployeeListComponent implements OnInit {
         this.map.delete(value.id);
       }
     });
-      return this.employees.every(e => e.checked);
+    return this.employees.every(e => e.checked);
   }
 
   checkMultipleCheckBox(event: any) {
@@ -245,16 +256,4 @@ export class EmployeeListComponent implements OnInit {
     this.selectedEmployee = this.employees.filter(employee => employee.checked);
   }
 
-  deleteMultipleEmployee() {
-    for (const selectEmployee of this.selectedEmployee) {
-      this.employeeService.deleteEmployee(selectEmployee.id).subscribe(res => {
-        this.page = 1;
-        this.getAll();
-        console.log('Xóa thành công');
-      }, error => {
-        console.log('Xóa thất bại');
-      });
-    }
-    this.toastr.success("Xóa thành công");
-  }
 }

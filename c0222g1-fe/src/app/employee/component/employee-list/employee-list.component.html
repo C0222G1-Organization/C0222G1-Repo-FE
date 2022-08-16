@@ -1,7 +1,7 @@
 <div class="container mt-5" id="table-computer">
   <div class="row">
     <h2 class="text-center text-white">DANH SÁCH NHÂN VIÊN</h2>
-    <form [formGroup]="formSearch">
+    <form [formGroup]="formSearch" novalidate>
       <div class="container text-white my-5">
         <div class="row">
           <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6">
@@ -10,7 +10,7 @@
                 <div>
                   <label for="codeE" style="color: white" class="col-form-label fontFamily">Nhập mã: </label>
                   <input id="codeE" type="text" class="input-search form-control m-0" style="margin-right: 0"
-                         placeholder="Nhập mã" formControlName="code" (keydown.enter)="search()">
+                         placeholder="Nhập mã" formControlName="code">
                   <small class="fontError text-danger" *ngIf="formSearch.controls.code.hasError('pattern')">
                     Không được nhập ký tự đặc biệt.
                   </small>
@@ -184,16 +184,14 @@
                 </button>
               </td>
             </tr>
-
             </tbody>
-
           </table>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="employees.length>0">
     <div class="col-md-2"></div>
     <div class="row mb-0" style="margin-top: 1rem;">
       <div class="w-100 d-flex justify-content-center">
@@ -274,12 +272,11 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteMultipleEmployee()"
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteEmployeeList()"
                 [disabled]="selectedEmployee.length == 0">Xóa
         </button>
       </div>
     </div>
   </div>
 </div>
-
 

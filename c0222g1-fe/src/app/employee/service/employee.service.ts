@@ -42,13 +42,8 @@ export class EmployeeService {
       dobend = '2004-01-01';
     }
     if (workf === '') {
-      workf = '0000-00-00';
+      workf = '2000-12-31';
     }
-    const date = new Date();
-    if (workt === '') {
-      workt = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay();
-    }
-
     let params = new HttpParams();
     params = params.append('code', code.trim());
     params = params.append('name', name.trim());
