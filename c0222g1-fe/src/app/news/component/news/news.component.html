@@ -3,10 +3,10 @@
     <header>
       <div class="row d-flex justify-content-between">
         <div class="p-0 col-6">
-          <input [(ngModel)]="searchTitle" (change)="getAllNews()" class="search form-control-sm me-2" type="search" placeholder="tìm kiếm" aria-label="Search" >
+            <input [(ngModel)]="searchTitle" (change)="getAllNews()" class="search form-control-sm me-2 position-absolute" type="search" placeholder="tìm kiếm" aria-label="Search" >
         </div>
         <div class="p-0 col-6 d-flex justify-content-end">
-          <button type="button" routerLink="/create-news" class="btn btn-outline-secondary rounded-pill">thêm mới tin</button>
+          <button type="button" routerLink="/news/create" class="btn btn-outline-secondary rounded-pill">thêm mới tin</button>
         </div>
       </div>
     </header>
@@ -15,14 +15,15 @@
     </div>
     <div class="row">
       <div *ngFor="let item of topNews, let i = index"  class="col-md-6 col-sm-12">
-        <div (click)="updateViews(item.id)" routerLink="/detail-news/{{item.id}}" *ngIf="i < 2" class="card w-100 " style="width: 18rem;">
+        <div (click)="updateViews(item.id)" routerLink="/news/detail/{{item.id}}" *ngIf="i < 2" class="card w-100 " style="width: 18rem;">
           <div class="box-img-new rounded">
             <img src="{{item.imageUrl}}" class="card-img-top img-fit">
           </div>
           <div class="card-body px-0">
-            <small><p class="card-text text-secondary">{{item.createDate}}</p></small>
-            <small><p class="card-text text-light mt-2">{{item.title}}</p></small>
-            <a class="read-more">Đọc thêm</a>
+            <small><p class="card-text text-secondary">{{item.createDate | date}}</p></small>
+            <small><p class="card-text text-light mt-2">
+              {{ (item.title.length>80)? (item.title | slice:0:80)+'..':(item.title) }}</p></small>
+            <a class="read-more borderr"><small>Đọc thêm</small></a>
           </div>
         </div>
       </div>
@@ -30,27 +31,43 @@
     <div *ngFor="let item of listNews | paginate :
           {itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems }"
          class="row mx-1 news mt-2">
-      <div (click)="updateViews(item.id)" routerLink="/detail-news/{{item.id}}" class="row">
+      <div (click)="updateViews(item.id)" routerLink="/news/detail/{{item.id}}" class="row sub-news">
         <div class="p-0">
           <hr>
         </div>
         <div class="col-md-2 col-sm-6 p-0 mt-2 img-sub">
           <div class="box-img-sub rounded img-fixed">
-            <img src="{{item.imageUrl}}" class="card-img-top img-t">
+            <img src="{{item.imageUrl}}" class="card-img-top img-fit">
           </div>
         </div>
-        <div class="col-5">
+        <div class="col-8 position-relative px-3">
           <div>
-            <small><p class="card-text text-secondary">{{item.createDate}}</p></small>
-            <small><p class="card-text text-light">{{item.title}}</p></small>
+            <small><p class="card-text text-secondary">{{item.createDate | date}}</p></small>
+            <small><p class="card-text text-light">{{ (item.title.length>80)? (item.title | slice:0:80)+'..':(item.title) }}</p></small>
           </div>
-          <a class="read-more">Đọc thêm</a>
+          <div class="position-absolute bottom-0">
+            <a class="read-more borderr  bot"><small>Đọc thêm</small></a>
+          </div>
         </div>
       </div>
     </div>
     <div class="row mt-3">
       <div class="col-12 d-flex justify-content-center">
-        <pagination-controls (pageChange)="getPage(page = $event)"></pagination-controls>
+        <pagination-controls nextLabel="Sau" previousLabel="Trước" class="text-light" (pageChange)="getPage(page = $event)"></pagination-controls>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12 d-flex justify-content-center">
+        <div class="col-auto m-1">
+          <label for="goToPage" class="col-form-label text-white">Đến trang</label>
+        </div>
+        <div class="col-auto m-1">
+          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
+                 (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
+        </div>
+        <div class="col-auto m-1">
+          <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
+        </div>
       </div>
     </div>
   </div>

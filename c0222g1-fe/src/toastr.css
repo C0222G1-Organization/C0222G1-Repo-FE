@@ -46,15 +46,16 @@
 /* toast styles */
 .toast-title {
   font-weight: bold;
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 .toast-message {
   word-wrap: break-word;
-  font-size: 0.85rem;
+  font-size: 1.1rem;
 }
 .toast-message a,
 .toast-message label {
   color: #FFFFFF;
+  margin: auto;
 }
 .toast-message a:hover {
   color: #CCCCCC;
@@ -91,6 +92,7 @@ button.toast-close-button {
   pointer-events: none;
   position: fixed;
   z-index: 999999;
+  text-align: center;
 }
 .toast-container * {
   box-sizing: border-box;
@@ -102,11 +104,11 @@ button.toast-close-button {
   overflow: hidden;
   margin: 0 0 3px;
   /*padding: 10px 10px;*/
-  width: 150px;
+  width: 280px;
   border-radius: 30px;
   background-position: 15px center;
   background-repeat: no-repeat;
-  background-size: 24px;
+  background-size: 25px;
   /*box-shadow: 0 0 12px #999999;*/
   color: white;
 }
@@ -133,7 +135,7 @@ button.toast-close-button {
 }
 .toast-container.toast-top-center .ngx-toastr,
 .toast-container.toast-bottom-center .ngx-toastr {
-  width: 220px;
+  width: 300px;
   margin-left: auto;
   margin-right: auto;
 }

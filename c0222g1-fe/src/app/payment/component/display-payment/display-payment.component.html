@@ -2,8 +2,7 @@
   <div class="h-auto w-auto ml-1 mr-1" style="border-radius: 10px; background-color: #2a2a2a; margin: 10% 0">
     <h1 class="text-center text-white pt-4 pb-4" style="font-family: 'Roboto', sans-serif;">THÔNG TIN THANH TOÁN</h1>
     <div class="table-container">
-      <p class="text-white" style="font-weight: bold; font-size: 13px; font-style: italic">Đơn vị tính: 1000
-        VND</p>
+      <p class="text-white" style="font-weight: bold; font-size: 13px; font-style: italic">Đơn vị tính: VND</p>
       <table class="table table-striped table-dark">
         <thead>
         <tr>
@@ -11,68 +10,34 @@
           <th>Tên người dùng</th>
           <th>Thư điện tử</th>
           <th>Giờ bắt đầu</th>
-          <th>Giờ kết thúc</th>
-          <th>Tổng giờ</th>
           <th>Dịch vụ</th>
           <th>Tổng tiền</th>
           <th>Thanh toán</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>CP0001</td>
-          <td>Nguyen Van A</td>
-          <td class="hiddenText">anv0001@gmail.com</td>
-          <td>7:00 PM, 2022-08-01</td>
-          <td>12:00 PM, 2022-08-01</td>
-          <td>5 giờ</td>
+        <tr
+          *ngFor="let payment of listPayment  | paginate: {itemsPerPage: 2, currentPage: page+1, totalItems: element}">
+          <td>{{payment.id}}</td>
+          <td>{{payment.record.customer.name}}</td>
+          <td class="hiddenText">{{payment.record.customer.email}}</td>
+          <td>{{payment.record.startTime}}</td>
           <td>
-            <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modelId">
+            <button class="btn btn-outline-light btn-sm" (click)="getService(payment.id)" data-bs-toggle="modal"
+                    data-bs-target="#modelId">
               Dịch vụ
             </button>
           </td>
-          <td>100</td>
+          <td>{{payment.totalPay}}</td>
           <td>
-            <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal"
+            <button class="btn btn-outline-light btn-sm"
+                    [disabled]="payment.totalPay == 0 || payment.paymentStatus == 1" (click)="getPayment(payment.id)"
+                    data-bs-toggle="modal"
                     data-bs-target="#modelPaymentMethodId">Thanh toán
             </button>
-          </td>
-        </tr>
-        <tr>
-          <td>CP0002</td>
-          <td>Nguyen Van B</td>
-          <td class="hiddenText">bnv0002@gmail.com</td>
-          <td>7:00 PM, 2022-08-01</td>
-          <td>12:00 PM, 2022-08-01</td>
-          <td>5 giờ</td>
-          <td>
-            <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modelId">
-              Dịch vụ
-            </button>
-          </td>
-          <td>100</td>
-          <td>
-            <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#modelPaymentMethodId">Thanh toán
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>CP0003</td>
-          <td>Nguyen Van C</td>
-          <td class="hiddenText">cnv0003@gmail.com</td>
-          <td>7:00 PM, 2022-08-01</td>
-          <td>12:00 PM, 2022-08-01</td>
-          <td>5 giờ</td>
-          <td>
-            <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modelId">
-              Dịch vụ
-            </button>
-          </td>
-          <td>100</td>
-          <td>
-            <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#modelPaymentMethodId">Thanh toán
+            <button class="btn btn-outline-light btn-sm ml-2" [disabled]="payment.paymentStatus == 0"
+                    data-bs-toggle="modal" data-bs-target="#modelResultId">
+              Xem hoá đơn
             </button>
           </td>
         </tr>
@@ -81,11 +46,7 @@
     </div>
     <div class="paging-container d-flex justify-content-center pb-2 pt-2">
       <div class="pagination align-content-center align-items-center mt-2 mb-2">
-        <a href="#">&laquo;</a>
-        <a href="#" class="active">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">&raquo;</a>
+        <pagination-controls (pageChange)=getPage($event) class="page-item"></pagination-controls>
       </div>
     </div>
   </div>
@@ -100,32 +61,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
         </button>
       </div>
-      <div class="modal-body">
-        <div class="table-container" style="padding: 0 5px;">
-          <p style="text-align: right; margin: 5px 10px; font-weight: bold; font-size: 13px; font-style: italic">
-            Đơn vị tính: 1000 VND</p>
-          <table class="table table-striped table-dark">
-            <thead>
-            <tr>
-              <th>Tên dịch vụ</th>
-              <th>Số lượng</th>
-              <th>Đơn vị</th>
-              <th>Đơn giá</th>
-              <th>Tổng tiền</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>Snack</td>
-              <td>2</td>
-              <td>Pack</td>
-              <td>15</td>
-              <td>30</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <div class="modal-body" id="body-service"></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">OK</button>
       </div>
@@ -142,18 +78,75 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
         </button>
       </div>
-      <div class="modal-body">
-        <div class="container">
-          <div id="paypalMethod">
-            <h4>Paypal</h4>
-            <div id="myPaypal"></div>
-          </div>
-          <div id="momoMethod">
-            <h4>Momo</h4>
-            <a class="btn btn-primary form-control">Momo</a>
+      <div class="modal-body" id="body-payment">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modelResultId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Hoá đơn thanh toán</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body" id="body-result" *ngIf="obj != null">
+        <div class="d-flex justify-content-center">
+          <div class="h-auto pl-5 pr-5 pt-2 pb-2"
+               style="border-radius: 10px; background-color: #2a2a2a; max-width: 50%">
+            <h1 class="text-center text-white pt-4 pb-4 pl-4 pr-4" style="font-family: 'Roboto', sans-serif;">HOÁ ĐƠN
+              THANH TOÁN</h1>
+            <div class="container pb-3">
+              <div class="row mt-2 mb-2">
+                <div class="col-4 text-white">Mã số hoá đơn:</div>
+                <div class="col-8 text-white">{{obj.id}}</div>
+              </div>
+              <div class="row mt-2 mb-2">
+                <div class="col-4 text-white">Trạng thái hoá đơn:</div>
+                <div class="col-8 text-white">{{obj.status}}</div>
+              </div>
+              <div class="row mt-2 mb-2">
+                <div class="col-4 text-white">Tổng thanh toán:</div>
+                <div class="col-8 text-white">{{obj.purchase_units[0]['amount']['value']}}</div>
+              </div>
+              <div class="row mt-2 mb-2">
+                <div class="col-4 text-white">Địa chỉ email:</div>
+                <div class="col-8 text-white hiddenText">{{obj.purchase_units[0]['payee']['email_address']}}</div>
+              </div>
+              <div class="row mt-2 mb-2">
+                <div class="col-4 text-white">Họ và tên:</div>
+                <div class="col-8 text-white">{{obj.purchase_units[0]['shipping']['name']['full_name']}}</div>
+              </div>
+              <div class="row mt-2 mb-2">
+                <div class="col-4 text-white">Địa chỉ:</div>
+                <div class="col-8 text-white">{{obj.purchase_units[0]['shipping']['address']['address_line_1']}}</div>
+              </div>
+              <div class="row mt-2 mb-2">
+                <div class="col-4 text-white">Thành phố:</div>
+                <div class="col-8 text-white">{{obj.purchase_units[0]['shipping']['address']['admin_area_1']}}</div>
+              </div>
+              <div class="row mt-2 mb-2">
+                <div class="col-4 text-white">Tỉnh:</div>
+                <div class="col-8 text-white">{{obj.purchase_units[0]['shipping']['address']['admin_area_2']}}</div>
+              </div>
+              <div class="row mt-2 mb-2">
+                <div class="col-4 text-white">Zipcode:</div>
+                <div class="col-8 text-white">{{obj.purchase_units[0]['shipping']['address']['postal_code']}}</div>
+              </div>
+              <div class="row mt-2 mb-2">
+                <div class="col-4 text-white">Quốc gia:</div>
+                <div class="col-8 text-white">{{obj.purchase_units[0]['shipping']['address']['country_code']}}</div>
+              </div>
+            </div>
           </div>
         </div>
-        <p class="text-danger font-italic text-center">*Vui lòng chọn phương thức thanh toán</p>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
