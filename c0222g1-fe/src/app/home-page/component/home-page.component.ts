@@ -3,7 +3,7 @@ import {Game} from "../../game/model/game";
 import {ToastrService} from "ngx-toastr";
 import {Title} from "@angular/platform-browser";
 import {HomePageService} from "../service/home-page.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-home-page',
@@ -15,15 +15,17 @@ export class HomePageComponent implements OnInit {
   selectedId: number;
   selectedName: string;
   game: Game;
-  popularGames: Game[];
-  newGames: Game[];
-  hotGames: Game[];
+  popularGames: Game[] = [];
+  top3Games: Game[] = [];
+  newGames: Game[] = [];
+  hotGames: Game[] = [];
   isOpen = true;
 
   constructor(private toastr: ToastrService,
               private title: Title,
               private homePageService: HomePageService,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private route: Router) {
     this.title.setTitle('C02G1 | Home');
   }
 
@@ -32,23 +34,36 @@ export class HomePageComponent implements OnInit {
     this.getAllPopularGames();
     this.getAllNewGames();
     this.getAllHotGames();
+    this.getTop3Games();
+  }
+
+  getTop3Games() {
+    this.homePageService.getTop3Games(0).subscribe((games: any) => {
+      this.top3Games = games.content;
+    });
   }
 
   getAllPopularGames() {
     this.homePageService.getAllPopularGames(this.page).subscribe((games: any) => {
       this.popularGames = games.content;
+    }, error => {
+      this.route.navigateByUrl('/500');
     });
   }
 
   getAllNewGames() {
     this.homePageService.getAllNewGames(this.page).subscribe((games: any) => {
       this.newGames = games.content;
+    }, error => {
+      this.route.navigateByUrl('/500');
     });
   }
 
   getAllHotGames() {
     this.homePageService.getAllHotGame(this.page).subscribe((games: any) => {
       this.hotGames = games.content;
+    }, error => {
+      this.route.navigateByUrl('/500');
     });
   }
 

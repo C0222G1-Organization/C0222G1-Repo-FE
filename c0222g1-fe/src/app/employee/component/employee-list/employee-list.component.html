@@ -14,6 +14,9 @@
                   <small class="fontError text-danger" *ngIf="formSearch.controls.code.hasError('pattern')">
                     Không được nhập ký tự đặc biệt.
                   </small>
+                  <small class="fontError text-danger" *ngIf="formSearch.controls.code.hasError('maxlength')">
+                    Không được nhập quá 20 ký tự.
+                  </small>
                 </div>
               </div>
               <div class="col-lg-3 col-xl-3 w-15">
@@ -32,6 +35,10 @@
                                       (formSearch.controls.dobfrom.dirty || formSearch.controls.dobfrom.touched)">
                     Không được nhập trước ngày kết thúc.
                   </p>
+                  <p class="text-danger" *ngIf="formSearch.hasError('dateNotExist') &&
+                                      (formSearch.controls.dobfrom.dirty || formSearch.controls.dobfrom.touched)">
+                    Không có ngày này.
+                  </p>
                 </div>
               </div>
               <div class="col-lg-3 col-xl-3 w-15">
@@ -45,6 +52,10 @@
                   <p class="text-danger" *ngIf="formSearch.controls.dobend.hasError('not100') &&
                                       (formSearch.controls.dobend.dirty || formSearch.controls.dobend.touched)">
                     Không có nhân viên trên 100 tuổi.
+                  </p>
+                  <p class="text-danger" *ngIf="formSearch.controls.dobend.hasError('dateNotExist') &&
+                                      (formSearch.controls.dobend.dirty || formSearch.controls.dobend.touched)">
+                    Không có ngày này.
                   </p>
                 </div>
               </div>
@@ -83,7 +94,7 @@
                   </p>
                   <p class="text-danger" *ngIf="formSearch.hasError('dateNotValid') &&
                                       (formSearch.controls.workf.dirty || formSearch.controls.workf.touched)">
-                    Không được nhập trước ngày kết thúc.
+                    Không có ngày này.
                   </p>
                 </div>
               </div>
@@ -95,6 +106,10 @@
                                       (formSearch.controls.workt.dirty || formSearch.controls.workt.touched)">
                     Không được nhập sau ngày hiện tại.
                   </p>
+                  <p class="text-danger" *ngIf="formSearch.controls.workt.hasError('dateNotExist') &&
+                                      (formSearch.controls.workt.dirty || formSearch.controls.workt.touched)">
+                    Không có ngày này.
+                  </p>
                 </div>
               </div>
               <div class="col-lg-3 col-xl-3 w-15">
@@ -105,6 +120,10 @@
                   <p class="text-danger" *ngIf="formSearch.controls.name.hasError('pattern') &&
                                       (formSearch.controls.name.dirty || formSearch.controls.name.touched)">
                     Không được nhập ký tự đặc biệt.
+                  </p>
+                  <p class="text-danger" *ngIf="formSearch.controls.name.hasError('maxlength') &&
+                                      (formSearch.controls.name.dirty || formSearch.controls.name.touched)">
+                    Không được nhập quá 20 ký tự.
                   </p>
                 </div>
               </div>
@@ -244,7 +263,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteAll()">Xóa</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteMultipleEmployee()">Xóa</button>
       </div>
     </div>
   </div>

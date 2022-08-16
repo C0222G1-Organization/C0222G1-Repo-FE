@@ -7,6 +7,7 @@ import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/form
 import {Title} from "@angular/platform-browser";
 import {error} from "protractor";
 import {Router} from '@angular/router';
+import {isDate} from "rxjs/internal-compatibility";
 
 
 @Component({
@@ -31,7 +32,7 @@ export class EmployeeListComponent implements OnInit {
   idDelete: number;
   nameDelete: string;
   level: Date = new Date();
-  errorServer = true;
+  selectedEmployee: any[] = [];
   totalPages: any;
 
   constructor(private employeeService: EmployeeService,
@@ -40,14 +41,14 @@ export class EmployeeListComponent implements OnInit {
               private route: Router) {
     this.title.setTitle('Nhân viên');
     this.formSearch = new FormGroup({
-      code: new FormControl('', Validators.pattern('^[A-Za-z0-9]+$')),
-      name: new FormControl('', Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s?]+$')),
+      code: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+$'), Validators.maxLength(20)]),
+      name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'), Validators.maxLength(20)]),
       dobfrom: new FormControl('', [this.check18, this.check100]),
       dobend: new FormControl('', this.check18, this.check100),
       workf: new FormControl('', this.dateInFuture),
       workt: new FormControl('', this.dateInFuture),
       position: new FormControl(''),
-      address: new FormControl('', Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s0-9?]+$')),
+      address: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'),Validators.maxLength(20)]),
     }, [this.invalidDate, this.dobInvalidDate]);
   }
 
@@ -90,6 +91,7 @@ export class EmployeeListComponent implements OnInit {
       if (this.employees.isEmpty) {
         this.toastr.warning('Không có dữ liệu phù hợp.');
       }
+
       this.totalElements = value.totalElements;
     });
   }
@@ -160,7 +162,10 @@ export class EmployeeListComponent implements OnInit {
     const end = new Date(v);
     if (end > new Date()) {
       return {futureDate: true};
-    } else {
+    }if (!isDate(end)) {
+      return {dateNotExist: true};
+    }
+    else {
       return null;
     }
   }
@@ -225,5 +230,49 @@ export class EmployeeListComponent implements OnInit {
       this.totalElements = value.totalElements;
       this.totalPages = value.totalPages;
     });
+  }
+
+  checkGame(id: number) {
+    for (const employee of this.employees) {
+      if (employee.id == id){
+        employee.checked = employee.checked != true;
+        break;
+      }
+    }
+    this.getSelectedEmployees();
+  }
+
+  isAllCheckBoxChecked1() {
+    if (this.employees.length !== 0) {
+      return this.employees.every(e => e.checked);
+    }
+  }
+
+  checkMultipleCheckBox(event: any) {
+    this.employees.forEach(x => x.checked = event.target.checked);
+    this.getSelectedEmployees();
+  }
+
+  getSelectedEmployees() {
+    this.selectedEmployee = this.employees.filter(employee => employee.checked);
+  }
+
+  deleteMultipleEmployee() {
+    for (const selectedEmployee of this.selectedEmployee) {
+      this.employeeService.deleteEmployee(selectedEmployee.id).subscribe(res => {
+        if (this.employees.length === 1) {
+          if (this.page === 0) {
+            this.page = 0;
+          } else {
+            this.page -= 1;
+          }
+        }
+        this.ngOnInit();
+        console.log('Xóa thành công');
+      }, error => {
+        console.log('Xóa thất bại');
+      });
+    }
+    this.toastr.success("Xóa thành công");
   }
 }

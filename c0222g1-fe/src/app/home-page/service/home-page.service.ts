@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../../enviroment";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Game} from "../model/game";
+import {environment} from '../../enviroment';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+// @ts-ignore
+import {Game} from '../model/game';
 
 const API_URL = `${environment.apiUrl}`;
 @Injectable({
@@ -10,6 +11,10 @@ const API_URL = `${environment.apiUrl}`;
 })
 export class HomePageService {
   constructor(private http: HttpClient) { }
+
+  getTop3Games(page: number): Observable<Game[]> {
+    return this.http.get<Game[]>(API_URL + `/games/top-3?page=${page}`);
+  }
 
   getAllPopularGames(page: number): Observable<Game[]> {
     return this.http.get<Game[]>(API_URL + `/games/popular?page=${page}`);
