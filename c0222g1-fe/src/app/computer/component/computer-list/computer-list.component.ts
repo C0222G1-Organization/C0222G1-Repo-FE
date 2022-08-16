@@ -83,6 +83,37 @@ export class ComputerListComponent implements OnInit {
   /**
    * Created by: PhucNQ
    * Date created: 14/08/2022
+   * Function: findAll
+   */
+  search() {
+    const value = this.formSearch.value;
+    if (this.page > 0){
+      this.page = 0;
+    }
+    this.computerService.findAll(this.page,
+      value.code,
+      value.location,
+      value.start,
+      value.end,
+      value.status,
+      value.typeId).subscribe((list: any) => {
+      this.computers = list.content;
+      if (this.computers.length === 0) {
+        this.toastr.error('Không tìm thấy');
+      } else {
+        this.computers = list.content;
+        this.totalItems = list.totalElements;
+        this.totalPages = list.totalPages;
+      }
+      this.isAllCheckBoxChecked();
+    }, error => {
+      this.toastr.error('Không tìm thấy');
+    });
+  }
+
+  /**
+   * Created by: PhucNQ
+   * Date created: 14/08/2022
    * Function: getPage
    */
   getPage(page) {

@@ -26,13 +26,11 @@ export class AuthService {
     return this.httpClient.post<Ilogin[]>(this.URL_API + 'api/auth/login', login);
   }
 
-  requestTest(): Observable<any> {
-    return this.httpClient.get<Ilogin[]>(this.URL_API + 'api/auth/data/data1');
+  setOutOfTime(id: number, remaining: number ): Observable<any> {
+    return this.httpClient.get<Ilogin[]>(this.URL_API + 'customer/setOutOfTime?id=' + id + '&remaining=' + remaining);
   }
 
-  logout() {
-    sessionStorage.clear();
-    this.toartrs.success('Đã đăng xuất', 'THÔNG BÁO');
-    this.router.navigate(['']);
+  getRemainingTime(id: number): Observable<any> {
+    return this.httpClient.get<Ilogin[]>(this.URL_API + 'customer/getRemainingTime/' + id);
   }
 }

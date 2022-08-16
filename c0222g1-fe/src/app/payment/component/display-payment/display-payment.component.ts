@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+// @ts-ignore
 import {render} from 'creditcardpayments/creditCardPayments';
 import {PaymentService} from '../../service/payment.service';
 import {Payment} from '../../model/payment';

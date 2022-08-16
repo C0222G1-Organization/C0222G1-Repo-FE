@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../../enviroment";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Game} from "../model/game";
+import {environment} from '../../enviroment';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+// @ts-ignore
+import {Game} from '../model/game';
 
 const API_URL = `${environment.apiUrl}`;
 @Injectable({
