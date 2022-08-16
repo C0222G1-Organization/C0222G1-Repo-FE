@@ -97,7 +97,7 @@
         <div class="d-flex">
           <div class="col-4 mb-2">
             <label for="category" class="col-md-4 col-sm-12">Danh mục</label>
-            <select name="" id="category" class="col-md-6 col-sm-12 form-control-sm text-center"
+            <select name="" id="category" class="col-md-7 col-sm-12 form-control-sm text-center"
                     (change)="getProductOptionList($event.target.value)">
               <option [value]="null">Vui lòng chọn</option>
               <option [value]="category.id" *ngFor="let category of productCategoryList">{{category.name}}</option>
@@ -105,7 +105,7 @@
           </div>
           <div class="col-4 mb-2">
             <label for="product" class="col-md-4 col-sm-12">Sản phẩm</label>
-            <select name="" id="product" class="col-md-6 col-sm-12 form-control-sm text-center"
+            <select name="" id="product" class="col-md-7 col-sm-12 form-control-sm text-center"
                     (change)="getProductById($event.target.value)">
               <option value="">Vui lòng chọn</option>
               <option value="{{productObject.id}}"
@@ -114,7 +114,7 @@
           </div>
           <div class="col-4 mb-2">
             <label class="col-md-4 col-sm-12" for="unit">Đơn vị tính</label>
-            <input id="unit" class="col-md-6 col-sm-12 form-control-sm text-center" type="text" value="{{productUnit}}"
+            <input id="unit" class="col-md-7 col-sm-12 form-control-sm text-center" type="text" value="{{productUnit}}"
                    readonly>
           </div>
         </div>
@@ -123,15 +123,15 @@
           <div class="col-4 mb-3">
             <label class="col-md-4 col-sm-12" for="quantity">Số lượng</label>
             <input (change)="showTotalPayment($event.target.value)" id="quantity"
-                   class="col-md-6 col-sm-12 form-control-sm" type="number" [(ngModel)]="quantity">
+                   class="col-md-7 col-sm-12 form-control-sm" type="number" [(ngModel)]="quantity">
           </div>
           <div class="col-4 mb-3">
             <label class="col-md-4 col-sm-12" for="price">Đơn giá</label>
-            <input id="price" class="col-md-6 col-sm-12 form-control-sm" type="text" value="{{productPrice | number}}" readonly>
+            <input id="price" class="col-md-7 col-sm-12 form-control-sm" type="text" value="{{productPrice | number}}" readonly>
           </div>
           <div class="col-4 mb-3">
             <label class="col-md-4 col-sm-12" for="total">Thành tiền</label>
-            <input id="total" class="col-md-6 col-sm-12 form-control-sm" type="text" value="{{totalPayment | number}}"
+            <input id="total" class="col-md-7 col-sm-12 form-control-sm" type="text" value="{{totalPayment | number}}"
                    readonly>
           </div>
         </div>
@@ -189,6 +189,9 @@
       </tr>
       </tbody>
     </table>
+  </div>
+  <div class="container" style="text-align: right">
+    <p>{{totalOfOrder}}</p>
   </div>
   <div>
     <div class="text-center mt-2">
