@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Game} from '../../model/game';
 import {GameService} from '../../service/game.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-game-detail',
@@ -16,7 +16,8 @@ export class GameDetailComponent implements OnInit {
 
   constructor(
     private gameService: GameService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
   }
 
