@@ -142,14 +142,14 @@
             </thead>
             <tbody class="hiddenText">
             <tr
-              *ngFor="let employee of employees| paginate:{itemsPerPage:2, currentPage: page +1, totalItems: totalElements}, let i = index">
+              *ngFor="let employee of employees| paginate:{itemsPerPage:5, currentPage: page , totalItems: totalElements}, let i = index">
               <td><input class="card-notify-year-checkbox" type="checkbox" value="{{employee.id}}"
                          [(ngModel)]="employees[i].checked" id="check"></td>
               <td>{{employee.code}}</td>
               <td>{{employee.name}}</td>
               <td class="hiddenText">{{employee.cmName}},{{employee.disName}},{{employee.proName}}</td>
               <td>{{employee.dob}}</td>
-              <td>{{employee.email}}</td>
+              <td class="hiddenText">{{employee.email}}</td>
               <td>{{employee.phone}}</td>
               <td>{{employee.posiName}}</td>
               <td>{{exp(employee)}}</td>
@@ -170,12 +170,32 @@
   </div>
 
   <div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
-      <pagination-controls nextLabel="Trang kế" previousLabel="Trang trước"
-                           (pageChange)="getPage($event)"></pagination-controls>
+    <div class="col-md-2"></div>
+    <div class="row mb-0" style="margin-top: 1rem;">
+      <div class="w-100 d-flex justify-content-center">
+        <pagination-controls (pageChange)="getPage(page = $event)"
+                             previousLabel="Trước"
+                             nextLabel="Sau"
+                             autoHide="true"
+                             maxSize=7>
+        </pagination-controls>
+      </div>
     </div>
-    <div class="col-md-3"></div>
+    <div class="row align-items-center">
+      <div class="w-100 d-flex justify-content-center">
+        <div class="col-auto m-1">
+          <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>
+        </div>
+        <div class="col-auto m-1">
+          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
+                 (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
+        </div>
+        <div class="col-auto m-1">
+          <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-1"></div>
   </div>
   <div class="row d-flex" id="btn-outside">
     <div class="col-4 col-sm-4 col-md-4 col-lg-4">

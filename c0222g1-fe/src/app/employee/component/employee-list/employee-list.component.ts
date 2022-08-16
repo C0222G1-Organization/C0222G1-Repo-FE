@@ -5,6 +5,8 @@ import {Position} from '../../model/position';
 import {ToastrService} from 'ngx-toastr';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Title} from "@angular/platform-browser";
+import {error} from "protractor";
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -28,13 +30,14 @@ export class EmployeeListComponent implements OnInit {
 
   idDelete: number;
   nameDelete: string;
-  selectEmployee: Array<any>;
   level: Date = new Date();
-  countLevel: number;
+  errorServer = true;
+  totalPages: any;
 
   constructor(private employeeService: EmployeeService,
+              private title: Title,
               private toastr: ToastrService,
-              private title: Title) {
+              private route: Router) {
     this.title.setTitle('Nhân viên');
     this.formSearch = new FormGroup({
       code: new FormControl('', Validators.pattern('^[A-Za-z0-9]+$')),
@@ -58,12 +61,14 @@ export class EmployeeListComponent implements OnInit {
     this.employeeService.getEmployeeList(this.page, getFormSearch.code, getFormSearch.name, getFormSearch.dobfrom,
       getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
       getFormSearch.address).subscribe((value: any) => {
-      console.log(this.page);
-      this.employees = value.content;
-      console.log(value);
-      this.totalElements = value.totalElements;
-      // this.pages = new Array<number>(value.totalPages);
-    });
+        console.log(this.page);
+        this.employees = value.content;
+        this.totalElements = value.totalElements;
+      }, error => {
+        this.route.navigateByUrl('/500');
+      }
+    )
+    ;
   }
 
   getPosition() {
@@ -89,10 +94,11 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
-  getPage(event: number) {
-    this.page = event - 1;
-    this.ngOnInit();
-  }
+  //
+  // getPage(event: number) {
+  //   this.page = event - 1;
+  //   this.ngOnInit();
+  // }
 
   getEmployee(employee: Employee) {
     this.idDelete = employee.id;
@@ -203,5 +209,21 @@ export class EmployeeListComponent implements OnInit {
       age--;
     }
     return (age <= 100) ? null : {not100: true};
+  }
+
+  getPage(page) {
+    if (page < 1 || page > this.totalPages) {
+      this.toastr.error('Vui lòng nhập đúng');
+    }
+    this.page = page;
+    page = page - 1;
+    const getFormSearch = this.formSearch.value;
+    this.employeeService.getEmployeeList(page, getFormSearch.code, getFormSearch.name, getFormSearch.dobfrom,
+      getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
+      getFormSearch.address).subscribe((value: any) => {
+      this.employees = value.content;
+      this.totalElements = value.totalElements;
+      this.totalPages = value.totalPages;
+    });
   }
 }
