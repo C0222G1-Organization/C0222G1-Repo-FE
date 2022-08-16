@@ -15,6 +15,7 @@ export class CustomerService {
 
   // tslint:disable-next-line:variable-name
   ApiUrl_8080 = `${environment.apiUrl}/customer`;
+  ApiUrl = `${environment.apiUrl}/address`;
 
   constructor(private httpClient: HttpClient) {
   }
@@ -32,15 +33,15 @@ export class CustomerService {
     return this.httpClient.post<void>(this.ApiUrl_8080 , customerDTO);
   }
   getAllProvince(): Observable<Province[]> {
-    return this.httpClient.get<Province[]>(this.ApiUrl_8080 + '/address/province');
+    return this.httpClient.get<Province[]>(this.ApiUrl + '/province');
   }
 
   getAllDistrict(provinceId: number): Observable<District[]> {
-    return this.httpClient.get<District[]>(this.ApiUrl_8080 + '/address/district/' + provinceId);
+    return this.httpClient.get<District[]>(this.ApiUrl + '/district/' + provinceId);
   }
 
   getAllCommune(districtId: number): Observable<Commune[]> {
-    return this.httpClient.get<Commune[]>(this.ApiUrl_8080 + '/address/commune/' + districtId);
+    return this.httpClient.get<Commune[]>(this.ApiUrl + '/commune/' + districtId);
   }
   getCustomerByID(id: number): Observable<UpdateCustomerDto> {
     return this.httpClient.get<UpdateCustomerDto>(this.ApiUrl_8080 + '/getCustomer/' + id);
@@ -50,4 +51,15 @@ export class CustomerService {
     return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id , customer);
   }
 
+  checkUserName(userName: string): Observable<string> {
+    return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkUserName/' + userName);
+  }
+
+  checkEmail(email: string): Observable<string> {
+    return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkEmail/' + email);
+  }
+
+  checkPhone(phone: string): Observable<string> {
+    return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkPhone/' + phone);
+  }
 }
