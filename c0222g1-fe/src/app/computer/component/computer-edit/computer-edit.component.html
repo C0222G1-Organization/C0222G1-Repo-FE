@@ -19,7 +19,7 @@
               id="status" formControlName="status" style="padding: 10px 15px 0 15px">
         <option disabled>Chọn tình trạng</option>
         <option value="0">Bảo trì</option>
-        <option value="1">Ổn định</option>
+        <option value="1">Bình thường</option>
       </select>
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('status').touched
                 && formEditComputer.hasError('required', 'status')">Tình trạng  máy không được để trống.</p>
