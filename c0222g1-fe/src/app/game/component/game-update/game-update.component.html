@@ -3,7 +3,7 @@
     <form [formGroup]="gameForm" (ngSubmit)="submit()" class=" rounded col-lg-10 mx-auto px-4 pb-4 needs-validation"
           novalidate>
       <div class=" mt-3">
-        <h5 class="text-center text-light font-weight-bold pt-4">UPDATE THÔNG TIN GAME</h5>
+        <h5 class="text-center text-light font-weight-bold pt-4">CHỈNH SỬA THÔNG TIN GAME</h5>
       </div>
       <div class="row mt-4">
         <div class="col-lg-12 px-3">
@@ -59,8 +59,8 @@
             <input type="file" id="upload"
                    multiple (change)="selectFile($event)"
                    (change)="onFileSelected($event)" name="image" autocomplete="off" hidden>
-
             <label for="upload" class="input-img w-100 rounded">Hình ảnh:<span class="text-danger"> *</span></label>
+
             <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('imageUrl').touched
                 && gameForm.hasError('required', 'imageUrl')">Image Url is required
             </p>
@@ -68,11 +68,11 @@
         </div>
       </div>
 
-      <div class="row mt-4">
+      <div  class="row mt-4">
         <div class="col-lg-5 px-3 mx-auto">
           <div class="m-0">
-            <div><img class="preview-img rounded" [src]="gameForm.get('imageUrl').value" alt=""></div>
-
+            <div><img class="preview-img rounded" *ngIf="!editImageState" [src]="gameForm.get('imageUrl').value" alt=""></div>
+            <div><img class="preview-img rounded" [src]="url" *ngIf="editImageState" alt=""></div>
           </div>
         </div>
       </div>
@@ -115,7 +115,7 @@
       <div class="row mt-4">
         <div class="col-lg-6 px-3">
           <div class="form-floating">
-            <button type="button" class="button w-100 h-100 rounded text-light">Quay Lại</button>
+            <button type="button" class="button w-100 h-100 rounded text-light" routerLink="/games">Quay Lại</button>
           </div>
         </div>
         <div class="col-lg-6 px-3">

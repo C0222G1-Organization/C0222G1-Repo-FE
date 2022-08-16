@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Game} from "../../model/game";
-import {GameService} from "../../service/game.service";
-import {Title} from "@angular/platform-browser";
-import {ToastrService} from "ngx-toastr";
+import {Game} from '../../model/game';
+import {GameService} from '../../service/game.service';
+import {Title} from '@angular/platform-browser';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-game',
@@ -12,7 +12,7 @@ import {ToastrService} from "ngx-toastr";
 export class GameComponent implements OnInit {
   page = 0;
   totalItems: any;
-  itemsPerPage = 2;
+  itemsPerPage = 8;
   totalPages;
   selectedId: number;
   selectedGames: any[] = [];
@@ -44,7 +44,7 @@ export class GameComponent implements OnInit {
 
   getPage(page) {
     if (page < 1 || page > this.totalPages) {
-      this.toastr.error("Vui lòng nhập đúng");
+      this.toastr.error('Vui lòng nhập đúng');
     }
     this.page = page;
     page = page - 1;
@@ -78,17 +78,17 @@ export class GameComponent implements OnInit {
       this.getGames();
       this.toastr.success('Xóa thành công');
     }, error => {
-      this.toastr.error("Xóa thất bại");
+      this.toastr.error('Xóa thất bại');
     });
   }
 
   updatePlayedTimes(id: number) {
     this.gameService.updateGame(id, this.game).subscribe(res => {
       this.getGames();
-      this.toastr.success("Đang khởi động game")
+      this.toastr.success('Đang khởi động game');
     }, error => {
-      this.toastr.error("Khởi động thất bại");
-    })
+      this.toastr.error('Khởi động thất bại');
+    });
   }
 
   getGameAndUpdate(id: number) {
@@ -97,7 +97,7 @@ export class GameComponent implements OnInit {
       this.game.playedTimes += 1;
       this.updatePlayedTimes(id);
     }, error => {
-      console.log('error')
+      console.log('error');
     });
   }
 
@@ -126,6 +126,6 @@ export class GameComponent implements OnInit {
       });
     }
     this.deleteState = false;
-    this.toastr.success("Xóa thành công");
+    this.toastr.success('Xóa thành công');
   }
 }
