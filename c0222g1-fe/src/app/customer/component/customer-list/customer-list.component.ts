@@ -32,14 +32,27 @@ export class CustomerListComponent implements OnInit {
   formSearch = new FormGroup({
     nameCustomer: new FormControl(''),
     starDate: new FormControl(''),
-    endDate: new FormControl('',),
+    endDate: new FormControl('',this.checkEndDay),
     activeStatus: new FormControl(''),
     address: new FormControl('')
-  }, this.checkStartDay);
+  },this.checkStartDay);
 
   ngOnInit(): void {
     this.getAllCustomer();
     console.log(this.length)
+  }
+  checkEndDay(abstractControl: AbstractControl): any{
+    const endDay = new Date(abstractControl.value)
+    console.log(abstractControl.value)
+    console.log(endDay.toLocaleDateString())
+    const now = new Date(new Date().toLocaleDateString())
+    if (endDay === now){
+      console.log(true)
+      return {errorEndDate: true};
+    }else{
+      return null;
+      // console.log(false)
+    }
   }
 
   getAllCustomer() {
@@ -60,7 +73,7 @@ export class CustomerListComponent implements OnInit {
         this.listCustomer = data.content;
         this.element = data.totalElements;
         if (this.element === 0) {
-          this.toast.info('Không có khách hàng nào trong danh sách ');
+          this.toast.warning('Không có khách hàng nào trong danh sách ');
         }
       });
   }
@@ -83,6 +96,9 @@ export class CustomerListComponent implements OnInit {
 
   getPage(page: number) {
     this.page = page - 1;
+    for (const key of this.map.values()) {
+      key.checked = false;
+    }
     this.ngOnInit();
   }
 
@@ -103,11 +119,12 @@ export class CustomerListComponent implements OnInit {
   DeleteById() {
     for (const key of this.map.values()) {
       this.customerService.deleteCustomerById(key.id).subscribe(value => {
-
+        this.page =0;
         this.ngOnInit();
       })
       key.checked = false;
     }
+
     this.toast.info('Xóa thành công');
 
 

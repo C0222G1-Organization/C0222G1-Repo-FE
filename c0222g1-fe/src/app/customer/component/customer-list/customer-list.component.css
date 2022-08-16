@@ -98,8 +98,12 @@ label.hiddenText {
 .buttonPagination :hover{
   background-color: black !important;
 }
-/*.ngx-pagination .disabled {*/
-/*  padding: 0.1875rem 0.625rem;*/
-/*  color: #100d0d !important;*/
-/*  cursor: default;*/
-/*}*/
+.ngx-pagination .disabled {
+  padding: 0.1875rem 0.625rem;
+  color: #100d0d !important;
+  cursor: default;
+}
+button:disabled{
+  background-color: black;
+  color: rgba(128, 128, 128, 0.23) !important;
+}

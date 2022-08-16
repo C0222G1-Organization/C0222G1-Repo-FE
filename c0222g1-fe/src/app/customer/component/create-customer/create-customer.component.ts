@@ -1,31 +1,29 @@
 import {Component, OnInit} from '@angular/core';
-import {UpdateCustomerDto} from '../../model/customer-update-dto';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Commune} from '../../model/commune';
-import {District} from '../../model/district';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CustomerService} from '../../service/customer.service';
 import {Province} from '../../model/province';
-import {CreateCustomerService} from '../../service/create-customer.service';
-import {Router} from '@angular/router';
+import {District} from '../../model/district';
+import {Commune} from '../../model/commune';
 import {ToastrService} from 'ngx-toastr';
+import { UpdateCustomerDto } from '../../model/customer-update-dto';
+import {Title} from "@angular/platform-browser";
+
 
 @Component({
-  selector: 'app-create-customer-hao-nh',
-  templateUrl: './create-customer-hao-nh.component.html',
-  styleUrls: ['./create-customer-hao-nh.component.css']
+  selector: 'app-create-customer',
+  templateUrl: './create-customer.component.html',
+  styleUrls: ['./create-customer.component.css']
 })
-export class CreateCustomerHaoNHComponent implements OnInit {
+export class CreateCustomerComponent implements OnInit {
   updateCustomerDto: UpdateCustomerDto;
   provinceList: Province[];
   districtList: District[];
   communeList: Commune[];
-  provinceForm: FormGroup = new FormGroup({
-    province: new FormControl('', Validators.required)
-  });
   customerForm: FormGroup = new FormGroup({
-    id: new FormControl(),
     // tslint:disable-next-line:max-line-length
     name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s?]+$'), Validators.required]),
-    dateOfBirth: new FormControl('', [Validators.pattern('^[a-zA-Z\\s?]+$'), this.check16Age]),
+    dateOfBirth: new FormControl('', [Validators.pattern('^[a-zA-Z\\s?]+$'), Validators.required, this.check16Age]),
     email: new FormGroup({
       email: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+@[A-Za-z0-9]+(\\.[A-Za-z0-9]+){1,2}$'), Validators.required])
     }),
@@ -35,42 +33,24 @@ export class CreateCustomerHaoNHComponent implements OnInit {
     userName: new FormGroup({
       userName: new FormControl('', Validators.required)
     }),
-    password: new FormGroup({
-      // tslint:disable-next-line:max-line-length
-      password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
-      confirmPassword: new FormControl('', Validators.required)
-    }, this.checkConfirmPassword),
+    // tslint:disable-next-line:max-line-length
+    password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
+    activeStatus: new  FormControl(1),
     province: new FormControl('', Validators.required),
     district: new FormControl('', Validators.required),
     commune: new FormControl('', Validators.required)
   });
-
-  constructor(private customerService: CreateCustomerService,
-              private router: Router,
-              private toast: ToastrService) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private route: Router,
+              private customerService: CustomerService,
+              private toast: ToastrService,
+              private title: Title) {
+    this.title.setTitle('Thêm mới khách hàng');
   }
 
   ngOnInit(): void {
     this.customerService.getAllProvince().subscribe(value => this.provinceList = value);
   }
-
-  private check16Age(abstractControl: AbstractControl): any {
-    const today = new Date();
-    const birthDate = new Date(abstractControl.value);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return (age >= 16) ? null : {not16: true};
-  }
-
-  private checkConfirmPassword(abstractControl: AbstractControl): any {
-    const password = abstractControl.value.password;
-    const confirmPassword = abstractControl.value.confirmPassword;
-    return (password === confirmPassword) ? null : {notSame: true};
-  }
-
   getUser() {
     return this.customerForm.get('userName').get('userName');
   }
@@ -84,12 +64,9 @@ export class CreateCustomerHaoNHComponent implements OnInit {
   }
 
   getPassword() {
-    return this.customerForm.get('password').get('password');
+    return this.customerForm.get('password');
   }
 
-  getProvince() {
-    return this.provinceForm.get('province').get('province');
-  }
   getDistrictList($event: Event) {
     // @ts-ignore
     if ($event === '') {
@@ -112,11 +89,12 @@ export class CreateCustomerHaoNHComponent implements OnInit {
   }
 
   submit() {
+    console.log(this.customerForm);
     this.updateCustomerDto = this.customerForm.value;
-    this.updateCustomerDto.password = this.customerForm.value.password.password;
-    this.customerService.createCustomer(this.updateCustomerDto).subscribe(
+    this.customerService.saveCustomer(this.updateCustomerDto).subscribe(
       value => {
-        this.toast.success('Đăng ký thành công');
+        this.toast.success('Thêm mới khách hàng thành công!');
+        this.route.navigateByUrl('/listCustomer');
       },
       error => {
         if (error.error.email !== undefined) {
@@ -131,4 +109,15 @@ export class CreateCustomerHaoNHComponent implements OnInit {
       }
     );
   }
+  private check16Age(abstractControl: AbstractControl): any {
+    const today = new Date();
+    const birthDate = new Date(abstractControl.value);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return (age >= 16) ? null : {not16: true};
+  }
+
 }

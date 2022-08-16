@@ -1,8 +1,8 @@
 <body>
-<div class="container mt-5" id="table-computer">
+<div class="container mt-4" id="table-computer">
   <div [formGroup]="formSearch">
     <div class="row">
-      <h2 class="text-center text-white">Danh sách khách hàng</h2>
+      <h2 class="text-center text-white">DANH SÁCH KHÁCH HÀNG</h2>
       <div class="container text-white my-5">
         <div class="row mb-2">
           <h4 class="text-white">Tìm kiếm khách hàng</h4>
@@ -13,7 +13,7 @@
               <label for="nameCustomer">Tên khách hàng</label>
             </div>
             <div class="col-4">
-              <input formControlName="nameCustomer" id="nameCustomer" type="text" class="input-search form-control"
+              <input (keydown.enter)="getAllCustomer()" formControlName="nameCustomer" id="nameCustomer" type="text" class="input-search form-control"
                      placeholder="Nhập tên">
             </div>
           </div>
@@ -23,9 +23,12 @@
               <label for="starDate">Ngày sinh từ</label>
             </div>
             <div class="col-6">
-              <input formControlName="starDate" id="starDate" type="date" class="form-control input-search">
-              <div style="font-size: small" class="text-danger" *ngIf="formSearch.hasError('errorDate') && formSearch.touched">ngày không hợp lệ để tìm kiếm (lớn hơn ngày bên dưới) </div>
-<!--              <div class=" text-danger" style="font-size: small;float: right"  *ngIf="!formSearch.invalid && formSearch.touched">00</div>-->
+              <input (keydown.enter)="getAllCustomer()" formControlName="starDate" id="starDate" type="date" class="form-control input-search">
+              <div style="font-size: small" class="text-danger"
+                   *ngIf="formSearch.hasError('errorDate') && formSearch.touched">ngày không hợp lệ để tìm kiếm (lớn hơn
+                ngày bên dưới)
+              </div>
+              <!--              <div class=" text-danger" style="font-size: small;float: right"  *ngIf="!formSearch.invalid && formSearch.touched">00</div>-->
             </div>
 
           </div>
@@ -34,7 +37,7 @@
               <label for="status">Trạng thái</label>
             </div>
             <div class="col-4">
-              <select id="status" style="min-width: 100px" class="input-search form-control"
+              <select (keydown.enter)="getAllCustomer()" id="status" style="min-width: 100px" class="input-search form-control"
                       formControlName="activeStatus">
                 <option value="">Tất cả</option>
                 <option value="1">Đang hoạt động</option>
@@ -50,7 +53,7 @@
               <label for="address">Địa chỉ</label>
             </div>
             <div class="col-4">
-              <input formControlName="address" id="address" type="text" class="input-search form-control"
+              <input (keydown.enter)="getAllCustomer()" formControlName="address" id="address" type="text" class="input-search form-control"
                      placeholder="Nhập địa chỉ">
             </div>
           </div>
@@ -60,15 +63,23 @@
               <label for="endDate">Đến</label>
             </div>
             <div class="col-6">
-              <input formControlName="endDate" id="endDate" type="date" class="input-search form-control">
-              <div style="font-size: small" class="text-danger" *ngIf="formSearch.hasError('errorDate') && formSearch.touched">ngày không hợp lệ để tìm kiếm (lớn hơn ngày bên trên) </div>
+              <input (keydown.enter)="getAllCustomer()" formControlName="endDate" id="endDate" type="date" class="input-search form-control">
+              <div style="font-size: small" class="text-danger"
+                   *ngIf="formSearch.get('endDate').hasError('errorDate') && formSearch.get('endDate').touched">ngày không hợp lệ để tìm kiếm (lớn hơn
+                ngày bên trên)
+              </div>
+              <div style="font-size: small" class="text-danger"
+                   *ngIf="formSearch.controls.endDate.hasError('errorEndDate') && formSearch.controls.endDate.dirty"> Không được lớn hơn ngày hiện tại
+              </div>
             </div>
-<!--            <div class="col-1"></div>-->
+            <!--            <div class="col-1"></div>-->
           </div>
           <div class="col-3 d-flex">
             <div class="col-4"></div>
             <div class="col-6">
-              <button  [disabled]="formSearch.invalid" class="btn btn-outline-secondary w-20" (click)="getAllCustomer()">Tìm kiếm</button>
+              <button [disabled]="formSearch.invalid" class="btn btn-outline-secondary w-20 classDisabled" (click)="getAllCustomer()">
+                Tìm kiếm
+              </button>
             </div>
 
           </div>
@@ -77,75 +88,88 @@
       </div>
     </div>
   </div>
-    <div class="container">
-      <table class="table table-dark w-100">
-        <thead>
-        <tr>
+<!--  table-->
+  <div style=" height: 400px">
+    <table class="table table-dark w-100">
+      <thead>
+      <tr>
 
-          <th class="w-5">
-            <div>
-<!--              <input type="checkbox" [checked]="listCustomer.length === map.size" (click)="checkAll(listCustomer,$event.target.checked)">-->
-              <input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)">
-            </div>
-          </th>
-          <th>#</th>
-          <th scope="col">Họ và tên</th>
-          <th scope="col">Email</th>
-          <th scope="col">Ngày sinh</th>
-          <th class="w-10" scope="col">Địa chỉ</th>
-          <th scope="col">SĐT</th>
-          <th scope="col">Trạng thái</th>
-          <th colspan="2" scope="col">Chức năng</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr
-          *ngFor="let temp of listCustomer | paginate: {itemsPerPage: 2, currentPage: page+1, totalItems: element};let i = index">
-<!--          <td><input type="checkbox" [checked]="statusCheckBox" (change)="getIdCheck(temp,$event.target.checked)"></td>-->
-          <td><input class="card-notify-year-checkbox" type="checkbox" value="{{temp.id}}"
-                     [(ngModel)]="listCustomer[i].checked "></td>
-          <td class="w-5">{{i + 1}}</td>
-          <td class="w-10">{{temp.name}}</td>
-          <td class="w-10">{{temp.email}}</td>
-          <td class="w-10">{{temp.dateOfBirth}}</td>
-          <td>{{temp.nameCommune}} - {{temp.nameDistrict}} - {{temp.nameProvince}} </td>
-          <td class="w-10">{{temp.phoneNumber}}</td>
-          <td class="w-10">{{temp.activeStatus == 1 ? 'Đang hoạt động' : 'Ngưng hoạt động'}}</td>
-          <td class="w-5">
-            <button class="btn btn-outline-secondary" routerLink="/customers/edit/{{temp.id}}">
-              <i class="fa-solid fa-pencil"></i>
-            </button>
-          </td>
-          <td class="w-5">
-            <button [disabled]="map.size!==0" class="btn btn-outline-secondary ml-2" data-bs-toggle="modal"
-                    data-bs-target="#deleteModal" (click)="getIdDeleteInTable(temp)"><i class="fa-solid fa-trash"></i>
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+        <th class="w-5">
+          <div>
+            <input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)">
+          </div>
+        </th>
+        <th>#</th>
+        <th scope="col">Họ và tên</th>
+        <th scope="col">Email</th>
+        <th scope="col">Ngày sinh</th>
+        <th class="w-10" scope="col">Địa chỉ</th>
+        <th scope="col">SĐT</th>
+        <th scope="col">Trạng thái</th>
+        <th colspan="2" scope="col">Chức năng</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr
+        *ngFor="let temp of listCustomer | paginate: {itemsPerPage: 5, currentPage: page+1, totalItems: element};let i = index">
+        <!--          <td><input type="checkbox" [checked]="statusCheckBox" (change)="getIdCheck(temp,$event.target.checked)"></td>-->
+        <td><input class="card-notify-year-checkbox" type="checkbox" value="{{temp.id}}"
+                   [(ngModel)]="listCustomer[i].checked "></td>
+        <td class="w-5">{{i + 1}}</td>
+        <td class="w-10">{{temp.name}}</td>
+        <td class="w-10">{{temp.email}}</td>
+        <td class="w-10">{{temp.dateOfBirth}}</td>
+        <td>{{temp.nameCommune}} - {{temp.nameDistrict}} - {{temp.nameProvince}} </td>
+        <td class="w-10">{{temp.phoneNumber}}</td>
+        <td class="w-10">{{temp.activeStatus == 1 ? 'Đang hoạt động' : 'Ngưng hoạt động'}}</td>
+        <td class="w-5">
+          <button class="btn btn-outline-secondary" routerLink="/customers/edit/{{temp.id}}">
+            <i class="fa-solid fa-pencil"></i>
+          </button>
+        </td>
+        <td class="w-5">
+          <button [disabled]="map.size!==0" class="btn btn-outline-secondary ml-2" data-bs-toggle="modal"
+                  data-bs-target="#deleteModal" (click)="getIdDeleteInTable(temp)"><i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="9" class="container mt-2 justify-content-center" *ngIf="listCustomer.length == 0">
+          <img src="https://i.pinimg.com/originals/73/b0/05/73b0054acf8be08b254ba90945a19d09.gif"
+               style="width: 100%; height: 330px">
+        </td>
+      </tr>
 
-  <div class="row d-flex" id="btn-outside">
+      </tbody>
+
+    </table>
+  </div>
+  <div>
+<!--    button create and delete all-->
+  <div class="row " id="btn-outside">
     <div class="col-4">
-      <button routerLink="/customers/create" class="btn btn-primary m-2">Thêm mới khách hàng</button>
+      <button routerLink="/customers/create" class="btn btn-outline-primary m-2">Thêm mới khách hàng</button>
     </div>
     <div class="col-4"></div>
     <div class="col-4">
       <div style="text-align: right" *ngIf="map.size!==0">
-        <button style="margin-right: 11px" class="btn btn-primary "  data-bs-toggle="modal"
+        <button style="margin-right: 11px" class="btn btn-outline-primary " data-bs-toggle="modal"
                 data-bs-target="#deleteModal">Xóa
         </button>
       </div>
     </div>
+
   </div>
-  <div *ngIf="element!==0" >
-    <pagination-controls class="buttonPagination"  style="background-color: black" (pageChange)=getPage($event)></pagination-controls>
+<!--    Pagination-->
+  <div style="justify-content: space-around;display: flex;" *ngIf="element!==0" >
+    <pagination-controls class="buttonPagination" style="color: black"
+                         (pageChange)=getPage($event)></pagination-controls>
   </div>
+  </div>
+</div>
 
 
-
-<!--Start Delete Modal-->
+<!-- Delete Modal-->
 <div class="modal fade " id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -153,8 +177,20 @@
         <h5 class="modal-title" id="exampleModalLabel1">Xóa khách hàng</h5>
       </div>
       <div class="modal-body" *ngIf="map.size==0">
-        Bạn có chắc chắn muốn xóa khách hàng <span
-        style="font-weight: bold; color: #ff4146">{{idCustomerDelete.name}} </span> không?
+        <table class="table table-dark">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Tên</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>1</td>
+            <td>{{idCustomerDelete.name}}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
       <div class="modal-body" *ngIf="map.size!==0">
         <table class="table table-dark">
@@ -174,20 +210,18 @@
 
       </div>
       <div class="modal-footer">
-        <button (click)="close()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button *ngIf="map.size ==0" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+        <button (click)="close()" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button *ngIf="map.size ==0" type="button" class="btn btn-outline-primary" data-bs-dismiss="modal"
                 (click)="deleteCustomer()">Xóa
         </button>
-        <button *ngIf="map.size!==0" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+        <button *ngIf="map.size!==0" type="button" class="btn btn-outline-primary" data-bs-dismiss="modal"
                 (click)="DeleteById()">Xóa1
         </button>
       </div>
     </div>
   </div>
 </div>
-<div style="justify-content: space-around;display: flex;">
-</div>
-</div>
+
 
 
 </body>

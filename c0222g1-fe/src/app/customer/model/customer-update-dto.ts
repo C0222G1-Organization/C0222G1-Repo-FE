@@ -11,6 +11,6 @@ export interface UpdateCustomerDto {
   phoneNumber: PhoneDto;
   userName: UserDto;
   password: string;
+  activeStatus: number;
   commune: Commune;
-  activeStatus: 1;
 }
