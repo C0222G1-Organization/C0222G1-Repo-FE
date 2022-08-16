@@ -24,13 +24,15 @@ export class CreateComponent implements OnInit {
   selectedFile: File = null;
   gameCateList: GameCategory[];
   formNews = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\w\\W ]{20,150}[^ ]$')]),
+    title: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\w\\W ]+[^ ]$'),
+      Validators.minLength(20), Validators.maxLength(150)]),
     imageUrl: new FormControl('', [Validators.required]),
-    content: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\w\\W ]{200,}[^ ]$')]),
+    content: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\w\\W ]+[^ ]$'), Validators.minLength(200)]),
     createDate: new FormControl(this.getCurrentDateTime()),
     views: new FormControl(0),
     author: new FormControl('', [Validators.required, Validators.pattern('^[^ ][A-Za-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéê' +
-        'ìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]{2,50}[^ ]$')]),
+        'ìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ][^ ]$'),
+      Validators.minLength(2), Validators.maxLength(50)]),
     gameCategory: new FormControl('', [Validators.required])
   });
 
