@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {render} from 'creditcardpayments/creditCardPayments';
 import {PaymentService} from '../../service/payment.service';
 import {Payment} from '../../model/payment';
+import {ToastrService} from 'ngx-toastr';
+declare var $: any;
 
 @Component({
   selector: 'app-display-payment',
@@ -15,7 +17,7 @@ export class DisplayPaymentComponent implements OnInit {
   page = 0;
   element: number;
 
-  constructor(private paymentService: PaymentService) {
+  constructor(private paymentService: PaymentService, private toast: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -130,8 +132,10 @@ export class DisplayPaymentComponent implements OnInit {
         value: obj.totalPay.toString(),
         onApprove: (details) => {
           this.obj = details;
-          this.paymentService.setStatePayment(id).subscribe();
-          this.ngOnInit();
+          // this.paymentService.setStatePayment(id).subscribe();
+          $('#modelPaymentMethodId').modal('hidden');
+          $('#modelResultId').modal('show');
+          this.toast.success('Thanh toán thành công.');
         }
       }
     );

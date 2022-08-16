@@ -7,6 +7,8 @@
         <thead>
         <tr>
           <th>ID</th>
+          <th>Mã hoá đơn</th>
+          <th>Mã số máy</th>
           <th>Tên người dùng</th>
           <th>Thư điện tử</th>
           <th>Giờ bắt đầu</th>
@@ -19,6 +21,8 @@
         <tr
           *ngFor="let payment of listPayment  | paginate: {itemsPerPage: 2, currentPage: page+1, totalItems: element}">
           <td>{{payment.id}}</td>
+          <td>{{payment.paymentCode}}</td>
+          <td>{{payment.record.computer.id}}</td>
           <td>{{payment.record.customer.name}}</td>
           <td class="hiddenText">{{payment.record.customer.email}}</td>
           <td>{{payment.record.startTime}}</td>
@@ -34,10 +38,6 @@
                     [disabled]="payment.totalPay == 0 || payment.paymentStatus == 1" (click)="getPayment(payment.id)"
                     data-bs-toggle="modal"
                     data-bs-target="#modelPaymentMethodId">Thanh toán
-            </button>
-            <button class="btn btn-outline-light btn-sm ml-2" [disabled]="payment.paymentStatus == 0"
-                    data-bs-toggle="modal" data-bs-target="#modelResultId">
-              Xem hoá đơn
             </button>
           </td>
         </tr>
@@ -98,50 +98,49 @@
       </div>
       <div class="modal-body" id="body-result" *ngIf="obj != null">
         <div class="d-flex justify-content-center">
-          <div class="h-auto pl-5 pr-5 pt-2 pb-2"
-               style="border-radius: 10px; background-color: #2a2a2a; max-width: 50%">
-            <h1 class="text-center text-white pt-4 pb-4 pl-4 pr-4" style="font-family: 'Roboto', sans-serif;">HOÁ ĐƠN
+          <div class="row">
+            <h1 class="text-center pt-4 pb-4 pl-4 pr-4" style="font-family: 'Roboto', sans-serif;">HOÁ ĐƠN
               THANH TOÁN</h1>
-            <div class="container pb-3">
+            <div class="">
               <div class="row mt-2 mb-2">
-                <div class="col-4 text-white">Mã số hoá đơn:</div>
-                <div class="col-8 text-white">{{obj.id}}</div>
+                <div class="col-3 fw-bold">Mã số hoá đơn</div>
+                <div class="col-6">: {{obj.id}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-4 text-white">Trạng thái hoá đơn:</div>
-                <div class="col-8 text-white">{{obj.status}}</div>
+                <div class="col-3 fw-bold">Trạng thái hoá đơn</div>
+                <div class="col-6">: {{obj.status}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-4 text-white">Tổng thanh toán:</div>
-                <div class="col-8 text-white">{{obj.purchase_units[0]['amount']['value']}}</div>
+                <div class="col-3 fw-bold">Tổng thanh toán</div>
+                <div class="col-6">: {{obj.purchase_units[0]['amount']['value']}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-4 text-white">Địa chỉ email:</div>
-                <div class="col-8 text-white hiddenText">{{obj.purchase_units[0]['payee']['email_address']}}</div>
+                <div class="col-3 fw-bold">Địa chỉ email</div>
+                <div class="col-6 hiddenText">: {{obj.purchase_units[0]['payee']['email_address']}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-4 text-white">Họ và tên:</div>
-                <div class="col-8 text-white">{{obj.purchase_units[0]['shipping']['name']['full_name']}}</div>
+                <div class="col-3 fw-bold">Họ và tên</div>
+                <div class="col-6">: {{obj.purchase_units[0]['shipping']['name']['full_name']}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-4 text-white">Địa chỉ:</div>
-                <div class="col-8 text-white">{{obj.purchase_units[0]['shipping']['address']['address_line_1']}}</div>
+                <div class="col-3 fw-bold">Địa chỉ</div>
+                <div class="col-6">: {{obj.purchase_units[0]['shipping']['address']['address_line_1']}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-4 text-white">Thành phố:</div>
-                <div class="col-8 text-white">{{obj.purchase_units[0]['shipping']['address']['admin_area_1']}}</div>
+                <div class="col-3 fw-bold">Thành phố</div>
+                <div class="col-6">: {{obj.purchase_units[0]['shipping']['address']['admin_area_1']}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-4 text-white">Tỉnh:</div>
-                <div class="col-8 text-white">{{obj.purchase_units[0]['shipping']['address']['admin_area_2']}}</div>
+                <div class="col-3 fw-bold">Tỉnh</div>
+                <div class="col-6">: {{obj.purchase_units[0]['shipping']['address']['admin_area_2']}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-4 text-white">Zipcode:</div>
-                <div class="col-8 text-white">{{obj.purchase_units[0]['shipping']['address']['postal_code']}}</div>
+                <div class="col-3 fw-bold">Zipcode</div>
+                <div class="col-6">: {{obj.purchase_units[0]['shipping']['address']['postal_code']}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-4 text-white">Quốc gia:</div>
-                <div class="col-8 text-white">{{obj.purchase_units[0]['shipping']['address']['country_code']}}</div>
+                <div class="col-3 fw-bold">Quốc gia</div>
+                <div class="col-6">: {{obj.purchase_units[0]['shipping']['address']['country_code']}}</div>
               </div>
             </div>
           </div>
