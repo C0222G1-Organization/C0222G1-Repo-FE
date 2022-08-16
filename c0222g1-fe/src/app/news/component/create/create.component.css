@@ -393,6 +393,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .texarea {
   padding-top: 1.5em !important;
   border: none;
+  height: 3.8em !important;
 }
 .texarea:focus {
   background-color: #484848;

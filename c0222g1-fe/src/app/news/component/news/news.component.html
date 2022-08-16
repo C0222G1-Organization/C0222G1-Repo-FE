@@ -40,7 +40,7 @@
             <img src="{{item.imageUrl}}" class="card-img-top img-fit">
           </div>
         </div>
-        <div class="col-5 position-relative px-3">
+        <div class="col-8 position-relative px-3">
           <div>
             <small><p class="card-text text-secondary">{{item.createDate | date}}</p></small>
             <small><p class="card-text text-light">{{ (item.title.length>80)? (item.title | slice:0:80)+'..':(item.title) }}</p></small>
@@ -53,7 +53,21 @@
     </div>
     <div class="row mt-3">
       <div class="col-12 d-flex justify-content-center">
-        <pagination-controls nextLabel="trang sau" previousLabel="trang trước" class="text-light" (pageChange)="getPage(page = $event)"></pagination-controls>
+        <pagination-controls nextLabel="Sau" previousLabel="Trước" class="text-light" (pageChange)="getPage(page = $event)"></pagination-controls>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12 d-flex justify-content-center">
+        <div class="col-auto m-1">
+          <label for="goToPage" class="col-form-label text-white">Đến trang</label>
+        </div>
+        <div class="col-auto m-1">
+          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
+                 (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
+        </div>
+        <div class="col-auto m-1">
+          <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
+        </div>
       </div>
     </div>
   </div>
