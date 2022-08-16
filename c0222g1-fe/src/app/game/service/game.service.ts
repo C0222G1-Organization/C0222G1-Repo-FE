@@ -27,8 +27,8 @@ export class GameService {
     return this.http.get<Game[]>(API_URL + `/games?page=${page}`);
   }
 
-  searchGameByName(name: string): Observable<Game[]> {
-    return this.http.get<Game[]>(API_URL + `/games/search?name=${name}`);
+  searchGameByName(name: string, page: number): Observable<Game[]> {
+    return this.http.get<Game[]>(API_URL + `/games/search?name=${name}&page=${page}`);
   }
 
   deleteGameById(id: number): Observable<Game> {

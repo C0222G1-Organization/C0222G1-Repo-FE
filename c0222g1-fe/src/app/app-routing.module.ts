@@ -16,7 +16,6 @@ import {NotFoundComponent} from "./common-component/not-found/not-found.componen
 const routes: Routes = [
   {
     path: '500', component: ServerErrorComponent
-
   },
   {path: '**', component: NotFoundComponent},
   {path: 'payment',
