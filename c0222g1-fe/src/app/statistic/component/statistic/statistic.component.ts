@@ -6,6 +6,7 @@ import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
 
 import {Chart, registerables} from 'chart.js';
 import {StatisticService} from '../../service/statistic/statistic.service';
+import {isDate} from 'rxjs/internal-compatibility';
 
 Chart.register(...registerables);
 
@@ -20,6 +21,7 @@ export class StatisticComponent implements OnInit {
               private title: Title) {
     this.title.setTitle('Thống Kê');
   }
+
   listStatisticByComputer: any;
   listStatisticByMonth: any;
   listStatisticByAccount: any;
@@ -27,7 +29,7 @@ export class StatisticComponent implements OnInit {
   pastDay = this.datePipe.transform(new Date().setDate(new Date().getDate() - 30), 'yyyy-MM-dd');
   today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   statisticForm = new FormGroup({
-    startDate: new FormControl(this.pastDay, this.invalidDate),
+    startDate: new FormControl(this.pastDay, this.dateNotExist),
     endDate: new FormControl(this.today, this.dateInFuture),
     sort: new FormControl('none'),
     type: new FormControl('computer')
@@ -36,6 +38,7 @@ export class StatisticComponent implements OnInit {
   errorChart = true;
   errorServer = true;
   errorList = true;
+
   ngOnInit(): void {
   }
 
@@ -54,11 +57,22 @@ export class StatisticComponent implements OnInit {
     }
   }
 
+  dateNotExist(abstractControl: AbstractControl) {
+    const v = abstractControl.value;
+    const start = new Date(v);
+    if (!isDate(start)) {
+      return {dateNotExist: true};
+    }
+  }
+
   dateInFuture(abstractControl: AbstractControl) {
     const v = abstractControl.value;
     const end = new Date(v);
     if (end > new Date()) {
       return {futureDate: true};
+    }
+    if (!isDate(end)) {
+      return {dateNotExist: true};
     } else {
       return null;
     }
@@ -86,6 +100,9 @@ export class StatisticComponent implements OnInit {
               this.errorList = true;
             }
           }, () => {
+            if (this.statisticInput.sort === 'none') {
+              this.listStatisticByComputer.sort((a, b) => (a.computer > b.computer) ? 1 : -1);
+            }
             if (this.statisticInput.sort === 'ascending') {
               this.listStatisticByComputer.sort((a, b) => (a.hour > b.hour) ? 1 : -1);
             }
@@ -152,6 +169,9 @@ export class StatisticComponent implements OnInit {
             }
           },
           () => {
+            if (this.statisticInput.sort === 'none') {
+              this.listStatisticByAccount.sort((a, b) => (a.account > b.account) ? 1 : -1);
+            }
             if (this.statisticInput.sort === 'ascending') {
               this.listStatisticByAccount.sort((a, b) => (a.revenue > b.revenue) ? 1 : -1);
             }
@@ -206,6 +226,28 @@ export class StatisticComponent implements OnInit {
         this.statisticForm.patchValue({
           startDate: this.datePipe.transform(new Date().setDate(new Date().getDate() - 365), 'yyyy-MM-dd'),
           endDate: this.today
+        });
+        break;
+      default:
+        console.log('default');
+    }
+  }
+
+  onChangeStatistic(value: any) {
+    switch (value) {
+      case 'computer':
+        this.statisticForm.patchValue({
+          sort: 'none'
+        });
+        break;
+      case 'month':
+        this.statisticForm.patchValue({
+          sort: 'none'
+        });
+        break;
+      case 'account':
+        this.statisticForm.patchValue({
+          sort: 'none'
         });
         break;
       default:
@@ -282,6 +324,7 @@ export class StatisticComponent implements OnInit {
         }
       }
     });
+    this.statisticForm.setValue({sort: 'none'});
   }
 
   createChartMonth() {
@@ -377,6 +420,7 @@ export class StatisticComponent implements OnInit {
         }
       }
     });
+    this.statisticForm.setValue({sort: 'none'});
   }
 
   createChartAccount() {
@@ -491,4 +535,5 @@ export class StatisticComponent implements OnInit {
       this.myChart.destroy();
     }
   }
+
 }
