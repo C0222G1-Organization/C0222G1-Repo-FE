@@ -6,6 +6,7 @@ import {ToastrService} from 'ngx-toastr';
 import {Router} from '@angular/router';
 import {JwtResponseCustomer} from '../../../customer/model/jwt-response-customer';
 import {Title} from '@angular/platform-browser';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   roles: string;
   rememberMeBox = false;
+  currentDate: any;
 
   jwtReponseCustomer = {customer: {}} as JwtResponseCustomer;
   login: Ilogin = {
@@ -24,7 +26,9 @@ export class LoginComponent implements OnInit {
     password: ''
   };
 
-  constructor(private authService: AuthService, private toartrs: ToastrService, private router: Router, private title: Title) {
+  constructor(private authService: AuthService, private toartrs: ToastrService,
+              private router: Router, private title: Title,
+              public datepipe: DatePipe) {
   }
 
   ngOnInit(): void {
@@ -51,14 +55,16 @@ export class LoginComponent implements OnInit {
         if (value !== undefined) {
           this.roles = value.roles[0].authority;
           if (this.roles === 'CUSTOMER') {
-            sessionStorage.setItem('startTime', value.startTime);
-            sessionStorage.setItem('endTime', value.endTime);
+            sessionStorage.setItem('remainingTime', value.customer.remainingTime);
             sessionStorage.setItem('computerCode', value.computerCode);
+            sessionStorage.setItem('computerId', value.computerId);
             sessionStorage.setItem('name', value.customer.name);
             sessionStorage.setItem('recordId', value.recordId);
             sessionStorage.setItem('customerId', value.customer.id);
+            sessionStorage.setItem('loopTimeCustomer', '0');
           } else {
             sessionStorage.setItem('name', value.employee.name);
+            sessionStorage.setItem('loopTimeCustomer', '1');
           }
 
           sessionStorage.setItem('username', this.login.username);
@@ -76,6 +82,10 @@ export class LoginComponent implements OnInit {
             sessionStorage.setItem('usernameLogin', this.login.username);
             sessionStorage.setItem('passwordLogin', this.login.password);
           }
+
+          this.currentDate = new Date();
+          const startTime = this.datepipe.transform(this.currentDate, 'HH:mm:ss dd-MM-yyyy');
+          sessionStorage.setItem('startTime', startTime);
         }
       }, error => {
         console.log(error);
@@ -90,7 +100,7 @@ export class LoginComponent implements OnInit {
     } else if (roles === 'EMPLOYEE') {
       this.router.navigate(['']);
     } else {
-      this.router.navigate(['/home-page-customer']);  // CUSTOMER
+      this.router.navigate(['/customers/home-page']);  // CUSTOMER
     }
   }
   rememberMe() {
