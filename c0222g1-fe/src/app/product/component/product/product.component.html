@@ -7,9 +7,12 @@
         <div class="w-50 d-flex px-0">
           <input type="text" class="input-search form-control w-50" [(ngModel)]="name"
                  placeholder=" Nhập tên dịch vụ " (keydown.enter)="search()">
-          <button type = "button" class="btn btn-outline-secondary mx-4" (click)="search()">Tìm kiếm</button>
+          <button type="button" class="btn btn-outline-secondary mx-4" (click)="search()">Tìm kiếm</button>
         </div>
-        <div class="d-flex ">
+
+        <!--        check box chọn tất cả-->
+
+        <div class="d-flex " *ngIf="role === 'ADMIN'">
           <div class="form-group mx-5 box">
             <input style="float: right" type="checkbox" id="html" [checked]="isAllCheckBoxChecked()"
                    (change)="checkAllCheckBox($event)">
@@ -34,68 +37,83 @@
     <div class="col-md-10">
       <div class="row">
         <div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3"
-             *ngFor="let product of productList | paginate: { itemsPerPage: 4, currentPage: page + 1, totalItems: totalElements }, let i = index">
-          <div *ngIf="totalElements > 0">
-            <div class="card w-90 bg-card mt-5">
-              <img src="{{product.imageUrl}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h4>{{product.nameProduct}}</h4>
-                <span class="card-detail-badge" style="font-size: 16px">{{product.prices}}<sup>vnd</sup></span>
-                <button class="btn btn-outline-secondary" style="float: right;"
-                        (click)="valueOfDelete(product.nameProduct, product.id)"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteModal"><i style=" font-size: 1rem"
-                                                         class="fa-solid fa-trash"></i>
-                </button>
-                <button class="btn btn-outline-secondary" style="margin-left: 45px">
-                  <i style=" font-size: 1rem" class="fa-solid fa-pencil"></i>
-                </button>
-                <div *ngIf="product.quantity <= 5">
-                  <span class="card-notify-year-custom">x{{product.quantity}}</span>
-                </div>
-                <div *ngIf="product.quantity > 5">
-                  <span class="card-notify-year">x{{product.quantity}}</span>
-                </div>
-                <div>
-                  <input class="card-notify-year-checkbox" type="checkbox" value="{{product.id}}"
-                         [(ngModel)]="productList[i].checked">
-                </div>
+             *ngFor="let product of productList | paginate: { itemsPerPage: 8, currentPage: page + 1, totalItems: totalElements }, let i = index">
+
+          <div class="card w-90 bg-card mt-5">
+            <img src="{{product.imageUrl}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h4>{{product.nameProduct}}</h4>
+              <span class="card-detail-badge" style="font-size: 16px">{{product.prices}}<sup>vnd</sup></span>
+              <button class="btn btn-outline-secondary" style="float: right;"
+                      (click)="valueOfDelete(product.nameProduct, product.id)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#deleteModal" *ngIf="role === 'ADMIN'"><i style=" font-size: 1rem"
+                                                                                class="fa-solid fa-trash"></i>
+              </button>
+              <button class="btn btn-outline-secondary" style="margin-left: 45px" *ngIf="role === 'ADMIN'">
+                <i style=" font-size: 1rem" class="fa-solid fa-pencil"></i>
+              </button>
+              <div *ngIf="product.quantity <= 5 && role === 'ADMIN'">
+                <span class="card-notify-year-custom">x{{product.quantity}}</span>
+              </div>
+              <div *ngIf="product.quantity > 5 && role === 'ADMIN'">
+                <span class="card-notify-year">x{{product.quantity}}</span>
+              </div>
+              <div *ngIf="role === 'ADMIN'">
+                <input class="card-notify-year-checkbox" type="checkbox" value="{{product.id}}"
+                       [(ngModel)]="productList[i].checked">
               </div>
             </div>
           </div>
         </div>
       </div>
       <br>
-      <div *ngIf="productList.length !== 0">
-        <div style="float: right">
-          <button class="btn btn-outline-secondary" data-bs-toggle="modal"
-                  data-bs-target="#deleteAll">Delete Selected Product
-          </button>
-        </div>
+      <div style="float: right" *ngIf="role === 'ADMIN' && productList.length > 0">
+        <button class="btn btn-outline-secondary" data-bs-toggle="modal"
+                data-bs-target="#deleteAll" [disabled]="!isAllCheckBoxChecked()">Xóa tất cả
+        </button>
       </div>
     </div>
   </div>
   <div class="col-md-1"></div>
 </div>
+
+<!-- Khi không có sản phẩm nào-->
+<div class="container">
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-6 mx-5" *ngIf="productList.length == 0">
+      <img src="https://fryday.ca/assets/frontend/default/images/empty-cart.png" alt="">
+      <br>
+      <br>
+      <p style="margin-left: 90px; font-size: 2rem">Không có sản phẩm nào</p>
+    </div>
+    <div class="col-3"></div>
+  </div>
+</div>
 <br>
+
+<!-- Phân trang-->
 <div class="container">
   <div class="col-md-1"></div>
   <div class="col-md-10 d-flex">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
       <div *ngIf="productList.length !== 0">
         <div>
-        <pagination-controls nextLabel="Trang kế" previousLabel="Trang trước" (pageChange)="getPage($event)" style="float: right">
+          <pagination-controls nextLabel="Trang kế" previousLabel="Trang trước" (pageChange)="getPage($event)"
+                               style="float: right">
 
-        </pagination-controls>
+          </pagination-controls>
         </div>
       </div>
     </div>
-    <div class="col-md-4"></div>
+    <div class="col-md-3"></div>
   </div>
   <div class="col-md-1"></div>
 </div>
 
+<!-- Modal delete 1-->
 <div class="modal" id="deleteModal">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -114,7 +132,7 @@
     </div>
   </div>
 </div>
-
+<!-- Modal delete all-->
 <div class="modal" id="deleteAll">
   <div class="modal-dialog">
     <div class="modal-content">

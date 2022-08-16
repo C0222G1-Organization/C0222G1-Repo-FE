@@ -5,9 +5,10 @@ import { ProductRoutingModule } from './product-routing.module';
 import { ProductComponent } from './component/product/product.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {FormsModule} from '@angular/forms';
+import { CurrentPipePipe } from './current-pipe.pipe';
 
 @NgModule({
-  declarations: [ProductComponent],
+  declarations: [ProductComponent, CurrentPipePipe],
   imports: [
     CommonModule,
     ProductRoutingModule,

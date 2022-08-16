@@ -3,6 +3,9 @@ import {ProductService} from '../../service/product.service';
 import {Product} from '../../model/Product';
 import {ProductCategory} from '../../model/ProductCategory';
 import {ToastrService} from 'ngx-toastr';
+import {Title} from '@angular/platform-browser';
+import {Router, NavigationEnd, ActivatedRoute} from '@angular/router';
+import {CurrencyPipe} from "@angular/common";
 
 @Component({
   selector: 'app-product',
@@ -22,11 +25,19 @@ export class ProductComponent implements OnInit {
   pages: any;
   selectedIdProducts: any[] = [];
   selectedNameProducts: any[] = [];
-
-  constructor(private productService: ProductService, private toast: ToastrService) {
+  isSelected = false;
+  role: any;
+  constructor(private productService: ProductService,
+              private toast: ToastrService,
+              private titleService: Title) {
+  }
+  checkRole(): string {
+    return  sessionStorage.getItem('roles');
   }
 
   ngOnInit(): void {
+    this.role = this.checkRole();
+    this.titleService.setTitle('Danh sách dịch vụ');
     this.getAllProduct();
     this.getAllProductCategory();
     if (this.totalElements === 1) {
@@ -48,7 +59,6 @@ export class ProductComponent implements OnInit {
     }, error => {
     });
   }
-
 
   getAllProductCategory() {
     this.productService.findAllProductCategory().subscribe(value => {
@@ -117,12 +127,12 @@ export class ProductComponent implements OnInit {
     this.productList.forEach(x => x.checked = event.target.checked);
   }
 
+  valueOfDeleteAll(nameDeleteAll: string, idDeleteAll: number) {
+
+  }
+
   deleteProductList() {
     this.selectedIdProducts = this.productList.filter(product => product.checked).map(p => p.id);
-    this.selectedNameProducts = this.productList.filter(product => product.checked).map(p => p.nameProduct);
-    for (const productName of this.selectedNameProducts) {
-      this.nameProduct = productName;
-    }
     console.log(this.selectedIdProducts);
     console.log(this.selectedNameProducts);
     for (const product of this.selectedIdProducts) {
