@@ -3,26 +3,38 @@
     <div class="row d-flex justify-content-between" style="margin-bottom: 1rem">
       <div class="p-0 col-6">
         <input [(ngModel)]="gameName" (keydown.enter)="searchGameByName()"
-               class="search form-control-sm me-2" type="search" placeholder="  Tìm kiếm" aria-label="Search">
+               class="search form-control-sm me-2 text-white" type="search" placeholder="  Tìm kiếm" aria-label="Search">
       </div>
     </div>
-    <div class="row">
-      <div class="row">
-        <h4 class="text-white"><i class="fa-solid icon-body fa-fire-flame-curved"></i>Game</h4>
+    <div class="d-flex row mb-3">
+      <div class="form-group box">
+        <input hidden style="float: right" type="checkbox" id="html" [checked]="isAllCheckBoxChecked()"
+               (change)="checkMultipleCheckBox($event)">
+        <label class="box" for="html">
+          <span class="label-custom" style="justify-content: center"> Chọn tất cả</span>
+        </label>
+        <button [disabled]="selectedGames.length == 0" class="btn btn-opacity-border-sm text-white"
+                data-bs-toggle="modal" data-bs-target="#deleteMultipleModal"
+                (click)="getSelectedGames()" style="margin-left: 1rem">Xóa
+        </button>
       </div>
+    </div>
+    <div class="row mb-3">
+      <h4 class="text-white"><i class="fa-solid icon-body fa-fire-flame-curved"></i>Game</h4>
     </div>
     <div class="row">
       <div class="row" style="flex-wrap: wrap; justify-content: start">
         <div *ngFor="let game of games | paginate :
           {itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}"
-             class="card zoom container-img bg-dark card-game">
+             class="card container-img bg-dark card-game">
           <img class="card-img-top image"
                [src]="game.imageUrl"
                alt="Card image cap">
           <div class="middle">
-            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Edit</button>
+            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
             <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
-                    data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                    data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa
+            </button>
           </div>
           <div class="card-body row" style="justify-items: center">
             <div class="row">
@@ -37,17 +49,42 @@
               </div>
             </div>
           </div>
+          <div>
+            <input class="card-notify-year-checkbox" type="checkbox" value="{{game.id}}" [(ngModel)]="game.checked" (click)="checkGame(game.id)">
+          </div>
         </div>
       </div>
+      <div class="row" *ngIf="games.length == 0">
+        <h5 class="text-white" style="margin-left: 1rem">Danh sách game rỗng</h5>
+      </div>
     </div>
-    <div class="row" style="margin-top: 1rem;">
+    <div *ngIf="games.length != 0" class="row mb-0" style="margin-top: 1rem;">
       <div class="w-100 d-flex justify-content-center">
-        <pagination-controls (pageChange)="getPage(page = $event)"></pagination-controls>
+        <pagination-controls (pageChange)="getPage(page = $event)"
+                             previousLabel="Trước"
+                             nextLabel="Sau"
+                             autoHide="true"
+                             maxSize=7>
+        </pagination-controls>
+      </div>
+    </div>
+    <div class="row align-items-center" *ngIf="games.length != 0">
+      <div class="w-100 d-flex justify-content-center">
+        <div class="col-auto m-1">
+          <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>
+        </div>
+        <div class="col-auto m-1">
+          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
+                 (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
+        </div>
+        <div class="col-auto m-1">
+          <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal -->
+  <!-- Delete Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content object">
@@ -59,7 +96,30 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-second-non-border" data-bs-dismiss="modal">Đóng</button>
-          <button type="button" (click)="deleteGameById()" class="btn-main text-white" data-bs-dismiss="modal">Xóa</button>
+          <button type="button" (click)="deleteGameById()" class="btn-main text-white" data-bs-dismiss="modal">Xóa
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete multiple modal -->
+  <div class="modal fade" id="deleteMultipleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content object">
+        <div class="modal-header">
+          <h5 class="modal-title text-white" id="exampleModalLabel2">Thông báo</h5>
+        </div>
+        <div class="modal-body text-white">
+          <p>Bạn có chắc chắn muốn xóa các game sau hay không?</p>
+          <ol>
+            <li *ngFor="let selectedGames of selectedGames">{{selectedGames.name}}</li>
+          </ol>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-second-non-border" data-bs-dismiss="modal">Đóng</button>
+          <button type="button" (click)="deleteMultipleGames()" class="btn-main text-white" data-bs-dismiss="modal">Xóa
+          </button>
         </div>
       </div>
     </div>
