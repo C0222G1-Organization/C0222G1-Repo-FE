@@ -11,12 +11,14 @@ import {RegistrationRoutingModule} from "./registration/registration-routing.mod
 import {HomePageRoutingModule} from "./home-page/home-page-routing.module";
 import {StatisticRoutingModule} from "./statistic/statistic-routing.module";
 import {ServerErrorComponent} from "./common-component/server-error/server-error.component";
+import {NotFoundComponent} from "./common-component/not-found/not-found.component";
 
 const routes: Routes = [
   {
     path: '500', component: ServerErrorComponent
 
   },
+  {path: '**', component: NotFoundComponent},
   {path: 'payment',
     loadChildren: () => import('./payment/payment.module').then(module => module.PaymentModule)
   }
@@ -26,7 +28,6 @@ const routes: Routes = [
   declarations: [],
   imports: [
     RouterModule.forRoot(routes),
-    PaymentRoutingModule,
     AuthenticationRoutingModule,
     ComputerRoutingModule,
     CustomerRoutingModule,

@@ -54,21 +54,17 @@
                [src]="game.imageUrl"
                alt="Card image cap">
           <div class="middle">
-            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Edit</button>
+            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
             <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
-                    data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                    data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
           </div>
           <div class="card-body row" style="justify-items: center">
             <div class="row">
               <p class="text-white text-title-sm">{{game.name}}</p>
             </div>
             <div class="row">
-              <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">
-                <button (click)="getGameAndUpdate(game.id)" class="btn-second btn-sm">Chơi</button>
-              </div>
-              <div class="col-xl-9 col-lg-9 col-md-0 col-sm-0">
-                <p class="card-text text-content">{{game.playedTimes}} lượt chơi</p>
-              </div>
+              <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
+                                                            class="btn-second btn-sm">Chơi</button>  {{ game.playedTimes}} lượt chơi</span>
             </div>
           </div>
         </div>
@@ -90,9 +86,9 @@
                  class="d-block image" alt="...">
           </div>
           <div class="middle-md">
-            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Edit</button>
+            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
             <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
-                    data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                    data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
           </div>
           <div class="row">
             <p class="text-white">{{game.name}}</p>
@@ -120,21 +116,17 @@
                [src]="game.imageUrl"
                alt="Card image cap">
           <div class="middle">
-            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Edit</button>
+            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
             <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
-                    data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                    data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
           </div>
           <div class="card-body row" style="justify-items: center">
             <div class="row">
               <p class="text-white text-title-sm">{{game.name}}</p>
             </div>
             <div class="row">
-              <div class="col-xl-3 col-md-3">
-                <button (click)="getGameAndUpdate(game.id)" class="btn-second btn-sm">Chơi</button>
-              </div>
-              <div class="col-xl-9 col-md-9">
-                <p class="card-text text-content">{{game.playedTimes}} lượt chơi</p>
-              </div>
+              <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
+                                                            class="btn-second btn-sm">Chơi</button>  {{ game.playedTimes}} lượt chơi</span>
             </div>
           </div>
         </div>
