@@ -118,11 +118,20 @@ export class CustomerInformationComponent implements OnInit {
         this.customer = value;
         console.log(value);
         console.log('here');
+        this.minutes = this.customer.remainingTime % 60;
+        if (this.minutes < 10) {
+          this.minutes = '0' + this.minutes;
+        }
+        this.hour = (this.customer.remainingTime - this.minutes) / 60;
+        if (this.hour < 10) {
+          this.hour = '0' + this.hour;
+        }
         this.customerForm.patchValue(this.customer);
         this.customerForm.patchValue({district: value.commune.district});
         this.customerForm.patchValue({province: value.commune.district.province});
         console.log(this.customerForm);
-      },
+      }
+      ,
       error => {
         console.log('error');
       },
@@ -138,33 +147,7 @@ export class CustomerInformationComponent implements OnInit {
           this.communeList = value;
         });
         this.customerService.getAllDistrict(this.customer.commune.district.province.id).subscribe(value => this.districtList = value);
-        this.minutes = this.customer.remainingTime % 60;
-        if (this.minutes < 10) {
-          this.minutes = '0' + this.minutes;
-        }
-        this.hour = (this.customer.remainingTime - this.minutes) / 60;
-        if (this.hour < 10) {
-          this.hour = '0' + this.hour;
-        }
       });
-    // if (sessionStorage.getItem('token')) {
-    //   const customerId = sessionStorage.getItem('customerId');
-    //   this.customerService.getCustomerByID(Number(customerId)).subscribe(value => {
-    //     console.log(value);
-    //     this.customerForm.patchValue(value);
-    //     this.customer = value;
-    //     // console.log(this.customer);
-    //     this.minutes = this.customer.remainingTime % 60;
-    //     if (this.minutes < 10) {
-    //       this.minutes = '0' + this.minutes;
-    //     }
-    //     this.hour = (this.customer.remainingTime - this.minutes) / 60;
-    //     if (this.hour < 10) {
-    //       this.hour = '0' + this.hour;
-    //     }
-    //     // console.log(this.customer.user.password);
-    //   });
-    // }
   }
 
   onsubmit() {
