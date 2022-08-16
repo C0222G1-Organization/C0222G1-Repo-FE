@@ -92,7 +92,6 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/home-page-customer']);  // CUSTOMER
     }
   }
-
   rememberMe() {
     this.rememberMeBox = !this.rememberMeBox;
     if (this.rememberMeBox) {
