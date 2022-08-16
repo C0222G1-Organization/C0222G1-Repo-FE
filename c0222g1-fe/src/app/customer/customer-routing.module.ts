@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 
+import {CustomerListComponent} from './component/customer-list/customer-list.component';
 import {CustomerInformationComponent} from './component/customer-information/customer-information.component';
 import {CreateCustomerHaoNHComponent} from './component/create-customer-hao-nh/create-customer-hao-nh.component';
 import {HomePageCustomerComponent} from './component/home-page-customer/home-page-customer.component';
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: 'home-page-customer/info',
     component: CustomerInformationComponent
+  },
+  {
+    path: 'customers',
+    component: CustomerListComponent
   },
   {path: 'sign-up', component: CreateCustomerHaoNHComponent}
 ];
