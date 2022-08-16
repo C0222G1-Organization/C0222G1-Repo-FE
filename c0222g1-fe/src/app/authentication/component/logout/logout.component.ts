@@ -31,7 +31,6 @@ export class LogoutComponent implements OnInit {
 
   logoutForOutOfTime() {
       this.authService.checkData.subscribe(value => {
-      alert('vào kênh');
       if (value !== undefined) {
         this.data = value;
         if (this.data.has('outOfTime')) {
