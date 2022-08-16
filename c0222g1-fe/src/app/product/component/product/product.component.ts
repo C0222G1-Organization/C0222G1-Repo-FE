@@ -5,7 +5,6 @@ import {ProductCategory} from '../../model/ProductCategory';
 import {ToastrService} from 'ngx-toastr';
 import {Title} from '@angular/platform-browser';
 import {Router, NavigationEnd, ActivatedRoute} from '@angular/router';
-import {CurrencyPipe} from "@angular/common";
 
 @Component({
   selector: 'app-product',
