@@ -105,7 +105,7 @@ export class CreateCustomerComponent implements OnInit {
     this.customerService.saveCustomer(this.updateCustomerDto).subscribe(
       value => {
         this.toast.success('Thêm mới khách hàng thành công!');
-        this.route.navigateByUrl('/listCustomer');
+        this.route.navigateByUrl('/customers');
       },
       error => {
       }
