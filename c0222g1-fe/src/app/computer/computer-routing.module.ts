@@ -10,7 +10,6 @@ const routes: Routes = [
     path: 'computers', component: ComputerListComponent
     // admin, employee PhucNQ
   },
-  {path: 'computers', component: ComputerListComponent},
   {
     path: 'computers/create', component: ComputerCreateComponent
     // admin TuanHD
