@@ -54,4 +54,18 @@ export class NewsComponent implements OnInit {
   updateViews(id) {
     this.newsService.updateViews(id).subscribe();
   }
+
+  search() {
+    if (this.searchTitle === '') {
+          this.getAllNews();
+          return;
+        }
+    this.searchTitle = this.searchTitle.trim();
+    this.newsService.getAllNews(0, this.searchTitle).subscribe((value: any) => {
+        this.listNews = value.content;
+        this.totalItems = value.totalElements;
+        console.log(this.listNews);
+      }
+    );
+  }
 }

@@ -3,7 +3,7 @@
     <header>
       <div class="row d-flex justify-content-between">
         <div class="p-0 col-6">
-            <input [(ngModel)]="searchTitle" (change)="getAllNews()" class="search form-control-sm me-2 position-absolute" type="search" placeholder="tìm kiếm" aria-label="Search" >
+            <input [(ngModel)]="searchTitle" (change)="search()" class="search form-control-sm me-2 position-absolute" type="search" placeholder="tìm kiếm" aria-label="Search" >
         </div>
         <div class="p-0 col-6 d-flex justify-content-end">
           <button type="button" routerLink="/news/create" class="btn btn-outline-secondary rounded-pill">thêm mới tin</button>
@@ -52,20 +52,13 @@
       </div>
     </div>
     <div class="row mt-3">
-      <div class="col-12 d-flex justify-content-center">
+      <div *ngIf="totalItems>3" class="col-12 d-flex justify-content-center">
         <pagination-controls nextLabel="Sau" previousLabel="Trước" class="text-light" (pageChange)="getPage(page = $event)"></pagination-controls>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-12 d-flex justify-content-center">
-        <div class="col-auto m-1">
-          <label for="goToPage" class="col-form-label text-white">Đến trang</label>
+        <div>
+          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text mx-2"
+                        (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
         </div>
-        <div class="col-auto m-1">
-          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
-                 (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
-        </div>
-        <div class="col-auto m-1">
+        <div>
           <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
         </div>
       </div>

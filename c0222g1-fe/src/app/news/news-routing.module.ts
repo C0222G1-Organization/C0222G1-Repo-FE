@@ -3,11 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import {NewsComponent} from './component/news/news.component';
 import {DetailComponent} from './component/detail/detail.component';
 import {CreateComponent} from './component/create/create.component';
+import {NotFoundComponent} from '../common-component/not-found/not-found.component';
 
 const routes: Routes = [
   {path: 'news' , component: NewsComponent, pathMatch: 'full'},
   {path: 'news/detail/:id' , component: DetailComponent, pathMatch: 'full'},
-  {path: 'news/create' , component: CreateComponent, pathMatch: 'full'}
+  {path: 'news/create' , component: CreateComponent, pathMatch: 'full'},
+  {path: 'news/**', component: NotFoundComponent}
 ];
 
 @NgModule({

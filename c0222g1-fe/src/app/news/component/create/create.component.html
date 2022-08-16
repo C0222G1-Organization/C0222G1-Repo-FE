@@ -11,7 +11,9 @@
                 <label for="title" class="text-light">Tiêu đề:<span class="text-danger"> *</span></label>
               </div>
               <div *ngIf="formNews.controls.title.hasError('required') && formNews.controls.title.touched" class="form-text text-danger mt-1 px-2">Nhập tiêu đề.</div>
-              <div *ngIf="formNews.controls.title.hasError('pattern') && formNews.controls.title.dirty" class="form-text text-danger mt-1 px-2">Tiêu đề sai định dạng.</div>
+              <div *ngIf="formNews.controls.title.hasError('pattern') && formNews.controls.title.dirty && formNews.controls.title.hasError('minlength') == false && formNews.controls.title.hasError('maxlength') == false " class="form-text text-danger mt-1 px-2">Tiêu đề sai định dạng.</div>
+              <div *ngIf="formNews.controls.title.hasError('minlength') && formNews.controls.title.dirty" class="form-text text-danger mt-1 px-2">Tiêu đề quá ngắn</div>
+              <div *ngIf="formNews.controls.title.hasError('maxlength') && formNews.controls.title.dirty" class="form-text text-danger mt-1 px-2">Tiêu đề quá dài</div>
             </div>
             <div class="col-lg-6 px-3">
               <div class="form-floating textbox ">
@@ -19,7 +21,9 @@
                 <label for="author" class="text-light">Tác giả:<span class="text-danger"> *</span></label>
               </div>
               <div *ngIf="formNews.controls.author.hasError('required') && formNews.controls.author.touched" class="form-text text-danger mt-1 px-2">Nhập tên tác giả.</div>
-              <div *ngIf="formNews.controls.author.hasError('pattern') && formNews.controls.author.dirty" class="form-text text-danger mt-1 px-2">Tên sai định dạng.</div>
+              <div *ngIf="formNews.controls.author.hasError('pattern') && formNews.controls.author.dirty && formNews.controls.author.hasError('minlength') == false && formNews.controls.author.hasError('maxlength') == false" class="form-text text-danger mt-1 px-2">Tên sai định dạng.</div>
+              <div *ngIf="formNews.controls.author.hasError('minlength') && formNews.controls.author.dirty" class="form-text text-danger mt-1 px-2">Tên quá ngắn</div>
+              <div *ngIf="formNews.controls.author.hasError('maxlength') && formNews.controls.author.dirty" class="form-text text-danger mt-1 px-2">Tên quá dài</div>
             </div>
           </div>
         <div *ngIf="url != null" class="row mt-4">
@@ -43,7 +47,8 @@
               <textarea formControlName="content" class="form-control border-secondary input texarea" placeholder="Leave a comment here" id="floatingTextarea2"></textarea>
               <label for="floatingTextarea2" class="text-light">Nội dung:<span class="text-danger"> *</span></label>
               <div *ngIf="formNews.controls.content.hasError('required') && formNews.controls.content.touched" class="form-text text-danger mt-1 px-2">Nhập nội dung.</div>
-              <div *ngIf="formNews.controls.content.hasError('pattern') && formNews.controls.content.dirty" class="form-text text-danger mt-1 px-2">Nội dung sai định dạng.</div>
+              <div *ngIf="formNews.controls.content.hasError('pattern') && formNews.controls.content.dirty && formNews.controls.author.hasError('minlength') == false" class="form-text text-danger mt-1 px-2">Nội dung sai định dạng.</div>
+              <div *ngIf="formNews.controls.content.hasError('minlength') && formNews.controls.content.dirty" class="form-text text-danger mt-1 px-2">Nội dung quá ngắn</div>
             </div>
 <!--            <div class="form-floating">-->
 <!--              <textarea formControlName="content" class="form-control border-secondary input texarea" id="content"></textarea>-->
