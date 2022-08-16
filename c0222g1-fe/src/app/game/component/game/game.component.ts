@@ -79,7 +79,7 @@ export class GameComponent implements OnInit {
     this.gameService.deleteGameById(this.selectedId).subscribe(res => {
       this.page = 1;
       this.getGames();
-      this.toastr.success("Xóa thành công");
+      this.toastr.success('Xóa thành công');
     }, error => {
       this.toastr.error("Xóa thất bại");
     });
