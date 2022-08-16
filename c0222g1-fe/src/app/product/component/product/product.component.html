@@ -1,36 +1,58 @@
 <body>
 <h2 class="text-center text-title text-white my-2" style="font-size: 2.2rem">DANH SÁCH DỊCH VỤ</h2>
-<div class="container mt-4">
-  <div class="d-flex justify-content-center row">
-    <div class="col-10">
-      <div class="d-flex justify-content-between w-100">
-        <div class="w-50 d-flex px-0">
-          <input type="text" class="input-search form-control w-50" [(ngModel)]="name"
-                 placeholder=" Nhập tên dịch vụ " (keydown.enter)="search()">
-          <button type="button" class="btn btn-outline-secondary mx-4" (click)="search()">Tìm kiếm</button>
-        </div>
+<form [formGroup]="formProduct" novalidate>
+  <div class="container mt-4">
+    <div class="d-flex justify-content-center row">
+      <div class="col-10">
+        <div class="d-flex justify-content-between w-100">
 
-        <!--        check box chọn tất cả-->
+          <div class="w-50 d-flex px-0">
+            <input type="text" class="input-search form-control w-50"
+                   placeholder=" Nhập tên dịch vụ" formControlName="nameProduct" [(ngModel)]="name"
+                   id="nameProduct">
 
-        <div class="d-flex " *ngIf="role === 'ADMIN'">
-          <div class="form-group mx-5 box">
-            <input style="float: right" type="checkbox" id="html" [checked]="isAllCheckBoxChecked()"
-                   (change)="checkAllCheckBox($event)">
-            <label class="box" for="html" style="color: #cbc6c6; font-size: 1.1rem; text-align: center">
-              <span class="label-custom" style="justify-content: center"> Chọn tất cả</span>
-            </label>
-          </div>
-          <div>
-            <button class="btn btn-outline-secondary"
-                    data-bs-toggle="modal" data-bs-target="#form-create" style="float: right">Thêm mới
+            <button type="button" class="btn btn-outline-secondary mx-4" (click)="search()"
+                    [disabled]="formProduct.invalid">Tìm kiếm
             </button>
+          </div>
+
+
+          <!--        check box chọn tất cả-->
+
+          <div class="d-flex " *ngIf="role === 'ADMIN'">
+            <div class="form-group mx-5 box">
+              <input style="float: right" type="checkbox" id="html" [checked]="isAllCheckBoxChecked()"
+                     (change)="checkAllCheckBox($event)">
+              <label class="box" for="html" style="color: #cbc6c6; font-size: 1.1rem; text-align: center">
+                <span class="label-custom" style="justify-content: center"> Chọn tất cả</span>
+              </label>
+            </div>
+            <div>
+              <button class="btn btn-primary"
+                      data-bs-toggle="modal" data-bs-target="#form-create" style="float: right">Thêm mới
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</form>
+<div class="container">
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <div class="text-danger" *ngIf="formProduct.valid">
+        &nbsp;
+      </div>
+      <div class="text-danger" *ngIf="formProduct.controls.nameProduct.hasError('pattern')
+        && (formProduct.controls.nameProduct.dirty || formProduct.controls.nameProduct.touched)">
+        Không được nhập kí tự đặc biệt
+      </div>
+    </div>
+  </div>
+  <div class="col-md-1"></div>
 </div>
-
 <div class="container">
   <div class="row">
     <div class="col-md-1"></div>
@@ -43,7 +65,7 @@
             <img src="{{product.imageUrl}}" class="card-img-top" alt="...">
             <div class="card-body">
               <h4>{{product.nameProduct}}</h4>
-              <span class="card-detail-badge" style="font-size: 16px">{{product.prices}}<sup>vnd</sup></span>
+              <span class="card-detail-badge" style="font-size: 16px">{{product.prices | number}}<sup>vnd</sup></span>
               <button class="btn btn-outline-secondary" style="float: right;"
                       (click)="valueOfDelete(product.nameProduct, product.id)"
                       data-bs-toggle="modal"
@@ -61,7 +83,7 @@
               </div>
               <div *ngIf="role === 'ADMIN'">
                 <input class="card-notify-year-checkbox" type="checkbox" value="{{product.id}}"
-                       [(ngModel)]="productList[i].checked">
+                       [(ngModel)]="productList[i].checked" (click)="checkProduct(product.id)">
               </div>
             </div>
           </div>
@@ -69,8 +91,8 @@
       </div>
       <br>
       <div style="float: right" *ngIf="role === 'ADMIN' && productList.length > 0">
-        <button class="btn btn-outline-secondary" data-bs-toggle="modal"
-                data-bs-target="#deleteAll" [disabled]="!isAllCheckBoxChecked()">Xóa tất cả
+        <button class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#deleteAll">Xóa tất cả
         </button>
       </div>
     </div>
@@ -82,8 +104,8 @@
 <div class="container">
   <div class="row">
     <div class="col-3"></div>
-    <div class="col-6 mx-5" *ngIf="productList.length == 0">
-      <img src="https://fryday.ca/assets/frontend/default/images/empty-cart.png" alt="">
+    <div class="col-6 mx-5" *ngIf="productList.length === 0">
+      <img src="https://fryday.ca/assets/frontend/default/images/empty-cart.png">
       <br>
       <br>
       <p style="margin-left: 90px; font-size: 2rem">Không có sản phẩm nào</p>
@@ -99,13 +121,11 @@
   <div class="col-md-10 d-flex">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-      <div *ngIf="productList.length !== 0">
-        <div>
-          <pagination-controls nextLabel="Trang kế" previousLabel="Trang trước" (pageChange)="getPage($event)"
-                               style="float: right">
-
-          </pagination-controls>
-        </div>
+      <div *ngIf="productList.length !== 0" style="margin-right: 30px">
+        <pagination-controls previousLabel="Trước"
+                             nextLabel="Sau" (pageChange)="getPage($event)"
+                             style="float: right">
+        </pagination-controls>
       </div>
     </div>
     <div class="col-md-3"></div>
@@ -142,6 +162,9 @@
       </div>
       <p style="text-align: center; font-size: 20px">Bạn có muốn xóa dịch vụ không?
       </p>
+      <ol>
+        <li style="color: orangered; font-size: 1rem" *ngFor="let product of selectedNameProducts">{{product.nameProduct}}</li>
+      </ol>
       <div class="modal-footer">
         <button type="button" class="btn btn-dark " data-bs-dismiss="modal">Đóng</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteProductList()">
@@ -151,5 +174,4 @@
     </div>
   </div>
 </div>
-
 </body>
