@@ -7,7 +7,7 @@ import {District} from '../../model/district';
 import {Commune} from '../../model/commune';
 import {ToastrService} from 'ngx-toastr';
 import { UpdateCustomerDto } from '../../model/customer-update-dto';
-import {Title} from "@angular/platform-browser";
+import {Title} from '@angular/platform-browser';
 
 
 @Component({
