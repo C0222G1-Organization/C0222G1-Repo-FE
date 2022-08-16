@@ -1,7 +1,10 @@
 import {Component, OnInit} from '@angular/core';
+// @ts-ignore
 import {render} from 'creditcardpayments/creditCardPayments';
 import {PaymentService} from '../../service/payment.service';
 import {Payment} from '../../model/payment';
+import {ActivatedRoute} from '@angular/router';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-display-payment',
@@ -15,14 +18,17 @@ export class DisplayPaymentComponent implements OnInit {
   page = 0;
   element: number;
 
-  constructor(private paymentService: PaymentService) {
+  constructor(private paymentService: PaymentService,
+              private activatedRoute: ActivatedRoute,
+              private title: Title) {
+    this.title.setTitle('THÔNG TIN THANH TOÁN');
   }
 
   ngOnInit(): void {
-    // Get list payment
-    this.paymentService.getAllPayment().subscribe(value => {
-      this.listPayment = value;
-      // console.log(this.listPayment);
+    const id = Number(this.activatedRoute.snapshot.params.paymentId);
+    this.paymentService.getById(id).subscribe(value => {
+      console.log(value);
+      this.listPayment.push(value);
       // tslint:disable-next-line:prefer-for-of
       for (let i = 0; i < this.listPayment.length; i++) {
         // tslint:disable-next-line:prefer-for-of
@@ -32,6 +38,19 @@ export class DisplayPaymentComponent implements OnInit {
         }
       }
     });
+    // Get list payment
+    // this.paymentService.getAllPayment().subscribe(value => {
+    //   this.listPayment = value;
+    //   console.log(this.listPayment);
+    // tslint:disable-next-line:prefer-for-of
+    // for (let i = 0; i < this.listPayment.length; i++) {
+    // tslint:disable-next-line:prefer-for-of
+    // for (let j = 0; j < this.listPayment[i].paymentDetailList.length; j++) {
+    // tslint:disable-next-line:max-line-length
+    // this.listPayment[i].totalPay += this.listPayment[i].paymentDetailList[j].amount * this.listPayment[i].paymentDetailList[j].product.prices;
+    // }
+    // }
+    // });
   }
 
   statePaypal(id: number) {
@@ -90,7 +109,7 @@ export class DisplayPaymentComponent implements OnInit {
         // tslint:disable-next-line:prefer-for-of
         for (let j = 0; j < this.listPayment[i].paymentDetailList.length; j++) {
           content += '<tr>\n' +
-            '              <td>' + this.listPayment[i].paymentDetailList[j].product.name + '</td>\n' +
+            '              <td>' + this.listPayment[i].paymentDetailList[j].product.nameProduct + '</td>\n' +
             '              <td>' + this.listPayment[i].paymentDetailList[j].amount + '</td>\n' +
             '              <td>' + this.listPayment[i].paymentDetailList[j].product.unit + '</td>\n' +
             '              <td>' + this.listPayment[i].paymentDetailList[j].product.prices + '</td>\n' +

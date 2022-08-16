@@ -5,8 +5,8 @@ import {Commune} from '../../model/commune';
 import {District} from '../../model/district';
 import {Province} from '../../model/province';
 import {CreateCustomerService} from '../../service/create-customer.service';
-import {Router} from "@angular/router";
-import {ToastrService} from "ngx-toastr";
+import {Router} from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-customer-hao-nh',

@@ -1,5 +1,6 @@
-<div class="container-fluid">
-  <div class="d-flex ">
+<div class="container-fluid ">
+  <div  class=" d-flex aligns-items-center justify-content-center">
+<!--    //class="container mt-3 mb-5 p-0 pt-3 d-flex"-->
     <div class="col-3 bg-menu ">
       <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-menu ">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none t">
@@ -20,7 +21,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link list-group-item-action">
+            <a routerLink="info" class="nav-link list-group-item-action">
               <i class="fa-solid fa-circle-user"></i>
               Tài khoản
             </a>
@@ -48,6 +49,8 @@
           <div class="col-8">
             <hr class="text-primary">
             <table>
+
+
               <tr class="bordered">
                 <th scope="row" class="text-center title-td">Tên tài khoản</th>
                 <td class="text-center content-td">{{jwtReponseCustomer.customer.name}}</td>
@@ -59,6 +62,12 @@
               <tr class="bordered">
                 <th scope="row" class="text-center title-td">Thời gian kết thúc</th>
                 <td class="text-center content-td">{{jwtReponseCustomer.endTime}}</td>
+              </tr>
+              <tr class="bordered">
+                <th scope="row" class="text-center title-td">Thời gian còn lại</th>
+                <td class="text-center content-td times">
+                  <span id="days"></span> ngày <span id="hours"></span>:<span id="mins"></span>:<span id="seconds"></span>
+                </td>
               </tr>
               <tr class="bordered">
                 <th scope="row" class="text-center title-td">Máy đang sử dụng</th>
@@ -78,7 +87,7 @@
             <div>
               <img src="assets/img/home-page-customer/user.png" alt="logo" class="img-user">
               <div class="text-center mt-3">
-                <button type="button" class="btn btn-outline-primary">Sửa thông tin <i class="fa-solid fa-user-pen"></i></button>
+                <button type="button" class="btn btn-outline-primary" routerLink="info">Sửa thông tin <i class="fa-solid fa-user-pen"></i></button>
               </div>
             </div>
           </div>

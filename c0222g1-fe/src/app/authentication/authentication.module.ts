@@ -8,6 +8,7 @@ import { LogoutComponent } from './component/logout/logout.component';
 import { ForbiddenComponent } from './component/forbidden/forbidden.component';
 
 
+
 @NgModule({
   declarations: [LoginComponent, LogoutComponent, ForbiddenComponent],
     imports: [

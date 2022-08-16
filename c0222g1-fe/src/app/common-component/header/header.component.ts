@@ -15,10 +15,12 @@ export class HeaderComponent implements OnInit {
   customerCard = false;
   employeeCard = false;
   computerCard = false;
-  gameCard = true;
-  newsCard = true;
-  serviceCard = true;
+  gameCard = false;
+  newsCard = false;
+  serviceCard = false;
   statisticalCard = false;
+
+
 
   constructor(private authService: AuthService) {
   }
@@ -82,6 +84,14 @@ export class HeaderComponent implements OnInit {
       this.serviceCard = true;
       this.statisticalCard = false;
     }
+    console.log(this.roles);
+    console.log('customerCard ' + this.customerCard);
+    console.log('employeeCard ' + this.employeeCard);
+    console.log('computerCard ' + this.computerCard);
+    console.log('gameCard ' + this.gameCard);
+    console.log('newsCard ' + this.newsCard);
+    console.log('serviceCard ' + this.serviceCard);
+    console.log('statisticalCard ' + this.statisticalCard);
 
   }
 }
