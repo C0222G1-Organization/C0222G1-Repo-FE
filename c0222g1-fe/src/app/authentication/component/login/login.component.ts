@@ -72,8 +72,9 @@ export class LoginComponent implements OnInit {
           }, 50);
 
           if (this.rememberMeBox) {
-            this.rememberMeBox = false;
-            this.rememberMe();
+            this.login = this.loginForm.value;
+            sessionStorage.setItem('usernameLogin', this.login.username);
+            sessionStorage.setItem('passwordLogin', this.login.password);
           }
         }
       }, error => {
