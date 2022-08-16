@@ -16,16 +16,18 @@ import {Title} from '@angular/platform-browser';
 export class ComputerCreateComponent implements OnInit {
   computerType: ComputerType[];
   computer: Computer[];
+  isExitsCode = false;
+  isExitsLocation = false;
   formComputer = new FormGroup({
       id: new FormControl(),
       code: new FormControl('', [Validators.required,
         Validators.pattern('^(CP)[0-9]{4}$')]),
       status: new FormControl('', Validators.required),
       location: new FormControl('', [Validators.required,
-        Validators.pattern('^(A)[0-9]{4}$')]),
+        Validators.pattern('^[A-Z][0-9]{4}$')]),
       startUsedDate: new FormControl('', [Validators.required, this.checkYear]),
-      configuration: new FormControl('', [Validators.required, Validators.minLength(3),
-        Validators.maxLength(20), Validators.pattern('^[A-Za-z]|[0-9]$')]),
+      configuration: new FormControl('', [Validators.required, Validators.minLength(2),
+        Validators.maxLength(20), Validators.pattern('^\\w+( \\w+)*$')]),
       manufacturer: new FormControl('', [Validators.required, Validators.minLength(1),
         Validators.maxLength(20)]),
       deleteStatus: new FormControl(0),
@@ -58,10 +60,7 @@ export class ComputerCreateComponent implements OnInit {
 
   checkStartDate(abstractControl: AbstractControl): any {
     const date = new Date(abstractControl.value.startUsedDate);
-    console.log(date + 'aaaaa');
     const now = new Date();
-    console.log(date);
-    console.log(now);
     if (date > now) {
       return {dateerror: true};
     } else {
@@ -86,7 +85,7 @@ export class ComputerCreateComponent implements OnInit {
     }
     this.computerService.createComputer(this.formComputer.value).subscribe(value => {
       this.toast.success('Thêm mới thành công!', 'Computer');
-      this.formComputer.reset();
+      // this.formComputer.reset();
       this.route.navigateByUrl('/computers');
     });
   }
@@ -96,4 +95,29 @@ export class ComputerCreateComponent implements OnInit {
     console.log(sYear);
     return sYear >= 2000 ? null : {not2000: true};
   }
+
+  checkCode($event: Event) {
+    this.computerService.checkCode(String($event)).subscribe(
+      value => {
+        if (value) {
+          this.isExitsCode = true;
+        } else {
+          this.isExitsCode = false;
+        }
+      }
+    );
+  }
+
+  checkLocation($event: Event) {
+    this.computerService.checkLocation(String($event)).subscribe(
+      value => {
+        if (value) {
+          this.isExitsLocation = true;
+        } else {
+          this.isExitsLocation = false;
+        }
+      }
+    );
+  }
+
 }
