@@ -393,6 +393,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .texarea {
   padding-top: 1.5em !important;
   border: none;
+  height: 3.8em !important;
 }
 .texarea:focus {
   background-color: #484848;
@@ -461,3 +462,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .preview-img {
   width: 100%;
 }
+
+.img-box {
+  height: 18em ;
+  overflow: hidden;
+}
+
+.img-fit {
+  object-fit: cover;
+  height: 100% ;
+  width:  100%;
+}
+

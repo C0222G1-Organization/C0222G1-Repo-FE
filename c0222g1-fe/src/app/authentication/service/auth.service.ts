@@ -26,7 +26,11 @@ export class AuthService {
     return this.httpClient.post<Ilogin[]>(this.URL_API + 'api/auth/login', login);
   }
 
-  setOutOfTime(id: number): Observable<any> {
-    return this.httpClient.get<Ilogin[]>(this.URL_API + 'customer/setOutOfTime/' + id);
+  setOutOfTime(id: number, remaining: number ): Observable<any> {
+    return this.httpClient.get<Ilogin[]>(this.URL_API + 'customer/setOutOfTime?id=' + id + '&remaining=' + remaining);
+  }
+
+  getRemainingTime(id: number): Observable<any> {
+    return this.httpClient.get<Ilogin[]>(this.URL_API + 'customer/getRemainingTime/' + id);
   }
 }
