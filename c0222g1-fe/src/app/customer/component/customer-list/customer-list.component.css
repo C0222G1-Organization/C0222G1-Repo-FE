@@ -103,7 +103,4 @@ label.hiddenText {
   color: #100d0d !important;
   cursor: default;
 }
-button:disabled{
-  background-color: black;
-  color: rgba(128, 128, 128, 0.23) !important;
-}
+

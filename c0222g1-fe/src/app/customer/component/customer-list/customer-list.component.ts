@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CustomerService} from '../../service/customer.service';
 import {ToastrService} from 'ngx-toastr';
-import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CustomerDTO} from '../../model/customerDTO';
 import {Title} from "@angular/platform-browser";
 @Component({
@@ -24,17 +24,17 @@ export class CustomerListComponent implements OnInit {
   checked: boolean
 
   constructor(private customerService: CustomerService, private toast: ToastrService,private title: Title) {
-    this.title.setTitle('Danh sách khách hàng')
+    this.title.setTitle('C02G1|Danh sách khách hàng')
   }
   color = 'red'
 
 
   formSearch = new FormGroup({
-    nameCustomer: new FormControl(''),
+    nameCustomer: new FormControl('',[Validators.minLength(5),Validators.maxLength(100),Validators.required]),
     starDate: new FormControl(''),
     endDate: new FormControl('',this.checkEndDay),
     activeStatus: new FormControl(''),
-    address: new FormControl('')
+    address: new FormControl('',[Validators.minLength(5),Validators.maxLength(200)])
   },this.checkStartDay);
 
   ngOnInit(): void {
@@ -143,6 +143,9 @@ export class CustomerListComponent implements OnInit {
       }
     })
     console.log(this.map.size)
+    if (this.listCustomer.length==0){
+      return false;
+    }
     return this.listCustomer.every(p => p.checked);
   }
 
@@ -150,10 +153,18 @@ export class CustomerListComponent implements OnInit {
   checkAllCheckBox(event) {
     console.log("event")
 
-    this.listCustomer.forEach(x => x.checked = event.target.checked);
+  return this.listCustomer.forEach(x => x.checked = event.target.checked);
 
   }
 
 
-
+  reload() {
+   this. formSearch = new FormGroup({
+      nameCustomer: new FormControl('',[Validators.minLength(5),Validators.maxLength(100),Validators.required]),
+      starDate: new FormControl(''),
+      endDate: new FormControl('',this.checkEndDay),
+      activeStatus: new FormControl(''),
+      address: new FormControl('',[Validators.minLength(5),Validators.maxLength(200)])
+    },this.checkStartDay);
+  }
 }
