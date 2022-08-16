@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NewsService} from '../../service/news.service';
 import {News} from '../../model/news';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-news',
@@ -15,7 +16,7 @@ export class NewsComponent implements OnInit {
   topNews: News[];
   searchTitle: string;
 
-  constructor(private newsService: NewsService) {
+  constructor(private newsService: NewsService, private toastr: ToastrService) {
   }
 
   ngOnInit(): void {

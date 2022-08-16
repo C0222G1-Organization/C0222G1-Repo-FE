@@ -6,8 +6,8 @@ import {CreateComponent} from './component/create/create.component';
 
 const routes: Routes = [
   {path: 'news' , component: NewsComponent, pathMatch: 'full'},
-  {path: 'detail-news/:id' , component: DetailComponent, pathMatch: 'full'},
-  {path: 'create-news' , component: CreateComponent, pathMatch: 'full'}
+  {path: 'news/detail/:id' , component: DetailComponent, pathMatch: 'full'},
+  {path: 'news/create' , component: CreateComponent, pathMatch: 'full'}
 ];
 
 @NgModule({

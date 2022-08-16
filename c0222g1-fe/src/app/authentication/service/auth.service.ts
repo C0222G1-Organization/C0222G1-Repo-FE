@@ -26,13 +26,7 @@ export class AuthService {
     return this.httpClient.post<Ilogin[]>(this.URL_API + 'api/auth/login', login);
   }
 
-  requestTest(): Observable<any> {
-    return this.httpClient.get<Ilogin[]>(this.URL_API + 'api/auth/data/data1');
-  }
-
-  logout() {
-    sessionStorage.clear();
-    this.toartrs.success('Đã đăng xuất', 'THÔNG BÁO');
-    this.router.navigate(['']);
+  setOutOfTime(id: number): Observable<any> {
+    return this.httpClient.get<Ilogin[]>(this.URL_API + 'customer/setOutOfTime/' + id);
   }
 }
