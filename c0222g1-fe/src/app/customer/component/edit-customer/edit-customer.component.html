@@ -73,10 +73,10 @@
                *ngIf="getEmail().invalid && (getEmail().touched || getEmail().dirty) && getEmail().errors.pattern">
             <small>Nhập đúng định dạng email!</small>
           </div>
-          <div class="mb-3 text-danger"
-               *ngIf="isExitsEmail == true">
-            <small>Email này đã tồn tại.</small>
-          </div>
+<!--          <div class="mb-3 text-danger"-->
+<!--               *ngIf="isExitsEmail == true">-->
+<!--            <small>Email này đã tồn tại.</small>-->
+<!--          </div>-->
         </div>
       </div>
       <div class="col-md-6 " style="padding-right: 15px">
@@ -160,27 +160,11 @@
         <div class="form-floating textbox mb-4" formGroupName="userName">
           <input readonly type="text" class="form-control input"
                  id="user-name" placeholder="Họ và tên"
-                 style="padding-top: 10px" formControlName="userName" (change)="checkUserName($event.target.value)">
-          <label for="user-name" style="color: white">
+                 style="padding-top: 10px" formControlName="userName">
+          <label for="user-name" style="color: white" formControlName="userName">
             Tài khoản
             <span class="text-danger">*</span>
           </label>
-          <div class="mb-3 text-danger"
-               *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().errors.required">>
-            <small>Tài khoản không được để trống!</small>
-          </div>
-          <div class="mb-3 text-danger"
-               *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().errors.notBlank">
-            <small>Không được để khoảng trắng hai đầu.</small>
-          </div>
-          <div class="mb-3 text-danger"
-               *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().errors.pattern">
-            <small>Nhập sai định dạng</small>
-          </div>
-          <div class="mb-3 text-danger"
-               *ngIf="isExitsUser == true">
-            <small>Tài khoản đã tồn tại.</small>
-          </div>
         </div>
       </div>
 
@@ -230,7 +214,7 @@
         <div class="col-md-4"></div>
         <div class="col-md-4" style="text-align: center; width: 100%">
           <button name="button" class="btn btn-primary btn-responsive w-25" style="height: 40px" (click)="onsubmit()">Lưu</button>
-          <button name="button" class="btn btn-outline-light btn-responsive w-25 ms-3" style="height: 40px">Hủy</button>
+          <button name="button" class="btn btn-outline-light btn-responsive w-25 ms-3" style="height: 40px" (click)="cancel()">Hủy</button>
         </div>
         <div class="col-md-4"></div>
       </div>

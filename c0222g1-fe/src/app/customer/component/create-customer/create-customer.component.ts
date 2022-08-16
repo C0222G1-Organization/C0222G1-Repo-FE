@@ -34,7 +34,7 @@ export class CreateCustomerComponent implements OnInit {
       email: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+@[A-Za-z0-9]+(\\.[A-Za-z0-9]+){1,2}$'), Validators.required])
     }),
     phoneNumber: new FormGroup({
-      phone: new FormControl('' , [Validators.pattern('^[0-9]{10,12}$'), Validators.required])
+      phone: new FormControl('' , [Validators.pattern('^(0|84+)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$'), Validators.required])
     }),
     userName: new FormGroup({
       userName: new FormControl('', [Validators.required, this.notBlank, Validators.pattern('[a-zA-z0-9]{5,50}') ])
@@ -112,11 +112,17 @@ export class CreateCustomerComponent implements OnInit {
     );
   }
   cancel() {
-    this.customerForm.reset();
+    this.route.navigateByUrl('/customers');
   }
   private check16Age(abstractControl: AbstractControl): any {
+    if (abstractControl.value === '') {
+      return null;
+    }
     const today = new Date();
     const birthDate = new Date(abstractControl.value);
+    if (birthDate === undefined) {
+      return true;
+    }
     let age = today.getFullYear() - birthDate.getFullYear();
     const m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
