@@ -14,11 +14,23 @@
           </label>
           <div class="mb-3 text-danger"
                *ngIf="editCustomerForm.controls.name.hasError('required')&& editCustomerForm.controls.name.touched">
-            <small>Họ và tên không được để trống!</small>
+            <small>Họ và tên không được để trống.</small>
           </div>
           <div class="mb-3 text-danger"
                *ngIf="editCustomerForm.controls.name.hasError('pattern')&& editCustomerForm.controls.name.touched">
-            <small>Họ và tên không chứa ký tự đặc biệt!</small>
+            <small>Họ và tên không chứa ký tự đặc biệt.</small>
+          </div>
+          <div class="mb-3 text-danger"
+               *ngIf="editCustomerForm.controls.name.hasError('minlength')&& editCustomerForm.controls.name.touched">
+            <small>Không được nhập nhỏ hơn 5 ký tự.</small>
+          </div>
+          <div class="mb-3 text-danger"
+               *ngIf="editCustomerForm.controls.name.hasError('maxlength')&& editCustomerForm.controls.name.touched">
+            <small>Không được nhập lớn hơn 50 ký tự.</small>
+          </div>
+          <div class="mb-3 text-danger"
+               *ngIf="editCustomerForm.controls.name.hasError('notBlank')&& editCustomerForm.controls.name.touched">
+            <small>Không được để khoảng trắng.</small>
           </div>
         </div>
       </div>
@@ -48,7 +60,7 @@
         <div class="form-floating textbox mb-4">
           <input type="email" class="form-control input"
                  id="email" placeholder="Họ và tên"
-                 style="padding-top: 10px" formControlName="email">
+                 style="padding-top: 10px" formControlName="email" (change)="checkEmail($event.target.value)">
           <label for="email" style="color: white">
             Email
             <span class="text-danger">*</span>
@@ -61,13 +73,17 @@
                *ngIf="getEmail().invalid && (getEmail().touched || getEmail().dirty) && getEmail().errors.pattern">
             <small>Nhập đúng định dạng email!</small>
           </div>
+          <div class="mb-3 text-danger"
+               *ngIf="isExitsEmail == true">
+            <small>Email này đã tồn tại.</small>
+          </div>
         </div>
       </div>
       <div class="col-md-6 " style="padding-right: 15px">
         <div class="form-floating textbox mb-4" formGroupName="phoneNumber">
           <input type="text" class="form-control input"
                  id="phone-number" placeholder="Họ và tên"
-                 style="padding-top: 10px" formControlName="phone">
+                 style="padding-top: 10px" formControlName="phone" (change)="checkPhone($event.target.value)">
           <label for="phone-number" style="color: white">
             Số điện thoại
             <span class="text-danger">*</span>
@@ -79,6 +95,10 @@
           <div class="mb-3 text-danger"
                *ngIf="getPhone().invalid && (getPhone().touched || getPhone().dirty) && getPhone().errors.pattern">
             <small>Nhập đúng định dạng số điện thoại!</small>
+          </div>
+          <div class="mb-3 text-danger"
+               *ngIf="isExitsPhone == true">
+            <small>Số điện thoại này đã tồn tại.</small>
           </div>
         </div>
       </div>
@@ -98,11 +118,6 @@
             Thành phố
             <span class="text-danger">*</span>
           </label>
-          <div class="mb-3 text-danger"
-               *ngIf="editCustomerForm.controls.name.hasError('required') &&
-                                      (editCustomerForm.controls.name.dirty || editCustomerForm.controls.name.touched)">
-            <small>Trường này không được để trống!</small>
-          </div>
         </div>
       </div>
 
@@ -120,11 +135,6 @@
             Quận
             <span class="text-danger">*</span>
           </label>
-          <div class="mb-3 text-danger"
-               *ngIf="editCustomerForm.controls.name.hasError('required') &&
-                                      (editCustomerForm.controls.name.dirty || editCustomerForm.controls.name.touched)">
-            <small>Trường này không được để trống!</small>
-          </div>
         </div>
       </div>
 
@@ -141,11 +151,6 @@
             Phường
             <span class="text-danger">*</span>
           </label>
-          <div class="mb-3 text-danger"
-               *ngIf="editCustomerForm.controls.name.hasError('required') &&
-                                      (editCustomerForm.controls.name.dirty || editCustomerForm.controls.name.touched)">
-            <small>Trường này không được để trống!</small>
-          </div>
         </div>
       </div>
 
@@ -155,7 +160,7 @@
         <div class="form-floating textbox mb-4" formGroupName="userName">
           <input readonly type="text" class="form-control input"
                  id="user-name" placeholder="Họ và tên"
-                 style="padding-top: 10px" formControlName="userName">
+                 style="padding-top: 10px" formControlName="userName" (change)="checkUserName($event.target.value)">
           <label for="user-name" style="color: white">
             Tài khoản
             <span class="text-danger">*</span>
@@ -163,6 +168,18 @@
           <div class="mb-3 text-danger"
                *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().errors.required">>
             <small>Tài khoản không được để trống!</small>
+          </div>
+          <div class="mb-3 text-danger"
+               *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().errors.notBlank">
+            <small>Không được để khoảng trắng hai đầu.</small>
+          </div>
+          <div class="mb-3 text-danger"
+               *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().errors.pattern">
+            <small>Nhập sai định dạng</small>
+          </div>
+          <div class="mb-3 text-danger"
+               *ngIf="isExitsUser == true">
+            <small>Tài khoản đã tồn tại.</small>
           </div>
         </div>
       </div>
