@@ -14,15 +14,17 @@ import {Title} from '@angular/platform-browser';
   styleUrls: ['./computer-edit.component.css']
 })
 export class ComputerEditComponent implements OnInit {
+  isExitsCode = false;
+  isExitsLocation = false;
   formEditComputer = new FormGroup({
       id: new FormControl(),
       code: new FormControl('', [Validators.required,
         Validators.pattern('^(CP)[0-9]{4}$')]),
       status: new FormControl('', Validators.required),
       location: new FormControl('', [Validators.required,
-        Validators.pattern('^(A)[0-9]{3}$')]),
+        Validators.pattern('^[A-Z][0-9]{4}$')]),
       startUsedDate: new FormControl('', [Validators.required, this.checkYear]),
-      configuration: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z]|[0-9]$')]),
+      configuration: new FormControl('', [Validators.required, Validators.pattern('^\\w+( \\w+)*$')]),
       manufacturer: new FormControl('', [Validators.required, Validators.minLength(1),
         Validators.maxLength(20)]),
       deleteStatus: new FormControl(''),
@@ -64,6 +66,8 @@ export class ComputerEditComponent implements OnInit {
     }
   }
 
+
+
   getAll() {
     this.computerTypeService.getAll().subscribe(value => {
       this.computerType = value;
@@ -99,5 +103,29 @@ export class ComputerEditComponent implements OnInit {
     const sYear = abstractControl.value.substr(6, 9);
     // const curYear=new Date().getFullYear()
     return sYear <= 2000 ? null : {not2000: true};
+  }
+
+  checkCode($event: Event) {
+    this.computerService.checkCode(String($event)).subscribe(
+      value => {
+        if (value) {
+          this.isExitsCode = true;
+        } else {
+          this.isExitsCode = false;
+        }
+      }
+    );
+  }
+
+  checkLocation($event: Event) {
+    this.computerService.checkLocation(String($event)).subscribe(
+      value => {
+        if (value) {
+          this.isExitsLocation = true;
+        } else {
+          this.isExitsLocation = false;
+        }
+      }
+    );
   }
 }

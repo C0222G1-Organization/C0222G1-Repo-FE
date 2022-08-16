@@ -95,4 +95,21 @@ export class ComputerService {
     return this.http.get<ComputerType[]>(API_URL + '/computers/list/computer-type');
   }
 
+  /**
+   * Created by: TuanHD
+   * Date created: 15/08/2022
+   * Function: checkCode
+   */
+  checkCode(code: string): Observable<string> {
+    return this.http.get<string>(API_URL + '/computers/check/' + code);
+  }
+
+  /**
+   * Created by: TuanHD
+   * Date created: 15/08/2022
+   * Function: checkLocation
+   */
+  checkLocation(location: string): Observable<string> {
+    return this.http.get<string>(API_URL + '/computers/checkLocation/' + location);
+  }
 }
