@@ -10,15 +10,22 @@ import {NewsRoutingModule} from "./news/news-routing.module";
 import {RegistrationRoutingModule} from "./registration/registration-routing.module";
 import {HomePageRoutingModule} from "./home-page/home-page-routing.module";
 import {StatisticRoutingModule} from "./statistic/statistic-routing.module";
+import {ServerErrorComponent} from "./common-component/server-error/server-error.component";
 
 const routes: Routes = [
+  {
+    path: '500', component: ServerErrorComponent
+
+  },
+  {path: 'payment',
+    loadChildren: () => import('./payment/payment.module').then(module => module.PaymentModule)
+  }
 ];
 
 @NgModule({
   declarations: [],
   imports: [
     RouterModule.forRoot(routes),
-    PaymentRoutingModule,
     AuthenticationRoutingModule,
     ComputerRoutingModule,
     CustomerRoutingModule,
