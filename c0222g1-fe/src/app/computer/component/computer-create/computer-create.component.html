@@ -4,11 +4,12 @@
   <form [formGroup]="formComputer" (ngSubmit)="submitCreate()">
     <div class="form-floating textbox mb-4">
       <input type="text" class="form-control input" id="ma" placeholder="Mã máy" formControlName="code"
-             style="padding-top: 10px" autocomplete="off">
+             style="padding-top: 10px" autocomplete="off" (change)="checkCode($event.target.value)">
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('code').touched
                 && formComputer.hasError('required', 'code')">Mã máy không được để trống.</p>
-      <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('code').touched
+      <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('code').dirty
                 && formComputer.hasError('pattern', 'code')">Mã máy phải có định dạng CPXXXX (X là số).</p>
+      <p style="color: red; font-size: 0.8rem" *ngIf="isExitsCode == true">Mã máy đã tồn tại.</p>
       <label for="vi-tri" style="color: white">
         Mã máy
         <span class="text-danger">*</span>
@@ -18,9 +19,8 @@
     <div class="form-floating textbox mb-4">
       <select class="form-select select input" aria-haspopup="true"
               id="status" formControlName="status" style="padding: 10px 15px 0 15px">
-        <option value="" class="option" style="height: 50px" disabled="">Chọn tình trạng</option>
-        <option value="0">Bảo trì</option>
-        <option value="1">Bình thường</option>
+        <option value="" class="option" style="height: 50px" disabled="">Chọn trạng thái</option>
+        <option value="1" class="option" style="height: 50px" >Bình thường</option>
       </select>
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('status').touched
                 && formComputer.hasError('required', 'status')">Tình trạng máy không được để trống.</p>
@@ -32,13 +32,14 @@
 
     <div class="form-floating textbox mb-4">
       <input type="text" class="form-control input" id="vi-tri" placeholder="Vị trí máy" formControlName="location"
-             style="padding-top: 10px">
+             style="padding-top: 10px" (change)="checkLocation($event.target.value)">
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('location').touched
                 && formComputer.hasError('required', 'location')">Vị trí máy không được để trống.</p>
-      <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('location').touched
+      <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('location').dirty
                 && formComputer.hasError('pattern', 'location')">Vị trí máy phải có định dạng AXXX (X là số).</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('location').dirty
                 && formComputer.hasError('location')">Không được trùng vị trí.</p>
+      <p style="color: red; font-size: 0.8rem" *ngIf="isExitsLocation == true">Vị trí này đã có máy.</p>
       <label for="vi-tri" style="color: white">
         Vị trí máy
         <span class="text-danger">*</span>
@@ -68,11 +69,11 @@
              style="padding-top: 10px" autocomplete="off">
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('configuration').touched
                 && formComputer.hasError('required', 'configuration')">Vị trí máy không được để trống.</p>
-      <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('configuration').touched
+      <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('configuration').dirty
                 && formComputer.hasError('minlength', 'configuration')">Cấu hình tối thiếu 2 ký tự.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('configuration').touched
                 && formComputer.hasError('maxlength', 'configuration')">Cấu hình tối đa 20 ký tự.</p>
-      <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('configuration').touched
+      <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('configuration').dirty
                 && formComputer.hasError('pattern', 'configuration')">Cấu hình không được chứa ký tự đặc biệt.</p>
       <label for="setting" style="color: white">
         Cấu hình
@@ -148,3 +149,4 @@
   </form>
 </div>
 </body>
+
