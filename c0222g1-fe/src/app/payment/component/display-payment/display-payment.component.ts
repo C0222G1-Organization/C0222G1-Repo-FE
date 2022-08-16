@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {render} from 'creditcardpayments/creditCardPayments';
+// import {render} from 'creditcardpayments/creditCardPayments';
 import {PaymentService} from '../../service/payment.service';
 import {Payment} from '../../model/payment';
 
@@ -123,18 +123,18 @@ export class DisplayPaymentComponent implements OnInit {
      * @param(value) : total money need payment
      * @param(onApprove) : it'll be execute when payment has approved
      */
-    render(
-      {
-        id: '#myPaypal',
-        currency: 'USD',
-        value: obj.totalPay.toString(),
-        onApprove: (details) => {
-          this.obj = details;
-          this.paymentService.setStatePayment(id).subscribe();
-          this.ngOnInit();
-        }
-      }
-    );
+    // render(
+    //   {
+    //     id: '#myPaypal',
+    //     currency: 'USD',
+    //     value: obj.totalPay.toString(),
+    //     onApprove: (details) => {
+    //       this.obj = details;
+    //       this.paymentService.setStatePayment(id).subscribe();
+    //       this.ngOnInit();
+    //     }
+    //   }
+    // );
   }
 
   paymentWithMomo(id: number) {
