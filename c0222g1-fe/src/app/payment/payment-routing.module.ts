@@ -12,6 +12,9 @@ const routes: Routes = [
     path: 'display', component: DisplayPaymentComponent
   },
   {
+    path: 'display/:paymentId', component: DisplayPaymentComponent
+  },
+  {
     path: 'order-service', component: PaymentDetailComponent
   }
 ];
