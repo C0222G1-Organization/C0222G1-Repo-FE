@@ -6,7 +6,7 @@ import {ToastrService} from 'ngx-toastr';
 import {ComputerTypeService} from '../../service/computer-type.service';
 import {ComputerType} from '../../model/computer-type';
 import {Router} from '@angular/router';
-
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-computer-create',
@@ -22,7 +22,7 @@ export class ComputerCreateComponent implements OnInit {
         Validators.pattern('^(CP)[0-9]{4}$')]),
       status: new FormControl('', Validators.required),
       location: new FormControl('', [Validators.required,
-        Validators.pattern('^(A)[0-9]{3}$')]),
+        Validators.pattern('^(A)[0-9]{4}$')]),
       startUsedDate: new FormControl('', [Validators.required, this.checkYear]),
       configuration: new FormControl('', [Validators.required, Validators.minLength(3),
         Validators.maxLength(20), Validators.pattern('^[A-Za-z]|[0-9]$')]),
@@ -34,13 +34,15 @@ export class ComputerCreateComponent implements OnInit {
         id: new FormControl('', Validators.required),
         name: new FormControl('', Validators.required)
       })
-    }, this.checkStartDate, this.checkLocation
+    }, this.checkStartDate
   );
 
   constructor(private computerService: ComputerService,
               private toast: ToastrService,
               private computerTypeService: ComputerTypeService,
-              private route: Router) {
+              private route: Router,
+              private title: Title) {
+    this.title.setTitle('Trang thêm mới');
   }
 
   getAllComputerType() {
@@ -52,12 +54,6 @@ export class ComputerCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllComputerType();
-  }
-
-  checkLocation(abstractControl: AbstractControl): any {
-    const location = this.formComputer;
-    // const locations = this.formComputer.get('location').value
-    // if ()
   }
 
   checkStartDate(abstractControl: AbstractControl): any {

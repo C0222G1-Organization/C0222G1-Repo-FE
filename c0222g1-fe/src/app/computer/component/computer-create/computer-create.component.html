@@ -18,7 +18,7 @@
     <div class="form-floating textbox mb-4">
       <select class="form-select select input" aria-haspopup="true"
               id="status" formControlName="status" style="padding: 10px 15px 0 15px">
-        <option value="" class="option" style="height: 10px" disabled="">Chọn tình trạng.</option>
+        <option value="" class="option" style="height: 50px" disabled="">Chọn tình trạng</option>
         <option value="0">Bảo trì</option>
         <option value="1">Bình thường</option>
       </select>
@@ -65,7 +65,7 @@
 
     <div class="form-floating textbox mb-3">
       <input type="text" class="form-control input" id="setting" placeholder="cấu hình" formControlName="configuration"
-             style="padding-top: 10px">
+             style="padding-top: 10px" autocomplete="off">
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('configuration').touched
                 && formComputer.hasError('required', 'configuration')">Vị trí máy không được để trống.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('configuration').touched
@@ -89,7 +89,7 @@
             <option *ngFor="let type of computerType" [value]="type.id">{{type.name}}</option>
           </select>
           <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('computerType').get('id').touched
-                && formComputer.get('computerType').hasError('required', 'id')">Loại máy không được để trống.</p>
+                && formComputer.get('computerType').hasError('required', 'id')">Lựa chọn loại máy.</p>
           <label for="city" style="color: white">
             Loại máy
             <span class="text-danger">*</span>
@@ -112,7 +112,7 @@
             <option value="Lenovo">Lenovo</option>
           </select>
           <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('manufacturer').touched
-                && formComputer.hasError('required', 'manufacturer')">Vị trí máy không được để trống.</p>
+                && formComputer.hasError('required', 'manufacturer')">Lựa chọn hãng máy</p>
           <label for="district" style="color: white">
             Hãng
             <span class="text-danger">*</span>
@@ -125,24 +125,24 @@
           <select class="form-select select input" aria-haspopup="true"
                   id="ward" formControlName="warranty" style="padding: 10px 15px 0 15px">
             <option value="" class="option" style="height: 50px" disabled>Thời gian bảo hành</option>
-            <option value="1" class="option">2 năm</option>
-            <option value="2" class="option">3 năm</option>
-            <option value="3" class="option">4 năm</option>
+            <option value="2" class="option">2 năm</option>
+            <option value="3" class="option">3 năm</option>
+            <option value="4" class="option">4 năm</option>
           </select>
           <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('warranty').touched
-                && formComputer.hasError('required', 'warranty')">Vị trí máy không được để trống.</p>
+                && formComputer.hasError('required', 'warranty')">Lựa chọn bảo hành.</p>
           <label for="ward" style="color: white">
             Bảo hành
             <span class="text-danger">*</span>
           </label>
         </div>
       </div>
-
     </div>
-    <div>
-      <div class="row mb-5 mt-4 ms-5 justify-content-center">
+
+    <div class="">
+      <div class="row mb-8 mt-4 ms-5 justify-content-center">
         <button type="button" class="btn btn-outline-light w-25" (click)="cancel()" >Hủy bỏ</button>
-        <button type="submit" class="btn btn-primary w-25 ms-3" [disabled]="!formComputer.valid">Thêm mới</button>
+        <button type="submit" class="btn btn-primary w-25 ms-3" >Thêm mới</button>
       </div>
     </div>
   </form>
