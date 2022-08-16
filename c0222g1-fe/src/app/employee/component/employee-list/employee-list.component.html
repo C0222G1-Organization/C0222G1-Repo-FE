@@ -10,7 +10,7 @@
                 <div>
                   <label for="codeE" style="color: white" class="col-form-label fontFamily">Nhập mã: </label>
                   <input id="codeE" type="text" class="input-search form-control m-0" style="margin-right: 0"
-                         placeholder="Nhập mã" formControlName="code">
+                         placeholder="Nhập mã" formControlName="code" (keydown.enter)="search()">
                   <small class="fontError text-danger" *ngIf="formSearch.controls.code.hasError('pattern')">
                     Không được nhập ký tự đặc biệt.
                   </small>
@@ -21,7 +21,8 @@
               </div>
               <div class="col-lg-3 col-xl-3 w-15">
                 <div>
-                  <label for="dobfrom" style="color: white" class="col-form-label fontFamily">Ngày sinh bắt đầu: </label>
+                  <label for="dobfrom" style="color: white" class="col-form-label fontFamily">Ngày sinh bắt
+                    đầu: </label>
                   <input id="dobfrom" type="date" class="form-control input-search" formControlName="dobfrom">
                   <p class="text-danger" *ngIf="formSearch.controls.dobfrom.hasError('not18') &&
                                       (formSearch.controls.dobfrom.dirty || formSearch.controls.dobfrom.touched)">
@@ -62,7 +63,8 @@
               <div class="col-lg-3 col-xl-3 w-15 form-group">
                 <div>
                   <label for="position" style="color: white" class="col-form-label fontFamily">Vị trí: </label>
-                  <select id="position" class="input-search-position-employee w-100 form-select" formControlName="position">
+                  <select id="position" class="input-search-position-employee w-100 form-select"
+                          formControlName="position">
                     <option selected value="" class="w-100">Vui lòng chọn</option>
                     <option *ngFor="let item of positions" [ngValue]="item.id">{{item.name}}</option>
                   </select>
@@ -134,7 +136,9 @@
 
         <div class="row">
           <div class="col-8 col-sm-8 col-md-8 col-lg-8 mt-3">
-            <button class="btn btn-outline-secondary" (click)="search()" style="right: 0">Tìm kiếm</button>
+            <button class="btn btn-outline-secondary" (click)="search()" [disabled]="formSearch.invalid"
+                    style="right: 0">Tìm kiếm
+            </button>
           </div>
           <div class="col-4 col-sm-4 col-md-4 col-lg-4">
           </div>
@@ -147,7 +151,8 @@
           <table class="table table-dark w-100">
             <thead class="hiddenText">
             <tr>
-              <th><input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"></th>
+              <th><input type="checkbox" [checked]="isAllCheckBoxChecked1()" (change)="checkMultipleCheckBox($event)">
+              </th>
               <th scope="col">Mã nhân viên</th>
               <th scope="col">Họ và tên</th>
               <th scope="col">Địa chỉ</th>
@@ -163,7 +168,7 @@
             <tr
               *ngFor="let employee of employees| paginate:{itemsPerPage:5, currentPage: page , totalItems: totalElements}, let i = index">
               <td><input class="card-notify-year-checkbox" type="checkbox" value="{{employee.id}}"
-                         [(ngModel)]="employees[i].checked" id="check"></td>
+                         [(ngModel)]="employees[i].checked" (click)="checkEmployee(employee.id)" id="check"></td>
               <td>{{employee.code}}</td>
               <td>{{employee.name}}</td>
               <td class="hiddenText">{{employee.cmName}},{{employee.disName}},{{employee.proName}}</td>
@@ -218,13 +223,13 @@
   </div>
   <div class="row d-flex" id="btn-outside">
     <div class="col-4 col-sm-4 col-md-4 col-lg-4">
-      <button class="btn btn-outline-secondary m-2">Thêm mới nhân viên</button>
+      <button class="btn btn-outline-secondary m-2" routerLink='/employees/add'>Thêm mới nhân viên</button>
     </div>
     <div class="col-4 col-sm-4 col-md-4 col-lg-4"></div>
     <div class="col-4 col-sm-4 col-md-4 col-lg-4">
       <div class="float-end">
         <button class="btn btn-outline-secondary " data-bs-toggle="modal"
-                data-bs-target="#deleteGroupModal" id="btn" [disabled]="!isAllCheckBoxChecked()">Xóa tất cả
+                data-bs-target="#deleteGroupModal" id="btn">Xóa tất cả
         </button>
       </div>
     </div>
@@ -258,12 +263,20 @@
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel2">Xóa nhân viên</h5>
       </div>
-      <div class="modal-body">
+      <div *ngIf="selectedEmployee.length===0">
+        <p class="text text-danger">Không có nhân viên nào được chọn.</p>
+      </div>
+      <div class="modal-body" *ngIf="selectedEmployee.length >0">
         Bạn có chắc chắn muốn xóa những nhân viên này không?
+        <ol>
+          <li *ngFor="let selectEmployee of selectedEmployee">{{selectEmployee.name}}</li>
+        </ol>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteMultipleEmployee()">Xóa</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteMultipleEmployee()"
+                [disabled]="selectedEmployee.length == 0">Xóa
+        </button>
       </div>
     </div>
   </div>
