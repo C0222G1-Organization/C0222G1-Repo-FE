@@ -1,9 +1,15 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Employee} from "../model/employee";
-import {environment} from "../../enviroment";
-import {Position} from "../model/position";
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+
+import {environment} from '../../enviroment';
+
+import {Province} from '../model/province';
+import {Employee} from '../model/employee';
+
+import {Position} from '../model/position';
+import {District} from '../model/district';
+import {Commune} from '../model/commune';
 
 const apiUrl = `${environment.apiUrl}`;
 
@@ -27,22 +33,20 @@ export class EmployeeService {
                   pid: string,
                   address: string): Observable<Employee[]> {
 
+
     if (dobfrom === '') {
-      dobfrom = '1900-01-01';
+      dobfrom = '1970-01-01';
     }
 
     if (dobend === '') {
-      dobend = '2200-12-31';
+      dobend = '2004-01-01';
     }
     if (workf === '') {
-      workf = '0000-00-00';
-    }
-    if (workt === '') {
-      workt = '9999-12-31';
+      workf = '2000-12-31';
     }
     let params = new HttpParams();
-    params = params.append('code', code);
-    params = params.append('name', name);
+    params = params.append('code', code.trim());
+    params = params.append('name', name.trim());
     params = params.append('dobend', dobend);
     params = params.append('dobfrom', dobfrom);
     params = params.append('workt', workt);
@@ -60,4 +64,23 @@ export class EmployeeService {
   deleteEmployee(id: number): Observable<void> {
     return this.httpClient.delete<void>(apiUrl + `/employee/${id}`);
   }
+
+  create(employee: Employee): Observable<void> {
+    console.log(employee);
+    return this.httpClient.post<void>(apiUrl + '/employee/add', employee);
+  }
+
+
+  getAllProvince(): Observable<Province[]> {
+    return this.httpClient.get<Province[]>(apiUrl + '/address/province');
+  }
+
+  getAllDistrict(provinceId: number): Observable<District[]> {
+    return this.httpClient.get<District[]>(apiUrl + '/address/district/' + provinceId);
+  }
+
+  getAllCommune(districtId: number): Observable<Commune[]> {
+    return this.httpClient.get<Commune[]>(apiUrl + '/address/commune/' + districtId);
+  }
+
 }
