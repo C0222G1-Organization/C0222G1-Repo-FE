@@ -3,6 +3,7 @@ import {NewsService} from '../../service/news.service';
 import {News} from '../../model/news';
 import {ActivatedRoute, Router} from '@angular/router';
 import {log} from 'util';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-detail',
@@ -15,7 +16,8 @@ export class DetailComponent implements OnInit {
 
   constructor(private newsService: NewsService,
               private activatedRoute: ActivatedRoute,
-              private route: Router) {
+              private route: Router,
+              private title: Title) {
   }
 
   ngOnInit(): void {
@@ -24,6 +26,7 @@ export class DetailComponent implements OnInit {
     this.newsService.getNews(this.id).subscribe(
       value => {
         this.news = value;
+        this.title.setTitle(this.news.title);
         console.log('check');
       }, error => {
         this.route.navigateByUrl('/404');
