@@ -64,25 +64,26 @@ export class HomePageCustomerComponent implements OnInit {
       this.hours = this.hours < 10 ? '0' + this.hours : this.hours;
       this.minutes = this.minutes < 10 ? '0' + this.minutes : this.minutes;
       this.seconds = this.seconds < 10 ? '0' + this.seconds : this.seconds;
-
-      document.getElementById('days').innerText = this.days;
+      if (this.days > 0) {
+        document.getElementById('days').innerText = this.days + ' ngày ';
+      }
       document.getElementById('hours').innerText = this.hours;
       document.getElementById('mins').innerText = this.minutes;
       document.getElementById('seconds').innerText = this.seconds;
 
       if (this.difference < 1000) {
         clearInterval(this.loop);
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('roles');
-        sessionStorage.removeItem('username');
-        this.authService.sendData('login', false);
-        this.toartrs.error('Tài khoản hết giờ');
-        this.authService.setOutOfTime(this.customerId).subscribe(value => {
-          this.router.navigate(['']);
-        }, error => {
-          this.toartrs.error('Lỗi tài khoản hết giờ');
-          this.router.navigate(['']);
-        });
+        // sessionStorage.removeItem('token');
+        // sessionStorage.removeItem('roles');
+        // sessionStorage.removeItem('username');
+        // this.authService.sendData('login', false);
+        // this.toartrs.error('Tài khoản hết giờ');
+        // this.authService.setOutOfTime(this.customerId, 0).subscribe(value => {
+        //   this.router.navigate(['']);
+        // }, error => {
+        //   this.toartrs.error('Lỗi tài khoản hết giờ');
+        //   this.router.navigate(['']);
+        // });
       }
     }, 1000);
   }

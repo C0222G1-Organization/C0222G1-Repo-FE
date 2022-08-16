@@ -40,9 +40,13 @@ a {
   transition: .3s;
 }
 
-.card:hover a {
+small {
+  color: white;
+}
+
+.card:hover small {
   color: #fff;
-  transition: .3s;
+  transition: .5s;
 }
 
 hr {
@@ -51,11 +55,6 @@ hr {
 
 .news:hover img {
   opacity: .8;
-  transition: .3s;
-}
-
-.news:hover a {
-  color: #fff;
   transition: .3s;
 }
 
@@ -96,4 +95,22 @@ hr {
   height: 7.76875em;
   width:  13.16625em ;
   overflow: hidden;
+}
+
+.borderr {
+  border-bottom: .1px solid #444444 !important;
+}
+
+.card:hover .borderr {
+  border-bottom: .1px solid white !important;
+  transition: .5s;
+}
+
+.sub-news:hover small {
+  border-bottom: .1px solid white !important;
+  transition: .5s;
+}
+
+.bot {
+  padding-top: 3em;
 }

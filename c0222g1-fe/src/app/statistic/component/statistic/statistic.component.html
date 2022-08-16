@@ -8,7 +8,8 @@
         <form [formGroup]="statisticForm" class="p-3">
           <div class="form-row justify-content-around">
             <div class="form-group input">
-              <label style="color: white" for="statisticTime" class="col-form-label fontFamily ">Thống kê thời gian gần đây: </label>
+              <label style="color: white" for="statisticTime" class="col-form-label fontFamily ">Thống kê thời gian gần
+                đây: </label>
               <select id="statisticTime" class="form-control input"
                       (change)="onChange($event.target.value)">
                 <option value='1 week'>1 Tuần</option>
@@ -33,6 +34,10 @@
                      *ngIf="statisticForm.hasError('futureDate')">
                 Ngày bắt đầu phải trước ngày {{today|date: "dd-MM-yyyy"}}.
               </small>
+              <small class="fontError text-danger" style="margin-top: 42px"
+                     *ngIf="statisticForm.controls.startDate.hasError('dateNotExist')">
+                Ngày không tồn tại.
+              </small>
             </div>
             <div class="form-group input">
               <label style="color: white" for="endDate" class="col-form-label fontFamily">Ngày kết thúc: </label>
@@ -42,30 +47,35 @@
                      *ngIf="statisticForm.controls.endDate.hasError('futureDate')">
                 Ngày kết thúc phải trước ngày {{today|date: "dd-MM-yyyy"}}.
               </small>
+              <small class="fontError text-danger" style="margin-top: 42px"
+                     *ngIf="statisticForm.controls.endDate.hasError('dateNotExist')">
+                Ngày không tồn tại.
+              </small>
             </div>
             <div class="form-group input">
               <label style="color: white" for="statisticWith" class="col-form-label fontFamily">Thống kê theo: </label>
               <select id="statisticWith" class="form-control input"
-                      formControlName="type">
-                <option value="computer" selected>Máy tính</option>
+                      formControlName="type"
+                      (change)="onChangeStatistic($event.target.value)">
+                <option value="computer" selected>Máy Tính</option>
                 <option value="month">Tháng</option>
-                <option value="account">Tài khoản</option>
+                <option value="account">Tài Khoản</option>
               </select>
             </div>
             <div class="form-group input" [hidden]="statisticForm.value.type != 'computer'">
               <label style="color: white" for="sort" class="col-form-label fontFamily">Sắp xếp theo: </label>
               <select id="sort" class="form-control input"
                       formControlName="sort">
-                <option selected value="none">Không sắp xếp</option>
-                <option value="ascending">Thời Gian Tăng dần</option>
-                <option value="decrease">Thời Gian Giảm dần</option>
+                <option selected value="none">Không Sắp Xếp</option>
+                <option value="ascending">Thời Gian Tăng Dần</option>
+                <option value="decrease">Thời Gian Giảm Dần</option>
               </select>
             </div>
             <div class="form-group input" [hidden]="statisticForm.value.type != 'month'">
               <label style="color: white" for="sortMonth" class="col-form-label fontFamily">Sắp xếp theo: </label>
               <select id="sortMonth" class="form-control input"
                       formControlName="sort">
-                <option selected value="none">Không sắp xếp</option>
+                <option selected value="none">Không Sắp Xếp</option>
                 <option value="ascending">Doanh Thu Tăng Dần</option>
                 <option value="decrease">Doanh Thu Giảm Dần</option>
               </select>
