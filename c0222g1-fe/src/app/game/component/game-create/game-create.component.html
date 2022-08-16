@@ -1,7 +1,7 @@
 <div class="container-fluid d-flex justify-content-center p-0 bg">
   <div class="container m-0 w-75">
-    <form [formGroup]="gameForm" (ngSubmit)="addNewGame()"
-          class=" rounded col-lg-10 mx-auto px-4 pb-4 needs-validation " novalidate>
+    <form [formGroup]="gameForm"
+          class=" rounded col-lg-10 mx-auto px-4 pb-4 needs-validation " novalidate> dc
       <div class=" mt-3">
         <h5 class="text-center text-light font-weight-bold pt-4">THÊM MỚI THÔNG TIN GAME</h5>
       </div>
@@ -9,15 +9,15 @@
         <div class="col-lg-6 px-3">
           <div class="form-floating textbox">
             <input type="text" class="form-control input" id="full-name"
-                   placeholder="tên game" formControlName="gameName" value="" required>
+                   placeholder="tên game" formControlName="name" value="" required>
             <label for="full-name" style="color: white">
               Tên game
               <span class="text-danger">*</span>
             </label>
-            <div *ngIf="gameForm.controls.gameName.hasError('required') && gameForm.controls.gameName.touched" class="form-text text-danger mt-1 px-2">nhập tên game.</div>
-            <div *ngIf="gameForm.controls.gameName.hasError('minlength') && gameForm.controls.gameName.dirty && gameForm.controls.gameName.hasError('pattern') == false" class="form-text text-danger mt-1 px-2">Tên quá ngắn.</div>
-            <div *ngIf="gameForm.controls.gameName.hasError('pattern') && gameForm.controls.gameName.dirty" class="form-text text-danger mt-1 px-2">Tiêu đề sai định dạng.</div>
-            <div *ngIf="gameForm.controls.gameName.hasError('maxlength') && gameForm.controls.gameName.dirty " class="form-text text-danger mt-1 px-2">Tiêu đề quá dài.</div>
+            <div *ngIf="gameForm.controls.name.hasError('required') && gameForm.controls.name.touched" class="form-text text-danger mt-1 px-2">nhập tên game.</div>
+            <div *ngIf="gameForm.controls.name.hasError('minlength') && gameForm.controls.name.dirty && gameForm.controls.name.hasError('pattern') == false" class="form-text text-danger mt-1 px-2">Tên quá ngắn.</div>
+            <div  *ngIf="gameForm.get('name').touched
+                && gameForm.hasError('pattern', 'name')"  class="form-text text-danger mt-1 px-2">Mã máy không được để trống.</div>            <div *ngIf="gameForm.controls.name.hasError('maxlength') && gameForm.controls.name.dirty " class="form-text text-danger mt-1 px-2">Tiêu đề quá dài.</div>
           </div>
         </div>
         <div class="col-lg-6 px-3">
@@ -99,7 +99,7 @@
           </div>
         </div>
         <div class="col-lg-6 px-3">
-          <button type="submit" class="button-primary w-100 rounded text-light">Tạo mới</button>
+          <button (click)="create()" type="submit" class="button-primary w-100 rounded text-light">Tạo mới</button>
         </div>
       </div>
     </form>

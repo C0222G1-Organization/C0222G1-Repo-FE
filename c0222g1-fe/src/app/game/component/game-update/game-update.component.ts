@@ -79,7 +79,7 @@ export class GameUpdateComponent implements OnInit {
     this.gameService.findById(id).subscribe(game => {
       this.trailerUrl = game.trailerUrl;
     }, error => {
-      this.router.navigateByUrl('/games');
+      this.router.navigateByUrl('/500');
     });
   }
 

@@ -41,8 +41,8 @@ export class GameCreateComponent implements OnInit {
   ngOnInit(): void {
     this.getAllGameCateGory();
     this.gameForm = new FormGroup({
-      gameName: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(150),
-        Validators.pattern('^[A-Za-z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ-:., ]+$')]),
+      name: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(150),
+        Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$')]),
       createDate: new FormControl(this.getCurrentDateTime()),
       playedTimes: new FormControl(0),
       trailerUrl: new FormControl('', [Validators.required,
@@ -92,12 +92,15 @@ export class GameCreateComponent implements OnInit {
     };
   }
 
-  addNewGame() {
-    console.log(this.gameForm.value);
-    const nameImage = this.getCurrentDateTime() + this.selectedFile.name;
-    const filePath = `game/${nameImage}`;
+  create() {
+    // if (this.gameForm.invalid) {
+    //   this.toastr.error('Nhập đầy đủ thông tin.');
+    //   return;
+    // }
+    const imageUrl = this.getCurrentDateTime() + this.selectedFile.name;
+    const filePath = `game/${imageUrl}`;
     const fileRef = this.storage.ref(filePath);
-    this.storage.upload(`game/${nameImage}`, this.selectedFile).snapshotChanges().pipe(
+    this.storage.upload(`game/${imageUrl}`, this.selectedFile).snapshotChanges().pipe(
       finalize(() => {
         fileRef.getDownloadURL().subscribe((url) => {
           this.gameForm.patchValue({imageUrl: url});
@@ -105,12 +108,15 @@ export class GameCreateComponent implements OnInit {
           console.log(this.gameForm.value);
           this.gameService.createGame(this.gameForm.value).subscribe(
             () => {
-              this.toastr.success('Thêm mới thành công');
               this.router.navigateByUrl('/games');
-            });
+              this.toastr.success('Tạo mới thàng công.');
+            },
+            error => {
+              this.toastr.error('Tạo mới thất bại thất bại, hãy thử lại.');
+            }
+          );
         });
       })
-    ).subscribe();
-  }
+    ).subscribe(); }
 }
 
