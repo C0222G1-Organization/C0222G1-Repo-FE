@@ -14,6 +14,9 @@ body {
   font-family: 'Arimo', sans-serif;
   font-family: 'Playfair Display', serif;
   font-family: 'Roboto', sans-serif;
+  font-family: 'Arimo', sans-serif;
+  font-family: 'Playfair Display', serif;
+  font-family: 'Roboto', sans-serif;
 
 }
 
@@ -266,7 +269,47 @@ body {
   align-items: center;
   justify-content: space-between;
 }
-.input {
-  background-color: #2a2a2a;
-  color: #ffffff;
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 2px;
+  opacity: 0.6;
+  filter: invert(0.8);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1
+}
+
+select::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 2px;
+  opacity: 0.6;
+  filter: invert(0.8);
+}
+
+select::-webkit-calendar-picker-indicator:hover {
+  opacity: 1
+}
+
+@media (max-width: 768px) {
+  .btn-responsive {
+    padding:2px 4px;
+    font-size:80%;
+    line-height: 1;
+    border-radius:3px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+  .btn-responsive {
+    padding:4px 9px;
+    font-size:90%;
+    line-height: 1.2;
+  }
+}
+.preview-img {
+  width: 100%;
 }

@@ -1,15 +1,21 @@
-
 <body>
 <div class="login-form">
 
   <!--    <div class="logo"><img src="../images/logo.png"></div>-->
 
   <h6 class="text-center mt-4">Đăng ký nhân viên</h6>
-  <form>
+  <form [formGroup]="employeeForm">
     <div class="row">
       <div class="col-12">
         <div class="form-floating textbox mb-2">
-          <input type="text" class="form-control input" id="Code-Employee" placeholder="Mã nhân viên" style="padding-top: 10px">
+          <input autocomplete="off" formControlName="code" type="text" class="form-control input" id="Code-Employee"
+                 placeholder="Mã nhân viên" style="padding-top: 10px">
+          <div *ngIf="employeeForm.controls.code.hasError('required') && employeeForm.controls.code.touched"
+               class="form-text text-danger mt-1 px-2">Không được để trống.
+          </div>
+          <div *ngIf="employeeForm.controls.code.hasError('pattern') && employeeForm.controls.code.touched"
+               class="form-text text-danger mt-1 px-2">Mã sai định dạng.
+          </div>
           <label for="Code-Employee" style="color: white">
             Mã nhân viên
             <span class="text-danger">*</span>
@@ -20,8 +26,17 @@
     <div class="row">
       <div class="col-12">
         <div class="form-floating textbox mb-2 ">
-          <input type="text" class="form-control input" id="full-name" placeholder="Họ và tên" style="padding-top: 10px">
-          <label for="full-name" style="color: white">
+          <input autocomplete="off" formControlName="name" type="text" class="form-control input" id="name"
+                 placeholder="Họ và tên"
+                 style="padding-top: 10px">
+          <div *ngIf="employeeForm.controls.name.hasError('required') && employeeForm.controls.name.touched"
+               class="form-text text-danger mt-1 px-2">Không được để trống.
+          </div>
+          <div *ngIf="employeeForm.controls.name.hasError('pattern') && employeeForm.controls.name.touched"
+               class="form-text text-danger mt-1 px-2">Tên sai định dạng.
+          </div>
+
+          <label for="name" style="color: white">
             Họ và tên
             <span class="text-danger">*</span>
           </label>
@@ -32,46 +47,71 @@
     <div class="row">
       <div class="col-6" style="padding-right: 15px">
         <div class="form-floating textbox ">
-          <select class="form-select select input" aria-haspopup="true"
+          <select formControlName="position" class="form-select select input" aria-haspopup="true"
                   id="position" style="padding: 10px 15px 0 15px; height: 60px">
             <option value="" class="option" style="height: 50px">Chọn vị trí</option>
-            <option value="1" class="option">Thu ngân</option>
-            <option value="2" class="option">Phục vụ</option>
-            <option value="3" class="option">Lao công</option>
+            <option [ngValue]="temp" *ngFor="let temp of positionList">{{temp.name}}</option>
           </select>
+          <div *ngIf="employeeForm.controls.position.hasError('required') && employeeForm.controls.position.touched"
+               class="form-text text-danger mt-1 px-2">Không được để trống.
+          </div>
           <label for="city" style="color: white">
             Chức vụ
             <span class="text-danger">*</span>
           </label>
         </div>
       </div>
-      <div class="col-6" style="padding-right: 15px">
+
+      <div class="col-6" >
         <div class="form-floating textbox">
-          <input type="text" class="form-control input" id="email" placeholder="Email" style="padding-top: 10px">
+          <input autocomplete="off" formControlName="email" type="text" class="form-control input" id="email"
+                 placeholder="Email"
+                 style="padding-top: 10px">
+          <div *ngIf="employeeForm.controls.email.hasError('required') && employeeForm.controls.email.touched"
+               class="form-text text-danger mt-1 px-2">Không được để trống.
+          </div>
+          <div *ngIf="employeeForm.controls.email.hasError('email') && employeeForm.controls.email.touched"
+               class="form-text text-danger mt-1 px-2">Sai định dạng email.
+          </div>
+
           <label for="email" style="color: white">
             Email
             <span class="text-danger">*</span>
           </label>
         </div>
       </div>
+
     </div>
+
     <div class="row mt-3">
       <div class="col-6" style="padding-right: 15px">
         <div class="form-floating textbox mb-4">
-          <input type="date" class="form-control input" id="date-of-birth"
+          <input style="padding-top: 10px" autocomplete="off" formControlName="dob" type="date" class="form-control input" id="date-of-birth"
                  placeholder="ngày sinh"
                  required>
+          <div *ngIf="employeeForm.controls.dob.hasError('required') && employeeForm.controls.dob.touched" class="form-text text-danger mt-1 px-2">Không được để trống.</div>
+          <div  *ngIf="employeeForm.controls.dob.hasError('not18')&& employeeForm.controls.dob.dirty" class="form-text text-danger mt-1 px-2">Chưa đủ 18 tuổi.</div>
+
           <label for="date-of-birth" style="color: white">
             Ngày tháng năm sinh
             <span class="text-danger">*</span>
           </label>
         </div>
       </div>
-      <div class="col-6" style="padding-right: 15px">
+      <div class="col-6" >
         <div class="form-floating textbox mb-3">
-          <input type="date" class="form-control input" id="start-work-date"
-                 placeholder="Ngày làm việc"
-                 required>
+          <input  style="padding-top: 10px" autocomplete="off" formControlName="startWork" type="date" class="form-control input"
+                  id="start-work-date"
+                  placeholder="Ngày làm việc"
+                  required>
+          <div *ngIf="employeeForm.controls.startWork.hasError('required') && employeeForm.controls.startWork.touched"
+               class="form-text text-danger mt-1 px-2">Không được để trống.
+          </div>
+          <div
+            *ngIf="employeeForm.hasError('dateerror') && employeeForm.get('startWork').dirty"
+            class="form-text text-danger mt-1 px-2">Ngày làm không thể bé hơn ngày hiện tại.
+          </div>
+
           <label for="start-work-date" style="color: white">
             Ngày bắt đầu làm
             <span class="text-danger">*</span>
@@ -80,119 +120,175 @@
       </div>
     </div>
 
-    <div class="space-between form-floating textbox mb-4 ">
-      <div style="width: 32%; float: left">
-        <div class="form-floating textbox ">
-          <select class="form-select select input" aria-haspopup="true"
-                  id="city" style="padding: 10px 15px 0 15px; height: 60px">
-            <option value="" class="option" style="height: 50px">Chọn thành phố</option>
-            <option value="1" class="option">One</option>
-            <option value="2" class="option">Two</option>
-            <option value="3" class="option">Three</option>
-          </select>
-          <label for="city" style="color: white">
-            Thành phố
-            <span class="text-danger">*</span>
-          </label>
+    <div class="row">
+
+
+      <div class="space-between form-floating textbox mb-2 ">
+        <div style="width: 32%; float: left; height:100px " >
+          <div class="form-floating textbox ">
+            <select class="form-select select input" aria-haspopup="true"
+                    id="city" style="padding: 10px 15px 0 15px; height: 60px"
+                    (change)="getDistrictList($event.target.value)"
+                    formControlName="province">
+              <option value="">Chọn thành phố</option>
+              <option value="{{province.id}}"
+                      *ngFor="let province of provinceList"
+                      class="option" style="height: 50px">{{province.name}}</option>
+            </select>
+            <div *ngIf="employeeForm.controls.province.hasError('required') && employeeForm.controls.province.touched"
+                 class="form-text text-danger mt-1 px-2">Không được để trống.</div>
+
+            <label for="city" style="color: white">
+              Thành phố
+              <span class="text-danger">*</span>
+            </label>
+          </div>
+
+        </div>
+        <div style="width: 32%; float: left ;height:100px ">
+          <div class="form-floating textbox">
+            <select class="form-select select input" aria-haspopup="true"
+                    id="district" style="padding: 10px 15px 0 15px; height: 60px"
+                    (change)="getCommuneList($event.target.value)"
+                    formControlName="district">
+              <option value="">Chọn quận</option>
+              <option value="{{district.id}}"
+                      *ngFor="let district of districtList"
+                      class="option" style="height: 50px">{{district.name}}</option>
+
+            </select>
+            <div *ngIf="employeeForm.controls.district.hasError('required') && employeeForm.controls.district.touched"
+                 class="form-text text-danger mt-1 px-2">Không được để trống.</div>
+
+            <label for="district" style="color: white">
+              Quận
+              <span class="text-danger">*</span>
+            </label>
+          </div>
+        </div>
+
+        <div style="width: 32%; float: left; height:100px ">
+          <div class="form-floating textbox">
+            <select class="form-select select input" aria-haspopup="true"
+                    id="commune" style="padding: 10px 15px 0 15px; height: 60px" formControlName="commune">
+              <option value="">Chọn phường</option>
+              <option [ngValue]="commune"
+                      *ngFor="let commune of communeList"
+                      class="option" style="height: 50px">{{commune.name}}</option>
+            </select>
+            <div *ngIf="employeeForm.controls.commune.hasError('required') && employeeForm.controls.commune.touched"
+                 class="form-text text-danger mt-1 px-2">Không được để trống.
+            </div>
+
+            <label for="commune" style="color: white">
+              Phường
+              <span class="text-danger">*</span>
+            </label>
+          </div>
         </div>
       </div>
-      <div style="width: 32%; float: left">
-        <div class="form-floating textbox">
-          <select class="form-select select input" aria-haspopup="true"
-                  id="district" style="padding: 10px 15px 0 15px; height: 60px">
-            <option value="" class="option" style="height: 50px">Chọn quận</option>
-            <option value="1" class="option">One</option>
-            <option value="2" class="option">Two</option>
-            <option value="3" class="option">Three</option>
-          </select>
-          <label for="district" style="color: white">
-            Quận
-            <span class="text-danger">*</span>
-          </label>
-        </div>
-      </div>
-      <div style="width: 32%; float: left">
-        <div class="form-floating textbox">
-          <select class="form-select select input" aria-haspopup="true" id="ward" style="padding: 10px 15px 0 15px; height: 60px" >
-            <option value="" class="option" style="height: 50px">Chọn phường</option>
-            <option value="1" class="option">One</option>
-            <option value="2" class="option">Two</option>
-            <option value="3" class="option">Three</option>
-          </select>
-          <label for="ward" style="color: white">
-            Phường
-            <span class="text-danger">*</span>
-          </label>
-        </div>
-      </div>
+
     </div>
 
-    <div class="row">
+    <div class="row ">
       <div class="col-6" style="padding-right: 15px">
         <div class="form-floating textbox mb-4">
-          <input type="text" class="form-control input" id="phone" placeholder="số điện thoại" style="padding-top: 10px">
+          <input autocomplete="off" formControlName="phone" type="text" class="form-control input" id="phone"
+                 placeholder="số điện thoại"
+                 style="padding-top: 10px">
+          <div *ngIf="employeeForm.controls.phone.hasError('required') && employeeForm.controls.phone.touched"
+               class="form-text text-danger mt-1 px-2">Không được để trống.</div>
+          <div *ngIf="employeeForm.controls.phone.hasError('pattern') && employeeForm.controls.phone.touched"
+               class="form-text text-danger mt-1 px-2">Nhập sai định dạng.</div>
           <label for="phone" style="color: white">
             Số điện thoại
             <span class="text-danger">*</span>
           </label>
         </div>
       </div>
-      <div class="col-6" style="padding-right: 15px">
+      <div class="col-6" >
         <div class="form-floating textbox mb-3">
-          <input type="text" class="form-control input" id="salary" placeholder="Lương" style="padding-top: 10px">
+          <input autocomplete="off" formControlName="salary" type="text" class="form-control input" id="salary"
+                 placeholder="VNĐ"
+                 style="padding-top: 10px" >
+          <div *ngIf="employeeForm.controls.salary.hasError('required') && employeeForm.controls.salary.touched"
+               class="form-text text-danger mt-1 px-2">Không được để trống.</div>
+
           <label for="salary" style="color: white">
-            Tiền lương
+            Tiền lương (*vnđ)
             <span class="text-danger">*</span>
           </label>
         </div>
       </div>
     </div>
 
-    <div class="row">
+
+    <div class="row" formGroupName="appUser">
       <div class="col-6" style="padding-right: 15px">
-        <div class="space-between form-floating textbox">
+        <div class="space-between form-floating textbox" style="margin:0px">
           <div class="form-floating textbox">
-            <input type="text" class="form-control input" id="account" placeholder="Tài khoản" style="padding-top: 10px">
-            <label for="account" style="color: white">
+            <input autocomplete="off" formControlName="username" type="text" class="form-control input" id="appUser"
+                   placeholder="Tài khoản"
+                   style="padding-top: 10px">
+            <div *ngIf="employeeForm.get('appUser').hasError('required','username') && employeeForm.get('appUser').get('username').touched"class="form-text text-danger mt-1 px-2">Không được để trống.</div>
+            <!--            <div *ngIf="employeeForm.controls.username.hasError('required') && employeeForm.controls.username.touched"class="form-text text-danger mt-1 px-2"></div>-->
+
+            <label for="appUser" style="color: white">
               Tài khoản
               <span class="text-danger">*</span>
             </label>
           </div>
         </div>
       </div>
-      <div class="col-6" style="padding-right: 15px">
-        <div class="space-between form-floating textbox">
+
+
+      <div class="col-6">
+        <div class="space-between form-floating textbox" style="margin:0px">
           <div class="form-floating textbox">
-            <input type="password" class="form-control input" id="confirmPassword" placeholder="Mật khẩu" style="padding-top: 10px">
-            <label for="confirmPassword" style="color: white">
-              Xác nhận mật khẩu
+            <input autocomplete="off" formControlName="password" type="password" class="form-control input"
+                   id="password"
+                   placeholder="Mật khẩu" style="padding-top: 10px">
+            <div *ngIf="employeeForm.get('appUser').hasError('required','password') && employeeForm.get('appUser').get('password').touched" class="form-text text-danger mt-1 px-2">Không được để trống.</div>
+            <div *ngIf="employeeForm.get('appUser').hasError('pattern','password') && employeeForm.get('appUser').get('password').touched" class="form-text text-danger mt-1 px-2">Nhập sai định dạng.</div>
+
+            <label for="password" style="color: white">
+              Mật khẩu
               <span class="text-danger">*</span>
             </label>
           </div>
         </div>
       </div>
     </div>
-    <div class="row mt-4" >
-      <div class="col-12 " style="padding-right: 15px">
-        <label for="confirmPassword" style="color: white">
-          Ảnh cá nhân:
-          <span class="text-danger">*</span>
-        </label>
+
+    <div class="row mt-4">
+      <div class="col-12 ">
+        <label style="color: white">Ảnh cá nhân:<span class="text-danger">*</span></label>
         <div class="mb-3">
-          <input id="file" type="file" class="form-control input" style="padding-top: 10px">
+          <input id="file" type="file" class="form-control input"
+                 (change)="selectFile($event)" (change)="onFileSelected($event)" accept="image/*">
+        </div>
+      </div>
+    </div>
+    <div *ngIf="url != null" class="row mt-4">
+      <div class="col-lg-5 px-3 mx-auto">
+        <div class="m-0">
+          <div><img class="preview-img rounded" [src]="url" *ngIf="url" alt=""></div>
         </div>
       </div>
     </div>
 
-    <div class="text-center row" >
+    <div class="text-center row">
       <div class="col-6" style="padding-right: 15px">
-        <button type="submit" class="btn btn-outline-secondary login-btn text-light">Đăng ký</button>
+        <button type="submit" class="btn btn-outline-secondary login-btn text-light" (click)="createEmployee()">Đăng ký</button>
       </div>
       <div class="col-6" style="padding-right: 15px">
         <button type="submit" class="btn btn-outline-secondary login-btn text-light">Hủy bỏ</button>
       </div>
     </div>
+
   </form>
 </div>
+</body>
+
 
 
