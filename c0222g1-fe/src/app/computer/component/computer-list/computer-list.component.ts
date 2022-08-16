@@ -3,13 +3,24 @@ import {ComputerService} from '../../service/computer.service';
 import {SearchDto} from '../../model/search-dto';
 import {ToastrService} from 'ngx-toastr';
 import {ComputerType} from '../../model/computer-type';
+import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-computer-list',
   templateUrl: './computer-list.component.html',
   styleUrls: ['./computer-list.component.css']
 })
+
 export class ComputerListComponent implements OnInit {
+  formSearch: FormGroup = new FormGroup({
+    code: new FormControl(''),
+    location: new FormControl(''),
+    start: new FormControl('', this.checkStart),
+    end: new FormControl('', this.checkEnd),
+    typeId: new FormControl(''),
+    status: new FormControl(''),
+  }, this.checkDate);
   code = '';
   location = '';
   start = '';
@@ -23,11 +34,15 @@ export class ComputerListComponent implements OnInit {
   itemsPerPage = 2;
   computerCodeDelete: string;
   idDelete: string;
+  map = new Map();
   computerDeleteList: any[] = [];
   computerTypes: ComputerType[] = [];
+  check: any;
 
   constructor(private computerService: ComputerService,
-              private toastr: ToastrService) {
+              private toastr: ToastrService,
+              private title: Title) {
+    this.title.setTitle('Danh sách máy');
   }
 
   ngOnInit(): void {
@@ -41,19 +56,21 @@ export class ComputerListComponent implements OnInit {
    * Function: findAll
    */
   findAll() {
+    const value = this.formSearch.value;
     this.computerService.findAll(this.page,
-      this.code,
-      this.location,
-      this.start,
-      this.end,
-      this.status,
-      this.typeId).subscribe((list: any) => {
-        console.log('findAll');
-        console.log(list);
-        console.log('length ' + this.computers.length);
+      value.code,
+      value.location,
+      value.start,
+      value.end,
+      value.status,
+      value.typeId).subscribe((list: any) => {
+      this.computers = list.content;
+      if (this.computers.length === 0) {
+        this.toastr.error('Không tìm thấy');
+      } else {
         this.computers = list.content;
         this.totalItems = list.totalElements;
-        console.log('findAll');
+      }
     }, error => {
       this.toastr.error('Không tìm thấy');
     });
@@ -119,9 +136,14 @@ export class ComputerListComponent implements OnInit {
    * Function: isAllCheckBoxChecked
    */
   isAllCheckBoxChecked() {
-    if (this.computers.length !== 0) {
-      return this.computers.every(p => p.checked);
-    }
+    this.computers.forEach(value => {
+      if (value.checked === true) {
+        this.map.set(value.id, value);
+      } else {
+        this.map.delete(value.id);
+      }
+    });
+    return this.computers.every(p => p.checked);
   }
 
   /**
@@ -154,13 +176,10 @@ export class ComputerListComponent implements OnInit {
    * Function: deleteAllComputer()
    */
   deleteMultiComputer() {
-    const selectedComputer = this.computers.filter(computer => computer.checked).map(p => p.id);
     this.computerDeleteList = this.computers.filter(computer => computer.checked).map(p => p.code);
     if (this.computerDeleteList.length !== 0) {
-      for (const computer of selectedComputer) {
-        this.idDelete = computer;
-        console.log(computer);
-        this.computerService.delete(this.idDelete).subscribe(value => {
+      for (const computer of this.map.values()) {
+        this.computerService.delete(computer.id).subscribe(value => {
           if (this.computers.length === 1) {
             if (this.page === 0) {
               this.page = 0;
@@ -176,13 +195,86 @@ export class ComputerListComponent implements OnInit {
             }
           }
         }, error => {
+          this.check = error;
         }, () => {
-          this.toastr.success('Xóa thành công');
           this.ngOnInit();
         });
+        computer.checked = false;
+      }
+      if (this.check == null) {
+        this.toastr.success('Xóa thành công');
       }
     } else {
       this.toastr.error('Không có máy nào được chọn');
+    }
+  }
+
+  checkDate(abstractControl: AbstractControl): any {
+    const start = new Date(abstractControl.value.start);
+    const end = new Date(abstractControl.value.end);
+    if (abstractControl.value.starDate === '' || abstractControl.value.endDate === '') {
+      return null;
+    }
+    if (start < end) {
+      console.log(true);
+      return null;
+    } else {
+      console.log(false);
+      return {errorDate: true};
+    }
+  }
+
+  checkStart(abstractControl: AbstractControl): any {
+    const start = new Date(abstractControl.value);
+    const now = new Date();
+    console.log('Date Now ' + now.getDate());
+    console.log('Day Now ' + now.getDate());
+    if (now.getFullYear() - start.getFullYear() > 0) {
+      return null;
+    } else if (now.getFullYear() - start.getFullYear() === 0) {
+      if (now.getMonth() > start.getMonth()) {
+        console.log('month now >');
+        return null;
+      } else {
+        if (now.getMonth() === start.getMonth()) {
+          if (now.getDate() >= start.getDate()) {
+            return null;
+          } else {
+            return {invalid: true};
+          }
+        } else {
+          return {invalid: true};
+        }
+      }
+    } else {
+      return {invalid: true};
+    }
+  }
+
+  checkEnd(abstractControl: AbstractControl): any {
+    const end = new Date(abstractControl.value);
+    const now = new Date();
+    console.log('Date Now ' + now.getDate());
+    console.log('Day Now ' + now.getDate());
+    if (now.getFullYear() - end.getFullYear() < 0) {
+      return null;
+    } else if (now.getFullYear() - end.getFullYear() === 0) {
+      if (now.getMonth() < end.getMonth()) {
+        console.log('month now >');
+        return null;
+      } else {
+        if (now.getMonth() === end.getMonth()) {
+          if (now.getDate() < end.getDate()) {
+            return null;
+          } else {
+            return {invalid: true};
+          }
+        } else {
+          return {invalid: true};
+        }
+      }
+    } else {
+      return {invalid: true};
     }
   }
 }
