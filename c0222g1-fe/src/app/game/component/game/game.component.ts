@@ -27,7 +27,7 @@ export class GameComponent implements OnInit {
               private title: Title,
               private toastr: ToastrService,
               private route: Router) {
-    this.title.setTitle('C02G1 | Game');
+    this.title.setTitle('Danh sách game');
   }
 
   ngOnInit(): void {

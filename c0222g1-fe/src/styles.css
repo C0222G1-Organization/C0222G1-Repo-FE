@@ -82,6 +82,14 @@ body {
   padding: 5px 10px;
 }
 
+.btn-yellow {
+  width:100%;
+  padding: 9px 0;
+  background-color: #fcd30b;
+  /*border:1px solid white;*/
+  border-radius: 5px;
+}
+
 .btn-opacity-border {
   width:100%;
   padding: 9px 0;
