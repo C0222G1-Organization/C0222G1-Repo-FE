@@ -1,3 +1,15 @@
 .title {
   font-weight: 600;
 }
+
+.text {
+  text-align: justify;
+}
+
+.pl {
+  padding-left: 1em;
+}
+
+img {
+  width: 100% !important;
+}

@@ -5,6 +5,8 @@ import {InputStatistic} from '../../model/input-statistic';
 import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
 import {Chart, registerables} from 'chart.js';
 import {StatisticService} from '../../service/statistic/statistic.service';
+import {isDate} from 'rxjs/internal-compatibility';
+
 
 Chart.register(...registerables);
 
@@ -17,7 +19,7 @@ export class StatisticComponent implements OnInit {
   constructor(private statisticService: StatisticService,
               private datePipe: DatePipe,
               private title: Title) {
-    this.title.setTitle('Statistic');
+    this.title.setTitle('Thống Kê');
   }
 
   listStatisticByComputer: any;
@@ -27,7 +29,7 @@ export class StatisticComponent implements OnInit {
   pastDay = this.datePipe.transform(new Date().setDate(new Date().getDate() - 30), 'yyyy-MM-dd');
   today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   statisticForm = new FormGroup({
-    startDate: new FormControl(this.pastDay),
+    startDate: new FormControl(this.pastDay, this.dateNotExist),
     endDate: new FormControl(this.today, this.dateInFuture),
     sort: new FormControl('none'),
     type: new FormControl('computer')
@@ -47,8 +49,19 @@ export class StatisticComponent implements OnInit {
     end.setDate(end.getDate() - 1);
     if (start > end) {
       return {dateNotValid: true};
+    }
+    if (start > new Date()) {
+      return {futureDate: true};
     } else {
       return null;
+    }
+  }
+
+  dateNotExist(abstractControl: AbstractControl) {
+    const v = abstractControl.value;
+    const start = new Date(v);
+    if (!isDate(start)) {
+      return {dateNotExist: true};
     }
   }
 
@@ -57,6 +70,9 @@ export class StatisticComponent implements OnInit {
     const end = new Date(v);
     if (end > new Date()) {
       return {futureDate: true};
+    }
+    if (!isDate(end)) {
+      return {dateNotExist: true};
     } else {
       return null;
     }
@@ -68,7 +84,6 @@ export class StatisticComponent implements OnInit {
       this.statisticService.getStatisticByComputer(this.statisticInput.startDate, this.statisticInput.endDate)
         .subscribe(value => {
             this.listStatisticByComputer = value;
-            console.log(value);
             this.errorChart = false;
             this.errorServer = true;
             this.errorList = true;
@@ -84,11 +99,15 @@ export class StatisticComponent implements OnInit {
               this.errorList = true;
             }
           }, () => {
+            if (this.statisticInput.sort === 'none') {
+              this.listStatisticByComputer.sort((a, b) => (a.computer > b.computer) ? 1 : -1);
+            }
             if (this.statisticInput.sort === 'ascending') {
-              this.listStatisticByComputer.sort((a, b) => (a.hour < b.hour) ? 1 : -1);
+              this.listStatisticByComputer.sort((a, b) => (Number(a.hour) > Number(b.hour)) ? 1 : -1);
+              console.log(this.listStatisticByComputer);
             }
             if (this.statisticInput.sort === 'decrease') {
-              this.listStatisticByComputer.sort((a, b) => (a.hour > b.hour) ? 1 : -1);
+              this.listStatisticByComputer.sort((a, b) => (Number(a.hour) < Number(b.hour)) ? 1 : -1);
             }
             this.destroyChart();
             this.createChartComputer();
@@ -115,11 +134,14 @@ export class StatisticComponent implements OnInit {
             }
           },
           () => {
+            if (this.statisticInput.sort === 'none') {
+              this.listStatisticByMonth.sort((a, b) => (a.month > b.month) ? 1 : -1);
+            }
             if (this.statisticInput.sort === 'ascending') {
-              this.listStatisticByMonth.sort((a, b) => (a.total > b.total) ? 1 : -1);
+              this.listStatisticByMonth.sort((a, b) => (Number(a.total) > Number(b.total)) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'decrease') {
-              this.listStatisticByMonth.sort((a, b) => (a.total < b.total) ? 1 : -1);
+              this.listStatisticByMonth.sort((a, b) => (Number(a.total) < Number(b.total)) ? 1 : -1);
             }
             this.destroyChart();
             this.createChartMonth();
@@ -147,11 +169,14 @@ export class StatisticComponent implements OnInit {
             }
           },
           () => {
+            if (this.statisticInput.sort === 'none') {
+              this.listStatisticByAccount.sort((a, b) => (a.account > b.account) ? 1 : -1);
+            }
             if (this.statisticInput.sort === 'ascending') {
-              this.listStatisticByAccount.sort((a, b) => (a.revenue > b.revenue) ? 1 : -1);
+              this.listStatisticByAccount.sort((a, b) => (Number(a.revenue) > Number(b.revenue)) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'decrease') {
-              this.listStatisticByAccount.sort((a, b) => (a.revenue < b.revenue) ? 1 : -1);
+              this.listStatisticByAccount.sort((a, b) => (Number(a.revenue) < Number(b.revenue)) ? 1 : -1);
             }
             this.destroyChart();
             this.createChartAccount();
@@ -208,12 +233,34 @@ export class StatisticComponent implements OnInit {
     }
   }
 
+  onChangeStatistic(value: any) {
+    switch (value) {
+      case 'computer':
+        this.statisticForm.patchValue({
+          sort: 'none'
+        });
+        break;
+      case 'month':
+        this.statisticForm.patchValue({
+          sort: 'none'
+        });
+        break;
+      case 'account':
+        this.statisticForm.patchValue({
+          sort: 'none'
+        });
+        break;
+      default:
+        console.log('default');
+    }
+  }
+
   createChartComputer() {
     this.myChart = new Chart('myChart', {
       type: 'bar',
       data: {
         datasets: [{
-          label: 'Giờ',
+          label: 'Giờ Hoạt Động',
           data: this.listStatisticByComputer,
           parsing: {
             xAxisKey: 'computer',
@@ -232,7 +279,7 @@ export class StatisticComponent implements OnInit {
             display: true,
             title: {
               display: true,
-              text: 'Giờ',
+              text: 'Giờ Hoạt Động',
               color: '#3EB595',
               font: {
                 family: 'roboto',
@@ -240,7 +287,7 @@ export class StatisticComponent implements OnInit {
                 style: 'normal',
                 lineHeight: 1.0
               },
-              padding: {top: 20, bottom: 0}
+              padding: {top: 20, bottom: 10}
             }
           },
           x: {
@@ -277,6 +324,7 @@ export class StatisticComponent implements OnInit {
         }
       }
     });
+    this.statisticForm.setValue({sort: 'none'});
   }
 
   createChartMonth() {
@@ -284,7 +332,7 @@ export class StatisticComponent implements OnInit {
       type: 'bar',
       data: {
         datasets: [{
-          label: 'Tiền dịch vụ',
+          label: 'Doanh Thu Dịch Vụ',
           data: this.listStatisticByMonth,
           parsing: {
             xAxisKey: 'month',
@@ -296,7 +344,7 @@ export class StatisticComponent implements OnInit {
           borderWidth: 1
         },
           {
-            label: 'Tiền máy tính',
+            label: 'Doanh Thu Máy Tính',
             data: this.listStatisticByMonth,
             parsing: {
               xAxisKey: 'month',
@@ -308,7 +356,7 @@ export class StatisticComponent implements OnInit {
             borderWidth: 1
           },
           {
-            label: 'Tổng',
+            label: 'Tổng Doanh Thu',
             data: this.listStatisticByMonth,
             parsing: {
               xAxisKey: 'month',
@@ -327,7 +375,7 @@ export class StatisticComponent implements OnInit {
             display: true,
             title: {
               display: true,
-              text: 'Tiền (VND)',
+              text: 'Doanh Thu (VNĐ)',
               color: '#3EB595',
               font: {
                 family: 'roboto',
@@ -335,7 +383,7 @@ export class StatisticComponent implements OnInit {
                 style: 'normal',
                 lineHeight: 1.0
               },
-              padding: {top: 20, bottom: 0}
+              padding: {top: 20, bottom: 10}
             }
           },
           x: {
@@ -351,7 +399,7 @@ export class StatisticComponent implements OnInit {
                 style: 'normal',
                 lineHeight: 1.0
               },
-              padding: {top: 0, bottom: 10}
+              padding: {top: 5, bottom: 10}
             }
           }
         },
@@ -372,6 +420,7 @@ export class StatisticComponent implements OnInit {
         }
       }
     });
+    this.statisticForm.setValue({sort: 'none'});
   }
 
   createChartAccount() {
@@ -379,7 +428,7 @@ export class StatisticComponent implements OnInit {
       type: 'bar',
       data: {
         datasets: [{
-          label: 'Doanh thu',
+          label: 'Doanh Thu (VNĐ)',
           data: this.listStatisticByAccount,
           parsing: {
             xAxisKey: 'account',
@@ -391,7 +440,7 @@ export class StatisticComponent implements OnInit {
           borderWidth: 1
         },
           {
-            label: 'Số giờ chơi',
+            label: 'Số Giờ Chơi',
             data: this.listStatisticByAccount,
             parsing: {
               xAxisKey: 'account',
@@ -411,7 +460,7 @@ export class StatisticComponent implements OnInit {
             display: true,
             title: {
               display: true,
-              text: '(VNĐ)',
+              text: 'Doanh Thu (VNĐ)',
               color: '#3EB595',
               font: {
                 family: 'roboto',
@@ -419,7 +468,7 @@ export class StatisticComponent implements OnInit {
                 style: 'normal',
                 lineHeight: 1.0
               },
-              padding: {top: 20, bottom: 0}
+              padding: {top: 20, bottom: 10}
             }
           },
           x: {
@@ -435,7 +484,7 @@ export class StatisticComponent implements OnInit {
                 style: 'normal',
                 lineHeight: 1.0
               },
-              padding: {top: 0, bottom: 10}
+              padding: {top: 10, bottom: 10}
             },
           },
           y1: {
@@ -456,7 +505,7 @@ export class StatisticComponent implements OnInit {
                 style: 'normal',
                 lineHeight: 1.0
               },
-              padding: {top: 5, bottom: 5}
+              padding: {top: 5, bottom: 10}
             },
             min: 0,
             max: this.listStatisticByAccount.max
@@ -486,4 +535,5 @@ export class StatisticComponent implements OnInit {
       this.myChart.destroy();
     }
   }
+
 }

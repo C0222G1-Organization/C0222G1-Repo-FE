@@ -63,8 +63,8 @@
             <label for="upload" class="input-img w-100 rounded">Hình ảnh:<span class="text-danger" (change)="checkGameName($event.target.value)"> *</span></label>
 
             <div *ngIf="checkImgSize == true" class="form-text text-danger mt-1 px-2">Kích thước ảnh quá lớn.</div>
-            <div *ngIf="checkImg == true && checkImgSize == false && regexImg == false" class="form-text text-danger mt-1 px-2">Chọn ảnh.</div>
-            <div *ngIf="regexImg == true && checkImgSize == false" class="form-text text-danger mt-1 px-2">Sai định dạng ảnh.</div>
+            <div *ngIf="checkImg == true && checkImgSize == false && regexImageUrl == false" class="form-text text-danger mt-1 px-2">Chọn ảnh.</div>
+            <div *ngIf="regexImageUrl == true && checkImgSize == false" class="form-text text-danger mt-1 px-2">Sai định dạng ảnh.</div>
           </div>
         </div>
       </div>
