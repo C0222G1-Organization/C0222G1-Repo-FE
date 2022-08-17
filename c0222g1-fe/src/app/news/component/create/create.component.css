@@ -391,8 +391,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-color: #cccc;
 }
 .texarea {
-  padding-top: 1.5em !important;
+  padding-top: 1.4em !important;
   border: none;
+
 }
 .texarea:focus {
   background-color: #484848;
@@ -461,3 +462,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .preview-img {
   width: 100%;
 }
+
+.img-box {
+  height: 18em ;
+  overflow: hidden;
+}
+
+.img-fit {
+  object-fit: cover;
+  height: 100% ;
+  width:  100%;
+}
+
+.cke_contents{border:solid 1px #696969;background-color: #d30d0d;}
