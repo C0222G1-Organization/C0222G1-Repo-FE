@@ -178,7 +178,7 @@
               <td>{{employee.posiName}}</td>
               <td>{{exp(employee)}}</td>
               <td>
-                <button class="btn btn-outline-secondary"><i class="fa-solid fa-pencil"></i></button>
+                <button class="btn btn-outline-secondary"><i class="fa-solid fa-pencil" routerLink="employees/edit/:id"></i></button>
                 <button class="btn btn-outline-secondary" data-bs-toggle="modal"
                         data-bs-target="#deleteModal" (click)="getEmployee(employee)"><i class="fa-solid fa-trash"></i>
                 </button>

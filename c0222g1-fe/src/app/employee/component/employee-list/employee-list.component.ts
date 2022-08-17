@@ -185,12 +185,6 @@ export class EmployeeListComponent implements OnInit {
       return null;
     }
   }
-
-
-  exp(employee: Employee): number {
-    const koko = this.level.getFullYear() - Number(employee.workf.substr(0, 4));
-    return koko + 1;
-
   dobInvalidDate(abstractControl: AbstractControl) {
     if (abstractControl.value === '') {
       return null;
@@ -248,8 +242,8 @@ export class EmployeeListComponent implements OnInit {
   checkEmployee(id: number) {
     for (const employee of this.employees) {
       console.log(id);
-      if (employee.id == id) {
-        employee.checked = employee.checked != true;
+      if (employee.id === id) {
+        employee.checked = employee.checked !== true;
         break;
       }
     }

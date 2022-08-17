@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-
 import {render} from 'creditcardpayments/creditCardPayments';
 import {PaymentService} from '../../service/payment.service';
 import {Payment} from '../../model/payment';
@@ -8,10 +7,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {ReponseBody} from '../../model/reponse-body';
 import {query} from '@angular/animations';
+
 declare var $: any;
-// import {render} from 'creditcardpayments/creditCardPayments';
-import {PaymentService} from '../../service/payment.service';
-import {Payment} from '../../model/payment';
 
 @Component({
   selector: 'app-display-payment',
@@ -20,15 +17,12 @@ import {Payment} from '../../model/payment';
 })
 export class DisplayPaymentComponent implements OnInit {
 
-
   constructor(private route: Router,
               private toast: ToastrService,
               private paymentService: PaymentService,
               private activatedRoute: ActivatedRoute,
               private title: Title) {
     this.title.setTitle('THÔNG TIN THANH TOÁN');
-
-  constructor(private paymentService: PaymentService) {
   }
 
   obj: any;
@@ -40,7 +34,6 @@ export class DisplayPaymentComponent implements OnInit {
   sPaypal = 0;
 
   ngOnInit(): void {
-
     const id = Number(this.activatedRoute.snapshot.params.paymentId);
     if (isNaN(id)) {
       this.getAllPayment();
@@ -77,20 +70,6 @@ export class DisplayPaymentComponent implements OnInit {
           this.listPayment[i].paymentDetailList[j].product.prices;
       }
     }
-
-    // Get list payment
-    this.paymentService.getAllPayment().subscribe(value => {
-      this.listPayment = value;
-      // console.log(this.listPayment);
-      // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.listPayment.length; i++) {
-        // tslint:disable-next-line:prefer-for-of
-        for (let j = 0; j < this.listPayment[i].paymentDetailList.length; j++) {
-          // tslint:disable-next-line:max-line-length
-          this.listPayment[i].totalPay += this.listPayment[i].paymentDetailList[j].amount * this.listPayment[i].paymentDetailList[j].product.prices;
-        }
-      }
-    });
   }
 
   statePaypal(id: number) {
@@ -135,7 +114,7 @@ export class DisplayPaymentComponent implements OnInit {
     });
     // tslint:disable-next-line:max-line-length
     let content = '<p style="text-align: right; margin: 5px 10px; font-weight: bold; font-size: 13px; font-style: italic; color: white;">Đơn vị tính: VND</p>' +
-    '<table class="table table-striped table-dark"><thead><tr>' +
+      '<table class="table table-striped table-dark"><thead><tr>' +
       '<th>Tên dịch vụ</th>' +
       '<th>Số lượng</th>' +
       '<th>Đơn vị</th>' +
@@ -149,19 +128,11 @@ export class DisplayPaymentComponent implements OnInit {
       if (this.listPayment[i].id === id) {
         // tslint:disable-next-line:prefer-for-of
         for (let j = 0; j < this.listPayment[i].paymentDetailList.length; j++) {
-
           content += '<tr>' +
             '<td>' + this.listPayment[i].paymentDetailList[j].product.nameProduct + '</td>' +
             '<td>' + this.listPayment[i].paymentDetailList[j].amount + '</td>' +
             '<td>' + this.listPayment[i].paymentDetailList[j].product.unit + '</td>' +
             '<td>' + formatter.format(this.listPayment[i].paymentDetailList[j].product.prices) + '</td>' +
-
-          content += '<tr>\n' +
-            '              <td>' + this.listPayment[i].paymentDetailList[j].product.name + '</td>\n' +
-            '              <td>' + this.listPayment[i].paymentDetailList[j].amount + '</td>\n' +
-            '              <td>' + this.listPayment[i].paymentDetailList[j].product.unit + '</td>\n' +
-            '              <td>' + this.listPayment[i].paymentDetailList[j].product.prices + '</td>\n' +
-
             // tslint:disable-next-line:max-line-length
             '<td>' + formatter.format(this.listPayment[i].paymentDetailList[j].product.prices * this.listPayment[i].paymentDetailList[j].amount) + '</td>' +
             // tslint:disable-next-line:max-line-length
@@ -196,7 +167,6 @@ export class DisplayPaymentComponent implements OnInit {
      * @param(value) : total money need payment
      * @param(onApprove) : it'll be execute when payment has approved
      */
-
     render(
       {
         id: '#myPaypal',
@@ -228,19 +198,6 @@ export class DisplayPaymentComponent implements OnInit {
         }
       }
     );
-
-    // render(
-    //   {
-    //     id: '#myPaypal',
-    //     currency: 'USD',
-    //     value: obj.totalPay.toString(),
-    //     onApprove: (details) => {
-    //       this.obj = details;
-    //       this.paymentService.setStatePayment(id).subscribe();
-    //       this.ngOnInit();
-    //     }
-    //   }
-    // );
   }
 
   paymentWithMomo(id: number) {

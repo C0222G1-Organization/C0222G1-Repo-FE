@@ -7,11 +7,7 @@ import { EmployeeRoutingModule } from './employee-routing.module';
 import { EmployeeCreateComponent } from './component/employee-create/employee-create.component';
 import {EmployeeListComponent} from './component/employee-list/employee-list.component';
 
-import {EmployeeRoutingModule} from './employee-routing.module';
 
-import {EmployeeListComponent} from './component/employee-list/employee-list.component';
-
-import {EmployeeCreateComponent} from './component/employee-create/employee-create.component';
 
 
 
@@ -30,17 +26,6 @@ import { EmployeeUpdateComponent } from './component/employee-update/employee-up
         NgxPaginationModule,
         ReactiveFormsModule
     ]
-
-  declarations: [EmployeeListComponent,
-  EmployeeCreateComponent],
-  imports: [
-    CommonModule,
-    EmployeeRoutingModule,
-    FormsModule,
-    NgxPaginationModule,
-    ReactiveFormsModule
-  ]
-
 })
 export class EmployeeModule {
 }

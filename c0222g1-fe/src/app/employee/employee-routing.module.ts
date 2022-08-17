@@ -6,7 +6,6 @@ import {EmployeeUpdateComponent} from "./component/employee-update/employee-upda
 
 import {ServerErrorComponent} from "../common-component/server-error/server-error.component";
 
-import {EmployeeCreateComponent} from './component/employee-create/employee-create.component';
 
 
 
