@@ -33,29 +33,60 @@ export class HeaderComponent implements OnInit {
   loop: any;
   countRequest = 1;
   endTime: Date;
+  showTime = true;
+  headerEmployee = false;
 
 
   constructor(private authService: AuthService, private toartrs: ToastrService, private router: Router) {
   }
 
   ngOnInit(): void {
-    const items = document.querySelectorAll('ul li');
-    console.log(items);
-    items.forEach((item) => {
-      item.addEventListener('click', () => {
-        console.log('check check');
-        document.querySelector('li.active').classList.remove('active');
-        item.classList.add('active');
-      });
+    sessionStorage.getItem('roles') === 'CUSTOMER' ? this.headerEmployee = false : this.headerEmployee = true;
+    this.authService.checkData.subscribe(value => {
+      if (value !== undefined) {
+        this.data = value;
+        if (this.data.has('customer')) {
+          this.showTime = true;
+        } else {
+          this.showTime = false;
+        }
+      }
     });
     this.checkLogin();
     this.checkRoles();
-    if (sessionStorage.getItem('loopTimeCustomer') === '0') {
-      this.countDownDate();
+    if (sessionStorage.getItem('loopTimeCustomer') !== null) {
+      if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+        this.showTime = true;
+        this.countDownDate();
+      } else {
+        this.showTime = false;
+        sessionStorage.setItem('loopTimeCustomer', '1');
+      }
     }
 
     this.endTime = this.convertStringToDate(sessionStorage.getItem('startTime'));
     this.endTime.setSeconds(this.endTime.getSeconds() + Number(sessionStorage.getItem('remainingTime')));
+
+    const items = document.querySelectorAll('ul li');
+    items.forEach((item) => {
+      item.addEventListener('click', () => {
+        document.querySelector('li.active').classList.remove('active');
+        item.classList.add('active');
+      });
+    });
+
+
+    setTimeout(() => {
+      if (sessionStorage.getItem('loopTimeCustomer') !== null) {
+        if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+          this.showTime = true;
+          this.countDownDate();
+        } else {
+          this.showTime = false;
+          sessionStorage.setItem('loopTimeCustomer', '1');
+        }
+      }
+    }, 2000);
   }
 
   convertStringToDate(dateString: string): Date {
@@ -152,6 +183,20 @@ export class HeaderComponent implements OnInit {
 
 
   private checkRoles() {
+    this.authService.checkData.subscribe(value => {
+      if (value !== undefined) {
+        this.data = value;
+        if (this.data.has('logout')) {
+          this.customerCard = false;
+          this.employeeCard = false;
+          this.computerCard = false;
+          this.gameCard = true;
+          this.newsCard = true;
+          this.serviceCard = true;
+          this.statisticalCard = false;
+        }
+      }
+    });
     if (this.roles === 'EMPLOYEE') {
       this.customerCard = true;
       this.employeeCard = false;
@@ -177,14 +222,6 @@ export class HeaderComponent implements OnInit {
       this.serviceCard = true;
       this.statisticalCard = false;
     }
-    console.log(this.roles);
-    console.log('customerCard ' + this.customerCard);
-    console.log('employeeCard ' + this.employeeCard);
-    console.log('computerCard ' + this.computerCard);
-    console.log('gameCard ' + this.gameCard);
-    console.log('newsCard ' + this.newsCard);
-    console.log('serviceCard ' + this.serviceCard);
-    console.log('statisticalCard ' + this.statisticalCard);
 
   }
 }
