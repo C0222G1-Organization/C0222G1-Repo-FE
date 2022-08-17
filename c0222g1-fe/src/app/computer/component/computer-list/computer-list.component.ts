@@ -61,6 +61,17 @@ export class ComputerListComponent implements OnInit {
     }, this.checkDate);
   }
 
+  reset() {
+    this.formSearch = new FormGroup({
+      code: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
+      location: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
+      start: new FormControl('', this.checkStart),
+      end: new FormControl('', this.checkEnd),
+      typeId: new FormControl(''),
+      status: new FormControl(''),
+    }, this.checkDate);
+  }
+
   /**
    * Created by: PhucNQ
    * Date created: 14/08/2022
@@ -80,6 +91,7 @@ export class ComputerListComponent implements OnInit {
         this.computers = list.content;
         this.totalItems = list.totalElements;
         this.totalPages = list.totalPages;
+        this.reset();
       }
       this.isAllCheckBoxChecked();
     }, error => {
