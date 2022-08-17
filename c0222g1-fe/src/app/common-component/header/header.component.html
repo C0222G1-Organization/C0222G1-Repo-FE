@@ -91,9 +91,11 @@
             </li>
           </ul>
           <form class="d-flex" *ngIf="login">
+            <a class="nav-link" style="color: #a8a8a8"><b><span id="dayss"></span> <span id="hourss">00</span>:<span id="minss">00</span>:<span id="secondss">00</span></b></a>
+
             <a class="nav-link" style="color: #a8a8a8">Xin Chào</a>
 <!--                                    <a class="btn-main text-white" routerLink="home-page-customer">{{username}}</a>-->
-            <a  class="btn btn-primary"  routerLink="home-page-customer">{{username}}</a>
+            <a  class="btn btn-primary"  routerLink="customers/home-page">{{username}}</a>
             <a class="nav-link" style="color: #a8a8a8" routerLink="sign-out">Đăng Xuất</a>
 <!--            <a class="nav-link" style="color: #a8a8a8" routerLink="sign-up">Đăng Ký</a>-->
 <!--            <button class="btn-main text-white" routerLink="sign-in">Đăng Nhập</button>-->

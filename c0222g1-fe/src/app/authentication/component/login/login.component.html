@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" style="min-height: 550px">
   <div class="d-flex">
     <div class="col-6 d-flex justify-content-end">
       <img src="assets/img/img-login/banner-login.jpg" alt="banner" class="float-right" height="435">
@@ -14,15 +14,15 @@
               Tài khoản hoặc Email
               <span class="text-danger" *ngIf="loginForm.controls.username.hasError('minLength') &&
                                       (loginForm.controls.username.dirty || loginForm.controls.username.touched)">
-                Tên tài khoản ít nhất 6 kí tự
+                Tên tài khoản ít nhất 6 kí tự.
               </span>
               <span class="text-danger" *ngIf="loginForm.controls.username.hasError('maxLength') &&
                                       (loginForm.controls.username.dirty || loginForm.controls.username.touched)">
-                Tên tài khoản quá dài
+                Tên tài khoản quá dài.
               </span>
               <span class="text-danger" *ngIf="loginForm.controls.username.hasError('required') &&
                                       (loginForm.controls.username.dirty || loginForm.controls.username.touched)">
-                Không được để trống!
+                Không được để trống.
               </span>
             </label>
           </div>
@@ -34,11 +34,11 @@
               Mật khẩu
               <span class="text-danger" *ngIf="loginForm.controls.password.hasError('pattern') &&
                                       (loginForm.controls.password.dirty || loginForm.controls.password.touched)">
-                Mật khẩu không đúng định dạng
+                Mật khẩu không đúng định dạng.
               </span>
               <span class="text-danger" *ngIf="loginForm.controls.password.hasError('required') &&
                                       (loginForm.controls.password.dirty || loginForm.controls.password.touched)">
-                Không được để trống!
+                Không được để trống.
               </span>
             </label>
           </div>
@@ -53,7 +53,7 @@
             </label>
             <!--                <a href="">Lấy lại mật khẩu</a>-->
           </div>
-          <button type="button" class="btn btn-outline-secondary login-btn text-light" [disabled]="loginForm.invalid" (click)="submitLogin()" >Đăng nhập</button>
+          <button type="button" class="btn btn btn-primary login-btn text-light" [disabled]="loginForm.invalid" (click)="submitLogin()" >Đăng nhập</button>
 
 
         </form>
