@@ -87,7 +87,6 @@ export class HeaderComponent implements OnInit {
         }
       }
     }, 2000);
-
   }
 
   convertStringToDate(dateString: string): Date {
