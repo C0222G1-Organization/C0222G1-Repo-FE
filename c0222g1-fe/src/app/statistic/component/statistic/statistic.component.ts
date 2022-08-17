@@ -90,12 +90,12 @@ export class StatisticComponent implements OnInit {
           },
           error => {
             if (error.status === 400) {
-              this.errorList = false,
-                this.errorChart = true;
+              this.errorList = false;
+              this.errorChart = true;
               this.errorServer = true;
             } else {
-              this.errorServer = false,
-                this.errorChart = true;
+              this.errorServer = false;
+              this.errorChart = true;
               this.errorList = true;
             }
           }, () => {
@@ -104,7 +104,6 @@ export class StatisticComponent implements OnInit {
             }
             if (this.statisticInput.sort === 'ascending') {
               this.listStatisticByComputer.sort((a, b) => (Number(a.hour) > Number(b.hour)) ? 1 : -1);
-              console.log(this.listStatisticByComputer);
             }
             if (this.statisticInput.sort === 'decrease') {
               this.listStatisticByComputer.sort((a, b) => (Number(a.hour) < Number(b.hour)) ? 1 : -1);
@@ -117,19 +116,18 @@ export class StatisticComponent implements OnInit {
       this.statisticService.getStatisticByMonth(this.statisticInput.startDate, this.statisticInput.endDate)
         .subscribe(value => {
             this.listStatisticByMonth = value;
-            console.log(value);
             this.errorChart = false;
             this.errorServer = true;
             this.errorList = true;
           },
           error => {
             if (error.status === 400) {
-              this.errorList = false,
-                this.errorChart = true;
+              this.errorList = false;
+              this.errorChart = true;
               this.errorServer = true;
             } else {
-              this.errorServer = false,
-                this.errorChart = true;
+              this.errorServer = false;
+              this.errorChart = true;
               this.errorList = true;
             }
           },
@@ -151,20 +149,18 @@ export class StatisticComponent implements OnInit {
       this.statisticService.getStatisticByAccount(this.statisticInput.startDate, this.statisticInput.endDate)
         .subscribe(value => {
             this.listStatisticByAccount = value;
-            console.log(value);
-            console.log(value);
             this.errorChart = false;
             this.errorServer = true;
             this.errorList = true;
           },
           error => {
             if (error.status === 400) {
-              this.errorList = false,
-                this.errorChart = true;
+              this.errorList = false;
+              this.errorChart = true;
               this.errorServer = true;
             } else {
-              this.errorServer = false,
-                this.errorChart = true;
+              this.errorServer = false;
+              this.errorChart = true;
               this.errorList = true;
             }
           },
@@ -267,7 +263,7 @@ export class StatisticComponent implements OnInit {
             yAxisKey: 'hour'
           },
           backgroundColor: [
-            '#FFF448'
+            '#0099FF'
           ],
           borderWidth: 1
         }]
@@ -339,7 +335,7 @@ export class StatisticComponent implements OnInit {
             yAxisKey: 'service'
           },
           backgroundColor: [
-            '#FFF447'
+            '#0099FF'
           ],
           borderWidth: 1
         },
@@ -435,7 +431,7 @@ export class StatisticComponent implements OnInit {
             yAxisKey: 'revenue'
           },
           backgroundColor: [
-            '#FFF447'
+            '#0099FF'
           ],
           borderWidth: 1
         },
