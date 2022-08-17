@@ -16,6 +16,7 @@ import {Title} from '@angular/platform-browser';
 export class ComputerCreateComponent implements OnInit {
   computerType: ComputerType[];
   computer: Computer[];
+  control: FormControl;
   isExitsCode = false;
   isExitsLocation = false;
   formComputer = new FormGroup({
@@ -107,7 +108,8 @@ export class ComputerCreateComponent implements OnInit {
     );
   }
 
-  checkLocation($event: Event) {
+  checkLocation($event: Event,
+  ) {
     this.computerService.checkLocation(String($event)).subscribe(
       value => {
         if (value) {

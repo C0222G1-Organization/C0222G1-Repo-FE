@@ -66,7 +66,6 @@ export class ComputerEditComponent implements OnInit {
   }
 
 
-
   getAll() {
     this.computerTypeService.getAll().subscribe(value => {
       this.computerType = value;
