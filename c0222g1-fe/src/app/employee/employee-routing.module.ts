@@ -12,6 +12,9 @@ const routes: Routes = [
   {
     path: 'employees',
     component: EmployeeListComponent
+    /**
+     * Phải là admin mới có quyền truy cập
+     */
 
   }, {
   path: '500',
@@ -21,6 +24,9 @@ const routes: Routes = [
   {
     path: 'employees/add',
     component: EmployeeCreateComponent
+    /**
+     * Phải là admin mới có quyền truy cập
+     */
   }
 ];
 
