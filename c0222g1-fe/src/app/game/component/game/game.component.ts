@@ -22,6 +22,8 @@ export class GameComponent implements OnInit {
   gameName = '';
   game: Game;
   checked: boolean;
+  editState = false;
+  playState = false;
 
   constructor(private gameService: GameService,
               private title: Title,
@@ -32,6 +34,7 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.getGames(this.page - 1);
+    this.checkRole();
   }
 
   getGames(page: number) {
@@ -123,13 +126,17 @@ export class GameComponent implements OnInit {
   }
 
   getGameAndUpdate(id: number) {
-    this.gameService.findById(id).subscribe(game => {
-      this.game = game;
-      this.game.playedTimes += 1;
-      this.updatePlayedTimes(id);
-    }, error => {
-      console.log('error')
-    });
+    if (this.playState == true) {
+      this.gameService.findById(id).subscribe(game => {
+        this.game = game;
+        this.game.playedTimes += 1;
+        this.updatePlayedTimes(id);
+      }, error => {
+        console.log('error')
+      });
+    } else {
+      this.toastr.error("Bạn cần phải đăng nhập");
+    }
   }
 
   checkGame(id: number) {
@@ -171,5 +178,16 @@ export class GameComponent implements OnInit {
       });
     }
     this.toastr.success("Xóa thành công");
+  }
+
+  checkRole() {
+    if (sessionStorage.getItem('roles') == 'EMPLOYEE' || sessionStorage.getItem('roles') == 'ADMIN') {
+      this.editState = true;
+      this.playState = true;
+    }
+    if (sessionStorage.getItem('roles') == 'CUSTOMER') {
+      this.playState = true;
+      this.editState = false;
+    }
   }
 }

@@ -9,7 +9,6 @@ import {Router} from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
   username = '';
   login = false;
   data: Map<string, any> = new Map<string, any>();
@@ -33,16 +32,35 @@ export class HeaderComponent implements OnInit {
   loop: any;
   countRequest = 1;
   endTime: Date;
+  showTime = true;
+  headerEmployee = false;
 
 
   constructor(private authService: AuthService, private toartrs: ToastrService, private router: Router) {
   }
 
   ngOnInit(): void {
+    sessionStorage.getItem('roles') === 'CUSTOMER' ? this.headerEmployee = false : this.headerEmployee = true;
+    this.authService.checkData.subscribe(value => {
+      if (value !== undefined) {
+        this.data = value;
+        if (this.data.has('customer')) {
+          this.showTime = true;
+        } else {
+          this.showTime = false;
+        }
+      }
+    });
     this.checkLogin();
     this.checkRoles();
-    if (sessionStorage.getItem('loopTimeCustomer') === '0') {
-      this.countDownDate();
+    if (sessionStorage.getItem('loopTimeCustomer') !== null) {
+      if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+        this.showTime = true;
+        this.countDownDate();
+      } else {
+        this.showTime = false;
+        sessionStorage.setItem('loopTimeCustomer', '1');
+      }
     }
 
     this.endTime = this.convertStringToDate(sessionStorage.getItem('startTime'));
@@ -55,6 +73,19 @@ export class HeaderComponent implements OnInit {
         item.classList.add('active');
       });
     });
+
+
+    setTimeout(() => {
+      if (sessionStorage.getItem('loopTimeCustomer') !== null) {
+        if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+          this.showTime = true;
+          this.countDownDate();
+        } else {
+          this.showTime = false;
+          sessionStorage.setItem('loopTimeCustomer', '1');
+        }
+      }
+    }, 2000);
   }
 
   convertStringToDate(dateString: string): Date {
@@ -151,6 +182,20 @@ export class HeaderComponent implements OnInit {
 
 
   private checkRoles() {
+    this.authService.checkData.subscribe(value => {
+      if (value !== undefined) {
+        this.data = value;
+        if (this.data.has('logout')) {
+          this.customerCard = false;
+          this.employeeCard = false;
+          this.computerCard = false;
+          this.gameCard = true;
+          this.newsCard = true;
+          this.serviceCard = true;
+          this.statisticalCard = false;
+        }
+      }
+    });
     if (this.roles === 'EMPLOYEE') {
       this.customerCard = true;
       this.employeeCard = false;
@@ -184,6 +229,5 @@ export class HeaderComponent implements OnInit {
     console.log('newsCard ' + this.newsCard);
     console.log('serviceCard ' + this.serviceCard);
     console.log('statisticalCard ' + this.statisticalCard);
-
   }
 }
