@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Game} from "../../game/model/game";
 import {ToastrService} from "ngx-toastr";
 import {Title} from "@angular/platform-browser";
@@ -16,11 +16,16 @@ export class HomePageComponent implements OnInit {
   selectedName: string;
   game: Game;
   popularGames: Game[] = [];
-  top3Games: Game[] = [];
+  topCarouselGames: Game[] = [];
   newGames: Game[] = [];
   hotGames: Game[] = [];
   editState = false;
   playState = false;
+  progressWidth: number;
+  progressWidth2: number;
+  progressWidth3: number;
+  progressWidth4: number;
+  activeCarouselUrl = '';
 
   constructor(private toastr: ToastrService,
               private title: Title,
@@ -35,13 +40,15 @@ export class HomePageComponent implements OnInit {
     this.getAllPopularGames();
     this.getAllNewGames();
     this.getAllHotGames();
-    this.getTop3Games();
+    this.getCarouselGames();
     this.checkRole();
+    this.changeProgress();
   }
 
-  getTop3Games() {
+  getCarouselGames() {
     this.homePageService.getTop3Games(0).subscribe((games: any) => {
-      this.top3Games = games.content;
+      this.topCarouselGames = games.content;
+      this.activeCarouselUrl = this.topCarouselGames[0].imageUrl;
     });
   }
 
@@ -119,5 +126,54 @@ export class HomePageComponent implements OnInit {
       this.playState = true;
       this.editState = false;
     }
+  }
+
+  changeProgress() {
+    this.progressWidth = 0;
+    this.progressWidth2 = 0;
+    this.progressWidth3 = 0;
+    this.progressWidth4 = 0;
+    let index = 0;
+    setInterval(() => {
+      if (this.progressWidth != 100 && this.progressWidth2 == 0 && this.progressWidth3 == 0 && this.progressWidth4 == 0) {
+        this.progressWidth += 0.5;
+      } else if (this.progressWidth == 100){
+        this.progressWidth = 0;
+        this.activeCarouselUrl = this.topCarouselGames[1].imageUrl;
+      }
+
+      if (this.progressWidth2 != 100 && this.progressWidth == 0 && this.progressWidth3 == 0 && this.progressWidth4 == 0) {
+        this.progressWidth = 0;
+        this.progressWidth2 += 0.5;
+      } else if (this.progressWidth2 == 100){
+        this.progressWidth2 = 0;
+        this.activeCarouselUrl = this.topCarouselGames[2].imageUrl;
+      }
+
+      if (this.progressWidth3 != 100 && this.progressWidth2 == 0  && this.progressWidth == 0 && this.progressWidth4 == 0) {
+        this.progressWidth2 = 0;
+        this.progressWidth3 += 0.5;
+      } else if (this.progressWidth3 == 100){
+        this.progressWidth3 = 0;
+        this.activeCarouselUrl = this.topCarouselGames[3].imageUrl;
+      }
+
+      if (this.progressWidth4 != 100 && this.progressWidth2 == 0  && this.progressWidth == 0 && this.progressWidth3 == 0) {
+        this.progressWidth3 = 0;
+        this.progressWidth4 += 0.5;
+      } else if (this.progressWidth4 == 100){
+        this.progressWidth4 = 0;
+        this.activeCarouselUrl = this.topCarouselGames[0].imageUrl;
+      }
+    }, 25);
+
+    // setInterval(() => {
+    //   if (index != 4) {
+    //     this.activeCarouselUrl = this.top3Games[index].imageUrl;
+    //     index += 1;
+    //   } else {
+    //     index = 0;
+    //   }
+    // }, 2600)
   }
 }

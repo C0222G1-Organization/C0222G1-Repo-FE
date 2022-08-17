@@ -38,10 +38,6 @@ export class EmployeeListComponent implements OnInit {
   selectedEmployee: any[] = [];
   totalPages: any;
   map = new Map;
-  today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-  dobFromSearch = this.datePipe.transform(new Date('1970-01-01'), 'yyyy-MM-dd');
-  dobEndSearch = this.datePipe.transform(new Date('2004-08-16'), 'yyyy-MM-dd');
-  workFromSearch = this.datePipe.transform(new Date('2010-01-01'), 'yyyy-MM-dd');
 
   constructor(private employeeService: EmployeeService,
               private title: Title,

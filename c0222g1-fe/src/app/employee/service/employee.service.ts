@@ -81,11 +81,11 @@ export class EmployeeService {
     return this.httpClient.get<Province[]>(apiUrl + '/address/province');
   }
 
-  getAllDistrict(provinceId: number): Observable<District[]> {
+  getDistrictsByProvinceId(provinceId: number): Observable<District[]> {
     return this.httpClient.get<District[]>(apiUrl + '/address/district/' + provinceId);
   }
 
-  getAllCommune(districtId: number): Observable<Commune[]> {
+  getCommunesByDistrictId(districtId: number): Observable<Commune[]> {
     return this.httpClient.get<Commune[]>(apiUrl + '/address/commune/' + districtId);
   }
 
