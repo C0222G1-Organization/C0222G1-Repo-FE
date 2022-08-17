@@ -5,7 +5,7 @@
         <input [(ngModel)]="gameName" (keydown.enter)="searchGameByName()"
                class="search form-control-sm me-2 text-white" type="search" placeholder="  Tìm kiếm" aria-label="Search">
       </div>
-      <div class="p-0 col-6 d-flex justify-content-end">
+      <div *ngIf="editState" class="p-0 col-6 d-flex justify-content-end">
         <div class="form-group box">
           <input hidden style="float: right" type="checkbox" id="html" [checked]="isAllCheckBoxChecked()"
                  (change)="checkMultipleCheckBox($event)">
@@ -30,7 +30,7 @@
           <img class="card-img-top image"
                [src]="game.imageUrl"
                alt="Card image cap">
-          <div class="middle">
+          <div *ngIf="editState" class="middle">
             <div class="row mb-2">
               <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
             </div>
@@ -48,7 +48,7 @@
                                                             class="btn-second btn-sm">Chơi</button>  {{ game.playedTimes}} lượt chơi</span>
             </div>
           </div>
-          <div>
+          <div *ngIf="editState">
             <input class="card-notify-year-checkbox" type="checkbox" value="{{game.id}}" [(ngModel)]="game.checked" (click)="checkGame(game.id)">
           </div>
         </div>

@@ -9,7 +9,6 @@ import {Router} from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
   username = '';
   login = false;
   data: Map<string, any> = new Map<string, any>();
@@ -185,6 +184,5 @@ export class HeaderComponent implements OnInit {
     console.log('newsCard ' + this.newsCard);
     console.log('serviceCard ' + this.serviceCard);
     console.log('statisticalCard ' + this.statisticalCard);
-
   }
 }
