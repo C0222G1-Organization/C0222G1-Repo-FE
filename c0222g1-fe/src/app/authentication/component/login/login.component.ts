@@ -51,48 +51,53 @@ export class LoginComponent implements OnInit {
 
   submitLogin() {
     this.login = this.loginForm.value;
-    this.authService.requestLogin(this.login).subscribe(value => {
-        if (value !== undefined) {
-          this.roles = value.roles[0].authority;
-          if (this.roles === 'CUSTOMER') {
-            sessionStorage.setItem('remainingTime', value.customer.remainingTime);
-            sessionStorage.setItem('computerCode', value.computerCode);
-            sessionStorage.setItem('computerId', value.computerId);
-            sessionStorage.setItem('name', value.customer.name);
-            sessionStorage.setItem('recordId', value.recordId);
-            sessionStorage.setItem('customerId', value.customer.id);
-            sessionStorage.setItem('loopTimeCustomer', '0');
-            this.authService.sendData('customer', true);
-          } else {
-            sessionStorage.setItem('name', value.employee.name);
-            sessionStorage.setItem('loopTimeCustomer', '1');
+    if (this.login.password === '' || this.login.username === '' || this.login.password === null || this.login.username === null) {
+      this.toartrs.error('Hãy nhập đủ trường');
+    } else {
+      this.login.username = this.login.username.toLowerCase();
+      this.authService.requestLogin(this.login).subscribe(value => {
+          if (value !== undefined) {
+            this.roles = value.roles[0].authority;
+            if (this.roles === 'CUSTOMER') {
+              sessionStorage.setItem('remainingTime', value.customer.remainingTime);
+              sessionStorage.setItem('computerCode', value.computerCode);
+              sessionStorage.setItem('computerId', value.computerId);
+              sessionStorage.setItem('name', value.customer.name);
+              sessionStorage.setItem('recordId', value.recordId);
+              sessionStorage.setItem('customerId', value.customer.id);
+              sessionStorage.setItem('loopTimeCustomer', '0');
+              this.authService.sendData('customer', true);
+            } else {
+              sessionStorage.setItem('name', value.employee.name);
+              sessionStorage.setItem('loopTimeCustomer', '1');
+            }
+
+            sessionStorage.setItem('username', this.login.username);
+            const tokenStr = 'Bearer ' + value.token;
+            sessionStorage.setItem('token', tokenStr);
+            sessionStorage.setItem('roles', this.roles);
+            this.toartrs.success('Đăng nhập thành công');
+            this.authService.sendData('login', true);
+            setTimeout(() => {
+              this.redirectByRoles(this.roles);
+            }, 50);
+
+            if (this.rememberMeBox) {
+              this.login = this.loginForm.value;
+              sessionStorage.setItem('usernameLogin', this.login.username);
+              sessionStorage.setItem('passwordLogin', this.login.password);
+            }
+
+            this.currentDate = new Date();
+            const startTime = this.datepipe.transform(this.currentDate, 'HH:mm:ss dd-MM-yyyy');
+            sessionStorage.setItem('startTime', startTime);
           }
-
-          sessionStorage.setItem('username', this.login.username);
-          const tokenStr = 'Bearer ' + value.token;
-          sessionStorage.setItem('token', tokenStr);
-          sessionStorage.setItem('roles', this.roles);
-          this.toartrs.success('Đăng nhập thành công');
-          this.authService.sendData('login', true);
-          setTimeout(() => {
-            this.redirectByRoles(this.roles);
-          }, 50);
-
-          if (this.rememberMeBox) {
-            this.login = this.loginForm.value;
-            sessionStorage.setItem('usernameLogin', this.login.username);
-            sessionStorage.setItem('passwordLogin', this.login.password);
-          }
-
-          this.currentDate = new Date();
-          const startTime = this.datepipe.transform(this.currentDate, 'HH:mm:ss dd-MM-yyyy');
-          sessionStorage.setItem('startTime', startTime);
+        }, error => {
+          console.log(error);
+          this.toartrs.error(error.error.message);
         }
-      }, error => {
-        console.log(error);
-        this.toartrs.error('Phải nhập hết trường');
-      }
-    );
+      );
+    }
   }
 
   redirectByRoles(roles: string) {
@@ -104,11 +109,12 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/customers/home-page']);  // CUSTOMER
     }
   }
+
   rememberMe() {
     this.rememberMeBox = !this.rememberMeBox;
     if (this.rememberMeBox) {
       this.login = this.loginForm.value;
-      sessionStorage.setItem('usernameLogin', this.login.username);
+      sessionStorage.setItem('usernameLogin', this.login.username.toLowerCase());
       sessionStorage.setItem('passwordLogin', this.login.password);
       this.toartrs.success('Đã nhớ mật khẩu');
     } else {
