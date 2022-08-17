@@ -8,6 +8,8 @@ import { DetailComponent } from './component/detail/detail.component';
 import {NewsService} from './service/news.service';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+// @ts-ignore
+import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 
 
 @NgModule({
@@ -17,7 +19,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     NewsRoutingModule,
     NgxPaginationModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    CKEditorModule,
   ],
   providers: [NewsService]
 })

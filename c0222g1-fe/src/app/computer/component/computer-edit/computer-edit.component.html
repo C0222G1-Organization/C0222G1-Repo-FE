@@ -3,11 +3,13 @@
   <h6 class="text-center mt-4">Sửa thông tin máy tính</h6>
   <form [formGroup]="formEditComputer" (ngSubmit)="submit()" >
     <div class="form-floating textbox mb-4">
-      <input type="text" class="form-control input" id="ma" placeholder="Mã máy" formControlName="code" style="padding-top: 10px">
+      <input type="text" class="form-control input" id="ma" placeholder="Mã máy" formControlName="code" style="padding-top: 10px"
+             (change)="checkCode($event.target.value)">
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('code').touched
                 && formEditComputer.hasError('required', 'code')">Mã máy không được để trống.</p>
-      <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('code').touched
+      <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('code').dirty
                 && formEditComputer.hasError('pattern', 'code')">Mã máy phải có định dạng CPXXXX (X là số).</p>
+      <p style="color: red; font-size: 0.8rem" *ngIf="isExitsCode == true">Mã máy đã tồn tại.</p>
       <label for="vi-tri" style="color: white">
         Mã máy
         <span class="text-danger">*</span>
@@ -19,6 +21,7 @@
               id="status" formControlName="status" style="padding: 10px 15px 0 15px">
         <option disabled>Chọn tình trạng</option>
         <option value="0">Bảo trì</option>
+        <option value="1">Bình thường</option>
         <option value="1">Ổn định</option>
       </select>
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('status').touched
@@ -30,12 +33,13 @@
     </div>
 
     <div class="form-floating textbox mb-4">
-      <input type="text" class="form-control input" id="vi-tri" placeholder="Vị trí máy" formControlName="location" style="padding-top: 10px">
+      <input type="text" class="form-control input" id="vi-tri" placeholder="Vị trí máy" formControlName="location" style="padding-top: 10px"
+             (change)="checkLocation($event.target.value)">
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').touched
                 && formEditComputer.hasError('required', 'location')">Vị trí máy không được để trống.</p>
-      <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').touched
+      <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').dirty
                 && formEditComputer.hasError('pattern', 'location')">Vị trí máy phải có định dạng AXXX (X là số).</p>
-
+      <p style="color: red; font-size: 0.8rem" *ngIf="isExitsLocation == true">Vị trí này đã có máy.</p>
       <label for="vi-tri" style="color: white">
         Vị trí máy
         <span class="text-danger">*</span>

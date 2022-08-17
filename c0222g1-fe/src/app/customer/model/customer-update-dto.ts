@@ -7,11 +7,11 @@ export interface UpdateCustomerDto {
   id?: number;
   name?: string;
   dateOfBirth?: string;
-  email: EmailDto;
-  phoneNumber: PhoneDto;
-  userName: UserDto;
-  password: string;
+  email?: EmailDto;
+  phoneNumber?: PhoneDto;
+  userName?: UserDto;
+  password?: string;
   activeStatus?: number;
-  commune: Commune;
-  remainingTime: number;
+  commune?: Commune;
+  remainingTime?: number;
 }
