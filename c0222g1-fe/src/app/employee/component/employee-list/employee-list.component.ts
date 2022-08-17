@@ -50,9 +50,9 @@ export class EmployeeListComponent implements OnInit {
     this.formSearch = new FormGroup({
       code: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+$'), Validators.maxLength(20)]),
       // tslint:disable-next-line:max-line-length
-      name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'), Validators.maxLength(20)]),
-      dobfrom: new FormControl(this.dobFromSearch, [this.checkAge]),
-      dobend: new FormControl(this.dobEndSearch, [this.checkAge]),
+      name: new FormControl('', [Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$'), Validators.maxLength(20)]),
+      dobfrom: new FormControl(this.dobFromSearch,  this.dateNotExist),
+      dobend: new FormControl(this.dobEndSearch,  this.dateNotExist),
       workf: new FormControl(this.workFromSearch, [this.dateInFuture, this.dateNotExist]),
       workt: new FormControl(this.today, [this.dateInFuture, this.dateNotExist]),
       position: new FormControl(''),
@@ -200,29 +200,6 @@ export class EmployeeListComponent implements OnInit {
       return null;
     }
   }
-
-  private checkAge(abstractControl: AbstractControl): any {
-    if (abstractControl.value === '') {
-      return null;
-    }
-    const today = new Date();
-    const birthDate = new Date(abstractControl.value);
-    if (!isDate(birthDate)) {
-      return {dateNotExist: true};
-    }
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const old = today.getMonth() - birthDate.getMonth();
-    if (old < 0 || (old === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    if (age <= 16) {
-      return {not18: true};
-    } else if (age >= 100) {
-      return {after100: true};
-    }
-    return null;
-  }
-
   getPage(page) {
     if (page < 1 || page > this.totalPages) {
       this.toastr.error('Vui lòng nhập đúng');
@@ -242,8 +219,8 @@ export class EmployeeListComponent implements OnInit {
   checkEmployee(id: number) {
     for (const employee of this.employees) {
       console.log(id);
-      if (employee.id == id) {
-        employee.checked = employee.checked != true;
+      if (employee.id === id) {
+        employee.checked = employee.checked !== true;
         break;
       }
     }

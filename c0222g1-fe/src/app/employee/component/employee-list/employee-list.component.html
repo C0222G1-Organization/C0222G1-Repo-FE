@@ -24,19 +24,11 @@
                   <label for="dobfrom" style="color: white" class="col-form-label fontFamily">Ngày sinh bắt
                     đầu: </label>
                   <input id="dobfrom" type="date" class="form-control input-search" formControlName="dobfrom">
-                  <p class="text-danger" *ngIf="formSearch.controls.dobfrom.hasError('not18') &&
-                                      (formSearch.controls.dobfrom.dirty || formSearch.controls.dobfrom.touched)">
-                    Không có nhân viên dưới 18 tuổi.
-                  </p>
-                  <p class="text-danger" *ngIf="formSearch.controls.dobfrom.hasError('not100') &&
-                                      (formSearch.controls.dobfrom.dirty || formSearch.controls.dobfrom.touched)">
-                    Không có nhân viên trên 100 tuổi.
-                  </p>
                   <p class="text-danger" *ngIf="formSearch.hasError('dobNotValid') &&
                                       (formSearch.controls.dobfrom.dirty || formSearch.controls.dobfrom.touched)">
                     Không được nhập trước ngày kết thúc.
                   </p>
-                  <p class="text-danger" *ngIf="formSearch.hasError('dateNotExist') &&
+                  <p class="text-danger" *ngIf="formSearch.controls.dobfrom.hasError('dateNotExist') &&
                                       (formSearch.controls.dobfrom.dirty || formSearch.controls.dobfrom.touched)">
                     Không có ngày này.
                   </p>
@@ -46,14 +38,6 @@
                 <div>
                   <label for="dobend" style="color: white" class="col-form-label fontFamily">Ngày sinh đến: </label>
                   <input id="dobend" type="date" class="form-control input-search" formControlName="dobend">
-                  <p class="text-danger" *ngIf="formSearch.controls.dobend.hasError('not18') &&
-                                      (formSearch.controls.dobend.dirty || formSearch.controls.dobend.touched)">
-                    Không có nhân viên dưới 18 tuổi.
-                  </p>
-                  <p class="text-danger" *ngIf="formSearch.controls.dobend.hasError('after100') &&
-                                      (formSearch.controls.dobend.dirty || formSearch.controls.dobend.touched)">
-                    Không có nhân viên trên 100 tuổi.
-                  </p>
                   <p class="text-danger" *ngIf="formSearch.controls.dobend.hasError('dateNotExist') &&
                                       (formSearch.controls.dobend.dirty || formSearch.controls.dobend.touched)">
                     Không có ngày này.
@@ -94,7 +78,7 @@
                                       (formSearch.controls.workf.dirty || formSearch.controls.workf.touched)">
                     Không được nhập sau ngày hiện tại.
                   </p>
-                  <p class="text-danger" *ngIf="formSearch.hasError('dateNotValid') &&
+                  <p class="text-danger" *ngIf="formSearch.controls.workf.hasError('dateNotExist') &&
                                       (formSearch.controls.workf.dirty || formSearch.controls.workf.touched)">
                     Không có ngày này.
                   </p>
