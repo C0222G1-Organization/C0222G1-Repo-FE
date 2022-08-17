@@ -184,27 +184,27 @@
         </div>
       </div>
 
-      <div class="col-md-6" style="padding-right: 15px">
-        <div class="form-floating textbox mb-4">
-          <div class="form-floating textbox">
-            <input type="password" class="form-control input"
-                   id="pass-word" placeholder="Mật khẩu"
-                   style="padding-top: 10px" formControlName="password">
-            <label for="pass-word" style="color: white">
-              Mật khẩu
-              <span class="text-danger">*</span>
-            </label>
-            <div class="mb-3 text-danger"
-                 *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.required">
-              <small>Mật khẩu không được để trống!</small>
-            </div>
-            <div class="mb-3 text-danger"
-                 *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.pattern">
-              <small>Nhập đúng định dạng mật khẩu!</small>
-            </div>
-          </div>
-        </div>
-      </div>
+<!--      <div class="col-md-6" style="padding-right: 15px">-->
+<!--        <div class="form-floating textbox mb-4">-->
+<!--          <div class="form-floating textbox">-->
+<!--            <input type="password" class="form-control input"-->
+<!--                   id="pass-word" placeholder="Mật khẩu"-->
+<!--                   style="padding-top: 10px" formControlName="password">-->
+<!--            <label for="pass-word" style="color: white">-->
+<!--              Mật khẩu-->
+<!--              <span class="text-danger">*</span>-->
+<!--            </label>-->
+<!--            <div class="mb-3 text-danger"-->
+<!--                 *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.required">-->
+<!--              <small>Mật khẩu không được để trống!</small>-->
+<!--            </div>-->
+<!--            <div class="mb-3 text-danger"-->
+<!--                 *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.pattern">-->
+<!--              <small>Nhập đúng định dạng mật khẩu!</small>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
 
 
@@ -230,7 +230,7 @@
         <div class="col-md-4"></div>
         <div class="col-md-4" style="text-align: center; width: 100%">
           <button name="button" class="btn btn-primary btn-responsive w-25" style="height: 40px" (click)="onsubmit()">Lưu</button>
-          <button name="button" class="btn btn-outline-light btn-responsive w-25 ms-3" style="height: 40px">Hủy</button>
+          <button name="button" class="btn btn-outline-light btn-responsive w-25 ms-3" style="height: 40px" (click)="cancel()">Hủy</button>
         </div>
         <div class="col-md-4"></div>
       </div>

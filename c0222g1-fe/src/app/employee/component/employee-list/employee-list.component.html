@@ -178,7 +178,7 @@
               <td>{{employee.posiName}}</td>
               <td>{{exp(employee)}}</td>
               <td>
-                <button class="btn btn-outline-secondary"><i class="fa-solid fa-pencil"></i></button>
+                <button class="btn btn-outline-secondary"><i class="fa-solid fa-pencil" routerLink="employees/edit/:id"></i></button>
                 <button class="btn btn-outline-secondary" data-bs-toggle="modal"
                         data-bs-target="#deleteModal" (click)="getEmployee(employee)"><i class="fa-solid fa-trash"></i>
                 </button>
@@ -221,7 +221,11 @@
   </div>
   <div class="row d-flex" id="btn-outside">
     <div class="col-4 col-sm-4 col-md-4 col-lg-4">
+
+      <button class="btn btn-outline-secondary m-2" routerLink="/employees/add">Thêm mới nhân viên</button>
+
       <button class="btn btn-outline-secondary m-2" routerLink='/employees/add'>Thêm mới nhân viên</button>
+
     </div>
     <div class="col-4 col-sm-4 col-md-4 col-lg-4"></div>
     <div class="col-4 col-sm-4 col-md-4 col-lg-4">

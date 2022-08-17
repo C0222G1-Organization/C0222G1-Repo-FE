@@ -185,7 +185,6 @@ export class EmployeeListComponent implements OnInit {
       return null;
     }
   }
-
   dobInvalidDate(abstractControl: AbstractControl) {
     if (abstractControl.value === '') {
       return null;
@@ -221,6 +220,7 @@ export class EmployeeListComponent implements OnInit {
       return {after100: true};
     }
     return null;
+
   }
 
   getPage(page) {
@@ -242,8 +242,8 @@ export class EmployeeListComponent implements OnInit {
   checkEmployee(id: number) {
     for (const employee of this.employees) {
       console.log(id);
-      if (employee.id == id) {
-        employee.checked = employee.checked != true;
+      if (employee.id === id) {
+        employee.checked = employee.checked !== true;
         break;
       }
     }

@@ -310,10 +310,6 @@ select::-webkit-calendar-picker-indicator:hover {
     line-height: 1.2;
   }
 }
-.ms-5 {
-  margin-left: unset;
-}
-
-.mt-4 {
-  margin-top: 2rem!important;
+.preview-img {
+  width: 100%;
 }

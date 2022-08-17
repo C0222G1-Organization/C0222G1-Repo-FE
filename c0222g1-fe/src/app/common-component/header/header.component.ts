@@ -9,7 +9,6 @@ import {Router} from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
   username = '';
   login = false;
   data: Map<string, any> = new Map<string, any>();
@@ -22,8 +21,9 @@ export class HeaderComponent implements OnInit {
   serviceCard = false;
   statisticalCard = false;
 
-  currentDate: any;
+  endTimeMillisecs: any;
   cDateMillisecs: any;
+  currentDate: any;
   difference: any;
   secondss: any;
   minutess: any;
@@ -31,29 +31,40 @@ export class HeaderComponent implements OnInit {
   dayss: any;
   loop: any;
   countRequest = 1;
-  customerId = 0;
-  showDate = true;
+  endTime: Date;
+  showTime = true;
+  headerEmployee = false;
 
 
   constructor(private authService: AuthService, private toartrs: ToastrService, private router: Router) {
   }
 
   ngOnInit(): void {
-    if (sessionStorage.getItem('roles') === 'EMPLOYEE' || sessionStorage.getItem('roles') === 'ADMIN') {
-      this.showDate = false;
-    }
-
-    if (sessionStorage.getItem('customerId') !== null) {
-      this.customerId = Number(sessionStorage.getItem('customerId'));
-      this.getRemainingTime(this.customerId);
-    }
-
+    sessionStorage.getItem('roles') === 'CUSTOMER' ? this.headerEmployee = false : this.headerEmployee = true;
+    this.authService.checkData.subscribe(value => {
+      if (value !== undefined) {
+        this.data = value;
+        if (this.data.has('customer')) {
+          this.showTime = true;
+        } else {
+          this.showTime = false;
+        }
+      }
+    });
     this.checkLogin();
     this.checkRoles();
-
-    if (sessionStorage.getItem('milisecsEndTime') !== null) {
-      this.countDownDate();
+    if (sessionStorage.getItem('loopTimeCustomer') !== null) {
+      if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+        this.showTime = true;
+        this.countDownDate();
+      } else {
+        this.showTime = false;
+        sessionStorage.setItem('loopTimeCustomer', '1');
+      }
     }
+
+    this.endTime = this.convertStringToDate(sessionStorage.getItem('startTime'));
+    this.endTime.setSeconds(this.endTime.getSeconds() + Number(sessionStorage.getItem('remainingTime')));
 
     const items = document.querySelectorAll('ul li');
     items.forEach((item) => {
@@ -62,25 +73,37 @@ export class HeaderComponent implements OnInit {
         item.classList.add('active');
       });
     });
+
+
+    setTimeout(() => {
+      if (sessionStorage.getItem('loopTimeCustomer') !== null) {
+        if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+          this.showTime = true;
+          this.countDownDate();
+        } else {
+          this.showTime = false;
+          sessionStorage.setItem('loopTimeCustomer', '1');
+        }
+      }
+    }, 2000);
   }
 
-  getRemainingTime(id: number) {
-    this.authService.getRemainingTime(id).subscribe(value => {
-      if (value !== undefined) {
-        // sessionStorage.setItem('milisecsEndTime', String(value.remaining_time * 1000));
-      }
-    }, error => {
-      this.toartrs.error('Lỗi kết nối server: get remaining time');
-    });
-
+  convertStringToDate(dateString: string): Date {
+    const [timeComponents, dateComponents] = dateString.split(' ');
+    const [day, month, year] = dateComponents.split('-');
+    const [hours, minutes, seconds] = timeComponents.split(':');
+    const date = new Date(+year, +month - 1, +day, +hours, +minutes, +seconds);
+    return date;
   }
 
   countDownDate() {
     this.loop = setInterval(() => {
       this.currentDate = new Date();
       this.cDateMillisecs = this.currentDate.getTime();
+      this.endTimeMillisecs = this.endTime.getTime();
+      // console.log(this.cDateMillisecs);
       // @ts-ignore
-      this.difference = Number(sessionStorage.getItem('milisecsEndTime')) - this.cDateMillisecs;
+      this.difference = this.endTimeMillisecs - this.cDateMillisecs;
       this.secondss = Math.floor(this.difference / 1000);
       this.minutess = Math.floor(this.secondss / 60);
       this.hourss = Math.floor(this.minutess / 60);
@@ -110,7 +133,8 @@ export class HeaderComponent implements OnInit {
         sessionStorage.removeItem('milisecsEndTime');
         this.authService.sendData('login', false);
         this.toartrs.error('Tài khoản hết giờ');
-        this.authService.setOutOfTime(this.customerId, 0).subscribe(value => {
+        this.authService.setOutOfTime(Number(sessionStorage.getItem('customerId')), 0).subscribe(value => {
+          this.authService.returnComputer(Number(sessionStorage.getItem('computerId'))).subscribe();
           this.router.navigate(['']);
         }, error => {
           this.toartrs.error('Lỗi tài khoản hết giờ');
@@ -118,18 +142,20 @@ export class HeaderComponent implements OnInit {
         });
       }
 
-      // if (this.countRequest >= 5) {
-      //   const timeOf = this.difference / 1000;
-      //   this.authService.setOutOfTime(Number(sessionStorage.getItem('customerId')), timeOf).subscribe(value => {
-      //     this.toartrs.error('đã load lại remaining time');
-      //   }, error => {
-      //     this.toartrs.error('Lỗi kết nối server: set out of time');
-      //     this.toartrs.error(error.status);
-      //   });
-      //   this.countRequest = 1;
-      // } else {
-      //   this.countRequest++;
-      // }
+      if (this.countRequest >= 10) {
+        console.log(this.difference / 1000);
+        console.log(sessionStorage.getItem('remainingTime'));
+        sessionStorage.setItem('remainingTime', String(Math.trunc(this.difference / 1000)));
+
+        this.authService.setOutOfTime(Number(sessionStorage.getItem('customerId')), Math.trunc(this.difference / 1000)).subscribe(value => {
+          // this.toartrs.success('đã update remaining time với server');
+        }, error => {
+          this.toartrs.error('Lỗi kết nối server: set out of time');
+        });
+        this.countRequest = 1;
+      } else {
+        this.countRequest++;
+      }
 
     }, 1000);
   }
@@ -156,6 +182,20 @@ export class HeaderComponent implements OnInit {
 
 
   private checkRoles() {
+    this.authService.checkData.subscribe(value => {
+      if (value !== undefined) {
+        this.data = value;
+        if (this.data.has('logout')) {
+          this.customerCard = false;
+          this.employeeCard = false;
+          this.computerCard = false;
+          this.gameCard = true;
+          this.newsCard = true;
+          this.serviceCard = true;
+          this.statisticalCard = false;
+        }
+      }
+    });
     if (this.roles === 'EMPLOYEE') {
       this.customerCard = true;
       this.employeeCard = false;
@@ -189,6 +229,5 @@ export class HeaderComponent implements OnInit {
     console.log('newsCard ' + this.newsCard);
     console.log('serviceCard ' + this.serviceCard);
     console.log('statisticalCard ' + this.statisticalCard);
-
   }
 }

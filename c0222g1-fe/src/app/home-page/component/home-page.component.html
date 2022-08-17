@@ -22,7 +22,7 @@
         <div class="row">
           <div *ngFor="let game of top3Games; index as i">
             <div class="row list-row mb-4">
-              <button class="btn-opacity-border text-white btn-block">Top {{i + 1}}</button>
+              <button class="btn-yellow btn-block">Top {{i + 1}}</button>
             </div>
             <div class="row list-row mb-4" style="align-items: center">
               <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7">
@@ -32,7 +32,7 @@
               </div>
               <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5">
                 <div class="row">
-                  <p class="text-white">{{game.name}}</p>
+                  <a class="text-white text-decoration-none" routerLink="games/detail/{{game.id}}">{{game.name}}</a>
                 </div>
               </div>
             </div>
@@ -53,14 +53,18 @@
           <img class="card-img-top image"
                [src]="game.imageUrl"
                alt="Card image cap">
-          <div class="middle">
-            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
-            <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
-                    data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
+          <div *ngIf="editState" class="middle">
+            <div class="row mb-2">
+              <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
+            </div>
+            <div class="row">
+              <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
+                      data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
+            </div>
           </div>
           <div class="card-body row" style="justify-items: center">
-            <div class="row">
-              <p class="text-white text-title-sm">{{game.name}}</p>
+            <div class="row mb-2">
+              <a class="text-white text-decoration-none" routerLink="games/detail/{{game.id}}">{{game.name}}</a>
             </div>
             <div class="row">
               <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
@@ -85,13 +89,17 @@
             <img [src]="game.imageUrl"
                  class="d-block image" alt="...">
           </div>
-          <div class="middle-md">
-            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
-            <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
-                    data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
+          <div *ngIf="editState" class="middle-md">
+            <div class="row mb-2">
+              <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
+            </div>
+            <div class="row">
+              <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
+                      data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
+            </div>
           </div>
-          <div class="row">
-            <p class="text-white">{{game.name}}</p>
+          <div class="row mb-2">
+            <a class="text-white text-decoration-none" routerLink="games/detail/{{game.id}}">{{game.name}}</a>
           </div>
           <div class="row">
               <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
@@ -115,14 +123,18 @@
           <img class="card-img-top image"
                [src]="game.imageUrl"
                alt="Card image cap">
-          <div class="middle">
-            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
-            <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
-                    data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
+          <div *ngIf="editState" class="middle">
+            <div class="row mb-2">
+              <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
+            </div>
+            <div class="row">
+              <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
+                      data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
+            </div>
           </div>
           <div class="card-body row" style="justify-items: center">
-            <div class="row">
-              <p class="text-white text-title-sm">{{game.name}}</p>
+            <div class="row mb-2">
+              <a class="text-white text-decoration-none" routerLink="games/detail/{{game.id}}">{{game.name}}</a>
             </div>
             <div class="row">
               <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
@@ -146,7 +158,7 @@
           <h5 class="modal-title text-white" id="exampleModalLabel">Thông báo</h5>
         </div>
         <div class="modal-body text-white">
-          Bạn có chắc chắn muốn xóa game {{this.selectedName}} hay không?
+          Bạn có chắc chắn muốn xóa game <b>{{this.selectedName}}</b> hay không?
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-second-non-border" data-bs-dismiss="modal">Đóng</button>
