@@ -19,14 +19,13 @@ export class HomePageComponent implements OnInit {
   top3Games: Game[] = [];
   newGames: Game[] = [];
   hotGames: Game[] = [];
-  isOpen = true;
 
   constructor(private toastr: ToastrService,
               private title: Title,
               private homePageService: HomePageService,
               private activatedRoute: ActivatedRoute,
               private route: Router) {
-    this.title.setTitle('C02G1 | Trang chủ');
+    this.title.setTitle('C02G1');
   }
 
 
