@@ -1,10 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-// @ts-ignore
 import {render} from 'creditcardpayments/creditCardPayments';
 import {PaymentService} from '../../service/payment.service';
 import {Payment} from '../../model/payment';
-import {ActivatedRoute} from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
+import {ReponseBody} from '../../model/reponse-body';
+import {query} from '@angular/animations';
+
+declare var $: any;
 
 @Component({
   selector: 'app-display-payment',
@@ -12,71 +16,86 @@ import {Title} from '@angular/platform-browser';
   styleUrls: ['./display-payment.component.css']
 })
 export class DisplayPaymentComponent implements OnInit {
-  obj: any;
-  listPayment: any = [];
-  sPaypal = 0;
-  page = 0;
-  element: number;
 
-  constructor(private paymentService: PaymentService,
+  constructor(private route: Router,
+              private toast: ToastrService,
+              private paymentService: PaymentService,
               private activatedRoute: ActivatedRoute,
               private title: Title) {
     this.title.setTitle('THÔNG TIN THANH TOÁN');
   }
 
+  obj: any;
+  listPayment: any = [];
+  page = 0;
+  totalItems: any;
+  itemsPerPage = 5;
+  totalPages;
+  sPaypal = 0;
+
   ngOnInit(): void {
     const id = Number(this.activatedRoute.snapshot.params.paymentId);
-    this.paymentService.getById(id).subscribe(value => {
-      console.log(value);
-      this.listPayment.push(value);
-      // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.listPayment.length; i++) {
-        // tslint:disable-next-line:prefer-for-of
-        for (let j = 0; j < this.listPayment[i].paymentDetailList.length; j++) {
-          // tslint:disable-next-line:max-line-length
-          this.listPayment[i].totalPay += this.listPayment[i].paymentDetailList[j].amount * this.listPayment[i].paymentDetailList[j].product.prices;
-        }
-      }
+    if (isNaN(id)) {
+      this.getAllPayment();
+    } else {
+      this.paymentService.getById(id).subscribe((value: any) => {
+        this.listPayment = [];
+        this.listPayment.push(value);
+        this.totalItems = value.totalElements;
+        this.totalPages = value.totalPages;
+        this.calculatorPayment();
+      }, error => {
+        this.toast.error('Không tìm thấy');
+      });
+    }
+  }
+
+  getAllPayment() {
+    this.paymentService.getAllPagePayment(this.page).subscribe((value: any) => {
+      this.listPayment = value.content;
+      this.totalItems = value.totalElements;
+      this.totalPages = value.totalPages;
+      this.calculatorPayment();
+    }, error => {
+      this.route.navigateByUrl('/500');
     });
-    // Get list payment
-    // this.paymentService.getAllPayment().subscribe(value => {
-    //   this.listPayment = value;
-    //   console.log(this.listPayment);
+  }
+
+  calculatorPayment() {
     // tslint:disable-next-line:prefer-for-of
-    // for (let i = 0; i < this.listPayment.length; i++) {
-    // tslint:disable-next-line:prefer-for-of
-    // for (let j = 0; j < this.listPayment[i].paymentDetailList.length; j++) {
-    // tslint:disable-next-line:max-line-length
-    // this.listPayment[i].totalPay += this.listPayment[i].paymentDetailList[j].amount * this.listPayment[i].paymentDetailList[j].product.prices;
-    // }
-    // }
-    // });
+    for (let i = 0; i < this.listPayment.length; i++) {
+      // tslint:disable-next-line:prefer-for-of
+      for (let j = 0; j < this.listPayment[i].paymentDetailList.length; j++) {
+        this.listPayment[i].totalPay += this.listPayment[i].paymentDetailList[j].amount *
+          this.listPayment[i].paymentDetailList[j].product.prices;
+      }
+    }
   }
 
   statePaypal(id: number) {
     if (this.sPaypal === 0) {
-      this.paymentWithPaypal(id);
+      this.sPaypal = 1;
       document.getElementById('myPaypal').classList.remove('hiddenPaypal');
       document.getElementById('myPaypal').classList.add('displayPaypal');
-      this.sPaypal = 1;
+      this.paymentWithPaypal(id);
     } else {
-      document.getElementById('myPaypal').classList.remove('displayPaypal');
-      document.getElementById('myPaypal').classList.add('hiddenPaypal');
       this.sPaypal = 0;
+      document.getElementById('myPaypal').classList.add('hiddenPaypal');
+      document.getElementById('myPaypal').classList.remove('displayPaypal');
     }
   }
 
   getPayment(id: number) {
     document.getElementById('body-payment').innerHTML = '<div class="container">\n' +
       '          <div id="paypalMethod">\n' +
-      '            <h4>Paypal</h4>\n' +
+      '            <h4 class="text-white">Paypal</h4>\n' +
       // tslint:disable-next-line:max-line-length
       '            <button class="btn btn-primary form-control mt-2 mb-2" id="payWithPaypal" ">Payment with Paypal</button>\n' +
-      '            <div id="myPaypal" class="hiddenPaypal"></div>\n' +
+      '            <div id="myPaypal" class="hiddenPaypal btn-outline-dark"></div>\n' +
       '          </div>\n' +
       '          <div id="momoMethod">\n' +
-      '            <h4>Momo</h4>\n' +
-      '            <button class="btn btn-primary form-control" id="payWithMomo" ">Momo</button>\n' +
+      '            <h4 class="text-white">Momo</h4>\n' +
+      '            <button class="btn btn-primary form-control btn-outline-dark text-white" id="payWithMomo" ">Momo</button>\n' +
       '          </div>\n' +
       '        </div>\n' +
       '        <p class="text-danger font-italic text-center">*Vui lòng chọn phương thức thanh toán</p>';
@@ -89,43 +108,49 @@ export class DisplayPaymentComponent implements OnInit {
   }
 
   getService(id: number) {
-    let content = '<div class="table-container" style="padding: 0 5px;">\n' +
-      '          <p style="text-align: right; margin: 5px 10px; font-weight: bold; font-size: 13px; font-style: italic">\n' +
-      '            Đơn vị tính: VND</p>\n' +
-      '          <table class="table table-striped table-dark">\n' +
-      '            <thead>\n' +
-      '            <tr>\n' +
-      '              <th>Tên dịch vụ</th>\n' +
-      '              <th>Số lượng</th>\n' +
-      '              <th>Đơn vị</th>\n' +
-      '              <th>Đơn giá</th>\n' +
-      '              <th>Tổng tiền</th>\n' +
-      '            </tr>\n' +
-      '            </thead>\n' +
-      '            <tbody>';
+    const formatter = Intl.NumberFormat('decimal', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+    // tslint:disable-next-line:max-line-length
+    let content = '<p style="text-align: right; margin: 5px 10px; font-weight: bold; font-size: 13px; font-style: italic; color: white;">Đơn vị tính: VND</p>' +
+      '<table class="table table-striped table-dark"><thead><tr>' +
+      '<th>Tên dịch vụ</th>' +
+      '<th>Số lượng</th>' +
+      '<th>Đơn vị</th>' +
+      '<th>Đơn giá</th>' +
+      '<th>Tổng tiền</th>' +
+      '</tr>' +
+      '</thead>' +
+      '<tbody>';
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.listPayment.length; i++) {
       if (this.listPayment[i].id === id) {
         // tslint:disable-next-line:prefer-for-of
         for (let j = 0; j < this.listPayment[i].paymentDetailList.length; j++) {
-          content += '<tr>\n' +
-            '              <td>' + this.listPayment[i].paymentDetailList[j].product.nameProduct + '</td>\n' +
-            '              <td>' + this.listPayment[i].paymentDetailList[j].amount + '</td>\n' +
-            '              <td>' + this.listPayment[i].paymentDetailList[j].product.unit + '</td>\n' +
-            '              <td>' + this.listPayment[i].paymentDetailList[j].product.prices + '</td>\n' +
+          content += '<tr>' +
+            '<td>' + this.listPayment[i].paymentDetailList[j].product.nameProduct + '</td>' +
+            '<td>' + this.listPayment[i].paymentDetailList[j].amount + '</td>' +
+            '<td>' + this.listPayment[i].paymentDetailList[j].product.unit + '</td>' +
+            '<td>' + formatter.format(this.listPayment[i].paymentDetailList[j].product.prices) + '</td>' +
             // tslint:disable-next-line:max-line-length
-            '              <td>' + (this.listPayment[i].paymentDetailList[j].product.prices * this.listPayment[i].paymentDetailList[j].amount) + '</td>\n' +
-            '            </tr>';
+            '<td>' + formatter.format(this.listPayment[i].paymentDetailList[j].product.prices * this.listPayment[i].paymentDetailList[j].amount) + '</td>' +
+            // tslint:disable-next-line:max-line-length
+            '</tr> + ' + '<tr><td colspan="4"> Tổng tiền dich vụ: </td>' + '<td rowspan="2">' + formatter.format(this.listPayment[i].totalPay) + '</td></tr>';
         }
       }
     }
     content += '</tbody>\n' +
-      '          </table>';
+      '</table>';
     document.getElementById('body-service').innerHTML = content;
+    // const parentTable = document.getElementById('table-service');
+    // console.log(parentTable);
+    // parentTable.removeChild(parentTable.children[0]);
   }
 
   paymentWithPaypal(id: number) {
     document.getElementById('myPaypal').innerHTML = '';
+    let reponseBody: ReponseBody = {};
     let obj: Payment = {};
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.listPayment.length; i++) {
@@ -150,7 +175,26 @@ export class DisplayPaymentComponent implements OnInit {
         onApprove: (details) => {
           this.obj = details;
           this.paymentService.setStatePayment(id).subscribe();
-          this.ngOnInit();
+          $('#modelPaymentMethodId').modal('hide');
+          $('#modelResultId').modal('show');
+          this.toast.success('Thanh toán thành công.');
+
+          reponseBody = {
+            id: details.id,
+            status: details.status,
+            value: Number(details.purchase_units[0].amount.value),
+            email: details.purchase_units[0].payee.email_address,
+            fullName: details.purchase_units[0].shipping.name.full_name,
+            address: details.purchase_units[0].shipping.address.address_line_1,
+            area1: details.purchase_units[0].shipping.address.admin_area_1,
+            area2: details.purchase_units[0].shipping.address.admin_area_2,
+            postalCode: Number(details.purchase_units[0].shipping.address.postal_code),
+            countryCode: details.purchase_units[0].shipping.address.country_code
+          };
+
+          this.paymentService.sendEmail(reponseBody).subscribe(value => {
+            console.log(value);
+          });
         }
       }
     );
@@ -242,7 +286,17 @@ export class DisplayPaymentComponent implements OnInit {
     });
   }
 
-  getPage(page: number) {
-    this.page = page - 1;
+  getPage(page) {
+    if (Number(page) < 1 || Number(page) > this.totalPages) {
+      this.toast.error('Vui lòng nhập đúng');
+    }
+    this.page = Number(page);
+    page = Number(page) - 1;
+    this.paymentService.getAllPagePayment(Number(page)).subscribe((value: any) => {
+      this.listPayment = value.content;
+      this.totalItems = value.totalElements;
+      this.totalPages = value.totalPages;
+      this.calculatorPayment();
+    });
   }
 }

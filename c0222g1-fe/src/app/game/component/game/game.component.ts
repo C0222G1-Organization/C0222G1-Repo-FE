@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Game} from "../../model/game";
-import {GameService} from "../../service/game.service";
-import {Title} from "@angular/platform-browser";
-import {ToastrService} from "ngx-toastr";
-import {Route, Router} from "@angular/router";
+import {Game} from '../../model/game';
+import {GameService} from '../../service/game.service';
+import {Title} from '@angular/platform-browser';
+import {ToastrService} from 'ngx-toastr';
+
+import {Route, Router} from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -22,6 +23,8 @@ export class GameComponent implements OnInit {
   gameName = '';
   game: Game;
   checked: boolean;
+  editState = false;
+  playState = false;
 
   constructor(private gameService: GameService,
               private title: Title,
@@ -32,6 +35,7 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.getGames(this.page - 1);
+    this.checkRole();
   }
 
   getGames(page: number) {
@@ -53,10 +57,11 @@ export class GameComponent implements OnInit {
 
   getPage(page) {
     if (page < 1 || page > this.totalPages) {
-      this.toastr.error("Vui lòng nhập đúng");
+      this.toastr.error('Vui lòng nhập đúng');
+      this.toastr.error('Vui lòng nhập đúng');
     } else {
       this.page = page;
-      if (this.gameName.length != 0) {
+      if (this.gameName.length !== 0) {
         this.searchGameByName();
       } else {
         this.gameService.getAllGames(this.page - 1).subscribe((games: any) => {
@@ -69,7 +74,7 @@ export class GameComponent implements OnInit {
   }
 
   searchGameByName() {
-    if (this.gameName == '') {
+    if (this.gameName === '') {
       this.getGames(0);
     } else {
       this.gameName = this.gameName.trim();
@@ -81,7 +86,7 @@ export class GameComponent implements OnInit {
               this.games = games.content;
               this.totalItems = games.totalElements;
               this.totalPages = games.totalPages;
-            })
+            });
           } else {
             this.games = [];
           }
@@ -109,33 +114,37 @@ export class GameComponent implements OnInit {
         this.searchGameByName();
       }
     }, error => {
-      this.toastr.error("Xóa thất bại");
+      this.toastr.error('Xóa thất bại');
     });
   }
 
   updatePlayedTimes(id: number) {
     this.gameService.updateGame(id, this.game).subscribe(res => {
-      this.getGames(this.page - 1);
-      this.toastr.success("Đang khởi động game")
+        this.getGames(this.page - 1);
+        this.toastr.success('Đang khởi động game');
     }, error => {
-      this.toastr.error("Khởi động thất bại");
-    })
+      this.toastr.error('Khởi động thất bại');
+    });
   }
 
   getGameAndUpdate(id: number) {
-    this.gameService.findById(id).subscribe(game => {
-      this.game = game;
-      this.game.playedTimes += 1;
-      this.updatePlayedTimes(id);
-    }, error => {
-      console.log('error')
-    });
+    if (this.playState === true) {
+      this.gameService.findById(id).subscribe(game => {
+        this.game = game;
+        this.game.playedTimes += 1;
+        this.updatePlayedTimes(id);
+      }, error => {
+        console.log('error');
+      });
+    } else {
+      this.toastr.error('Bạn cần phải đăng nhập');
+    }
   }
 
   checkGame(id: number) {
     for (const game of this.games) {
-      if (game.id == id) {
-        game.checked = game.checked != true;
+      if (game.id === id) {
+        game.checked = game.checked !== true;
         break;
       }
     }
@@ -160,7 +169,7 @@ export class GameComponent implements OnInit {
   deleteMultipleGames() {
     for (const selectedGame of this.selectedGames) {
       this.gameService.deleteGameById(selectedGame.id).subscribe(res => {
-        if (this.gameName == '') {
+        if (this.gameName === '') {
           this.getGames(this.page - 1);
         } else {
           this.searchGameByName();
@@ -170,6 +179,16 @@ export class GameComponent implements OnInit {
         console.log('Xóa thất bại');
       });
     }
-    this.toastr.success("Xóa thành công");
+  }
+
+  checkRole() {
+    if (sessionStorage.getItem('roles') === 'EMPLOYEE' || sessionStorage.getItem('roles') == 'ADMIN') {
+      this.editState = true;
+      this.playState = true;
+    }
+    if (sessionStorage.getItem('roles') === 'CUSTOMER') {
+      this.playState = true;
+      this.editState = false;
+    }
   }
 }
