@@ -474,3 +474,4 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width:  100%;
 }
 
+.cke_contents{border:solid 1px #696969;background-color: #d30d0d;}
