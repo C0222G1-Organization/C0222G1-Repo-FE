@@ -9,6 +9,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {finalize} from 'rxjs/operators';
 import {formatDate} from '@angular/common';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-game-update',
@@ -17,7 +18,6 @@ import {formatDate} from '@angular/common';
 })
 export class GameUpdateComponent implements OnInit {
   id: number;
-  title = 'cloudsSorage';
   selectedFile: File = null;
   editImageState = false;
   url: any;
@@ -25,18 +25,21 @@ export class GameUpdateComponent implements OnInit {
   fb;
   trailerUrl = '';
   imageUrl = '';
+  checkImg: boolean;
+  checkImgSize = false;
   check: boolean;
+  regexImageUrl = false;
+  isExitsGameName = false;
   gameCategory: GameCategory[];
   gameForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(5),
-      Validators.maxLength(100), Validators.pattern('^[\\w\\s]+$')]),
+    name: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(150)]),
     createDate: new FormControl(this.getCurrentDateTime()),
     playedTimes: new FormControl(0),
     trailerUrl: new FormControl('', [Validators.required,
       Validators.pattern('https?:\\/\\/(www\\.)?' +
         '[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}b([-a-zA-Z0-9()@:%_+.~#?&//=]*)')]),
     imageUrl: new FormControl('', [Validators.required]),
-    content: new FormControl('', [Validators.required]),
+    content: new FormControl('', [Validators.required, Validators.minLength(15)]),
     gameCategory: new FormGroup({
       id: new FormControl('', Validators.required)
     })
@@ -47,7 +50,9 @@ export class GameUpdateComponent implements OnInit {
               private toastr: ToastrService,
               private storage: AngularFireStorage,
               private activatedRoute: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private title: Title) {
+    this.title.setTitle('Chỉnh sửa thông tin game');
   }
 
   ngOnInit(): void {
@@ -83,21 +88,38 @@ export class GameUpdateComponent implements OnInit {
     });
   }
 
+
   onFileSelected(event) {
+    this.regexImageUrl = false;
+    if (event.target.files[0].size > 9000000) {
+      return;
+    }
     this.selectedFile = event.target.files[0];
+    if (!event.target.files[0].name.match('^.*\\.(jpg|JPG)$')) {
+      this.regexImageUrl = true;
+      return;
+    }
+    this.gameForm.patchValue({imageUrl: this.selectedFile.name});
   }
 
   selectFile(event: any) {
-    this.editImageState = true;
     if (!event.target.files[0] || event.target.files[0].length === 0) {
-      this.msg = 'You must select an image';
       return;
     }
+    if (event.target.files[0].size > 9000000) {
+      return;
+    }
+    if (!event.target.files[0].name.match('^.*\\.(jpg|JPG)$')) {
+      return;
+    }
+    this.checkImgSize = false;
+    this.checkImg = false;
+    this.editImageState = true;
 
     const mimeType = event.target.files[0].type;
 
     if (mimeType.match(/image\/*/) == null) {
-      this.msg = 'Only images are supported';
+      this.msg = 'Chỉ có file ảnh được hỗ trợ';
       return;
     }
     const reader = new FileReader();
@@ -110,23 +132,60 @@ export class GameUpdateComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.gameForm.value);
-    const nameImage = this.getCurrentDateTime() + this.selectedFile.name;
-    const filePath = `game/${nameImage}`;
-    const fileRef = this.storage.ref(filePath);
-    this.storage.upload(`game/${nameImage}`, this.selectedFile).snapshotChanges().pipe(
-      finalize(() => {
-        fileRef.getDownloadURL().subscribe((url) => {
-          this.gameForm.patchValue({imageUrl: url});
-          console.log(url);
-          console.log(this.gameForm.value);
-          this.gameService.updateGame(this.id, this.gameForm.value).subscribe(
-            () => {
-              this.router.navigateByUrl('/games');
-            }
-          );
-        });
-      })
-    ).subscribe();
+    if (this.selectedFile !== null) {
+      const imageUrl = this.getCurrentDateTime() + this.selectedFile.name;
+      const filePath = `game/${imageUrl}`;
+      const fileRef = this.storage.ref(filePath);
+      this.storage.upload(`game/${imageUrl}`, this.selectedFile).snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url) => {
+            this.gameForm.patchValue({imageUrl: url});
+            console.log(url);
+            console.log(this.gameForm.value);
+            this.gameService.updateGame(this.id, this.gameForm.value).subscribe(
+              () => {
+                this.router.navigateByUrl('/games');
+                this.toastr.success('Chỉnh sửa thàng công.');
+              },
+              error => {
+                this.toastr.error('Chỉnh sửa thất bại thất bại, hãy thử lại.');
+              }
+            );
+          });
+        })
+      ).subscribe();
+    } else {
+      this.gameService.updateGame(this.id, this.gameForm.value).subscribe(
+        () => {
+          this.router.navigateByUrl('/games');
+          this.toastr.success('Chỉnh sửa thàng công.');
+        },
+        error => {
+          this.toastr.error('Chỉnh sửa thất bại thất bại, hãy thử lại.');
+        }
+      );
+    }
+  }
+
+  checkImage() {
+    if (!this.selectedFile || this.selectedFile.name === '') {
+      this.checkImg = true;
+      return;
+    }
+  }
+
+  checkGameName($event: Event) {
+    this.gameService.checkGameName(String($event)).subscribe(
+      value => {
+        if (value) {
+          this.isExitsGameName = true;
+        } else {
+          this.isExitsGameName = false;
+        }
+      }
+    );
+    if (String($event) === '') {
+      this.isExitsGameName = false;
+    }
   }
 }

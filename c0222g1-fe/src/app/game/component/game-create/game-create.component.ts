@@ -20,15 +20,16 @@ import {Title} from '@angular/platform-browser';
 })
 export class GameCreateComponent implements OnInit {
   gameForm: FormGroup;
-  count = 1;
   gameCategory: GameCategory[];
   selectedFile: File = null;
   fb;
   downloadURL: Observable<string>;
   url: any;
   msg = '';
-  regexImageUrl = false;
-
+  checkImgSize = false;
+  checkImg: boolean;
+  regexImg = false;
+  isExitsGameName = false;
   constructor(private gameService: GameService,
               private gameCategoryService: GameCategoryService,
               private toastr: ToastrService,
@@ -41,15 +42,15 @@ export class GameCreateComponent implements OnInit {
   ngOnInit(): void {
     this.getAllGameCateGory();
     this.gameForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(150),
-        Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$')]),
+      name: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(150)
+       ]),
       createDate: new FormControl(this.getCurrentDateTime()),
       playedTimes: new FormControl(0),
       trailerUrl: new FormControl('', [Validators.required,
         Validators.pattern('https?:\\/\\/(www\\.)?' +
           '[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}b([-a-zA-Z0-9()@:%_+.~#?&//=]*)')]),
-      imageUrl: new FormControl('', [Validators.required],),
-      content: new FormControl('', [Validators.required]),
+      imageUrl: new FormControl('', [Validators.required], ),
+      content: new FormControl('', [Validators.required , Validators.minLength(15)]),
       gameCategory: new FormGroup({
         id: new FormControl('', Validators.required)
       })
@@ -67,15 +68,33 @@ export class GameCreateComponent implements OnInit {
   }
 
 
+
   onFileSelected(event) {
+    this.regexImg = false;
+    if (event.target.files[0].size > 9000000) {
+      return;
+    }
     this.selectedFile = event.target.files[0];
+    if (!event.target.files[0].name.match('^.*\\.(jpg|JPG)$')) {
+      this.regexImg = true;
+      return;
+    }
+    this.gameForm.patchValue({imageUrl: this.selectedFile.name});
   }
 
   selectFile(event: any) {
     if (!event.target.files[0] || event.target.files[0].length === 0) {
-      this.msg = 'Bạn phải chọn ảnh';
       return;
     }
+    if (event.target.files[0].size > 9000000) {
+      this.checkImgSize = true;
+      return;
+    }
+    if (!event.target.files[0].name.match('^.*\\.(jpg|JPG)$')) {
+      return;
+    }
+    this.checkImgSize = false;
+    this.checkImg = false;
 
     const mimeType = event.target.files[0].type;
 
@@ -83,15 +102,16 @@ export class GameCreateComponent implements OnInit {
       this.msg = 'Only images are supported';
       return;
     }
+
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
+
     // tslint:disable-next-line:variable-name
     reader.onload = (_event) => {
       this.msg = '';
       this.url = reader.result;
     };
   }
-
   create() {
     // if (this.gameForm.invalid) {
     //   this.toastr.error('Nhập đầy đủ thông tin.');
@@ -118,5 +138,25 @@ export class GameCreateComponent implements OnInit {
         });
       })
     ).subscribe(); }
+  checkImage() {
+    if (!this.selectedFile || this.selectedFile.name === '') {
+      this.checkImg = true;
+      return;
+    }
+  }
+  checkGameName($event: Event) {
+    this.gameService.checkGameName(String($event)).subscribe(
+      value => {
+        if (value) {
+          this.isExitsGameName = true;
+        } else {
+          this.isExitsGameName = false;
+        }
+      }
+    );
+    if (String($event) === '') {
+      this.isExitsGameName = false;
+    }
+  }
 }
 

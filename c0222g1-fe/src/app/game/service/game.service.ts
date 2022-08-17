@@ -37,4 +37,7 @@ export class GameService {
   getGameById(id: string): Observable<Game> {
     return this.http.get<Game>(API_URL + `/games/detail/${id}`);
   }
+  checkGameName(name: string): Observable<string> {
+    return this.http.get<string>(API_URL + '/games/checkGameName/' + name);
+  }
 }
