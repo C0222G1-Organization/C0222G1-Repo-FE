@@ -29,6 +29,7 @@ import {StatisticModule} from './statistic/statistic.module';
 import {JwtInterceptor} from './authentication/service/jwt.interceptor';
 import { ServerErrorComponent } from './common-component/server-error/server-error.component';
 import { NotFoundComponent } from './common-component/not-found/not-found.component';
+import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 
 
 @NgModule({
@@ -66,7 +67,8 @@ import { NotFoundComponent } from './common-component/not-found/not-found.compon
     ProductModule,
     RegistrationModule,
     HomePageModule,
-    StatisticModule
+    StatisticModule,
+    CKEditorModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
