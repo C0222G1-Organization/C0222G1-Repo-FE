@@ -28,10 +28,12 @@ export class LogoutComponent implements OnInit {
       this.returnComputer();
     }
     sessionStorage.removeItem('roles');
+    sessionStorage.removeItem('loopTimeCustomer');
     this.toartrs.success('Đã đăng xuất');
+    this.authService.sendData('logout', 'logout');
     setTimeout(() => {
       this.router.navigate(['']);
-    }, 50);
+    }, 100);
   }
 
   logoutForOutOfTime() {
@@ -46,6 +48,7 @@ export class LogoutComponent implements OnInit {
       }
     });
   }
+
   returnComputer() {
     this.authService.returnComputer(Number(sessionStorage.getItem('computerId'))).subscribe(value => {
       sessionStorage.removeItem('computerId');
