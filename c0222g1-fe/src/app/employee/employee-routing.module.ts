@@ -7,8 +7,6 @@ import {EmployeeUpdateComponent} from "./component/employee-update/employee-upda
 import {ServerErrorComponent} from "../common-component/server-error/server-error.component";
 
 
-
-
 const routes: Routes = [
   {
     path: 'employees',
@@ -20,7 +18,7 @@ const routes: Routes = [
      */
 
   }, {
-  path: '500',
+    path: '500',
     component: ServerErrorComponent
 
 
