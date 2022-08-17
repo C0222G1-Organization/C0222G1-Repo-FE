@@ -97,6 +97,9 @@ export class CreateCustomerHaoNHComponent implements OnInit {
   private checkConfirmPassword(abstractControl: AbstractControl): any {
     const password = abstractControl.value.password;
     const confirmPassword = abstractControl.value.confirmPassword;
+    if (confirmPassword === '') {
+      return null;
+    }
     return (password === confirmPassword) ? null : {notSame: true};
   }
 
@@ -164,7 +167,7 @@ export class CreateCustomerHaoNHComponent implements OnInit {
     this.customerForm = new FormGroup({
       id: new FormControl(),
       // tslint:disable-next-line:max-line-length
-      name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s?]+$'),
+      name: new FormControl('', [Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$'),
         Validators.required, this.notBlank, Validators.minLength(5), Validators.maxLength(50)]),
       dateOfBirth: new FormControl('', [Validators.pattern('^[a-zA-Z\\s?]+$'), this.check16Age]),
       email: new FormGroup({
@@ -193,11 +196,7 @@ export class CreateCustomerHaoNHComponent implements OnInit {
   checkUserName($event: Event) {
     this.customerService.checkUserName(String($event)).subscribe(
       value => {
-        if (value) {
-          this.isExitsUser = true;
-        } else {
-          this.isExitsUser = false;
-        }
+        this.isExitsUser = !!value;
       }
     );
     if (String($event) === '') {
