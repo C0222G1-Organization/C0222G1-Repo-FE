@@ -12,6 +12,8 @@
                 <div class="input-field input-search">
                   <label>Mã máy</label>
                   <input type="text" class="input-search" formControlName="code" placeholder="Nhập mã máy">
+                  <span style="color: red; font-size: 0.8rem" *ngIf="formSearch.get('code').dirty
+                && formSearch.hasError('pattern', 'code')">Không được nhập khoảng trắng</span>
                 </div>
                 <div class="input-field">
                   <label>Ngày bắt đầu</label>
@@ -47,7 +49,8 @@
               </div>
             </form>
             <div class="input-field">
-              <button class="btn btn-outline-secondary mb-2" (click)="search()" style="right: 0">Tìm kiếm</button>
+              <button class="btn btn-outline-secondary mb-2" (click)="search()" [disabled]="formSearch.invalid" style="right: 0">Tìm kiếm</button>
+              <button class="btn btn-outline-secondary mb-2" (click)="reset()" style="right: 0">Làm mới</button>
             </div>
           </div>
         </div>
