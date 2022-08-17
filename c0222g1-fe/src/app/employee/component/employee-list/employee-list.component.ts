@@ -7,7 +7,7 @@ import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/form
 import {Title} from '@angular/platform-browser';
 
 import {Router} from '@angular/router';
-import {isDate} from 'rxjs/internal-compatibility';
+// import {isDate} from 'rxjs/internal-compatibility';
 import {DatePipe} from '@angular/common';
 
 
@@ -24,6 +24,8 @@ export class EmployeeListComponent implements OnInit {
     currentPage: 1,
     totalItems: this.collection.count
   };
+  size: number;
+  number: number;
   page = 0;
   totalElements: any;
   employees: any;
@@ -36,10 +38,6 @@ export class EmployeeListComponent implements OnInit {
   selectedEmployee: any[] = [];
   totalPages: any;
   map = new Map;
-  today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-  dobFromSearch = this.datePipe.transform(new Date('1970-01-01'), 'yyyy-MM-dd');
-  dobEndSearch = this.datePipe.transform(new Date('2004-08-16'), 'yyyy-MM-dd');
-  workFromSearch = this.datePipe.transform(new Date('2010-01-01'), 'yyyy-MM-dd');
 
   constructor(private employeeService: EmployeeService,
               private title: Title,
@@ -50,15 +48,15 @@ export class EmployeeListComponent implements OnInit {
     this.formSearch = new FormGroup({
       code: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+$'), Validators.maxLength(20)]),
       // tslint:disable-next-line:max-line-length
-      name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'), Validators.maxLength(20)]),
-      dobfrom: new FormControl(this.dobFromSearch, [this.checkAge]),
-      dobend: new FormControl(this.dobEndSearch, [this.checkAge]),
-      workf: new FormControl(this.workFromSearch, [this.dateInFuture, this.dateNotExist]),
-      workt: new FormControl(this.today, [this.dateInFuture, this.dateNotExist]),
+      name: new FormControl('', [Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$'), Validators.maxLength(20)]),
+      dobfrom: new FormControl(''),
+      dobend: new FormControl(''),
+      workf: new FormControl(''),
+      workt: new FormControl('', this.checkDayInFuture),
       position: new FormControl(''),
       // tslint:disable-next-line:max-line-length
       address: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'), Validators.maxLength(20)]),
-    }, [this.invalidDate, this.dobInvalidDate]);
+    }, [this.checkDate, this.checkDob]);
   }
 
   ngOnInit(): void {
@@ -68,10 +66,13 @@ export class EmployeeListComponent implements OnInit {
 
   getAll() {
     const getFormSearch = this.formSearch.value;
-
     this.employeeService.getEmployeeList(this.page, getFormSearch.code, getFormSearch.name, getFormSearch.dobfrom,
       getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
       getFormSearch.address).subscribe((value: any) => {
+        console.log(getFormSearch.workf);
+        console.log(getFormSearch.workt);
+        console.log(getFormSearch.dobfrom);
+        console.log(getFormSearch.dobend);
         this.employees = value.content;
         this.totalElements = value.totalElements;
       }, error => {
@@ -100,7 +101,6 @@ export class EmployeeListComponent implements OnInit {
       if (this.employees.isEmpty) {
         this.toastr.warning('Không có dữ liệu phù hợp.');
       }
-
       this.totalElements = value.totalElements;
     });
   }
@@ -129,13 +129,13 @@ export class EmployeeListComponent implements OnInit {
   }
 
   deleteEmployee() {
-    this.employeeService.deleteEmployee(this.idDelete).subscribe((value: any) => {
+    this.employeeService.deleteEmployee(this.idDelete).subscribe(value => {
       this.page = 0;
       this.toastr.success('Xóa nhân viên thành công');
     }, error => {
       console.log(error);
     }, () => {
-      this.ngOnInit();
+      this.getAll();
     });
   }
 
@@ -151,76 +151,42 @@ export class EmployeeListComponent implements OnInit {
 
   }
 
-  dateInFuture(abstractControl: AbstractControl) {
+  checkDayInFuture(abstractControl: AbstractControl): any {
+    console.log(abstractControl.value);
     if (abstractControl.value === '') {
       return null;
     }
-    const v = abstractControl.value;
-    const end = new Date(v);
-    if (end > new Date()) {
+    const now = new Date();
+    const endDate = new Date(abstractControl.value);
+    if (now < endDate) {
       return {futureDate: true};
-    } else {
-      return null;
-    }
-  }
-  dateNotExist(abstractControl: AbstractControl) {
-    const v = abstractControl.value;
-    const start = new Date(v);
-    if (!isDate(start)) {
-      return {dateNotExist: true};
-    }
-  }
-
-  invalidDate(abstractControl: AbstractControl) {
-    if (abstractControl.value === '') {
-      return null;
-    }
-    const v = abstractControl.value;
-    const start = new Date(v.workf);
-    const end = new Date(v.workt);
-    end.setDate(end.getDate() - 1);
-    if (start > end) {
-      return {dateNotValid: true};
-    } else {
-      return null;
-    }
-  }
-  dobInvalidDate(abstractControl: AbstractControl) {
-    if (abstractControl.value === '') {
-      return null;
-    }
-    const v = abstractControl.value;
-    const start = new Date(v.dobfrom);
-    const end = new Date(v.dobend);
-    end.setDate(end.getDate() - 1);
-    if (start > end) {
-      return {dobNotValid: true};
-    } else {
-      return null;
-    }
-  }
-
-  private checkAge(abstractControl: AbstractControl): any {
-    if (abstractControl.value === '') {
-      return null;
-    }
-    const today = new Date();
-    const birthDate = new Date(abstractControl.value);
-    if (!isDate(birthDate)) {
-      return {dateNotExist: true};
-    }
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const old = today.getMonth() - birthDate.getMonth();
-    if (old < 0 || (old === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    if (age <= 16) {
-      return {not18: true};
-    } else if (age >= 100) {
-      return {after100: true};
     }
     return null;
+  }
 
+  checkDate(abstractControl: AbstractControl): any {
+    const start = new Date(abstractControl.value.workf);
+    const end = new Date(abstractControl.value.workt);
+    if (abstractControl.value.workf === '' || abstractControl.value.workt === '') {
+      return null;
+    }
+    if (start < end) {
+      return {errorDate: true};
+    }
+    return null;
+  }
+
+
+  checkDob(abstractControl: AbstractControl): any {
+    const start = new Date(abstractControl.value.dobfrom);
+    const end = new Date(abstractControl.value.dobend);
+    if (abstractControl.value.dobfrom === '' || abstractControl.value.dobend === '') {
+      return null;
+    }
+    if (start < end) {
+      return {errorDob: true};
+    }
+    return null;
   }
 
   getPage(page) {
@@ -270,4 +236,18 @@ export class EmployeeListComponent implements OnInit {
     this.selectedEmployee = this.employees.filter(employee => employee.checked);
   }
 
+  reset() {
+    this.formSearch = new FormGroup({
+      code: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+$'), Validators.maxLength(20)]),
+      // tslint:disable-next-line:max-line-length
+      name: new FormControl('', [Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$'), Validators.maxLength(20)]),
+      dobfrom: new FormControl(''),
+      dobend: new FormControl(''),
+      workf: new FormControl(''),
+      workt: new FormControl('', this.checkDayInFuture),
+      position: new FormControl(''),
+      // tslint:disable-next-line:max-line-length
+      address: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'), Validators.maxLength(20)]),
+    }, [this.checkDate, this.checkDob]);
+  }
 }
