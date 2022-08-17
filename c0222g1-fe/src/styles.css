@@ -142,7 +142,7 @@ li.active::after {
 .list-image-game {
   width: 35rem;
   margin-right: 1rem;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .list-row {
@@ -214,6 +214,16 @@ li.active::after {
   height: auto;
   transition: .5s ease;
   backface-visibility: hidden;
+}
+
+.image-carousel {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+  border-radius: 15px;
 }
 
 .middle {

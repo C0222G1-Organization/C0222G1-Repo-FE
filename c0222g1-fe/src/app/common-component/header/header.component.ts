@@ -74,7 +74,6 @@ export class HeaderComponent implements OnInit {
       });
     });
 
-
     setTimeout(() => {
       if (sessionStorage.getItem('loopTimeCustomer') !== null) {
         if (sessionStorage.getItem('loopTimeCustomer') === '0') {

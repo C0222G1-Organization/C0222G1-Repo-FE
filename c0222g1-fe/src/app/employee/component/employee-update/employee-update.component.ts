@@ -45,8 +45,8 @@ export class EmployeeUpdateComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       phone: new FormControl(this.employee.phone, [Validators.required, Validators.pattern('^(0|84+)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$')]),
       dob: new FormControl(this.employee.dob, [Validators.required, this.check18Age]),
-    // tslint:disable-next-line:max-line-length
-      salary: new FormControl(this.employee.salary, [Validators.required, Validators.pattern('^[^ ][\\\\w\\\\W ]+[^ ]$'), Validators.min(5), Validators.max(10)]),
+      // tslint:disable-next-line:max-line-length
+      salary: new FormControl(this.employee.salary, [Validators.required, Validators.minLength(5), Validators.maxLength(10)]),
       startWork: new FormControl(this.employee.startWork, [Validators.required]),
       statusDelete: new FormControl(0, [Validators.required]),
       image: new FormControl(this.employee.image, [Validators.required]),
@@ -56,9 +56,18 @@ export class EmployeeUpdateComponent implements OnInit {
         password: new FormControl(this.appUser.password, [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
       }),
       position: new FormControl(this.employee.position, [Validators.required]),
-      commune: new FormControl(this.employee.commune, [Validators.required]),
-      province: new FormControl(this.employee.province, [Validators.required]),
-      district: new FormControl(this.employee.district, [Validators.required])
+      commune: new FormGroup({
+        id: new FormControl(),
+        name: new FormControl()
+      }),
+      district: new FormGroup({
+        id: new FormControl(),
+        name: new FormControl()
+      }),
+      province: new FormGroup({
+        id: new FormControl(),
+        name: new FormControl()
+      })
     }, this.checkStartDate
   );
 
@@ -70,39 +79,73 @@ export class EmployeeUpdateComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.id = Number(this.activatedRoute.snapshot.params.id);
+    this.findEmployeeById(this.id);
     this.employeeService.getPositionList().subscribe(value => {
       this.positionList = value;
-      console.log(this.positionList);
     });
+    this.getAllProvince();
+  }
+
+  findEmployeeById(id) {
+    this.employeeService.findByIdEmployee(id).subscribe(value => {
+      this.employee = value;
+      this.employee.appUser.password = '';
+      console.log(this.employee);
+      this.employeeFormEdit.patchValue(value);
+      this.employeeFormEdit.patchValue({commune: this.employee.commune});
+      this.employeeFormEdit.patchValue({district: this.employee.commune.district});
+      this.employeeFormEdit.patchValue({province: this.employee.commune.district.province});
+      console.log(this.employeeFormEdit);
+      this.getDistrictsByProvinceId();
+      this.getCommunesByDistrictId();
+    });
+  }
+
+  getAllProvince() {
     this.employeeService.getAllProvince().subscribe(value => {
       this.provinceList = value;
       console.log(this.provinceList);
     });
-    this.id = Number(this.activatedRoute.snapshot.params.id);
-    this.findById(this.id);
-
   }
+
+  getDistrictsByProvinceId() {
+    this.employeeService.getDistrictsByProvinceId(this.employee.commune.district.province.id).subscribe(value => {
+      this.districtList = value;
+    });
+  }
+
+  getCommunesByDistrictId() {
+    this.employeeService.getCommunesByDistrictId(this.employee.commune.district.id).subscribe(value => {
+      this.communeList = value;
+      console.log(this.communeList);
+    });
+  }
+
+
   getCommuneList($event: Event) {
-    console.log($event);
     // @ts-ignore
     if ($event === '') {
       this.communeList = [];
     } else {
-      this.employeeService.getAllCommune(Number($event)).subscribe(
+      this.employeeService.getCommunesByDistrictId(Number($event)).subscribe(
         value => this.communeList = value);
       console.log(this.communeList);
     }
   }
+
   getDistrictList($event: Event) {
-    console.log('test');
-    console.log($event);
     // @ts-ignore
     if ($event === '') {
       this.districtList = [];
       this.communeList = [];
     } else {
-      this.employeeService.getAllDistrict(Number($event)).subscribe(
-        value => this.districtList = value);
+      this.employeeService.getDistrictsByProvinceId(Number($event)).subscribe(
+        districts => {
+          this.districtList = districts;
+          this.employeeService.getCommunesByDistrictId(this.districtList[0].id).subscribe(
+            communes => this.communeList = communes);
+        });
     }
   }
 
@@ -150,30 +193,18 @@ export class EmployeeUpdateComponent implements OnInit {
       this.msg = 'You must select an image';
       return;
     }
-
     const mimeType = event.target.files[0].type;
-
     if (mimeType.match(/image\/*/) == null) {
       this.msg = 'Only images are supported';
       return;
     }
-
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
-
-
     // tslint:disable-next-line:variable-name
     reader.onload = (_event) => {
       this.msg = '';
       this.url = reader.result;
     };
-  }
-
-  findById(id) {
-    this.employeeService.findByIdEmployee(id).subscribe(value => {
-      this.employeeFormEdit.patchValue(value);
-      console.log(value);
-    });
   }
 
   cancel() {
@@ -192,8 +223,6 @@ export class EmployeeUpdateComponent implements OnInit {
       finalize(() => {
         fileRef.getDownloadURL().subscribe((url) => {
           this.employeeFormEdit.patchValue({image: url});
-          console.log(url);
-          console.log(this.employeeFormEdit.value);
           this.employeeService.editEmployee(this.id, this.employeeFormEdit.value).subscribe(
             () => {
               this.toastr.success('Lưu thành công', 'Nhân Viên');

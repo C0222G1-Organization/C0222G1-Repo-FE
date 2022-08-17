@@ -83,7 +83,7 @@
           <div class="form-floating textbox mb-4" formGroupName="phoneNumber">
             <input type="text" class="form-control input"
                    id="phone-number" placeholder="Họ và tên"
-                   style="padding-top: 10px" formControlName="phone" (change)="checkPhone($event.target.value)">
+                   style="padding-top: 10px" formControlName="phone" (change)="checkPhone($event.target.value)" autocomplete="off">
             <label for="phone-number" style="color: white">
               Số điện thoại
               <span class="text-danger">*</span>

@@ -19,7 +19,7 @@
 
           <!--        check box chọn tất cả-->
 
-          <div class="d-flex " *ngIf="role === 'ADMIN'">
+          <div class="d-flex " *ngIf="role === 'ADMIN' || role === 'EMPLOYEE'">
             <div class="form-group mx-5 box">
               <input style="float: right" type="checkbox" id="html" [checked]="isAllCheckBoxChecked()"
                      (change)="checkAllCheckBox($event)">
@@ -69,19 +69,19 @@
               <button class="btn btn-outline-secondary" style="float: right;"
                       (click)="valueOfDelete(product.nameProduct, product.id)"
                       data-bs-toggle="modal"
-                      data-bs-target="#deleteModal" *ngIf="role === 'ADMIN'"><i style=" font-size: 1rem"
+                      data-bs-target="#deleteModal" *ngIf="role === 'ADMIN' || role === 'EMPLOYEE'"><i style=" font-size: 1rem"
                                                                                 class="fa-solid fa-trash"></i>
               </button>
-              <button class="btn btn-outline-secondary" style="margin-left: 45px" *ngIf="role === 'ADMIN'">
+              <button class="btn btn-outline-secondary" style="margin-left: 45px" *ngIf="role === 'ADMIN' || role === 'EMPLOYEE'">
                 <i style=" font-size: 1rem" class="fa-solid fa-pencil"></i>
               </button>
-              <div *ngIf="product.quantity <= 5 && role === 'ADMIN'">
+              <div *ngIf="product.quantity <= 5 &&( role === 'ADMIN' || role === 'EMPLOYEE')">
                 <span class="card-notify-year-custom">x{{product.quantity}}</span>
               </div>
-              <div *ngIf="product.quantity > 5 && role === 'ADMIN'">
+              <div *ngIf="product.quantity > 5 && (role === 'ADMIN'|| role === 'EMPLOYEE')">
                 <span class="card-notify-year">x{{product.quantity}}</span>
               </div>
-              <div *ngIf="role === 'ADMIN'">
+              <div *ngIf="role === 'ADMIN' || role === 'EMPLOYEE'">
                 <input class="card-notify-year-checkbox" type="checkbox" value="{{product.id}}"
                        [(ngModel)]="productList[i].checked" (click)="checkProduct(product.id)">
               </div>
@@ -90,7 +90,7 @@
         </div>
       </div>
       <br>
-      <div style="float: right" *ngIf="role === 'ADMIN' && productList.length > 0">
+      <div style="float: right" *ngIf="(role === 'ADMIN' || role === 'EMPLOYEE') && productList.length > 0">
         <button class="btn btn-primary" data-bs-toggle="modal"
                 data-bs-target="#deleteAll">Xóa tất cả
         </button>
