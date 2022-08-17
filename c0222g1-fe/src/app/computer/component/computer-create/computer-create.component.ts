@@ -26,15 +26,14 @@ export class ComputerCreateComponent implements OnInit {
       location: new FormControl('', [Validators.required,
         Validators.pattern('^[A-Z][0-9]{4}$')]),
       startUsedDate: new FormControl('', [Validators.required, this.checkYear]),
-      configuration: new FormControl('', [Validators.required, Validators.minLength(2),
+      configuration: new FormControl('', [Validators.required, Validators.minLength(3),
         Validators.maxLength(20), Validators.pattern('^\\w+( \\w+)*$')]),
       manufacturer: new FormControl('', [Validators.required, Validators.minLength(1),
         Validators.maxLength(20)]),
       deleteStatus: new FormControl(0),
       warranty: new FormControl('', Validators.required),
       computerType: new FormGroup({
-        id: new FormControl('', Validators.required),
-        name: new FormControl('', Validators.required)
+        id: new FormControl('', Validators.required)
       })
     }, this.checkStartDate
   );

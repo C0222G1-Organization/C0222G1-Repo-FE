@@ -4,7 +4,7 @@
   <form [formGroup]="formEditComputer" (ngSubmit)="submit()" >
     <div class="form-floating textbox mb-4">
       <input type="text" class="form-control input" id="ma" placeholder="Mã máy" formControlName="code" style="padding-top: 10px"
-             (change)="checkCode($event.target.value)">
+             (change)="checkCode($event.target.value)" autocomplete="off">
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('code').touched
                 && formEditComputer.hasError('required', 'code')">Mã máy không được để trống.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('code').dirty
@@ -22,7 +22,6 @@
         <option disabled>Chọn tình trạng</option>
         <option value="0">Bảo trì</option>
         <option value="1">Bình thường</option>
-        <option value="1">Ổn định</option>
       </select>
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('status').touched
                 && formEditComputer.hasError('required', 'status')">Tình trạng  máy không được để trống.</p>
@@ -34,7 +33,7 @@
 
     <div class="form-floating textbox mb-4">
       <input type="text" class="form-control input" id="vi-tri" placeholder="Vị trí máy" formControlName="location" style="padding-top: 10px"
-             (change)="checkLocation($event.target.value)">
+             (change)="checkLocation($event.target.value)" autocomplete="off">
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').touched
                 && formEditComputer.hasError('required', 'location')">Vị trí máy không được để trống.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').dirty
@@ -54,7 +53,6 @@
                 && formEditComputer.hasError('required', 'startUsedDate')">Ngày không được để trống.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('startUsedDate').dirty
                 && formEditComputer.hasError('dateerror')">Ngày đưa vào hoạt dộng phải bé hơn ngày hiện tại.</p>
-
       <label for="start" style="color: white">
         Ngày đưa vào hoạt động
         <span class="text-danger">*</span>
@@ -63,7 +61,7 @@
 
     <div class="form-floating textbox mb-3">
       <input type="text" class="form-control input" id="setting" placeholder="cấu hình" formControlName="configuration"
-             style="padding-top: 10px">
+             style="padding-top: 10px" autocomplete="off">
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').touched
                 && formEditComputer.hasError('required', 'configuration')">Vị trí máy không được để trống.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').touched
