@@ -3,6 +3,9 @@ import {ProductService} from '../../service/product.service';
 import {Product} from '../../model/Product';
 import {ProductCategory} from '../../model/ProductCategory';
 import {ToastrService} from 'ngx-toastr';
+import {Title} from '@angular/platform-browser';
+import {Router} from '@angular/router';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-product',
@@ -10,6 +13,12 @@ import {ToastrService} from 'ngx-toastr';
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
+  map = new Map<any, any>();
+
+  constructor(private productService: ProductService,
+              private toast: ToastrService,
+              private titleService: Title, private route: Router) {
+  }
 
   nameProduct = '';
   name = '';
@@ -20,12 +29,22 @@ export class ProductComponent implements OnInit {
   page = 0;
   totalElements: number;
   pages: any;
-  selectedProducts: any[] = [];
+  selectedIdProducts: any[] = [];
+  selectedNameProducts: any[] = [];
+  role: any;
 
-  constructor(private productService: ProductService, private toast: ToastrService) {
+
+  formProduct = new FormGroup({
+    nameProduct: new FormControl('', Validators.pattern('^[\-0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s?]+$'))
+  });
+
+  checkRole(): string {
+    return sessionStorage.getItem('roles');
   }
 
   ngOnInit(): void {
+    this.role = this.checkRole();
+    this.titleService.setTitle('Danh sách dịch vụ');
     this.getAllProduct();
     this.getAllProductCategory();
     if (this.totalElements === 1) {
@@ -45,9 +64,9 @@ export class ProductComponent implements OnInit {
         this.pages = value.totalPages;
       }
     }, error => {
+      this.route.navigateByUrl('/500');
     });
   }
-
 
   getAllProductCategory() {
     this.productService.findAllProductCategory().subscribe(value => {
@@ -56,6 +75,7 @@ export class ProductComponent implements OnInit {
   }
 
   search() {
+    this.name = this.name.trim();
     if (this.page !== 0) {
       this.page = 0;
     }
@@ -74,8 +94,7 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  getPage(event: number
-  ) {
+  getPage(event: number) {
     this.page = event - 1;
     this.getAllProduct();
   }
@@ -103,31 +122,44 @@ export class ProductComponent implements OnInit {
     this.id = id;
   }
 
-  isAllCheckBoxChecked() {
-    if (this.productList.length !== 0) {
-      return this.productList.every(p => p.checked);
+  getSelectedProducts() {
+    this.selectedNameProducts = this.productList.filter(product => product.checked);
+    console.log(this.selectedNameProducts);
+  }
+
+  checkProduct(id: number) {
+    for (const product of this.productList) {
+      if (product.id === id) {
+        product.checked = product.checked !== true;
+        break;
+      }
     }
+    this.getSelectedProducts();
+  }
+
+  isAllCheckBoxChecked() {
+    this.productList.forEach(value => {
+      if (value.checked === true) {
+        this.map.set(value.id, value);
+      } else {
+        this.map.delete(value.id);
+      }
+      console.log(value);
+    });
+    return this.productList.every(e => e.checked);
   }
 
   checkAllCheckBox(event: any) {
     this.productList.forEach(x => x.checked = event.target.checked);
+    this.getSelectedProducts();
   }
 
   deleteProductList() {
-    this.selectedProducts = this.productList.filter(product => product.checked).map(p => p.id);
-
-    for (const product of this.selectedProducts) {
+    this.selectedIdProducts = this.productList.filter(product => product.checked).map(p => p.id);
+    for (const product of this.selectedIdProducts) {
       this.id = product;
       this.productService.delete(this.id).subscribe(value => {
-
-        if (this.productList.length === 1) {
-          if (this.page === 0) {
-            this.page = 0;
-          } else {
-            this.page -= 1;
-          }
-        }
-        if (this.productList.length > 1) {
+        if (this.productList.length === this.selectedIdProducts.length) {
           if (this.page === 0) {
             this.page = 0;
           } else {
@@ -140,7 +172,7 @@ export class ProductComponent implements OnInit {
         this.ngOnInit();
       });
     }
-    if (this.selectedProducts.length > 0) {
+    if (this.selectedIdProducts.length > 0) {
       this.toast.success('Xóa sản phẩm thành công');
     }
   }

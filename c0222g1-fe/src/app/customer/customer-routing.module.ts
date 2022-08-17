@@ -17,12 +17,12 @@ const routes: Routes = [
     path: 'customers/edit/:id', component: EditCustomerComponent
   },
   {
-    path: 'home-page-customer',
+    path: 'customers/home-page',
     component: HomePageCustomerComponent,
     canActivate: [AuthGuardCustomerService]
   },
   {
-    path: 'home-page-customer/info',
+    path: 'customers/home-page/info',
     component: CustomerInformationComponent
   },
   {
