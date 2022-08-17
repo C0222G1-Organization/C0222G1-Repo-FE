@@ -9,6 +9,7 @@
 .pl {
   padding-left: 1em;
 }
-.text-indent {
-  text-indent: 2em;
+
+img {
+  width: 100% !important;
 }

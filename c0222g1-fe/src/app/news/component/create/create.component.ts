@@ -8,16 +8,19 @@ import {finalize} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {Title} from '@angular/platform-browser';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css']
 })
+
 export class CreateComponent implements OnInit {
   checkImgSize = false;
   checkImg: boolean;
   regexImg = false;
+  public Editor = ClassicEditor;
 
   constructor(private newsService: NewsService,
               private storage: AngularFireStorage,
@@ -36,11 +39,8 @@ export class CreateComponent implements OnInit {
     createDate: new FormControl(this.getCurrentDateTime()),
     views: new FormControl(0),
     author: new FormControl('', [Validators.required,
-      Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]' +
-        // tslint:disable-next-line:max-line-length
-        '[a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*' +
-        '(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]' +
-        '[a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$'),
+      // tslint:disable-next-line:max-line-length
+      Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$'),
       Validators.minLength(2), Validators.maxLength(50)]),
     gameCategory: new FormControl('', [Validators.required])
   });
@@ -53,6 +53,8 @@ export class CreateComponent implements OnInit {
       value => this.gameCateList = value
     );
   }
+
+
 
   onFileSelected(event) {
     this.regexImg = false;
