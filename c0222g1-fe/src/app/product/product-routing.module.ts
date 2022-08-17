@@ -4,8 +4,7 @@ import {ProductComponent} from './component/product/product.component';
 
 const routes: Routes = [
 
-  {path: 'products', component: ProductComponent},
-  // Phải là role 'ADMIN' mới được truy cập vào TruongTX
+  {path: 'products', component: ProductComponent}
 
 ];
 

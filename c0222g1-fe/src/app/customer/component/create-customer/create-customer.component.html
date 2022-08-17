@@ -45,7 +45,7 @@
             </label>
             <div class="mb-3 text-danger"
                  *ngIf="customerForm.controls.dateOfBirth.hasError('required')&& customerForm.controls.dateOfBirth.touched">
-              <small>Ngày sinh không được để trống.</small>
+              <small>Ngày sinh không được để trống hoặc không có ngày này.</small>
             </div>
             <div class="mb-3 text-danger"
                  *ngIf="customerForm.controls.dateOfBirth.hasError('not16') &&
@@ -73,10 +73,10 @@
                  *ngIf="getEmail().invalid && (getEmail().touched || getEmail().dirty) && getEmail().errors.pattern">
               <small>Nhập đúng định dạng email.</small>
             </div>
-            <div class="mb-3 text-danger"
-                 *ngIf="isExitsEmail == true">
-              <small>Email này đã tồn tại.</small>
-            </div>
+<!--            <div class="mb-3 text-danger"-->
+<!--                 *ngIf="isExitsEmail == true">-->
+<!--              <small>Email này đã tồn tại.</small>-->
+<!--            </div>-->
           </div>
         </div>
         <div class="col-md-6 " style="padding-right: 15px">
