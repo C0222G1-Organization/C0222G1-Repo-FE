@@ -13,4 +13,5 @@ export interface UpdateCustomerDto {
   password: string;
   activeStatus: number;
   commune: Commune;
+  remainingTime: number;
 }

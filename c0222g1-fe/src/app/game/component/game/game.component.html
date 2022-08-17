@@ -5,18 +5,18 @@
         <input [(ngModel)]="gameName" (keydown.enter)="searchGameByName()"
                class="search form-control-sm me-2 text-white" type="search" placeholder="  Tìm kiếm" aria-label="Search">
       </div>
-    </div>
-    <div class="d-flex row mb-3">
-      <div class="form-group box">
-        <input hidden style="float: right" type="checkbox" id="html" [checked]="isAllCheckBoxChecked()"
-               (change)="checkMultipleCheckBox($event)">
-        <label class="box" for="html">
-          <span class="label-custom" style="justify-content: center"> Chọn tất cả</span>
-        </label>
-        <button [disabled]="selectedGames.length == 0" class="btn btn-opacity-border-sm text-white"
-                data-bs-toggle="modal" data-bs-target="#deleteMultipleModal"
-                (click)="getSelectedGames()" style="margin-left: 1rem">Xóa
-        </button>
+      <div class="p-0 col-6 d-flex justify-content-end">
+        <div class="form-group box">
+          <input hidden style="float: right" type="checkbox" id="html" [checked]="isAllCheckBoxChecked()"
+                 (change)="checkMultipleCheckBox($event)">
+          <label class="box" for="html">
+            <span class="label-custom" style="justify-content: center"> Chọn tất cả</span>
+          </label>
+          <button [disabled]="selectedGames.length == 0" class="btn btn-opacity-border-sm text-white"
+                  data-bs-toggle="modal" data-bs-target="#deleteMultipleModal"
+                  (click)="getSelectedGames()" style="margin-left: 1rem; margin-right: 4rem">Xóa
+          </button>
+        </div>
       </div>
     </div>
     <div class="row mb-3">
@@ -31,22 +31,21 @@
                [src]="game.imageUrl"
                alt="Card image cap">
           <div class="middle">
-            <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
-            <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
-                    data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa
-            </button>
-          </div>
-          <div class="card-body row" style="justify-items: center">
-            <div class="row">
-              <p class="text-white text-title-sm">{{game.name}}</p>
+            <div class="row mb-2">
+              <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
             </div>
             <div class="row">
-              <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">
-                <button (click)="getGameAndUpdate(game.id)" class="btn-second btn-sm">Chơi</button>
-              </div>
-              <div class="col-xl-9 col-lg-9 col-md-0 col-sm-0">
-                <p class="card-text text-content">{{game.playedTimes}} lượt chơi</p>
-              </div>
+              <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
+                      data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
+            </div>
+          </div>
+          <div class="card-body row" style="justify-items: center">
+            <div class="row mb-2">
+              <a class="text-white text-decoration-none" routerLink="detail/{{game.id}}">{{game.name}}</a>
+            </div>
+            <div class="row">
+              <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
+                                                            class="btn-second btn-sm">Chơi</button>  {{ game.playedTimes}} lượt chơi</span>
             </div>
           </div>
           <div>
@@ -58,26 +57,20 @@
         <h5 class="text-white" style="margin-left: 1rem">Danh sách game rỗng</h5>
       </div>
     </div>
-    <div *ngIf="games.length != 0" class="row mb-0" style="margin-top: 1rem;">
-      <div class="w-100 d-flex justify-content-center">
+
+    <div class="row mt-3">
+      <div *ngIf="totalPages != 1" class="col-12 d-flex justify-content-center">
         <pagination-controls (pageChange)="getPage(page = $event)"
                              previousLabel="Trước"
                              nextLabel="Sau"
                              autoHide="true"
                              maxSize=7>
         </pagination-controls>
-      </div>
-    </div>
-    <div class="row align-items-center" *ngIf="games.length != 0">
-      <div class="w-100 d-flex justify-content-center">
-        <div class="col-auto m-1">
-          <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>
-        </div>
-        <div class="col-auto m-1">
-          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
+        <div>
+          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text mx-2"
                  (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
         </div>
-        <div class="col-auto m-1">
+        <div>
           <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
         </div>
       </div>
@@ -92,7 +85,7 @@
           <h5 class="modal-title text-white" id="exampleModalLabel">Thông báo</h5>
         </div>
         <div class="modal-body text-white">
-          Bạn có chắc chắn muốn xóa game {{this.selectedName}} hay không?
+          Bạn có chắc chắn muốn xóa game <b>{{this.selectedName}}</b> hay không?
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-second-non-border" data-bs-dismiss="modal">Đóng</button>

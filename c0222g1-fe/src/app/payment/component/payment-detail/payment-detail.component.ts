@@ -26,6 +26,7 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   productList: Product[];
   orderProductList = Array<Product>();
   totalPayment: number;
+  totalOfOrder: number;
   checkExist = false;
   quantity = 0;
   count = 1;

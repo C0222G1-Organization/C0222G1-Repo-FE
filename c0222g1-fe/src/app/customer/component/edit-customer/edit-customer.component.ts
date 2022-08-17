@@ -53,6 +53,9 @@ export class EditCustomerComponent implements OnInit {
   districtList: District[];
   communeList: Commune[];
   editCustomerForm: FormGroup;
+  isExitsUser = false;
+  isExitsEmail = false;
+  isExitsPhone = false;
 
   constructor(private customerService: CustomerService,
               private activatedRoute: ActivatedRoute,
@@ -64,24 +67,23 @@ export class EditCustomerComponent implements OnInit {
 
   ngOnInit(): void {
     this.editCustomerForm = new FormGroup({
-      // tslint:disable-next-line:max-line-length
-      name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s?]+$'), Validators.required]),
-      dateOfBirth: new FormControl('', [Validators.pattern('^[a-zA-Z\\s?]+$'), this.check16Age]),
+      name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨ' +
+        'ƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜ' +
+        'ỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s?]+$'), Validators.required,
+        Validators.minLength(5), Validators.maxLength(50), this.notBlank]),
+      dateOfBirth: new FormControl('', [Validators.pattern('^[a-zA-Z\\s?]+$'), Validators.required, this.check16Age]),
       email: new FormGroup({
-        id: new FormControl(0),
         email: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+@[A-Za-z0-9]+(\\.[A-Za-z0-9]+){1,2}$'), Validators.required])
       }),
       phoneNumber: new FormGroup({
-        id: new FormControl(0),
-        phone: new FormControl('', [Validators.pattern('^[0-9]{10,12}$'), Validators.required])
+        phone: new FormControl('' , [Validators.pattern('^[0-9]{10,12}$'), Validators.required])
       }),
       userName: new FormGroup({
-        id: new FormControl(0),
-        userName: new FormControl('', Validators.required)
+        userName: new FormControl('', [Validators.required, this.notBlank, Validators.pattern('[a-zA-z0-9]{5,50}') ])
       }),
       // tslint:disable-next-line:max-line-length
       password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
-      activeStatus: new FormControl(''),
+      activeStatus: new  FormControl(''),
       province: new FormGroup({
         id: new FormControl(0),
         name: new FormControl('', Validators.required),
@@ -98,11 +100,9 @@ export class EditCustomerComponent implements OnInit {
     const id = Number(this.activatedRoute.snapshot.params.id);
     this.customerService.getCustomerByID(id).subscribe(value => {
         this.customerEdit = value;
-        console.log(value);
         this.editCustomerForm.patchValue(this.customerEdit);
         this.editCustomerForm.patchValue({district: value.commune.district});
         this.editCustomerForm.patchValue({province: value.commune.district.province});
-        console.log(this.editCustomerForm);
       },
       error => {
       },
@@ -135,6 +135,12 @@ export class EditCustomerComponent implements OnInit {
     });
   }
 
+  private notBlank(abstractControl: AbstractControl): any {
+    // tslint:disable-next-line:variable-name
+    const string: string = abstractControl.value;
+    return (string.charAt(0) === ' ' || string.charAt(string.length - 1) === ' ') ? {notBlank: true} : null;
+  }
+
   private check16Age(abstractControl: AbstractControl): any {
     const today = new Date();
     const birthDate = new Date(abstractControl.value);
@@ -144,6 +150,10 @@ export class EditCustomerComponent implements OnInit {
       age--;
     }
     return (age >= 16) ? null : {not16: true};
+  }
+
+  cancel() {
+    this.editCustomerForm.reset();
   }
 
   getUser() {
@@ -188,9 +198,43 @@ export class EditCustomerComponent implements OnInit {
     }
   }
 
-  compareCommuneId(item1, item2) {
-    return item1 && item2 && item1.id === item2.id;
+  checkUserName($event: Event) {
+    this.customerService.checkUserName(String($event)).subscribe(
+      value => {
+        if (value) {
+          this.isExitsUser = true;
+        }
+      }
+    );
+    if (String($event) === '') {
+      this.isExitsUser = false;
+    }
   }
 
+  checkEmail($event: Event) {
+    if (String($event) === '') {
+      this.isExitsEmail = false;
+    }
+    this.customerService.checkEmail(String($event)).subscribe(
+      value => {
+        if (value) {
+          this.isExitsEmail = true;
+        }
+      }
+    );
+  }
+  checkPhone($event: Event) {
+    this.customerService.checkPhone(String($event)).subscribe(
+      value => {
+        if (value) {
+          this.isExitsPhone = true;
+        }
+      }
+    );
+    if (String($event) === '') {
+      this.isExitsPhone = false;
+    }
+    console.log(this.isExitsPhone);
+  }
 }
 
