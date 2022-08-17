@@ -31,7 +31,6 @@ import { ServerErrorComponent } from './common-component/server-error/server-err
 import { NotFoundComponent } from './common-component/not-found/not-found.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 
-
 @NgModule({
   declarations: [
     AppComponent,

@@ -8,6 +8,7 @@ import {District} from '../../model/district';
 import {Commune} from '../../model/commune';
 import {ToastrService} from 'ngx-toastr';
 import {Title} from '@angular/platform-browser';
+import {CustomerDTO} from "../../model/customerDTO";
 
 
 @Component({
@@ -67,9 +68,10 @@ export class EditCustomerComponent implements OnInit {
 
   ngOnInit(): void {
     this.editCustomerForm = new FormGroup({
-      name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨ' +
-        'ƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜ' +
-        'ỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s?]+$'), Validators.required,
+      name: new FormControl('', [Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]' +
+        '[a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*' +
+        '(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]' +
+        '[a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$'), Validators.required,
         Validators.minLength(5), Validators.maxLength(50), this.notBlank]),
       dateOfBirth: new FormControl('', [Validators.pattern('^[a-zA-Z\\s?]+$'), Validators.required, this.check16Age]),
       email: new FormGroup({
@@ -116,11 +118,14 @@ export class EditCustomerComponent implements OnInit {
   }
 
   onsubmit() {
-    const customerDTO = this.editCustomerForm.value;
+    const customerDTO: UpdateCustomerDto = this.editCustomerForm.value;
     customerDTO.id = this.customerEdit.id;
+    customerDTO.userName.id = this.customerEdit.id;
+    customerDTO.phoneNumber.id = this.customerEdit.id;
+    customerDTO.email.id = this.customerEdit.id;
     this.customerService.updateCustomer(this.customerEdit.id, this.editCustomerForm.value).subscribe(res => {
       this.toast.success('Chỉnh sửa thông tin khách hàng thành công!');
-      this.route.navigateByUrl('/listCustomer');
+      this.route.navigateByUrl('/customers');
       this.editCustomerForm.reset();
     }, error => {
       if (error.error.email !== undefined) {
@@ -142,8 +147,14 @@ export class EditCustomerComponent implements OnInit {
   }
 
   private check16Age(abstractControl: AbstractControl): any {
+    if (abstractControl.value === '') {
+      return null;
+    }
     const today = new Date();
     const birthDate = new Date(abstractControl.value);
+    if (birthDate === undefined) {
+      return true;
+    }
     let age = today.getFullYear() - birthDate.getFullYear();
     const m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
@@ -153,7 +164,7 @@ export class EditCustomerComponent implements OnInit {
   }
 
   cancel() {
-    this.editCustomerForm.reset();
+    this.route.navigateByUrl('/customers');
   }
 
   getUser() {
@@ -199,11 +210,9 @@ export class EditCustomerComponent implements OnInit {
   }
 
   checkUserName($event: Event) {
-    this.customerService.checkUserName(String($event)).subscribe(
+    this.customerService.checkUserNameInEdit(String($event), this.customerEdit.id).subscribe(
       value => {
-        if (value) {
-          this.isExitsUser = true;
-        }
+        this.isExitsUser = !!value;
       }
     );
     if (String($event) === '') {

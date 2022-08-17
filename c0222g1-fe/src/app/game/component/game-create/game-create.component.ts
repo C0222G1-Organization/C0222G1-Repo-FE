@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Game} from '../../model/game';
 import {GameCategory} from '../../model/game-category';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {GameService} from '../../service/game.service';
 import {GameCategoryService} from '../../service/game-category.service';
 import {finalize, min} from 'rxjs/operators';
@@ -10,6 +10,8 @@ import {ToastrService} from 'ngx-toastr';
 import {Observable} from 'rxjs';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {formatDate} from '@angular/common';
+import {Router} from '@angular/router';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-game-create',
@@ -18,33 +20,37 @@ import {formatDate} from '@angular/common';
 })
 export class GameCreateComponent implements OnInit {
   gameForm: FormGroup;
-  count = 1;
   gameCategory: GameCategory[];
-  title = 'cloudsSorage';
   selectedFile: File = null;
   fb;
   downloadURL: Observable<string>;
   url: any;
   msg = '';
-
+  checkImgSize = false;
+  checkImg: boolean;
+  regexImg = false;
+  isExitsGameName = false;
   constructor(private gameService: GameService,
               private gameCategoryService: GameCategoryService,
               private toastr: ToastrService,
-              private storage: AngularFireStorage) {
+              private storage: AngularFireStorage,
+              private router: Router,
+              private title: Title) {
+    this.title.setTitle('Thêm mới thông tin game');
   }
 
   ngOnInit(): void {
     this.getAllGameCateGory();
     this.gameForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(5),
-        Validators.maxLength(100), Validators.pattern('^[\\w\\s]+$')]),
+      name: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(150)
+       ]),
       createDate: new FormControl(this.getCurrentDateTime()),
       playedTimes: new FormControl(0),
       trailerUrl: new FormControl('', [Validators.required,
         Validators.pattern('https?:\\/\\/(www\\.)?' +
           '[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}b([-a-zA-Z0-9()@:%_+.~#?&//=]*)')]),
-      imageUrl: new FormControl('', [Validators.required]),
-      content: new FormControl('', [Validators.required]),
+      imageUrl: new FormControl('', [Validators.required], ),
+      content: new FormControl('', [Validators.required , Validators.minLength(15)]),
       gameCategory: new FormGroup({
         id: new FormControl('', Validators.required)
       })
@@ -56,15 +62,39 @@ export class GameCreateComponent implements OnInit {
       this.gameCategory = gameCategory;
     });
   }
+
   getCurrentDateTime(): string {
     return formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss', 'en-US');
   }
-  // show image
-  selectFile(event: any) {
-    if (!event.target.files[0] || event.target.files[0].length === 0) {
-      this.msg = 'You must select an image';
+
+
+
+  onFileSelected(event) {
+    this.regexImg = false;
+    if (event.target.files[0].size > 9000000) {
       return;
     }
+    this.selectedFile = event.target.files[0];
+    if (!event.target.files[0].name.match('^.*\\.(jpg|JPG)$')) {
+      this.regexImg = true;
+      return;
+    }
+    this.gameForm.patchValue({imageUrl: this.selectedFile.name});
+  }
+
+  selectFile(event: any) {
+    if (!event.target.files[0] || event.target.files[0].length === 0) {
+      return;
+    }
+    if (event.target.files[0].size > 9000000) {
+      this.checkImgSize = true;
+      return;
+    }
+    if (!event.target.files[0].name.match('^.*\\.(jpg|JPG)$')) {
+      return;
+    }
+    this.checkImgSize = false;
+    this.checkImg = false;
 
     const mimeType = event.target.files[0].type;
 
@@ -82,47 +112,51 @@ export class GameCreateComponent implements OnInit {
       this.url = reader.result;
     };
   }
-  // firebase
-  onFileSelected(event) {
-    const n = Date.now();
-    const file = event.target.files[0];
-    const filePath = `RoomsImages/${n}`;
+  create() {
+    // if (this.gameForm.invalid) {
+    //   this.toastr.error('Nhập đầy đủ thông tin.');
+    //   return;
+    // }
+    const imageUrl = this.getCurrentDateTime() + this.selectedFile.name;
+    const filePath = `game/${imageUrl}`;
     const fileRef = this.storage.ref(filePath);
-    const task = this.storage.upload(`RoomsImages/${n}`, file);
-    console.log('check!');
-    task
-      .snapshotChanges()
-      .pipe(
-        finalize(() => {
-          this.downloadURL = fileRef.getDownloadURL();
-          this.downloadURL.subscribe(url => {
-            if (url) {
-              this.fb = url;
-              this.gameForm.patchValue({imageUrl: url});
-            }
-            console.log(this.fb);
-          });
-        })
-      )
-      .subscribe(url => {
-        if (url) {
+    this.storage.upload(`game/${imageUrl}`, this.selectedFile).snapshotChanges().pipe(
+      finalize(() => {
+        fileRef.getDownloadURL().subscribe((url) => {
+          this.gameForm.patchValue({imageUrl: url});
           console.log(url);
-        }
-      });
-  }
-
-  addNewGame() {
-    console.log(this.gameForm.value);
-    this.gameService.createGame(this.gameForm.value)
-      .subscribe(
-        response => {
-          console.log(response);
-          this.toastr.success('Tạo mới thành công!!');
-        },
-        error => {
-          console.log(error);
+          console.log(this.gameForm.value);
+          this.gameService.createGame(this.gameForm.value).subscribe(
+            () => {
+              this.router.navigateByUrl('/games');
+              this.toastr.success('Tạo mới thàng công.');
+            },
+            error => {
+              this.toastr.error('Tạo mới thất bại thất bại, hãy thử lại!.');
+            }
+          );
         });
-    this.gameForm.reset();
+      })
+    ).subscribe(); }
+  checkImage() {
+    if (!this.selectedFile || this.selectedFile.name === '') {
+      this.checkImg = true;
+      return;
+    }
+  }
+  checkGameName($event: Event) {
+    this.gameService.checkGameName(String($event)).subscribe(
+      value => {
+        if (value) {
+          this.isExitsGameName = true;
+        } else {
+          this.isExitsGameName = false;
+        }
+      }
+    );
+    if (String($event) === '') {
+      this.isExitsGameName = false;
+    }
   }
 }
 
