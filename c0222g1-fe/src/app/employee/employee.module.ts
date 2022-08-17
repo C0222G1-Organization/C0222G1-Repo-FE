@@ -8,10 +8,11 @@ import {EmployeeListComponent} from './component/employee-list/employee-list.com
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { EmployeeUpdateComponent } from './component/employee-update/employee-update.component';
 
 
 @NgModule({
-  declarations: [EmployeeListComponent, EmployeeCreateComponent],
+  declarations: [EmployeeListComponent, EmployeeCreateComponent, EmployeeUpdateComponent],
     imports: [
         CommonModule,
         EmployeeRoutingModule,

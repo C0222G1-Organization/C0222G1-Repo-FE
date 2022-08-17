@@ -30,23 +30,22 @@ export class EmployeeCreateComponent implements OnInit {
   msg = '';
   selectedFile: File = null;
 
-  provinceForm: FormGroup = new FormGroup({
-    province: new FormControl('', Validators.required)
-  });
 
   employeeForm = new FormGroup({
       code: new FormControl('', [Validators.required, Validators.pattern('^EMP[0-9]{4}$')]),
-      name: new FormControl('', [Validators.required, Validators.pattern('^([A-Z][^A-Z0-9\\s]+)(\\s[A-Z][^A-Z0-9\\s]+)*$')]),
-      email: new FormControl('', [Validators.required, Validators.email]),
+    // tslint:disable-next-line:max-line-length
+      name: new FormControl('', [Validators.required, Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$')]),
+      email: new FormControl('', [Validators.required, Validators.email,  Validators.pattern('^[^ ][\\\\w\\\\W ]+[^ ]$')]),
     // tslint:disable-next-line:max-line-length
       phone: new FormControl('', [Validators.required, Validators.pattern('^(0|84+)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$')]),
-      dob: new FormControl('', [Validators.required, this.checkAge18]),
-      salary: new FormControl('', [Validators.required]),
+      dob: new FormControl('', [Validators.required, this.check18Age]),
+    // tslint:disable-next-line:max-line-length
+      salary: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\\\w\\\\W ]+[^ ]$'), Validators.min(5), Validators.max(10)]),
       startWork: new FormControl('', [Validators.required]),
       statusDelete: new FormControl(0, [Validators.required]),
       image: new FormControl('', [Validators.required]),
     appUser: new FormGroup({
-        username: new FormControl('', Validators.required),
+        username: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\\\w\\\\W ]+[^ ]$')]),
       // tslint:disable-next-line:max-line-length
         password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
       }),
@@ -69,20 +68,6 @@ export class EmployeeCreateComponent implements OnInit {
     this.employeeService.getAllProvince().subscribe(value => this.provinceList = value);
   }
 
-  // createEmployee() {
-  //   this.employee = this.employeeForm.value;
-  //   console.log(this.employee)
-  //   this.employeeService.create(this.employee).subscribe
-  //   (value => {
-  //       this.toastr.success("Thêm mới thành công", 'Nhân Viên')
-  //     },
-  //     error => {
-  //       this.toastr.error("Thêm mới thất bại", 'Nhân Viên')
-  //     },
-  //     () => {
-  //       this.ngOnInit()
-  //     })
-  // }
 
   getDistrictList($event: Event) {
     console.log('test');
@@ -97,9 +82,6 @@ export class EmployeeCreateComponent implements OnInit {
     }
   }
 
-  getProvince() {
-    return this.provinceForm.get('province').get('province');
-  }
 
   getCommuneList($event: Event) {
     console.log($event);
@@ -142,14 +124,28 @@ export class EmployeeCreateComponent implements OnInit {
     ).subscribe();
   }
 
+  cancel() {
+    this.toastr.error('Đã hủy bỏ', 'Nhân viên');
+    this.route.navigateByUrl('/employees');
+  }
+
+
   getCurrentDateTime(): string {
     return formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss', 'en-US');
   }
 
-  checkAge18(abstractControl: AbstractControl) {
-    const sYear = abstractControl.value.substr(0, 4);
-    const curYear = new Date().getFullYear();
-    return curYear - sYear >= 18 ? null : {not18: true};
+  private check18Age(abstractControl: AbstractControl): any {
+    if (abstractControl.value === '') {
+      return null;
+    }
+    const today = new Date();
+    const birthDate = new Date(abstractControl.value);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return (age >= 18) ? null : {not18: true};
   }
 
   checkStartDate(abstractControl: AbstractControl): any {
