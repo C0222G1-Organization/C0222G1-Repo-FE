@@ -33,22 +33,23 @@ export class EmployeeService {
                   pid: string,
                   address: string): Observable<Employee[]> {
 
-    if (dobfrom === '') {
-      dobfrom = '0000-00-00';
-    }
 
-    if (dobend === '') {
-      dobend = '9999-12-31';
-    }
-    if (workf === '') {
-      workf = '0000-00-00';
-    }
-    if (workt === '') {
-      workt = '9999-12-31';
-    }
+    // if (dobfrom === '') {
+    //   dobfrom = '1970-01-01';
+    // }
+    //
+    // if (dobend === '') {
+    //   dobend = '2004-01-01';
+    // }
+    // if (workf === '') {
+    //   workf = '2000-08-01';
+    // }
+    // if (workt === '') {
+    //   workf = '2022-08-01';
+    // }
     let params = new HttpParams();
-    params = params.append('code', code);
-    params = params.append('name', name);
+    params = params.append('code', code.trim());
+    params = params.append('name', name.trim());
     params = params.append('dobend', dobend);
     params = params.append('dobfrom', dobfrom);
     params = params.append('workt', workt);
@@ -66,6 +67,7 @@ export class EmployeeService {
   deleteEmployee(id: number): Observable<void> {
     return this.httpClient.delete<void>(apiUrl + `/employee/${id}`);
   }
+
   create(employee: Employee): Observable<void> {
     console.log(employee);
     return this.httpClient.post<void>(apiUrl + '/employee/add', employee);
@@ -83,6 +85,7 @@ export class EmployeeService {
   getAllCommune(districtId: number): Observable<Commune[]> {
     return this.httpClient.get<Commune[]>(apiUrl + '/address/commune/' + districtId);
   }
+
 
   findByIdEmployee(id: number) {
     return this.httpClient.get<Employee>(apiUrl + `/employee/id/${id}`);

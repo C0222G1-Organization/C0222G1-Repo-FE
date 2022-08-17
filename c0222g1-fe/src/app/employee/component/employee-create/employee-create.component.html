@@ -16,9 +16,11 @@
           <div *ngIf="employeeForm.controls.code.hasError('pattern') && employeeForm.controls.code.touched"
                class="form-text text-danger mt-1 px-2">Mã sai định dạng.
           </div>
+
           <div *ngIf="employeeForm.controls.code.hasError('pattern') && employeeForm.controls.code.touched"
                class="form-text text-danger mt-1 px-2">Mã sai định dạng.
           </div>
+
           <label for="Code-Employee" style="color: white">
             Mã nhân viên
             <span class="text-danger">*</span>
@@ -76,9 +78,12 @@
           <div *ngIf="employeeForm.controls.email.hasError('email') && employeeForm.controls.email.touched"
                class="form-text text-danger mt-1 px-2">Sai định dạng email.
           </div>
+
           <div *ngIf="employeeForm.controls.email.hasError('pattern') && employeeForm.controls.email.touched"
                class="form-text text-danger mt-1 px-2">Không được để khoảng cách.
           </div>
+
+
 
           <label for="email" style="color: white">
             Email
@@ -217,6 +222,7 @@
                  style="padding-top: 10px" >
           <div *ngIf="employeeForm.controls.salary.hasError('required') && employeeForm.controls.salary.touched"
                class="form-text text-danger mt-1 px-2">Không được để trống.</div>
+
           <div *ngIf="employeeForm.controls.salary.hasError('pattern') && employeeForm.controls.salary.touched"
                class="form-text text-danger mt-1 px-2">Không được để khoảng cách.
           </div>
@@ -243,7 +249,10 @@
                    placeholder="Tài khoản"
                    style="padding-top: 10px">
             <div *ngIf="employeeForm.get('appUser').hasError('required','username') && employeeForm.get('appUser').get('username').touched"class="form-text text-danger mt-1 px-2">Không được để trống.</div>
+
             <div *ngIf="employeeForm.get('appUser').hasError('pattern','username') && employeeForm.get('appUser').get('username').touched" class="form-text text-danger mt-1 px-2">Không được để khoảng cách.</div>
+
+            <!--            <div *ngIf="employeeForm.controls.username.hasError('required') && employeeForm.controls.username.touched"class="form-text text-danger mt-1 px-2"></div>-->
 
             <label for="appUser" style="color: white">
               Tài khoản
@@ -295,12 +304,15 @@
       </div>
       <div class="col-6" style="padding-right: 15px">
         <button type="submit" class="btn btn-outline-secondary login-btn text-light" (click)="cancel()">Hủy bỏ</button>
+       
       </div>
     </div>
 
   </form>
 </div>
+
 </body>
+
 
 
 

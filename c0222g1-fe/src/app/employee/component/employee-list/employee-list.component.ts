@@ -3,6 +3,12 @@ import {EmployeeService} from '../../service/employee.service';
 import {Employee} from '../../model/employee';
 import {Position} from '../../model/position';
 import {ToastrService} from 'ngx-toastr';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Title} from '@angular/platform-browser';
+
+import {Router} from '@angular/router';
+import {isDate} from 'rxjs/internal-compatibility';
+import {DatePipe} from '@angular/common';
 
 
 @Component({
@@ -11,42 +17,68 @@ import {ToastrService} from 'ngx-toastr';
   styleUrls: ['./employee-list.component.css']
 })
 export class EmployeeListComponent implements OnInit {
+
+  collection = {count: 60, data: []};
+  config = {
+    itemsPerPage: 5,
+    currentPage: 1,
+    totalItems: this.collection.count
+  };
   page = 0;
   totalElements: any;
   employees: any;
   positions: Position[];
-  code = '';
-  name = '';
-  dobfrom = '';
-  dobe = '';
-  workf = '';
-  workt = '';
-  position = '';
-  address = '';
+  formSearch: FormGroup;
+  id: number;
   idDelete: number;
   nameDelete: string;
-  selectEmployee: Array<any>;
   level: Date = new Date();
-  countLevel: number;
+  selectedEmployee: any[] = [];
+  totalPages: any;
+  map = new Map;
+  today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+  dobFromSearch = this.datePipe.transform(new Date('1970-01-01'), 'yyyy-MM-dd');
+  dobEndSearch = this.datePipe.transform(new Date('2004-08-16'), 'yyyy-MM-dd');
+  workFromSearch = this.datePipe.transform(new Date('2010-01-01'), 'yyyy-MM-dd');
 
   constructor(private employeeService: EmployeeService,
-              private toastr: ToastrService) {
+              private title: Title,
+              private toastr: ToastrService,
+              private route: Router,
+              private datePipe: DatePipe) {
+    this.title.setTitle('Nhân viên');
+    this.formSearch = new FormGroup({
+      code: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+$'), Validators.maxLength(20)]),
+      // tslint:disable-next-line:max-line-length
+      name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'), Validators.maxLength(20)]),
+      dobfrom: new FormControl(this.dobFromSearch, [this.checkAge]),
+      dobend: new FormControl(this.dobEndSearch, [this.checkAge]),
+      workf: new FormControl(this.workFromSearch, [this.dateInFuture, this.dateNotExist]),
+      workt: new FormControl(this.today, [this.dateInFuture, this.dateNotExist]),
+      position: new FormControl(''),
+      // tslint:disable-next-line:max-line-length
+      address: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'), Validators.maxLength(20)]),
+    }, [this.invalidDate, this.dobInvalidDate]);
   }
 
   ngOnInit(): void {
     this.getPosition();
-    this.search();
+    this.getAll();
   }
 
   getAll() {
-    this.employeeService.getEmployeeList(this.page, this.code, this.name, this.dobfrom,
-      this.dobe, this.workf, this.workt, this.position, this.address).subscribe((value: any) => {
-      console.log(this.page);
-      this.employees = value.content;
-      console.log(value);
-      this.totalElements = value.totalElements;
-      // this.pages = new Array<number>(value.totalPages);
-    });
+    const getFormSearch = this.formSearch.value;
+
+    this.employeeService.getEmployeeList(this.page, getFormSearch.code, getFormSearch.name, getFormSearch.dobfrom,
+      getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
+      getFormSearch.address).subscribe((value: any) => {
+        this.employees = value.content;
+        this.totalElements = value.totalElements;
+      }, error => {
+        this.route.navigateByUrl('/500');
+      }
+    )
+    ;
   }
 
   getPosition() {
@@ -57,34 +89,48 @@ export class EmployeeListComponent implements OnInit {
   }
 
   search() {
-    console.log(this.position);
-    this.employeeService.getEmployeeList(this.page, this.code, this.name, this.dobfrom,
-      this.dobe, this.workf, this.workt, this.position, this.address).subscribe((value: any) => {
+    const getFormSearch = this.formSearch.value;
+    if (this.page !== 0) {
+      this.page = 0;
+    }
+    this.employeeService.getEmployeeList(this.page, getFormSearch.code, getFormSearch.name, getFormSearch.dobfrom,
+      getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
+      getFormSearch.address).subscribe((value: any) => {
       this.employees = value.content;
-      console.log(this.employees[0].workf.substr(0, 4));
+      if (this.employees.isEmpty) {
+        this.toastr.warning('Không có dữ liệu phù hợp.');
+      }
+
       this.totalElements = value.totalElements;
     });
   }
 
-  getPage(event: number) {
-    this.page = event - 1;
-    this.ngOnInit();
-  }
 
   getEmployee(employee: Employee) {
     this.idDelete = employee.id;
     this.nameDelete = employee.name;
   }
 
+  deleteEmployeeList() {
+    this.selectedEmployee = this.employees.filter(employee => employee.checked).map(p => p.id);
+    for (const employee of this.selectedEmployee) {
+      this.id = employee;
+      this.employeeService.deleteEmployee(this.id).subscribe(value => {
+        this.page = 0;
+      }, error => {
+      }, () => {
+        console.log(this.employees.length);
+        this.getAll();
+      });
+    }
+    if (this.selectedEmployee.length > 0) {
+      this.toastr.success('Xóa nhân viên thành công');
+    }
+  }
+
   deleteEmployee() {
     this.employeeService.deleteEmployee(this.idDelete).subscribe((value: any) => {
-      if (this.employees.length === 1) {
-        if (this.page === 0) {
-          this.page = 0;
-        } else {
-          this.page -= 1;
-        }
-      }
+      this.page = 0;
       this.toastr.success('Xóa nhân viên thành công');
     }, error => {
       console.log(error);
@@ -93,38 +139,141 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
-  isAllCheckBoxChecked() {
-    return this.employees.every(p => p.checked);
+
+  exp(employee: Employee): number {
+
+
+    const exp = this.level.getFullYear() - Number(employee.workf.substr(0, 4));
+    return exp + 1;
+
+    const koko = this.level.getFullYear() - Number(employee.workf.substr(0, 4));
+    return koko + 1;
+
   }
 
-  checkAllCheckBox(event) {
-    this.employees.forEach(x => x.checked = event.target.checked);
-  }
-
-  deleteAll() {
-    const selectEmployee = this.employees.filter(employee => employee.checked).map(p => p.id);
-    for (const employee of selectEmployee) {
-      this.idDelete = employee;
-      this.employeeService.deleteEmployee(this.idDelete).subscribe(value => {
-        if (this.employees.length === 1) {
-          if (this.page === 0) {
-            this.page = 0;
-          } else {
-            this.page -= 1;
-          }
-        }
-      }, error => {
-      }, () => {
-        this.ngOnInit();
-      });
+  dateInFuture(abstractControl: AbstractControl) {
+    if (abstractControl.value === '') {
+      return null;
+    }
+    const v = abstractControl.value;
+    const end = new Date(v);
+    if (end > new Date()) {
+      return {futureDate: true};
+    } else {
+      return null;
     }
   }
+  dateNotExist(abstractControl: AbstractControl) {
+    const v = abstractControl.value;
+    const start = new Date(v);
+    if (!isDate(start)) {
+      return {dateNotExist: true};
+    }
+  }
+
+  invalidDate(abstractControl: AbstractControl) {
+    if (abstractControl.value === '') {
+      return null;
+    }
+    const v = abstractControl.value;
+    const start = new Date(v.workf);
+    const end = new Date(v.workt);
+    end.setDate(end.getDate() - 1);
+    if (start > end) {
+      return {dateNotValid: true};
+    } else {
+      return null;
+    }
+  }
+
 
   exp(employee: Employee): number {
     const koko = this.level.getFullYear() - Number(employee.workf.substr(0, 4));
     return koko + 1;
+
+  dobInvalidDate(abstractControl: AbstractControl) {
+    if (abstractControl.value === '') {
+      return null;
+    }
+    const v = abstractControl.value;
+    const start = new Date(v.dobfrom);
+    const end = new Date(v.dobend);
+    end.setDate(end.getDate() - 1);
+    if (start > end) {
+      return {dobNotValid: true};
+    } else {
+      return null;
+    }
   }
 
-  enable() {
+  private checkAge(abstractControl: AbstractControl): any {
+    if (abstractControl.value === '') {
+      return null;
+    }
+    const today = new Date();
+    const birthDate = new Date(abstractControl.value);
+    if (!isDate(birthDate)) {
+      return {dateNotExist: true};
+    }
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const old = today.getMonth() - birthDate.getMonth();
+    if (old < 0 || (old === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    if (age <= 16) {
+      return {not18: true};
+    } else if (age >= 100) {
+      return {after100: true};
+    }
+    return null;
+
   }
+
+  getPage(page) {
+    if (page < 1 || page > this.totalPages) {
+      this.toastr.error('Vui lòng nhập đúng');
+    }
+    this.page = page;
+    page = page - 1;
+    const getFormSearch = this.formSearch.value;
+    this.employeeService.getEmployeeList(page, getFormSearch.code, getFormSearch.name, getFormSearch.dobfrom,
+      getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
+      getFormSearch.address).subscribe((value: any) => {
+      this.employees = value.content;
+      this.totalElements = value.totalElements;
+      this.totalPages = value.totalPages;
+    });
+  }
+
+  checkEmployee(id: number) {
+    for (const employee of this.employees) {
+      console.log(id);
+      if (employee.id == id) {
+        employee.checked = employee.checked != true;
+        break;
+      }
+    }
+    this.getSelectedEmployees();
+  }
+
+  isAllCheckBoxChecked1() {
+    this.employees.forEach(value => {
+      if (value.checked === true) {
+        this.map.set(value.id, value);
+      } else {
+        this.map.delete(value.id);
+      }
+    });
+    return this.employees.every(e => e.checked);
+  }
+
+  checkMultipleCheckBox(event: any) {
+    this.employees.forEach(x => x.checked = event.target.checked);
+    this.getSelectedEmployees();
+  }
+
+  getSelectedEmployees() {
+    this.selectedEmployee = this.employees.filter(employee => employee.checked);
+  }
+
 }

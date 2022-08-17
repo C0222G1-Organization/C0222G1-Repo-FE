@@ -31,6 +31,7 @@ export class EmployeeCreateComponent implements OnInit {
   selectedFile: File = null;
 
 
+
   employeeForm = new FormGroup({
       code: new FormControl('', [Validators.required, Validators.pattern('^EMP[0-9]{4}$')]),
     // tslint:disable-next-line:max-line-length
@@ -41,11 +42,28 @@ export class EmployeeCreateComponent implements OnInit {
       dob: new FormControl('', [Validators.required, this.check18Age]),
     // tslint:disable-next-line:max-line-length
       salary: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\\\w\\\\W ]+[^ ]$'), Validators.min(5), Validators.max(10)]),
+  provinceForm: FormGroup = new FormGroup({
+    province: new FormControl('', Validators.required)
+  });
+
+  employeeForm = new FormGroup({
+      code: new FormControl('', [Validators.required, Validators.pattern('^EMP[0-9]{4}$')]),
+      name: new FormControl('', [Validators.required, Validators.pattern('^([A-Z][^A-Z0-9\\s]+)(\\s[A-Z][^A-Z0-9\\s]+)*$')]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+    // tslint:disable-next-line:max-line-length
+      phone: new FormControl('', [Validators.required, Validators.pattern('^(0|84+)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$')]),
+      dob: new FormControl('', [Validators.required, this.checkAge18]),
+      salary: new FormControl('', [Validators.required]),
+
       startWork: new FormControl('', [Validators.required]),
       statusDelete: new FormControl(0, [Validators.required]),
       image: new FormControl('', [Validators.required]),
     appUser: new FormGroup({
+
         username: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\\\w\\\\W ]+[^ ]$')]),
+
+        username: new FormControl('', Validators.required),
+
       // tslint:disable-next-line:max-line-length
         password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
       }),
@@ -68,7 +86,6 @@ export class EmployeeCreateComponent implements OnInit {
     this.employeeService.getAllProvince().subscribe(value => this.provinceList = value);
   }
 
-
   getDistrictList($event: Event) {
     console.log('test');
     console.log($event);
@@ -82,6 +99,10 @@ export class EmployeeCreateComponent implements OnInit {
     }
   }
 
+
+  getProvince() {
+    return this.provinceForm.get('province').get('province');
+  }
 
   getCommuneList($event: Event) {
     console.log($event);
@@ -130,9 +151,11 @@ export class EmployeeCreateComponent implements OnInit {
   }
 
 
+
   getCurrentDateTime(): string {
     return formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss', 'en-US');
   }
+
 
   private check18Age(abstractControl: AbstractControl): any {
     if (abstractControl.value === '') {
@@ -146,6 +169,10 @@ export class EmployeeCreateComponent implements OnInit {
       age--;
     }
     return (age >= 18) ? null : {not18: true};
+  checkAge18(abstractControl: AbstractControl) {
+    const sYear = abstractControl.value.substr(0, 4);
+    const curYear = new Date().getFullYear();
+    return curYear - sYear >= 18 ? null : {not18: true};
   }
 
   checkStartDate(abstractControl: AbstractControl): any {

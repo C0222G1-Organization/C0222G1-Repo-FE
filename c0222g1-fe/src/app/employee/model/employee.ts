@@ -21,8 +21,8 @@ export interface Employee {
   proName?: string;
   cmName?: string;
   posiName?: string;
-  commune?: Commune;
-  district?: District;
-  province?: Province;
+  commune: Commune;
+  district: District;
+  province: Province;
   workf: string;
 }
