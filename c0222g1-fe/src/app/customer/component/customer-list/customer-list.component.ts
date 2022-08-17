@@ -180,13 +180,13 @@ export class CustomerListComponent implements OnInit {
 
 
   reload() {
-    // this.formSearch = new FormGroup({
-    //   nameCustomer: new FormControl('', [Validators.minLength(5), Validators.maxLength(100), Validators.required]),
-    //   starDate: new FormControl(''),
-    //   endDate: new FormControl('', this.checkEndDay),
-    //   activeStatus: new FormControl(''),
-    //   address: new FormControl('', [Validators.minLength(5), Validators.maxLength(200)])
-    // }, this.checkStartDay);
+    this.formSearch = new FormGroup({
+      nameCustomer: new FormControl('', [Validators.maxLength(30), Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$')]),
+      endDate: new FormControl('', this.checkEndDay),
+      starDate: new FormControl('', this.checkedday),
+      activeStatus: new FormControl(''),
+      address: new FormControl('', [Validators.maxLength(200), Validators.pattern('^[0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\\\\\s? ]+$')])
+    }, this.validateStarDayAndEndDay);
   }
 
 }
