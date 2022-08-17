@@ -19,6 +19,8 @@ export class HomePageComponent implements OnInit {
   top3Games: Game[] = [];
   newGames: Game[] = [];
   hotGames: Game[] = [];
+  editState = false;
+  playState = false;
 
   constructor(private toastr: ToastrService,
               private title: Title,
@@ -34,6 +36,7 @@ export class HomePageComponent implements OnInit {
     this.getAllNewGames();
     this.getAllHotGames();
     this.getTop3Games();
+    this.checkRole();
   }
 
   getTop3Games() {
@@ -94,13 +97,27 @@ export class HomePageComponent implements OnInit {
   }
 
   getGameAndUpdate(id: number) {
-    console.log('dang bam')
-    this.homePageService.findById(id).subscribe(game => {
-      this.game = game;
-      this.game.playedTimes += 1;
-      this.updatePlayedTimes(id);
-    }, error => {
-      console.log('error')
-    });
+    if (this.playState == true) {
+      this.homePageService.findById(id).subscribe(game => {
+        this.game = game;
+        this.game.playedTimes += 1;
+        this.updatePlayedTimes(id);
+      }, error => {
+        console.log('error')
+      });
+    } else {
+      this.toastr.error("Bạn cần phải đăng nhập");
+    }
+  }
+
+  checkRole() {
+    if (sessionStorage.getItem('roles') == 'EMPLOYEE' || sessionStorage.getItem('roles') == 'ADMIN') {
+      this.editState = true;
+      this.playState = true;
+    }
+    if (sessionStorage.getItem('roles') == 'CUSTOMER') {
+      this.playState = true;
+      this.editState = false;
+    }
   }
 }
