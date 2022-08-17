@@ -103,7 +103,15 @@ label.hiddenText {
   color: #100d0d !important;
   cursor: default;
 }
-button:disabled{
-  background-color: black;
-  color: rgba(128, 128, 128, 0.23) !important;
+.hiddenText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+.th-w10{
+  width: 10%;
+}
+.th-w15{
+  width: 15%;
 }

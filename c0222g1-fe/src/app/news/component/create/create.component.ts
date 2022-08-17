@@ -8,6 +8,7 @@ import {finalize} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {Title} from '@angular/platform-browser';
+// @ts-ignore
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
