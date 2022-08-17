@@ -31,13 +31,15 @@ export class ComputerListComponent implements OnInit {
   computer: SearchDto;
   page = 0;
   totalItems: any;
+  totalPages: any;
   itemsPerPage = 2;
   computerCodeDelete: string;
   idDelete: string;
+  checkShow = false;
   map = new Map();
   computerDeleteList: any[] = [];
   computerTypes: ComputerType[] = [];
-  check: any;
+  checkDelete: any;
 
   constructor(private computerService: ComputerService,
               private toastr: ToastrService,
@@ -70,10 +72,60 @@ export class ComputerListComponent implements OnInit {
       } else {
         this.computers = list.content;
         this.totalItems = list.totalElements;
+        this.totalPages = list.totalPages;
       }
+      this.isAllCheckBoxChecked();
     }, error => {
       this.toastr.error('Không tìm thấy');
     });
+  }
+
+  /**
+   * Created by: PhucNQ
+   * Date created: 14/08/2022
+   * Function: findAll
+   */
+  search() {
+    const value = this.formSearch.value;
+    if (this.page > 0){
+      this.page = 0;
+    }
+    this.computerService.findAll(this.page,
+      value.code,
+      value.location,
+      value.start,
+      value.end,
+      value.status,
+      value.typeId).subscribe((list: any) => {
+      this.computers = list.content;
+      if (this.computers.length === 0) {
+        this.toastr.error('Không tìm thấy');
+      } else {
+        this.computers = list.content;
+        this.totalItems = list.totalElements;
+        this.totalPages = list.totalPages;
+      }
+      this.isAllCheckBoxChecked();
+    }, error => {
+      this.toastr.error('Không tìm thấy');
+    });
+  }
+
+  /**
+   * Created by: PhucNQ
+   * Date created: 14/08/2022
+   * Function: getPage
+   */
+  getPage(page) {
+    this.map.forEach(value => {
+      value.checked = false;
+    });
+    if (page < 1 || page > this.totalPages) {
+      this.toastr.error('Vui lòng nhập đúng');
+    }
+    this.page = page;
+    this.page = page - 1;
+    this.findAll();
   }
 
   /**
@@ -84,7 +136,6 @@ export class ComputerListComponent implements OnInit {
   getAllComputerType() {
     this.computerService.getAll().subscribe(value => {
       this.computerTypes = value;
-      console.log(value);
     });
   }
 
@@ -104,6 +155,10 @@ export class ComputerListComponent implements OnInit {
    * Function: delete
    */
   delete() {
+    // sessionStorage.getItem('roles')
+    // if(sessionStorage.getItem('roles') === 'ADMIN'){
+    //   this.buttondelete = true;
+    // }
     this.computerService.delete(this.computer.id).subscribe(res => {
       if (this.computers.length === 1) {
         if (this.page === 0) {
@@ -123,16 +178,6 @@ export class ComputerListComponent implements OnInit {
   /**
    * Created by: PhucNQ
    * Date created: 14/08/2022
-   * Function: getPage
-   */
-  getPage(event: number) {
-    this.page = event - 1;
-    this.findAll();
-  }
-
-  /**
-   * Created by: PhucNQ
-   * Date created: 14/08/2022
    * Function: isAllCheckBoxChecked
    */
   isAllCheckBoxChecked() {
@@ -143,6 +188,9 @@ export class ComputerListComponent implements OnInit {
         this.map.delete(value.id);
       }
     });
+    if (this.computers.length === 0) {
+      return false;
+    }
     return this.computers.every(p => p.checked);
   }
 
@@ -158,24 +206,13 @@ export class ComputerListComponent implements OnInit {
   /**
    * Created by: PhucNQ
    * Date created: 14/08/2022
-   * Function: showAllItemsChecked()
-   */
-  showAllItemsChecked() {
-    for (let i = 0; i < this.computers.length; i++) {
-      if (this.computers[i].checked) {
-        this.computerDeleteList.push(this.computers[i].code);
-      } else {
-        this.computerDeleteList.splice(this.computer[i].code, 1);
-      }
-    }
-  }
-
-  /**
-   * Created by: PhucNQ
-   * Date created: 14/08/2022
    * Function: deleteAllComputer()
    */
   deleteMultiComputer() {
+    // sessionStorage.getItem('roles')
+    // if(sessionStorage.getItem('roles') === 'ADMIN'){
+    //   this.buttondelete = true;
+    // }
     this.computerDeleteList = this.computers.filter(computer => computer.checked).map(p => p.code);
     if (this.computerDeleteList.length !== 0) {
       for (const computer of this.map.values()) {
@@ -195,13 +232,13 @@ export class ComputerListComponent implements OnInit {
             }
           }
         }, error => {
-          this.check = error;
+          this.checkDelete = error;
         }, () => {
           this.ngOnInit();
         });
         computer.checked = false;
       }
-      if (this.check == null) {
+      if (this.checkDelete == null) {
         this.toastr.success('Xóa thành công');
       }
     } else {
@@ -216,10 +253,8 @@ export class ComputerListComponent implements OnInit {
       return null;
     }
     if (start < end) {
-      console.log(true);
       return null;
     } else {
-      console.log(false);
       return {errorDate: true};
     }
   }
@@ -227,13 +262,10 @@ export class ComputerListComponent implements OnInit {
   checkStart(abstractControl: AbstractControl): any {
     const start = new Date(abstractControl.value);
     const now = new Date();
-    console.log('Date Now ' + now.getDate());
-    console.log('Day Now ' + now.getDate());
-    if (now.getFullYear() - start.getFullYear() > 0) {
+    if (now.getFullYear() - start.getFullYear() > 0 && start.getFullYear() > 1950) {
       return null;
     } else if (now.getFullYear() - start.getFullYear() === 0) {
       if (now.getMonth() > start.getMonth()) {
-        console.log('month now >');
         return null;
       } else {
         if (now.getMonth() === start.getMonth()) {
@@ -254,13 +286,10 @@ export class ComputerListComponent implements OnInit {
   checkEnd(abstractControl: AbstractControl): any {
     const end = new Date(abstractControl.value);
     const now = new Date();
-    console.log('Date Now ' + now.getDate());
-    console.log('Day Now ' + now.getDate());
-    if (now.getFullYear() - end.getFullYear() < 0) {
+    if (now.getFullYear() - end.getFullYear() < 0 && end.getFullYear()) {
       return null;
     } else if (now.getFullYear() - end.getFullYear() === 0) {
       if (now.getMonth() < end.getMonth()) {
-        console.log('month now >');
         return null;
       } else {
         if (now.getMonth() === end.getMonth()) {

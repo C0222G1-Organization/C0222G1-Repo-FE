@@ -3,10 +3,10 @@
     <header>
       <div class="row d-flex justify-content-between">
         <div class="p-0 col-6">
-            <input [(ngModel)]="searchTitle" (change)="search()" class="search form-control-sm me-2 position-absolute" type="search" placeholder="tìm kiếm" aria-label="Search" >
+            <input [(ngModel)]="searchTitle" (change)="search()" class="search form-control-sm me-2 position-absolute" type="search" placeholder="Tìm kiếm" aria-label="Search" >
         </div>
         <div class="p-0 col-6 d-flex justify-content-end">
-          <button type="button" routerLink="/news/create" class="btn btn-outline-secondary rounded-pill">thêm mới tin</button>
+          <button type="button" routerLink="/news/create" class="btn btn-outline-secondary rounded-pill">Thêm mới tin</button>
         </div>
       </div>
     </header>
@@ -15,7 +15,7 @@
     </div>
     <div class="row">
       <div *ngFor="let item of topNews, let i = index"  class="col-md-6 col-sm-12">
-        <div (click)="updateViews(item.id)" routerLink="/news/detail/{{item.id}}" *ngIf="i < 2" class="card w-100 " style="width: 18rem;">
+        <div (click)="updateViews(item.id)" *ngIf="i < 2" class="card w-100 " style="width: 18rem;">
           <div class="box-img-new rounded">
             <img src="{{item.imageUrl}}" class="card-img-top img-fit">
           </div>
@@ -31,7 +31,7 @@
     <div *ngFor="let item of listNews | paginate :
           {itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems }"
          class="row mx-1 news mt-2">
-      <div (click)="updateViews(item.id)" routerLink="/news/detail/{{item.id}}" class="row sub-news">
+      <div (click)="updateViews(item.id)" class="row sub-news">
         <div class="p-0">
           <hr>
         </div>
@@ -55,8 +55,7 @@
       <div *ngIf="totalItems>3" class="col-12 d-flex justify-content-center">
         <pagination-controls nextLabel="Sau" previousLabel="Trước" class="text-light" (pageChange)="getPage(page = $event)"></pagination-controls>
         <div>
-          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text mx-2"
-                        (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
+          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text mx-2" (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
         </div>
         <div>
           <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>

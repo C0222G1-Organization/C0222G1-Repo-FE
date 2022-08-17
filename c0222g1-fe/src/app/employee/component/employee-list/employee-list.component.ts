@@ -185,7 +185,6 @@ export class EmployeeListComponent implements OnInit {
       return null;
     }
   }
-
   dobInvalidDate(abstractControl: AbstractControl) {
     if (abstractControl.value === '') {
       return null;
@@ -200,6 +199,30 @@ export class EmployeeListComponent implements OnInit {
       return null;
     }
   }
+
+  private checkAge(abstractControl: AbstractControl): any {
+    if (abstractControl.value === '') {
+      return null;
+    }
+    const today = new Date();
+    const birthDate = new Date(abstractControl.value);
+    if (!isDate(birthDate)) {
+      return {dateNotExist: true};
+    }
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const old = today.getMonth() - birthDate.getMonth();
+    if (old < 0 || (old === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    if (age <= 16) {
+      return {not18: true};
+    } else if (age >= 100) {
+      return {after100: true};
+    }
+    return null;
+
+  }
+
   getPage(page) {
     if (page < 1 || page > this.totalPages) {
       this.toastr.error('Vui lòng nhập đúng');

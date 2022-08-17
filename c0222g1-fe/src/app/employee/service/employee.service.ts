@@ -86,4 +86,13 @@ export class EmployeeService {
     return this.httpClient.get<Commune[]>(apiUrl + '/address/commune/' + districtId);
   }
 
+
+  findByIdEmployee(id: number) {
+    return this.httpClient.get<Employee>(apiUrl + `/employee/id/${id}`);
+  }
+
+  editEmployee(id: number, employee: Employee) {
+    return this.httpClient.patch<Employee>(apiUrl + `/employee/edit/${id}`, employee);
+  }
+
 }

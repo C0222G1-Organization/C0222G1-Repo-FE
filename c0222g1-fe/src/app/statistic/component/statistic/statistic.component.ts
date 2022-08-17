@@ -8,6 +8,7 @@ import {Chart, registerables} from 'chart.js';
 import {StatisticService} from '../../service/statistic/statistic.service';
 import {isDate} from 'rxjs/internal-compatibility';
 
+
 Chart.register(...registerables);
 
 @Component({
@@ -84,7 +85,6 @@ export class StatisticComponent implements OnInit {
       this.statisticService.getStatisticByComputer(this.statisticInput.startDate, this.statisticInput.endDate)
         .subscribe(value => {
             this.listStatisticByComputer = value;
-            console.log(value);
             this.errorChart = false;
             this.errorServer = true;
             this.errorList = true;
@@ -104,10 +104,11 @@ export class StatisticComponent implements OnInit {
               this.listStatisticByComputer.sort((a, b) => (a.computer > b.computer) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'ascending') {
-              this.listStatisticByComputer.sort((a, b) => (a.hour > b.hour) ? 1 : -1);
+              this.listStatisticByComputer.sort((a, b) => (Number(a.hour) > Number(b.hour)) ? 1 : -1);
+              console.log(this.listStatisticByComputer);
             }
             if (this.statisticInput.sort === 'decrease') {
-              this.listStatisticByComputer.sort((a, b) => (a.hour < b.hour) ? 1 : -1);
+              this.listStatisticByComputer.sort((a, b) => (Number(a.hour) < Number(b.hour)) ? 1 : -1);
             }
             this.destroyChart();
             this.createChartComputer();
@@ -138,10 +139,10 @@ export class StatisticComponent implements OnInit {
               this.listStatisticByMonth.sort((a, b) => (a.month > b.month) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'ascending') {
-              this.listStatisticByMonth.sort((a, b) => (a.total > b.total) ? 1 : -1);
+              this.listStatisticByMonth.sort((a, b) => (Number(a.total) > Number(b.total)) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'decrease') {
-              this.listStatisticByMonth.sort((a, b) => (a.total < b.total) ? 1 : -1);
+              this.listStatisticByMonth.sort((a, b) => (Number(a.total) < Number(b.total)) ? 1 : -1);
             }
             this.destroyChart();
             this.createChartMonth();
@@ -173,10 +174,10 @@ export class StatisticComponent implements OnInit {
               this.listStatisticByAccount.sort((a, b) => (a.account > b.account) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'ascending') {
-              this.listStatisticByAccount.sort((a, b) => (a.revenue > b.revenue) ? 1 : -1);
+              this.listStatisticByAccount.sort((a, b) => (Number(a.revenue) > Number(b.revenue)) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'decrease') {
-              this.listStatisticByAccount.sort((a, b) => (a.revenue < b.revenue) ? 1 : -1);
+              this.listStatisticByAccount.sort((a, b) => (Number(a.revenue) < Number(b.revenue)) ? 1 : -1);
             }
             this.destroyChart();
             this.createChartAccount();
