@@ -26,7 +26,7 @@ export class HomePageComponent implements OnInit {
               private homePageService: HomePageService,
               private activatedRoute: ActivatedRoute,
               private route: Router) {
-    this.title.setTitle('C02G1 | Home');
+    this.title.setTitle('C02G1 | Trang chủ');
   }
 
 
