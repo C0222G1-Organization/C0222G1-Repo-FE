@@ -10,9 +10,15 @@ const routes: Routes = [
   },
   {
     path: 'display', component: DisplayPaymentComponent
+    // employee, admin
+  },
+  {
+    path: 'display/:paymentId', component: DisplayPaymentComponent
+    // employee, admin, customer
   },
   {
     path: 'order-service', component: PaymentDetailComponent
+    // customer
   }
 ];
 
