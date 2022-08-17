@@ -1,4 +1,4 @@
-<div class="container-fluid" style="min-height: 550px">
+<div class="container-fluid" style="margin-top: 3rem">
   <div class="d-flex">
     <div class="col-6 d-flex justify-content-end">
       <img src="assets/img/img-login/banner-login.jpg" alt="banner" class="float-right" height="435">
@@ -8,7 +8,7 @@
         <h6 class="text-center mt-4">Đăng nhập </h6>
         <form [formGroup]="loginForm">
           <div class="form-floating textbox">
-            <input type="text" class="form-control btn-outline-secondary" formControlName="username" id="inputUsername"
+            <input (keydown.enter)="submitLogin()" type="text" class="form-control btn-outline-secondary" formControlName="username" id="inputUsername"
                    placeholder="Tài khoản hoặc Email" autocomplete="off" style="padding-top: 10px">
             <label for="inputUsername" style="color: white">
               Tài khoản hoặc Email
@@ -28,7 +28,7 @@
           </div>
 
           <div class="form-floating textbox">
-            <input type="password" class="form-control btn-outline-secondary" formControlName="password" id="inputPassword"
+            <input (keydown.enter)="submitLogin()" type="password" class="form-control btn-outline-secondary" formControlName="password" id="inputPassword"
                    placeholder="Mật khẩu" autocomplete="off" style="padding-top: 10px">
             <label for="inputPassword" style="color: white">
               Mật khẩu
@@ -53,7 +53,7 @@
             </label>
             <!--                <a href="">Lấy lại mật khẩu</a>-->
           </div>
-          <button type="button" class="btn btn-outline-secondary login-btn text-light" [disabled]="loginForm.invalid" (click)="submitLogin()" >Đăng nhập</button>
+          <button type="button" class="btn btn btn-primary login-btn text-light" [disabled]="loginForm.invalid" (click)="submitLogin()" >Đăng nhập</button>
 
 
         </form>

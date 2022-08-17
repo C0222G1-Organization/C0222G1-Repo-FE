@@ -8,26 +8,31 @@ import {HomePageCustomerComponent} from './component/home-page-customer/home-pag
 import {AuthGuardCustomerService} from '../authentication/service/auth-guard-customer.service';
 import {CreateCustomerComponent} from './component/create-customer/create-customer.component';
 import {EditCustomerComponent} from './component/edit-customer/edit-customer.component';
+import {AuthGuardEmployeeAdminService} from '../authentication/service/auth-guard-employee-admin.service';
 
 const routes: Routes = [
   {
-    path: 'customers/create', component: CreateCustomerComponent
+    path: 'customers/create', component: CreateCustomerComponent,
+    canActivate: [AuthGuardEmployeeAdminService]
   },
   {
-    path: 'customers/edit/:id', component: EditCustomerComponent
+    path: 'customers/edit/:id', component: EditCustomerComponent,
+    canActivate: [AuthGuardEmployeeAdminService]
   },
   {
-    path: 'home-page-customer',
+    path: 'customers/home-page',
     component: HomePageCustomerComponent,
     canActivate: [AuthGuardCustomerService]
   },
   {
-    path: 'home-page-customer/info',
-    component: CustomerInformationComponent
+    path: 'customers/home-page/info',
+    component: CustomerInformationComponent,
+    canActivate: [AuthGuardCustomerService]
   },
   {
     path: 'customers',
-    component: CustomerListComponent
+    component: CustomerListComponent,
+    canActivate: [AuthGuardEmployeeAdminService]
   },
   {path: 'sign-up', component: CreateCustomerHaoNHComponent}
 ];

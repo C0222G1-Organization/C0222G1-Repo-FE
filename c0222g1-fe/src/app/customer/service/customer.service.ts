@@ -80,6 +80,10 @@ export class CustomerService {
     return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkUserName/' + userName);
   }
 
+  checkUserNameInEdit(userName: string, id: number): Observable<string> {
+    return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkUserNameInEdit/' + userName + '/' + id);
+  }
+
   checkEmail(email: string): Observable<string> {
     return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkEmail/' + email);
   }
