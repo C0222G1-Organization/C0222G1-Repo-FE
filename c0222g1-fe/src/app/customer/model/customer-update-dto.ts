@@ -11,7 +11,7 @@ export interface UpdateCustomerDto {
   phoneNumber: PhoneDto;
   userName: UserDto;
   password: string;
-  activeStatus: number;
+  activeStatus?: number;
   commune: Commune;
   remainingTime: number;
 }
