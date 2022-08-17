@@ -28,6 +28,7 @@ import {HomePageModule} from './home-page/home-page.module';
 import {StatisticModule} from './statistic/statistic.module';
 import {JwtInterceptor} from './authentication/service/jwt.interceptor';
 import { ServerErrorComponent } from './common-component/server-error/server-error.component';
+import { NotFoundComponent } from './common-component/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ServerErrorComponent } from './common-component/server-error/server-err
     FooterComponent,
     NotAuthorizedComponent,
     ServerErrorComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,13 +1,15 @@
 <body>
 <div class="login-form">
-  <h6 class="text-center mt-4">Thêm mới máy tính</h6>
+  <h6 class="text-center mt-4">Sửa thông tin máy tính</h6>
   <form [formGroup]="formEditComputer" (ngSubmit)="submit()" >
     <div class="form-floating textbox mb-4">
-      <input type="text" class="form-control input" id="ma" placeholder="Mã máy" formControlName="code" style="padding-top: 10px">
+      <input type="text" class="form-control input" id="ma" placeholder="Mã máy" formControlName="code" style="padding-top: 10px"
+             (change)="checkCode($event.target.value)">
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('code').touched
-                && formEditComputer.hasError('required', 'code')">Mã máy không được để trống</p>
-      <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('code').touched
-                && formEditComputer.hasError('pattern', 'code')">Mã máy phải có định dạng CPXXXX (X là số)</p>
+                && formEditComputer.hasError('required', 'code')">Mã máy không được để trống.</p>
+      <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('code').dirty
+                && formEditComputer.hasError('pattern', 'code')">Mã máy phải có định dạng CPXXXX (X là số).</p>
+      <p style="color: red; font-size: 0.8rem" *ngIf="isExitsCode == true">Mã máy đã tồn tại.</p>
       <label for="vi-tri" style="color: white">
         Mã máy
         <span class="text-danger">*</span>
@@ -18,11 +20,12 @@
       <select class="form-select select input" aria-haspopup="true"
               id="status" formControlName="status" style="padding: 10px 15px 0 15px">
         <option disabled>Chọn tình trạng</option>
-        <option value="">Bảo trì</option>
-        <option value="0">Ổn định</option>
+        <option value="0">Bảo trì</option>
+        <option value="1">Bình thường</option>
+        <option value="1">Ổn định</option>
       </select>
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('status').touched
-                && formEditComputer.hasError('required', 'status')">Tình trạng  máy không được để trống</p>
+                && formEditComputer.hasError('required', 'status')">Tình trạng  máy không được để trống.</p>
       <label for="status" style="color: white">
         Trạng thái sử dụng
         <span class="text-danger">*</span>
@@ -30,12 +33,13 @@
     </div>
 
     <div class="form-floating textbox mb-4">
-      <input type="text" class="form-control input" id="vi-tri" placeholder="Vị trí máy" formControlName="location" style="padding-top: 10px">
+      <input type="text" class="form-control input" id="vi-tri" placeholder="Vị trí máy" formControlName="location" style="padding-top: 10px"
+             (change)="checkLocation($event.target.value)">
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').touched
-                && formEditComputer.hasError('required', 'location')">Vị trí máy không được để trống</p>
-      <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').touched
-                && formEditComputer.hasError('pattern', 'location')">Vị trí máy phải có định dạng AXXX (X là số)</p>
-
+                && formEditComputer.hasError('required', 'location')">Vị trí máy không được để trống.</p>
+      <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').dirty
+                && formEditComputer.hasError('pattern', 'location')">Vị trí máy phải có định dạng AXXX (X là số).</p>
+      <p style="color: red; font-size: 0.8rem" *ngIf="isExitsLocation == true">Vị trí này đã có máy.</p>
       <label for="vi-tri" style="color: white">
         Vị trí máy
         <span class="text-danger">*</span>
@@ -47,9 +51,9 @@
              placeholder="ngày hoạt động"
              required formControlName="startUsedDate" style="padding-top: 10px">
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('startUsedDate').touched
-                && formEditComputer.hasError('required', 'startUsedDate')">Ngày không được để trống</p>
+                && formEditComputer.hasError('required', 'startUsedDate')">Ngày không được để trống.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('startUsedDate').dirty
-                && formEditComputer.hasError('dateerror')">Ngày đưa vào hoạt dộng phải bé hơn ngày hiện tại</p>
+                && formEditComputer.hasError('dateerror')">Ngày đưa vào hoạt dộng phải bé hơn ngày hiện tại.</p>
 
       <label for="start" style="color: white">
         Ngày đưa vào hoạt động
@@ -61,11 +65,13 @@
       <input type="text" class="form-control input" id="setting" placeholder="cấu hình" formControlName="configuration"
              style="padding-top: 10px">
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').touched
-                && formEditComputer.hasError('required', 'configuration')">Vị trí máy không được để trống</p>
+                && formEditComputer.hasError('required', 'configuration')">Vị trí máy không được để trống.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').touched
-                && formEditComputer.hasError('minLength', 'configuration')">Cấu hình tối thiếu 2 ký tự</p>
+                && formEditComputer.hasError('minLength', 'configuration')">Cấu hình tối thiếu 2 ký tự.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').touched
-                && formEditComputer.hasError('maxLength', 'configuration')">Cấu hình tối đa 20 ký tự</p>
+                && formEditComputer.hasError('maxLength', 'configuration')">Cấu hình tối đa 20 ký tự.</p>
+      <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').touched
+                && formEditComputer.hasError('pattern', 'configuration')">Cấu hình không được chứa ký tự đặc biệt.</p>
       <label for="setting" style="color: white">
         Cấu hình
         <span class="text-danger">*</span>
@@ -82,7 +88,7 @@
             <option *ngFor="let type of computerType" [value]="type.id">{{type.name}}</option>
           </select>
           <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('computerType').get('id').touched
-                && formEditComputer.get('computerType').hasError('required', 'id')">Loại máy không được để trống</p>
+                && formEditComputer.get('computerType').hasError('required', 'id')">Loại máy không được để trống.</p>
           <label for="city" style="color: white">
             Loại máy
             <span class="text-danger">*</span>
@@ -105,7 +111,7 @@
             <option value="Lenovo">Lenovo</option>
           </select>
           <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('manufacturer').touched
-                && formEditComputer.hasError('required', 'manufacturer')">Vị trí máy không được để trống</p>
+                && formEditComputer.hasError('required', 'manufacturer')">Vị trí máy không được để trống.</p>
           <label for="district" style="color: white">
             Hãng
             <span class="text-danger">*</span>
@@ -122,7 +128,7 @@
             <option value="3" class="option">4 năm</option>
           </select>
           <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('warranty').touched
-                && formEditComputer.hasError('required', 'warranty')">Vị trí máy không được để trống</p>
+                && formEditComputer.hasError('required', 'warranty')">Vị trí máy không được để trống.</p>
           <label for="ward" style="color: white">
             Bảo hành
             <span class="text-danger">*</span>

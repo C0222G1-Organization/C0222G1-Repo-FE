@@ -1,46 +1,54 @@
 <div class="container mt-5" id="table-computer">
   <div class="row">
-    <h2 class="text-center text-white">Danh sách máy</h2>
+    <h2 class="text-center text-white">DANH SÁCH MÁY</h2>
   </div>
-  <div class="row d-flex">
-    <div class="w-100">
-      <div class="container-input">
-        <div class="form">
-          <div class="fields">
-            <div class="input-field input-search">
-              <label>Mã máy</label>
-              <input type="text" class="input-search" [(ngModel)]="code" placeholder="Nhập mã máy">
-            </div>
+  <div class="row">
+    <div class="container">
+      <div class="">
+        <div class="container-input">
+          <div class="form">
+            <form [formGroup]="formSearch">
+              <div class="fields">
+                <div class="input-field input-search">
+                  <label>Mã máy</label>
+                  <input type="text" class="input-search" formControlName="code" placeholder="Nhập mã máy">
+                </div>
+                <div class="input-field">
+                  <label>Ngày bắt đầu</label>
+                  <input type="date" formControlName="start" class="input-search">
+                  <span style="color: red; font-size: 0.8rem" *ngIf="formSearch.get('start').dirty
+                && formSearch.hasError('invalid', 'start')">Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày hiện tại và năm phải lớn 1950</span>
+                </div>
+                <div class="input-field">
+                  <label>Trạng thái</label>
+                  <select style="min-width: 100px" formControlName="status" class="input-search form-select">
+                    <option value="">--Chọn trạng thái--</option>
+                    <option value="1">Bình thường</option>
+                    <option value="0">Bảo trì</option>
+                  </select>
+                </div>
+                <div class="input-field">
+                  <label>Vị trí</label>
+                  <input type="text" class="input-search" formControlName="location" placeholder="Nhập vị trí máy">
+                </div>
+                <div class="input-field">
+                  <label>Ngày kết thúc</label>
+                  <input type="date" formControlName="end" class="input-search">
+                  <span style="color: red; font-size: 0.8rem" *ngIf="formSearch.get('end').dirty
+                && formSearch.hasError('invalid', 'end')">Ngày kết thúc phải lớn ngày hiện tại</span>
+                </div>
+                <div class="input-field">
+                  <label>Loại máy</label>
+                  <select style="min-width: 100px" formControlName="typeId" class="input-search form-select">
+                    <option value="">--Chọn loại máy--</option>
+                    <option *ngFor="let type of computerTypes" value="{{type.id}}">Máy {{type.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </form>
             <div class="input-field">
-              <label>Vị trí</label>
-              <input type="text" class="input-search" [(ngModel)]="location" placeholder="Nhập vị trí máy">
+              <button class="btn btn-outline-secondary mb-2" (click)="search()" style="right: 0">Tìm kiếm</button>
             </div>
-            <div class="input-field">
-              <label>Ngày bắt đầu</label>
-              <input type="date" [(ngModel)]="start" class="input-search">
-            </div>
-            <div class="input-field">
-              <label>Ngày kết thúc</label>
-              <input type="date" [(ngModel)]="end" class="input-search">
-            </div>
-            <div class="input-field">
-              <label>Trạng thái</label>
-              <select style="min-width: 100px" [(ngModel)]="status" class="input-search form-select">
-                <option value="">--Chọn trạng thái--</option>
-                <option value="0">Bình thường</option>
-                <option value="1">Bảo trì</option>
-              </select>
-            </div>
-            <div class="input-field">
-              <label>Loại máy</label>
-              <select style="min-width: 100px" [(ngModel)]="typeId" class="input-search form-select">
-                <option value="">--Chọn loại máy--</option>
-                <option *ngFor="let type of computerTypes" value="{{type.id}}">{{type.name}}</option>
-              </select>
-            </div>
-          </div>
-          <div class="input-field">
-            <button class="btn btn-outline-secondary" (click)="findAll()" style="right: 0">Tìm kiếm</button>
           </div>
         </div>
       </div>
@@ -68,15 +76,15 @@
         </thead>
         <tbody>
         <tr
-          *ngFor="let computer of computers | paginate : { itemsPerPage: 3, currentPage: page + 1, totalItems: totalItems}; index as i">
+          *ngFor="let computer of computers | paginate : { itemsPerPage: 4, currentPage: page + 1, totalItems: totalItems}; index as i">
           <td>
             <input class="card-notify-year-checkbox" type="checkbox" value="{{computer.id}}"
                    [(ngModel)]="computers[i].checked">
             {{computer.id}}
           </td>
           <td>{{computer.code}}</td>
-          <td *ngIf="computer.status.includes('false',0)">Bình thường</td>
-          <td *ngIf="computer.status.includes('true',0)">Bảo trì</td>
+          <td *ngIf="computer.status.includes('true',0)">Bình thường</td>
+          <td *ngIf="computer.status.includes('false',0)">Bảo trì</td>
           <td>{{computer.location}}</td>
           <td>{{computer.start | date: "dd/MM/yyyy"}}</td>
           <td>{{computer.configuration}}</td>
@@ -85,9 +93,16 @@
           <td>{{computer.manufacturer}}</td>
           <td>{{computer.warranty}} năm</td>
           <td>
-            <button class="btn btn-outline-secondary mx-2" routerLink="/computers/edit/{{computer.id}}"><i class="fa-solid fa-pencil"></i></button>
+            <button class="btn btn-outline-secondary color-icon" routerLink="/computers/edit/{{computer.id}}"><i class="fa-solid fa-pencil"></i></button>
             <button class="btn btn-outline-secondary " (click)="getInfo(computer)" data-bs-toggle="modal"
                     data-bs-target="#deleteModal"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        </tr>
+        <tr *ngIf="computers.length == 0">
+          <td colspan="10">
+            <div class="container mt-2 justify-content-center">
+              <img src="https://i.pinimg.com/originals/73/b0/05/73b0054acf8be08b254ba90945a19d09.gif" style="width: 100%; height: 400px">
+            </div>
           </td>
         </tr>
         </tbody>
@@ -101,14 +116,35 @@
     <div class="col-4"></div>
     <div class="col-4">
       <div class="float-end">
-        <button class="btn btn-danger" data-bs-toggle="modal"
+        <button class="btn btn-danger m-2" data-bs-toggle="modal"
                 data-bs-target="#deleteAllModal">Xóa
         </button>
       </div>
     </div>
   </div>
-  <div *ngIf="computers.length > 0" style="justify-content: space-around;display: flex;">
-    <pagination-controls (pageChange)="getPage($event)"></pagination-controls>
+  <div *ngIf="computers.length != 0" class="row mb-0" style="margin-top: 1rem;">
+    <div class="w-100 d-flex justify-content-center">
+      <pagination-controls (pageChange)="getPage(page = $event)"
+                           previousLabel="Trước"
+                           nextLabel="Sau"
+                           autoHide="true"
+                           maxSize=7>
+      </pagination-controls>
+    </div>
+  </div>
+  <div class="row align-items-center" *ngIf="computers.length != 0">
+    <div class="w-100 d-flex justify-content-center">
+      <div class="col-auto m-1">
+        <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>
+      </div>
+      <div class="col-auto m-1">
+        <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
+               (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
+      </div>
+      <div class="col-auto m-1">
+        <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -137,14 +173,21 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Xác nhận thông tin vé</h5>
+        <h5 class="modal-title">Xác nhận thông tin máy</h5>
       </div>
       <div class="modal-body">
-        Bạn có chắc chắn muốn xóa các máy này
-        <div *ngFor="let c of computerDeleteList; index as i">
-          <span style="font-weight: bold; color: #ff4146">{{c}}, </span>
+        <div *ngIf="map.size == 0" style="color: #ff4146; font-weight: bold">
+          Không có máy nào được chọn!
         </div>
-        không?
+        <div class="container" *ngIf="map.size != 0">
+          Danh sách các máy muốn xóa:
+          <table class="table table-dark w-100">
+            <tr *ngFor="let c of map | keyvalue; index as i">
+              <td>{{i + 1}}</td>
+              <td style="font-weight: bold; color: #ff4146">{{c.value.code}}</td>
+            </tr>
+          </table>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
