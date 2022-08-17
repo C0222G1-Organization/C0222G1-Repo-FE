@@ -132,7 +132,7 @@ export class GameCreateComponent implements OnInit {
               this.toastr.success('Tạo mới thàng công.');
             },
             error => {
-              this.toastr.error('Tạo mới thất bại thất bại, hãy thử lại.');
+              this.toastr.error('Tạo mới thất bại thất bại, hãy thử lại!.');
             }
           );
         });
