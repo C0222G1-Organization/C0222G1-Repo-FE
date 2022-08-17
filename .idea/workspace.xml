@@ -2,163 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db42e3b1-4e4a-4ce8-aafa-b14ec0fe66d1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/component/forbidden/forbidden.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/component/forbidden/forbidden.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/component/forbidden/forbidden.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/component/login/login.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/component/login/login.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/component/login/login.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/component/logout/logout.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/component/logout/logout.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/component/logout/logout.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/model/ilogin.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/model/roles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/model/user.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/service/auth-guard-admin.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/service/auth-guard-customer.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/service/auth-guard-employee.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/service/auth.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/service/jwt.interceptor.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/component/computer-create/computer-create.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/component/computer-create/computer-create.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/component/computer-create/computer-create.component.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/component/computer-create/computer-create.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/component/computer-edit/computer-edit.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/component/computer-edit/computer-edit.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/component/computer-edit/computer-edit.component.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/component/computer-edit/computer-edit.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/component/computer-list/computer-list.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/component/computer-list/computer-list.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/component/computer-list/computer-list.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/model/computer-type.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/model/computer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/model/search-dto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/service/computer-type.service.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/service/computer-type.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/service/computer.service.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/service/computer.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/create-customer-hao-nh/create-customer-hao-nh.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/create-customer-hao-nh/create-customer-hao-nh.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/create-customer-hao-nh/create-customer-hao-nh.component.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/create-customer-hao-nh/create-customer-hao-nh.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/customer-information/custom-validators.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/customer-information/customer-information.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/customer-information/customer-information.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/customer-information/customer-information.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/home-page-customer/home-page-customer.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/home-page-customer/home-page-customer.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/home-page-customer/home-page-customer.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/model/commune.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/model/customer-update-dto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/model/customer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/model/district.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/model/email-dto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/model/jwt-response-customer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/model/phone-dto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/model/province.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/model/user-dto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/service/create-customer.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/service/customer.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/component/employee-list/employee-list.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/component/employee-list/employee-list.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/component/employee-list/employee-list.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/model/commune.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/model/district.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/model/employee.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/model/position.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/model/province.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/model/user.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/service/employee.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/component/game-create/game-create.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/component/game-create/game-create.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/component/game-create/game-create.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/component/game-update/game-update.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/component/game-update/game-update.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/component/game-update/game-update.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/component/game/game.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/component/game/game.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/component/game/game.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/service/game-category.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/service/game.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/home-page/model/game-category.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/home-page/model/game.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/product/component/product/product.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/product/component/product/product.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/product/component/product/product.component.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/product/component/product/product.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/product/model/Product.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/product/model/ProductCategory.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/product/service/product.service.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/product/service/product.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/component/statistic/statistic.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/component/statistic/statistic.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/component/statistic/statistic.component.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/component/statistic/statistic.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/model/input-statistic.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/model/statistic-by-account.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/model/statistic-by-computer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/model/statistic-by-month.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/service/statistic/statistic.service.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/service/statistic/statistic.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/assets/img/check.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/assets/img/circle-check-solid.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/assets/img/error.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/assets/img/home-page-customer/user.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/assets/img/img-login/banner-login.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/assets/img/img-login/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c0222g1-fe/src/toastr.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/C0222G1-Repo-FE.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/C0222G1-Repo-FE.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Test.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/app-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/app.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/authentication-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/authentication-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/authentication.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/authentication/authentication.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/common-component/header/header.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/common-component/header/header.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/common-component/header/header.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/common-component/header/header.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/component/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/computer-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/computer-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/computer.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/computer.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/model/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/computer/service/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/customer-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/customer-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/create-customer/create-customer.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/create-customer/create-customer.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/create-customer/create-customer.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/create-customer/create-customer.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/edit-customer/edit-customer.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/edit-customer/edit-customer.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/edit-customer/edit-customer.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/component/edit-customer/edit-customer.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/customer.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/customer.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/model/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/service/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/component/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/employee-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/employee-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/employee.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/employee.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/employee/service/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/game/game-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/game-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/game/game.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/game.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/game/model/game-category.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/model/game-category.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/game/model/game.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/game/model/game.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/home-page/component/home-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/home-page/component/home-page.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/home-page/component/home-page.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/home-page/component/home-page.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/home-page/service/game.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/home-page/service/home-page.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/payment/component/payment-detail/payment-detail.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/payment/component/payment-detail/payment-detail.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/payment/component/payment-detail/payment-detail.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/payment/component/payment-detail/payment-detail.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/payment/component/payment-detail/payment-detail.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/payment/component/payment-detail/payment-detail.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/payment/payment-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/payment/payment-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/payment/payment.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/payment/payment.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/product/component/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/product/model/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/product/product-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/product/product-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/product/product.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/product/product.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/product/service/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/component/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/model/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/service/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/statistic-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/statistic-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/statistic.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/statistic/statistic.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/environments/environment.prod.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/environments/environment.prod.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/model/customerDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/model/customerDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/service/customer.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/c0222g1-fe/src/app/customer/service/customer.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,13 +33,20 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/c0222g1-fe" />
+    <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2021.3.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="ts.external.directory.path" value="D:\FE_project\C0222G1-Repo-FE\c0222g1-fe\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="db42e3b1-4e4a-4ce8-aafa-b14ec0fe66d1" name="Changes" comment="" />
@@ -204,11 +63,12 @@
       <workItem from="1660461361290" duration="22664000" />
       <workItem from="1660492122024" duration="1485000" />
       <workItem from="1660531951026" duration="774000" />
+      <workItem from="1660697393755" duration="7399000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+    <option name="version" value="2" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -220,5 +80,12 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="431" y="185" width="672" height="678" key="search.everywhere.popup" timestamp="1660701908036">
+      <screen x="0" y="40" width="1536" height="824" />
+    </state>
+    <state x="431" y="185" width="672" height="678" key="search.everywhere.popup/0.40.1536.824@0.40.1536.824" timestamp="1660701908036" />
   </component>
 </project>

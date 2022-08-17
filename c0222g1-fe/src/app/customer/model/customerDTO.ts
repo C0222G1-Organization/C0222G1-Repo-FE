@@ -16,5 +16,5 @@ export interface CustomerDTO {
   endDate?: string;
   address?: string;
   nameCustomer?: string;
-  checked?:boolean
+  checked?: boolean;
 }

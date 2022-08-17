@@ -8,6 +8,7 @@ import {District} from '../../model/district';
 import {Commune} from '../../model/commune';
 import {ToastrService} from 'ngx-toastr';
 import {Title} from '@angular/platform-browser';
+import {CustomerDTO} from "../../model/customerDTO";
 
 
 @Component({
@@ -67,9 +68,10 @@ export class EditCustomerComponent implements OnInit {
 
   ngOnInit(): void {
     this.editCustomerForm = new FormGroup({
-      name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨ' +
-        'ƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜ' +
-        'ỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s?]+$'), Validators.required,
+      name: new FormControl('', [Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]' +
+        '[a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*' +
+        '(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]' +
+        '[a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$'), Validators.required,
         Validators.minLength(5), Validators.maxLength(50), this.notBlank]),
       dateOfBirth: new FormControl('', [Validators.pattern('^[a-zA-Z\\s?]+$'), Validators.required, this.check16Age]),
       email: new FormGroup({
@@ -116,8 +118,11 @@ export class EditCustomerComponent implements OnInit {
   }
 
   onsubmit() {
-    const customerDTO = this.editCustomerForm.value;
+    const customerDTO: UpdateCustomerDto = this.editCustomerForm.value;
     customerDTO.id = this.customerEdit.id;
+    customerDTO.userName.id = this.customerEdit.id;
+    customerDTO.phoneNumber.id = this.customerEdit.id;
+    customerDTO.email.id = this.customerEdit.id;
     this.customerService.updateCustomer(this.customerEdit.id, this.editCustomerForm.value).subscribe(res => {
       this.toast.success('Chỉnh sửa thông tin khách hàng thành công!');
       this.route.navigateByUrl('/customers');
@@ -204,6 +209,16 @@ export class EditCustomerComponent implements OnInit {
     }
   }
 
+  checkUserName($event: Event) {
+    this.customerService.checkUserNameInEdit(String($event), this.customerEdit.id).subscribe(
+      value => {
+        this.isExitsUser = !!value;
+      }
+    );
+    if (String($event) === '') {
+      this.isExitsUser = false;
+    }
+  }
 
   checkEmail($event: Event) {
     if (String($event) === '') {
