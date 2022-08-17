@@ -93,7 +93,8 @@
           <td>{{computer.manufacturer}}</td>
           <td>{{computer.warranty}} năm</td>
           <td>
-            <button class="btn btn-outline-secondary color-icon" routerLink="/computers/edit/{{computer.id}}"><i class="fa-solid fa-pencil"></i></button>
+            <button class="btn btn-outline-secondary color-icon" routerLink="/computers/edit/{{computer.id}}"><i
+              class="fa-solid fa-pencil"></i></button>
             <button class="btn btn-outline-secondary " (click)="getInfo(computer)" data-bs-toggle="modal"
                     data-bs-target="#deleteModal"><i class="fa-solid fa-trash"></i></button>
           </td>
@@ -101,7 +102,8 @@
         <tr *ngIf="computers.length == 0">
           <td colspan="10">
             <div class="container mt-2 justify-content-center">
-              <img src="https://i.pinimg.com/originals/73/b0/05/73b0054acf8be08b254ba90945a19d09.gif" style="width: 100%; height: 400px">
+              <img src="https://i.pinimg.com/originals/73/b0/05/73b0054acf8be08b254ba90945a19d09.gif"
+                   style="width: 100%; height: 400px">
             </div>
           </td>
         </tr>
@@ -191,7 +193,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" (click)="deleteMultiComputer()" data-bs-dismiss="modal">Xóa</button>
+        <button type="button" class="btn btn-primary" (click)="deleteMultiComputer()" data-bs-dismiss="modal">Xóa
+        </button>
       </div>
     </div>
   </div>
