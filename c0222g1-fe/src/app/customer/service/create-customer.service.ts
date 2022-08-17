@@ -27,4 +27,16 @@ export class CreateCustomerService {
   createCustomer(updateCustomerDto: UpdateCustomerDto): Observable<void> {
     return this.http.post<void>(this.API_URL + 'customer', updateCustomerDto);
   }
+
+  checkUserName(userName: string): Observable<string> {
+    return this.http.get<string>(this.API_URL + 'customer/checkUserName/' + userName);
+  }
+
+  checkEmail(email: string): Observable<string> {
+    return this.http.get<string>(this.API_URL + 'customer/checkEmail/' + email);
+  }
+
+  checkPhone(phone: string): Observable<string> {
+    return this.http.get<string>(this.API_URL + 'customer/checkPhone/' + phone);
+  }
 }
