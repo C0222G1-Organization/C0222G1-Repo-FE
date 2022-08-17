@@ -62,6 +62,7 @@ export class LoginComponent implements OnInit {
             sessionStorage.setItem('recordId', value.recordId);
             sessionStorage.setItem('customerId', value.customer.id);
             sessionStorage.setItem('loopTimeCustomer', '0');
+            this.authService.sendData('customer', true);
           } else {
             sessionStorage.setItem('name', value.employee.name);
             sessionStorage.setItem('loopTimeCustomer', '1');
