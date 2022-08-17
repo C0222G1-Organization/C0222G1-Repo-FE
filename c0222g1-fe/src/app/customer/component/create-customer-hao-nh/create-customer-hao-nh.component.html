@@ -25,11 +25,11 @@
         </span>
         <span class="text-danger" *ngIf="customerForm.controls.name.hasError('maxlength') &&
                                       (customerForm.controls.name.dirty || customerForm.controls.name.touched)">
-          Không được lớn hơn 50 ký tự
+          Không được lớn hơn 50 ký tự.
         </span>
         <span class="text-danger" *ngIf="customerForm.controls.name.hasError('notBlank') &&
                                       (customerForm.controls.name.dirty || customerForm.controls.name.touched)">
-          Không được để khoảng trắng
+          Không được để khoảng trắng.
         </span>
       </label>
     </div>
@@ -46,10 +46,10 @@
           Không được để trống.
         </span>
         <span class="text-danger" *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().errors.notBlank">
-          Không được để khoảng trắng hai đầu.
+          Không được để khoảng trắng.
         </span>
         <span class="text-danger" *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().errors.pattern">
-          Không sai định dạng.
+          Sai định dạng.
         </span>
         <span class="text-danger" *ngIf="isExitsUser == true">
           Tài khoản đã tồn tại.
@@ -69,9 +69,13 @@
                                       (customerForm.controls.dateOfBirth.dirty || customerForm.controls.dateOfBirth.touched)">
           Chưa đủ 16 tuổi.
         </span>
+        <span class="text-danger" *ngIf="customerForm.controls.dateOfBirth.hasError('after100') &&
+                                      (customerForm.controls.dateOfBirth.dirty || customerForm.controls.dateOfBirth.touched)">
+          Tuổi  khách hàng quá lớn.
+        </span>
         <span class="text-danger" *ngIf="customerForm.controls.dateOfBirth.hasError('required') &&
                                       (customerForm.controls.dateOfBirth.dirty || customerForm.controls.dateOfBirth.touched)">
-          Không được để trống.
+          Không được để trống hoặc nhập sai định dạng.
         </span>
       </label>
     </div>
@@ -167,7 +171,7 @@
         <div class="form-floating textbox">
           <select class="form-select select input" aria-haspopup="true"
                   id="ward" style="padding: 10px 15px 0 15px; height: 60px" formControlName="commune">
-            <option value="">Chọn phường</option>
+            <option value="" selected>Chọn phường</option>
             <option [ngValue]="commune"
                     *ngFor="let commune of communeList"
                     class="option" style="height: 50px">{{commune.name}}</option>
@@ -214,7 +218,7 @@
             <span class="text-danger">*</span>
             <span class="text-danger"
                   *ngIf="customerForm.get('password').hasError('notSame') &&
-                                      (customerForm.get('password').touched || customerForm.get('password').dirty)">
+                                      (customerForm.get('password').touched)">
               Không khớp.
             </span>
           </label>
