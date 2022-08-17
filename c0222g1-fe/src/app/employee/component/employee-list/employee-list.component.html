@@ -24,24 +24,24 @@
                   <label for="dobfrom" style="color: white" class="col-form-label fontFamily">Ngày sinh bắt
                     đầu: </label>
                   <input id="dobfrom" type="date" class="form-control input-search" formControlName="dobfrom">
-                  <p class="text-danger" *ngIf="formSearch.hasError('dobNotValid') &&
-                                      (formSearch.controls.dobfrom.dirty || formSearch.controls.dobfrom.touched)">
+                  <p class="text-danger" *ngIf="formSearch.hasError('errorDob') &&
+                                                        (formSearch.controls.dobfrom.dirty || formSearch.controls.dobfrom.touched)">
                     Không được nhập trước ngày kết thúc.
                   </p>
-                  <p class="text-danger" *ngIf="formSearch.controls.dobfrom.hasError('dateNotExist') &&
-                                      (formSearch.controls.dobfrom.dirty || formSearch.controls.dobfrom.touched)">
-                    Không có ngày này.
-                  </p>
+                  <!--                  <p class="text-danger" *ngIf="formSearch.controls.dobfrom.hasError('dateNotExist') &&-->
+                  <!--                                      (formSearch.controls.dobfrom.dirty || formSearch.controls.dobfrom.touched)">-->
+                  <!--                    Không có ngày này.-->
+                  <!--                  </p>-->
                 </div>
               </div>
               <div class="col-lg-3 col-xl-3 w-15">
                 <div>
                   <label for="dobend" style="color: white" class="col-form-label fontFamily">Ngày sinh đến: </label>
                   <input id="dobend" type="date" class="form-control input-search" formControlName="dobend">
-                  <p class="text-danger" *ngIf="formSearch.controls.dobend.hasError('dateNotExist') &&
-                                      (formSearch.controls.dobend.dirty || formSearch.controls.dobend.touched)">
-                    Không có ngày này.
-                  </p>
+                  <!--                  <p class="text-danger" *ngIf="formSearch.controls.dobend.hasError('dateNotExist') &&-->
+                  <!--                                      (formSearch.controls.dobend.dirty || formSearch.controls.dobend.touched)">-->
+                  <!--                    Không có ngày này.-->
+                  <!--                  </p>-->
                 </div>
               </div>
               <div class="col-lg-3 col-xl-3 w-15 form-group">
@@ -74,14 +74,14 @@
                 <div>
                   <label for="workf" style="color: white" class="col-form-label fontFamily">Ngày vào làm: </label>
                   <input id="workf" type="date" class="input-search form-control" formControlName="workf">
-                  <p class="text-danger" *ngIf="formSearch.controls.workf.hasError('futureDate') &&
-                                      (formSearch.controls.workf.dirty || formSearch.controls.workf.touched)">
-                    Không được nhập sau ngày hiện tại.
+                  <p class="text-danger" *ngIf="formSearch.hasError('errorDate') &&
+                                                        (formSearch.controls.workf.dirty || formSearch.controls.workf.touched)">
+                    Không được nhập sau ngày kết thúc.
                   </p>
-                  <p class="text-danger" *ngIf="formSearch.controls.workf.hasError('dateNotExist') &&
-                                      (formSearch.controls.workf.dirty || formSearch.controls.workf.touched)">
-                    Không có ngày này.
-                  </p>
+                  <!--                  <p class="text-danger" *ngIf="formSearch.controls.workf.hasError('dateNotExist') &&-->
+                  <!--                                      (formSearch.controls.workf.dirty || formSearch.controls.workf.touched)">-->
+                  <!--                    Không có ngày này.-->
+                  <!--                  </p>-->
                 </div>
               </div>
               <div class="col-lg-3 col-xl-3 w-15">
@@ -89,13 +89,13 @@
                   <label for="workt" style="color: white" class="col-form-label fontFamily">Ngày vào làm đến: </label>
                   <input id="workt" type="date" class="form-control input-search" formControlName="workt">
                   <p class="text-danger" *ngIf="formSearch.controls.workt.hasError('futureDate') &&
-                                      (formSearch.controls.workt.dirty || formSearch.controls.workt.touched)">
+                                                        (formSearch.controls.workt.dirty || formSearch.controls.workt.touched)">
                     Không được nhập sau ngày hiện tại.
                   </p>
-                  <p class="text-danger" *ngIf="formSearch.controls.workt.hasError('dateNotExist') &&
-                                      (formSearch.controls.workt.dirty || formSearch.controls.workt.touched)">
-                    Không có ngày này.
-                  </p>
+                  <!--                  <p class="text-danger" *ngIf="formSearch.controls.workt.hasError('dateNotExist') &&-->
+                  <!--                                      (formSearch.controls.workt.dirty || formSearch.controls.workt.touched)">-->
+                  <!--                    Không có ngày này.-->
+                  <!--                  </p>-->
                 </div>
               </div>
               <div class="col-lg-3 col-xl-3 w-15">
@@ -121,8 +121,10 @@
         <div class="row">
           <div class="col-8 col-sm-8 col-md-8 col-lg-8 mt-3">
             <button class="btn btn-outline-secondary" (click)="search()" [disabled]="formSearch.invalid"
-                    style="right: 0">Tìm kiếm
+                    style="right: 0; margin-right: 10px">Tìm kiếm
             </button>
+            <button class="btn btn-outline-secondary" (click)="reset()"><i class="fa-solid fa-arrows-rotate"
+                                                                           style="color: #9a9a9a"></i></button>
           </div>
           <div class="col-4 col-sm-4 col-md-4 col-lg-4">
           </div>
@@ -137,6 +139,7 @@
             <tr>
               <th><input type="checkbox" [checked]="isAllCheckBoxChecked1()" (change)="checkMultipleCheckBox($event)">
               </th>
+              <th scope="col">STT</th>
               <th scope="col">Mã nhân viên</th>
               <th scope="col">Họ và tên</th>
               <th scope="col">Địa chỉ</th>
@@ -153,6 +156,7 @@
               *ngFor="let employee of employees| paginate:{itemsPerPage:5, currentPage: page , totalItems: totalElements}, let i = index">
               <td><input class="card-notify-year-checkbox" type="checkbox" value="{{employee.id}}"
                          [(ngModel)]="employees[i].checked" (click)="checkEmployee(employee.id)" id="check"></td>
+              <td>{{(i + 1) }}</td>
               <td>{{employee.code}}</td>
               <td>{{employee.name}}</td>
               <td class="hiddenText">{{employee.cmName}},{{employee.disName}},{{employee.proName}}</td>
@@ -162,7 +166,8 @@
               <td>{{employee.posiName}}</td>
               <td>{{exp(employee)}}</td>
               <td>
-                <button class="btn btn-outline-secondary"><i class="fa-solid fa-pencil" routerLink="employees/edit/:id"></i></button>
+                <button class="btn btn-outline-secondary"><i class="fa-solid fa-pencil"
+                                                             routerLink="employees/edit/:id"></i></button>
                 <button class="btn btn-outline-secondary" data-bs-toggle="modal"
                         data-bs-target="#deleteModal" (click)="getEmployee(employee)"><i class="fa-solid fa-trash"></i>
                 </button>
@@ -203,18 +208,14 @@
     </div>
     <div class="col-md-1"></div>
   </div>
-  <div class="row d-flex" id="btn-outside">
-    <div class="col-4 col-sm-4 col-md-4 col-lg-4">
-
-      <button class="btn btn-outline-secondary m-2" routerLink="/employees/add">Thêm mới nhân viên</button>
-
-      <button class="btn btn-outline-secondary m-2" routerLink='/employees/add'>Thêm mới nhân viên</button>
-
+  <div class="container row d-flex" id="btn-outside">
+    <div class="col-3 p-0">
+      <button class="btn btn-primary m-2" routerLink="/employees/add">Thêm mới nhân viên</button>
     </div>
-    <div class="col-4 col-sm-4 col-md-4 col-lg-4"></div>
-    <div class="col-4 col-sm-4 col-md-4 col-lg-4">
+    <div class="col-6"></div>
+    <div class="col-3" style="right: 0">
       <div class="float-end">
-        <button class="btn btn-outline-secondary " data-bs-toggle="modal"
+        <button class="btn btn-outline-secondary" style="right: 0" data-bs-toggle="modal"
                 data-bs-target="#deleteGroupModal" id="btn">Xóa tất cả
         </button>
       </div>
@@ -230,10 +231,9 @@
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel1">Xóa nhân viên</h5>
       </div>
-      <div class="modal-body">
-        Bạn có chắc chắn muốn xóa nhân viên có tên là <span style="font-weight: bold; color: #ff4146"
-                                                            id="name">{{nameDelete}}</span> không?
-      </div>
+      <ol style="width: 300px; margin-top: 10px">
+        <li style="color: #9a9a9a; font-size: 1.2rem">{{nameDelete}}</li>
+      </ol>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteEmployee()">Xóa</button>

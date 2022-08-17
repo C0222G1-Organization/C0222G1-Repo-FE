@@ -23,6 +23,7 @@ export class EmployeeService {
   constructor(private httpClient: HttpClient) {
   }
 
+
   getEmployeeList(page: number,
                   code: string,
                   name: string,
@@ -34,19 +35,18 @@ export class EmployeeService {
                   address: string): Observable<Employee[]> {
 
 
-    // if (dobfrom === '') {
-    //   dobfrom = '1970-01-01';
-    // }
-    //
-    // if (dobend === '') {
-    //   dobend = '2004-01-01';
-    // }
-    // if (workf === '') {
-    //   workf = '2000-08-01';
-    // }
-    // if (workt === '') {
-    //   workf = '2022-08-01';
-    // }
+    if (dobfrom === '' || dobfrom === null) {
+      dobfrom = '0000-01-01';
+    }
+    if (dobend === '' || dobend === null) {
+      dobend = '9999-12-12';
+    }
+    if (workf === '' || workf === null) {
+      workf = '0000-08-01';
+    }
+    if (workt === '' || workt === null) {
+      workt = '9999-08-01';
+    }
     let params = new HttpParams();
     params = params.append('code', code.trim());
     params = params.append('name', name.trim());
@@ -56,7 +56,10 @@ export class EmployeeService {
     params = params.append('workf', workf);
     params = params.append('pid', pid);
     params = params.append('address', address);
-
+    console.log(workf);
+    console.log(workt);
+    console.log(dobfrom);
+    console.log(dobend);
     return this.httpClient.get<Employee[]>(apiUrl + `/employee/${page}`, {params});
   }
 
