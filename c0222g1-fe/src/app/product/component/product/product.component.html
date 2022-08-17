@@ -109,7 +109,7 @@
 <div class="container">
   <div class="row">
     <div class="col-3"></div>
-    <div class="col-6 mx-5" *ngIf="productList.length === 0">
+    <div class="col-6 mx-5" *ngIf="productList.length === 0 || formProduct.invalid">
       <img src="https://fryday.ca/assets/frontend/default/images/empty-cart.png">
       <br>
       <br>
