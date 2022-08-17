@@ -50,7 +50,7 @@
                                       (formSearch.controls.dobend.dirty || formSearch.controls.dobend.touched)">
                     Không có nhân viên dưới 18 tuổi.
                   </p>
-                  <p class="text-danger" *ngIf="formSearch.controls.dobend.hasError('not100') &&
+                  <p class="text-danger" *ngIf="formSearch.controls.dobend.hasError('after100') &&
                                       (formSearch.controls.dobend.dirty || formSearch.controls.dobend.touched)">
                     Không có nhân viên trên 100 tuổi.
                   </p>
@@ -172,7 +172,7 @@
               <td>{{employee.code}}</td>
               <td>{{employee.name}}</td>
               <td class="hiddenText">{{employee.cmName}},{{employee.disName}},{{employee.proName}}</td>
-              <td>{{employee.dob}}</td>
+              <td>{{employee.dob| date: 'dd/MM/yyyy'}}</td>
               <td class="hiddenText">{{employee.email}}</td>
               <td>{{employee.phone}}</td>
               <td>{{employee.posiName}}</td>

@@ -34,16 +34,19 @@ export class EmployeeService {
                   address: string): Observable<Employee[]> {
 
 
-    if (dobfrom === '') {
-      dobfrom = '1970-01-01';
-    }
-
-    if (dobend === '') {
-      dobend = '2004-01-01';
-    }
-    if (workf === '') {
-      workf = '2000-12-31';
-    }
+    // if (dobfrom === '') {
+    //   dobfrom = '1970-01-01';
+    // }
+    //
+    // if (dobend === '') {
+    //   dobend = '2004-01-01';
+    // }
+    // if (workf === '') {
+    //   workf = '2000-08-01';
+    // }
+    // if (workt === '') {
+    //   workf = '2022-08-01';
+    // }
     let params = new HttpParams();
     params = params.append('code', code.trim());
     params = params.append('name', name.trim());

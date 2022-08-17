@@ -4,10 +4,10 @@ import {Employee} from '../../model/employee';
 import {Position} from '../../model/position';
 import {ToastrService} from 'ngx-toastr';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Title} from "@angular/platform-browser";
+import {Title} from '@angular/platform-browser';
 
 import {Router} from '@angular/router';
-import {isDate} from "rxjs/internal-compatibility";
+import {isDate} from 'rxjs/internal-compatibility';
 import {DatePipe} from '@angular/common';
 
 
@@ -37,9 +37,9 @@ export class EmployeeListComponent implements OnInit {
   totalPages: any;
   map = new Map;
   today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-  // dobFromSearch = this.datePipe.transform(new Date('1970-01-01'), 'yyyy-MM-dd');
-  // dobEndSearch = this.datePipe.transform(new Date('2004-08-16'), 'yyyy-MM-dd');
-  // workFromSearch = this.datePipe.transform(new Date('2010-01-01'), 'yyyy-MM-dd');
+  dobFromSearch = this.datePipe.transform(new Date('1970-01-01'), 'yyyy-MM-dd');
+  dobEndSearch = this.datePipe.transform(new Date('2004-08-16'), 'yyyy-MM-dd');
+  workFromSearch = this.datePipe.transform(new Date('2010-01-01'), 'yyyy-MM-dd');
 
   constructor(private employeeService: EmployeeService,
               private title: Title,
@@ -49,12 +49,14 @@ export class EmployeeListComponent implements OnInit {
     this.title.setTitle('Nhân viên');
     this.formSearch = new FormGroup({
       code: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+$'), Validators.maxLength(20)]),
+      // tslint:disable-next-line:max-line-length
       name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'), Validators.maxLength(20)]),
-      dobfrom: new FormControl('', [this.check18, this.check100]),
-      dobend: new FormControl('', this.check18, this.check100),
-      workf: new FormControl('', this.dateInFuture),
-      workt: new FormControl(this.today, this.dateInFuture),
+      dobfrom: new FormControl(this.dobFromSearch, [this.checkAge]),
+      dobend: new FormControl(this.dobEndSearch, [this.checkAge]),
+      workf: new FormControl(this.workFromSearch, [this.dateInFuture, this.dateNotExist]),
+      workt: new FormControl(this.today, [this.dateInFuture, this.dateNotExist]),
       position: new FormControl(''),
+      // tslint:disable-next-line:max-line-length
       address: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'), Validators.maxLength(20)]),
     }, [this.invalidDate, this.dobInvalidDate]);
   }
@@ -62,7 +64,6 @@ export class EmployeeListComponent implements OnInit {
   ngOnInit(): void {
     this.getPosition();
     this.getAll();
-    console.log("123")
   }
 
   getAll() {
@@ -151,19 +152,29 @@ export class EmployeeListComponent implements OnInit {
   }
 
   dateInFuture(abstractControl: AbstractControl) {
+    if (abstractControl.value === '') {
+      return null;
+    }
     const v = abstractControl.value;
     const end = new Date(v);
     if (end > new Date()) {
       return {futureDate: true};
-    }
-    if (!isDate(end)) {
-      return {dateNotExist: true};
     } else {
       return null;
     }
   }
+  dateNotExist(abstractControl: AbstractControl) {
+    const v = abstractControl.value;
+    const start = new Date(v);
+    if (!isDate(start)) {
+      return {dateNotExist: true};
+    }
+  }
 
   invalidDate(abstractControl: AbstractControl) {
+    if (abstractControl.value === '') {
+      return null;
+    }
     const v = abstractControl.value;
     const start = new Date(v.workf);
     const end = new Date(v.workt);
@@ -176,6 +187,9 @@ export class EmployeeListComponent implements OnInit {
   }
 
   dobInvalidDate(abstractControl: AbstractControl) {
+    if (abstractControl.value === '') {
+      return null;
+    }
     const v = abstractControl.value;
     const start = new Date(v.dobfrom);
     const end = new Date(v.dobend);
@@ -187,26 +201,26 @@ export class EmployeeListComponent implements OnInit {
     }
   }
 
-  private check18(abstractControl: AbstractControl): any {
+  private checkAge(abstractControl: AbstractControl): any {
+    if (abstractControl.value === '') {
+      return null;
+    }
     const today = new Date();
     const birthDate = new Date(abstractControl.value);
+    if (!isDate(birthDate)) {
+      return {dateNotExist: true};
+    }
     let age = today.getFullYear() - birthDate.getFullYear();
     const old = today.getMonth() - birthDate.getMonth();
     if (old < 0 || (old === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-    return (age >= 18) ? null : {not18: true};
-  }
-
-  private check100(abstractControl: AbstractControl): any {
-    const today = new Date();
-    const birthDate = new Date(abstractControl.value);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const old = today.getMonth() - birthDate.getMonth();
-    if (old < 0 || (old === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
+    if (age <= 16) {
+      return {not18: true};
+    } else if (age >= 100) {
+      return {after100: true};
     }
-    return (age <= 100) ? null : {not100: true};
+    return null;
   }
 
   getPage(page) {
@@ -227,7 +241,7 @@ export class EmployeeListComponent implements OnInit {
 
   checkEmployee(id: number) {
     for (const employee of this.employees) {
-      console.log(id)
+      console.log(id);
       if (employee.id == id) {
         employee.checked = employee.checked != true;
         break;
