@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {render} from 'creditcardpayments/creditCardPayments';
 import {PaymentService} from '../../service/payment.service';
 import {Payment} from '../../model/payment';
@@ -6,6 +6,7 @@ import {ToastrService} from 'ngx-toastr';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {ReponseBody} from '../../model/reponse-body';
+import {query} from '@angular/animations';
 
 declare var $: any;
 
@@ -111,38 +112,40 @@ export class DisplayPaymentComponent implements OnInit {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     });
-    let content = '<div class="table-container" style="padding: 0 5px;">\n' +
-      '<p style="text-align: right; margin: 5px 10px; font-weight: bold; font-size: 13px;' +
-      ' font-style: italic; color: white">Đơn vị tính: VND</p><table class="table table-striped table-dark"><thead>' +
-      '<tr>\n' +
-      '<th>Tên dịch vụ</th>\n' +
-      '<th>Số lượng</th>\n' +
-      '<th>Đơn vị</th>\n' +
-      '<th>Đơn giá</th>\n' +
-      '<th>Tổng tiền</th>\n' +
-      '</tr>\n' +
-      '</thead>\n' +
+    // tslint:disable-next-line:max-line-length
+    let content = '<p style="text-align: right; margin: 5px 10px; font-weight: bold; font-size: 13px; font-style: italic; color: white;">Đơn vị tính: VND</p>' +
+    '<table class="table table-striped table-dark"><thead><tr>' +
+      '<th>Tên dịch vụ</th>' +
+      '<th>Số lượng</th>' +
+      '<th>Đơn vị</th>' +
+      '<th>Đơn giá</th>' +
+      '<th>Tổng tiền</th>' +
+      '</tr>' +
+      '</thead>' +
       '<tbody>';
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.listPayment.length; i++) {
       if (this.listPayment[i].id === id) {
         // tslint:disable-next-line:prefer-for-of
         for (let j = 0; j < this.listPayment[i].paymentDetailList.length; j++) {
-          content += '<tr>\n' +
-            '              <td>' + this.listPayment[i].paymentDetailList[j].product.nameProduct + '</td>\n' +
-            '              <td>' + this.listPayment[i].paymentDetailList[j].amount + '</td>\n' +
-            '              <td>' + this.listPayment[i].paymentDetailList[j].product.unit + '</td>\n' +
-            '              <td>' + formatter.format(this.listPayment[i].paymentDetailList[j].product.prices) + '</td>\n' +
+          content += '<tr>' +
+            '<td>' + this.listPayment[i].paymentDetailList[j].product.nameProduct + '</td>' +
+            '<td>' + this.listPayment[i].paymentDetailList[j].amount + '</td>' +
+            '<td>' + this.listPayment[i].paymentDetailList[j].product.unit + '</td>' +
+            '<td>' + formatter.format(this.listPayment[i].paymentDetailList[j].product.prices) + '</td>' +
             // tslint:disable-next-line:max-line-length
-            '              <td>' + formatter.format(this.listPayment[i].paymentDetailList[j].product.prices * this.listPayment[i].paymentDetailList[j].amount) + '</td>\n' +
+            '<td>' + formatter.format(this.listPayment[i].paymentDetailList[j].product.prices * this.listPayment[i].paymentDetailList[j].amount) + '</td>' +
             // tslint:disable-next-line:max-line-length
-            '            </tr> + ' + '<tr><td colspan="4"> Tổng tiền dich vụ: </td>' + '<td rowspan="2">' + formatter.format(this.listPayment[i].totalPay) + '</td></tr>';
+            '</tr> + ' + '<tr><td colspan="4"> Tổng tiền dich vụ: </td>' + '<td rowspan="2">' + formatter.format(this.listPayment[i].totalPay) + '</td></tr>';
         }
       }
     }
     content += '</tbody>\n' +
-      '          </table>';
+      '</table>';
     document.getElementById('body-service').innerHTML = content;
+    // const parentTable = document.getElementById('table-service');
+    // console.log(parentTable);
+    // parentTable.removeChild(parentTable.children[0]);
   }
 
   paymentWithPaypal(id: number) {
