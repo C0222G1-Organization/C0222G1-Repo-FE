@@ -2,11 +2,11 @@
   <div class="h-auto w-auto ml-1 mr-1" style="border-radius: 10px; background-color: #2a2a2a; margin: 10% 0">
     <h1 class="text-center text-white pt-4 pb-4" style="font-family: 'Roboto', sans-serif;">THÔNG TIN THANH TOÁN</h1>
     <div class="table-container">
-      <p class="text-white" style="font-weight: bold; font-size: 13px; font-style: italic">Đơn vị tính: VND</p>
+      <p class="text-white" style="text-align: right ;font-weight: bold; font-size: 13px; font-style: italic">Đơn vị tính: VND</p>
       <table class="table table-striped table-dark">
         <thead>
         <tr>
-          <th>ID</th>
+          <th>#</th>
           <th>Mã hoá đơn</th>
           <th>Mã số máy</th>
           <th>Tên người dùng</th>
@@ -17,14 +17,14 @@
           <th>Thanh toán</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="listPayment.length != 0; else invalidList">
         <tr
-          *ngFor="let payment of listPayment  | paginate: {itemsPerPage: 2, currentPage: page+1, totalItems: element}">
+          *ngFor="let payment of listPayment  | paginate: {itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}">
           <td>{{payment.id}}</td>
           <td>{{payment.paymentCode}}</td>
           <td>{{payment.record.computer.id}}</td>
           <td>{{payment.record.customer.name}}</td>
-          <td class="hiddenText">{{payment.record.customer.email}}</td>
+          <td class="hiddenText" data-bs-toggle="tooltip" data-bs-placement="top" title="{{payment.record.customer.email}}">{{payment.record.customer.email}}</td>
           <td>{{payment.record.startTime}}</td>
           <td>
             <button class="btn btn-outline-light btn-sm" (click)="getService(payment.id)" data-bs-toggle="modal"
@@ -32,7 +32,7 @@
               Dịch vụ
             </button>
           </td>
-          <td>{{payment.totalPay}}</td>
+          <td>{{payment.totalPay | currency : '' : '' : '0.0-0'}}</td>
           <td>
             <button class="btn btn-outline-light btn-sm"
                     [disabled]="payment.totalPay == 0 || payment.paymentStatus == 1" (click)="getPayment(payment.id)"
@@ -42,11 +42,31 @@
           </td>
         </tr>
         </tbody>
+        <ng-template #invalidList><tr><td colspan="9" style="font-weight: bold; font-size: 15px; padding: 5px 0;">Không có dữ liệu</td></tr></ng-template>
       </table>
     </div>
-    <div class="paging-container d-flex justify-content-center pb-2 pt-2">
-      <div class="pagination align-content-center align-items-center mt-2 mb-2">
-        <pagination-controls (pageChange)=getPage($event) class="page-item"></pagination-controls>
+    <div *ngIf="listPayment.length != 0" class="row mb-0" style="margin-top: 1rem;">
+      <div class="w-100 d-flex justify-content-center">
+        <pagination-controls (pageChange)="getPage(page = $event)"
+                             previousLabel="Trước"
+                             nextLabel="Sau"
+                             autoHide="true"
+                             maxSize=7>
+        </pagination-controls>
+      </div>
+    </div>
+    <div class="row align-items-center" *ngIf="listPayment.length > 1">
+      <div class="w-100 d-flex justify-content-center">
+        <div class="col-auto m-1">
+          <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>
+        </div>
+        <div class="col-auto m-1">
+          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
+                 (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
+        </div>
+        <div class="col-auto m-1">
+          <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
+        </div>
       </div>
     </div>
   </div>
@@ -55,15 +75,15 @@
 <!-- Modal -->
 <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="background-color: #2A2A2A">
       <div class="modal-header">
-        <h5 class="modal-title">Dịch vụ đã sử dụng</h5>
+        <h5 class="modal-title text-white">Dịch vụ đã sử dụng</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
         </button>
       </div>
       <div class="modal-body" id="body-service"></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">OK</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Xác nhận</button>
       </div>
     </div>
   </div>
@@ -72,16 +92,16 @@
 <div class="modal fade" id="modelPaymentMethodId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
      aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="background-color: #2A2A2A">
       <div class="modal-header">
-        <h5 class="modal-title">Phương thức thanh toán</h5>
+        <h5 class="modal-title text-white">Phương thức thanh toán</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
         </button>
       </div>
       <div class="modal-body" id="body-payment">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Huỷ</button>
       </div>
     </div>
   </div>
@@ -90,65 +110,65 @@
 <div class="modal fade" id="modelResultId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
      aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Hoá đơn thanh toán</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-        </button>
-      </div>
+    <div class="modal-content" style="background-color: #2A2A2A">
+<!--      <div class="modal-header">-->
+<!--        <h5 class="modal-title text-white">Hoá đơn thanh toán</h5>-->
+<!--        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">-->
+<!--        </button>-->
+<!--      </div>-->
       <div class="modal-body" id="body-result" *ngIf="obj != null">
         <div class="d-flex justify-content-center">
           <div class="row">
-            <h1 class="text-center pt-4 pb-4 pl-4 pr-4" style="font-family: 'Roboto', sans-serif;">HOÁ ĐƠN
-              THANH TOÁN</h1>
-            <div class="">
+            <h1 class="text-center pt-4 pb-4 pl-4 pr-4 text-white" style="font-family: 'Roboto', sans-serif;">HOÁ ĐƠN
+              THANH TOÁN
+            </h1>
+            <div style="margin: 0 20%;">
               <div class="row mt-2 mb-2">
-                <div class="col-3 fw-bold">Mã số hoá đơn</div>
-                <div class="col-6">: {{obj.id}}</div>
+                <div class="col-3 fw-bold text-white">Mã số hoá đơn</div>
+                <div class="col-6 text-white">: {{obj.id}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-3 fw-bold">Trạng thái hoá đơn</div>
-                <div class="col-6">: {{obj.status}}</div>
+                <div class="col-3 fw-bold text-white">Trạng thái hoá đơn</div>
+                <div class="col-6 text-white">: HOÀN THÀNH</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-3 fw-bold">Tổng thanh toán</div>
-                <div class="col-6">: {{obj.purchase_units[0]['amount']['value']}}</div>
+                <div class="col-3 fw-bold text-white">Tổng thanh toán</div>
+                <div class="col-6 text-white">: {{obj.purchase_units[0]['amount']['value'] | currency : '' : '' : '0.0-0'}} VND</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-3 fw-bold">Địa chỉ email</div>
-                <div class="col-6 hiddenText">: {{obj.purchase_units[0]['payee']['email_address']}}</div>
+                <div class="col-3 fw-bold text-white">Địa chỉ email</div>
+                <div class="col-6 text-white hiddenText">: {{obj.purchase_units[0]['payee']['email_address']}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-3 fw-bold">Họ và tên</div>
-                <div class="col-6">: {{obj.purchase_units[0]['shipping']['name']['full_name']}}</div>
+                <div class="col-3 fw-bold text-white">Họ và tên</div>
+                <div class="col-6 text-white">: {{obj.purchase_units[0]['shipping']['name']['full_name']}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-3 fw-bold">Địa chỉ</div>
-                <div class="col-6">: {{obj.purchase_units[0]['shipping']['address']['address_line_1']}}</div>
+                <div class="col-3 fw-bold text-white">Địa chỉ</div>
+                <div class="col-6 text-white">: {{obj.purchase_units[0]['shipping']['address']['address_line_1']}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-3 fw-bold">Thành phố</div>
-                <div class="col-6">: {{obj.purchase_units[0]['shipping']['address']['admin_area_1']}}</div>
+                <div class="col-3 fw-bold text-white">Thành phố</div>
+                <div class="col-6 text-white">: {{obj.purchase_units[0]['shipping']['address']['admin_area_1']}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-3 fw-bold">Tỉnh</div>
-                <div class="col-6">: {{obj.purchase_units[0]['shipping']['address']['admin_area_2']}}</div>
+                <div class="col-3 fw-bold text-white">Tỉnh</div>
+                <div class="col-6 text-white">: {{obj.purchase_units[0]['shipping']['address']['admin_area_2']}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-3 fw-bold">Zipcode</div>
-                <div class="col-6">: {{obj.purchase_units[0]['shipping']['address']['postal_code']}}</div>
+                <div class="col-3 fw-bold text-white">Mã bưu chính</div>
+                <div class="col-6 text-white">: {{obj.purchase_units[0]['shipping']['address']['postal_code']}}</div>
               </div>
               <div class="row mt-2 mb-2">
-                <div class="col-3 fw-bold">Quốc gia</div>
-                <div class="col-6">: {{obj.purchase_units[0]['shipping']['address']['country_code']}}</div>
+                <div class="col-3 fw-bold text-white">Quốc gia</div>
+                <div class="col-6 text-white">: {{obj.purchase_units[0]['shipping']['address']['country_code']}}</div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="getAllPayment()" data-bs-dismiss="modal">Xác nhận</button>
       </div>
     </div>
   </div>

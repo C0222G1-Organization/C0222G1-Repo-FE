@@ -5,8 +5,6 @@
   <title>YÊU CẦU DỊCH VỤ</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <!--    <link rel="stylesheet" href="\bootstrap\css\bootstrap.min.css">-->
-  <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Arimo&family=Playfair+Display&family=Roboto&display=swap"
@@ -31,7 +29,6 @@
     }
 
     .container {
-      /*background: #2A2A2A;*/
       padding: 0 0;
     }
 
@@ -67,7 +64,6 @@
     }
 
     .modal-header, .modal-footer {
-      /*background-color: #121212;*/
       padding: 0.5em 0.5em;
     }
 
@@ -101,7 +97,7 @@
         <div class="d-flex">
           <div class="col-4 mb-2">
             <label for="category" class="col-md-4 col-sm-12">Danh mục</label>
-            <select name="" id="category" class="col-md-6 col-sm-12 form-control-sm text-center"
+            <select name="" id="category" class="col-md-7 col-sm-12 form-control-sm text-center"
                     (change)="getProductOptionList($event.target.value)">
               <option [value]="null">Vui lòng chọn</option>
               <option [value]="category.id" *ngFor="let category of productCategoryList">{{category.name}}</option>
@@ -109,7 +105,7 @@
           </div>
           <div class="col-4 mb-2">
             <label for="product" class="col-md-4 col-sm-12">Sản phẩm</label>
-            <select name="" id="product" class="col-md-6 col-sm-12 form-control-sm text-center"
+            <select name="" id="product" class="col-md-7 col-sm-12 form-control-sm text-center"
                     (change)="getProductById($event.target.value)">
               <option value="">Vui lòng chọn</option>
               <option value="{{productObject.id}}"
@@ -118,7 +114,7 @@
           </div>
           <div class="col-4 mb-2">
             <label class="col-md-4 col-sm-12" for="unit">Đơn vị tính</label>
-            <input id="unit" class="col-md-6 col-sm-12 form-control-sm text-center" type="text" value="{{productUnit}}"
+            <input id="unit" class="col-md-7 col-sm-12 form-control-sm text-center" type="text" value="{{productUnit}}"
                    readonly>
           </div>
         </div>
@@ -127,15 +123,15 @@
           <div class="col-4 mb-3">
             <label class="col-md-4 col-sm-12" for="quantity">Số lượng</label>
             <input (change)="showTotalPayment($event.target.value)" id="quantity"
-                   class="col-md-6 col-sm-12 form-control-sm" type="number" [(ngModel)]="quantity">
+                   class="col-md-7 col-sm-12 form-control-sm" type="number" [(ngModel)]="quantity">
           </div>
           <div class="col-4 mb-3">
             <label class="col-md-4 col-sm-12" for="price">Đơn giá</label>
-            <input id="price" class="col-md-6 col-sm-12 form-control-sm" type="text" value="{{productPrice | number}}" readonly>
+            <input id="price" class="col-md-7 col-sm-12 form-control-sm" type="text" value="{{productPrice | number}}" readonly>
           </div>
           <div class="col-4 mb-3">
             <label class="col-md-4 col-sm-12" for="total">Thành tiền</label>
-            <input id="total" class="col-md-6 col-sm-12 form-control-sm" type="text" value="{{totalPayment | number}}"
+            <input id="total" class="col-md-7 col-sm-12 form-control-sm" type="text" value="{{totalPayment | number}}"
                    readonly>
           </div>
         </div>
@@ -151,10 +147,6 @@
 
       <!--            DIV NÀY HIỂN THỊ HÌNH ẢNH TỪNG DỊCH VỤ MỖI KHI KHÁCH HÀNG CHỌN Ở MỤC SELECT-->
       <div class="col-2 center-item mt-5">
-        <!--                <div style="background: #121212;">-->
-        <!--                    <img src="https://vi.seaicons.com/wp-content/uploads/2017/03/Coca-Cola-Can-icon.png"-->
-        <!--                         class="card-img-top" alt="...">-->
-        <!--                </div>-->
         <div style="background: #121212; height: 100%">
           <img [src]="imageSrc" class="card-img-top" style="height: 190px; width: auto" width="auto" alt="...">
         </div>
@@ -198,9 +190,12 @@
       </tbody>
     </table>
   </div>
+  <div class="container" style="text-align: right">
+    <p>{{totalOfOrder}}</p>
+  </div>
   <div>
     <div class="text-center mt-2">
-      <button [disabled]="orderProductList.length===0" class="btn btn-outline-light" data-bs-toggle="modal"
+      <button [hidden]="orderProductList.length===0" class="btn btn-outline-light" data-bs-toggle="modal"
               data-bs-target="#orderModal">
         GỬI YÊU CẦU
       </button>
@@ -256,11 +251,10 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-dark btn-sm" data-bs-dismiss="modal">HỦY</button>
-          <button data-bs-dismiss="modal" class="btn btn-dark btn-sm">XÁC NHẬN</button>
+          <button data-bs-dismiss="modal" class="btn btn-dark btn-sm" (click)="orderToDatabase()">XÁC NHẬN</button>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 </html>

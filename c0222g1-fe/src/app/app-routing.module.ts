@@ -10,10 +10,14 @@ import {NewsRoutingModule} from './news/news-routing.module';
 import {RegistrationRoutingModule} from './registration/registration-routing.module';
 import {HomePageRoutingModule} from './home-page/home-page-routing.module';
 import {StatisticRoutingModule} from './statistic/statistic-routing.module';
+import {ServerErrorComponent} from './common-component/server-error/server-error.component';
 
 const routes: Routes = [
   {
-    path: 'payment',
+    path: '500', component: ServerErrorComponent
+
+  },
+  {path: 'payment',
     loadChildren: () => import('./payment/payment.module').then(module => module.PaymentModule)
   }
 ];
@@ -22,7 +26,6 @@ const routes: Routes = [
   declarations: [],
   imports: [
     RouterModule.forRoot(routes),
-    PaymentRoutingModule,
     AuthenticationRoutingModule,
     ComputerRoutingModule,
     CustomerRoutingModule,
