@@ -41,7 +41,7 @@
                    *ngIf="formSearch.get('starDate').hasError('errorDateAge16') && formSearch.get('starDate').dirty">Ngày sinh phải lớn hơn 16 tuổi .
               </div>
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.hasError('errorStartDateMoreEndDate') && formSearch.dirty">Ngày  sinh phải nhỏ hơn ngày đến
+                   *ngIf="formSearch.hasError('errorStartDateMoreEndDate') && formSearch.dirty">Ngày  sinh phải nhỏ hơn ngày đến.
               </div>
               <div style="font-size: small" class="text-danger"
                    *ngIf="formSearch.get('starDate').hasError('errorDate1975') && formSearch.get('starDate').dirty">Bạn nhập tuổi quá lớn.
@@ -83,7 +83,7 @@
             </div>
             <div style="font-size: small" class="text-danger"
                  *ngIf="formSearch.controls.address.hasError('minlength') && formSearch.controls.address.dirty"> Vui
-              lòng nhập
+              lòng nhập.
             </div>
             <div style="font-size: small" class="text-danger"
                  *ngIf="formSearch.controls.address.hasError('maxlength') && formSearch.controls.address.dirty"> Bạn
