@@ -3,7 +3,7 @@ import {ComputerService} from '../../service/computer.service';
 import {SearchDto} from '../../model/search-dto';
 import {ToastrService} from 'ngx-toastr';
 import {ComputerType} from '../../model/computer-type';
-import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Title} from '@angular/platform-browser';
 
 @Component({
@@ -14,19 +14,13 @@ import {Title} from '@angular/platform-browser';
 
 export class ComputerListComponent implements OnInit {
   formSearch: FormGroup = new FormGroup({
-    code: new FormControl(''),
-    location: new FormControl(''),
+    code: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
+    location: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
     start: new FormControl('', this.checkStart),
     end: new FormControl('', this.checkEnd),
     typeId: new FormControl(''),
     status: new FormControl(''),
   }, this.checkDate);
-  code = '';
-  location = '';
-  start = '';
-  end = '';
-  status = '';
-  typeId = '';
   computers: SearchDto[] = [];
   computer: SearchDto;
   page = 0;
@@ -52,6 +46,17 @@ export class ComputerListComponent implements OnInit {
     this.getAllComputerType();
   }
 
+  reset() {
+    this.formSearch = new FormGroup({
+      code: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
+      location: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
+      start: new FormControl('', this.checkStart),
+      end: new FormControl('', this.checkEnd),
+      typeId: new FormControl(''),
+      status: new FormControl(''),
+    }, this.checkDate);
+  }
+
   /**
    * Created by: PhucNQ
    * Date created: 14/08/2022
@@ -73,6 +78,7 @@ export class ComputerListComponent implements OnInit {
         this.computers = list.content;
         this.totalItems = list.totalElements;
         this.totalPages = list.totalPages;
+        this.reset();
       }
       this.isAllCheckBoxChecked();
     }, error => {
@@ -83,11 +89,11 @@ export class ComputerListComponent implements OnInit {
   /**
    * Created by: PhucNQ
    * Date created: 14/08/2022
-   * Function: findAll
+   * Function: search
    */
   search() {
     const value = this.formSearch.value;
-    if (this.page > 0){
+    if (this.page > 0) {
       this.page = 0;
     }
     this.computerService.findAll(this.page,
@@ -246,6 +252,11 @@ export class ComputerListComponent implements OnInit {
     }
   }
 
+  /**
+   * Created by: PhucNQ
+   * Date created: 14/08/2022
+   * Function: checkDate()
+   */
   checkDate(abstractControl: AbstractControl): any {
     const start = new Date(abstractControl.value.start);
     const end = new Date(abstractControl.value.end);
@@ -259,6 +270,11 @@ export class ComputerListComponent implements OnInit {
     }
   }
 
+  /**
+   * Created by: PhucNQ
+   * Date created: 14/08/2022
+   * Function: checkStart()
+   */
   checkStart(abstractControl: AbstractControl): any {
     const start = new Date(abstractControl.value);
     const now = new Date();
@@ -283,6 +299,11 @@ export class ComputerListComponent implements OnInit {
     }
   }
 
+  /**
+   * Created by: PhucNQ
+   * Date created: 14/08/2022
+   * Function: checkEnd()
+   */
   checkEnd(abstractControl: AbstractControl): any {
     const end = new Date(abstractControl.value);
     const now = new Date();

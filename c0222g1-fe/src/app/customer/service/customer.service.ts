@@ -80,11 +80,26 @@ export class CustomerService {
     return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkUserName/' + userName);
   }
 
+  checkUserNameInEdit(userName: string, id: number): Observable<string> {
+    return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkUserNameInEdit/' + userName + '/' + id);
+  }
+
   checkEmail(email: string): Observable<string> {
     return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkEmail/' + email);
   }
 
   checkPhone(phone: string): Observable<string> {
     return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkPhone/' + phone);
+  }
+
+  /**
+   * Create by: LuanND
+   * Date Create: 17/08/2022
+   * Description: add new time remaining
+   * @param id: is ID object payment send to API
+   * @param remaining: time remaining customer can play
+   */
+  setTimeRemaining(id: number, remaining: number): Observable<any> {
+    return this.httpClient.get<string>(this.ApiUrl_8080 + `/setOutOfTime?id=${id}&remaining=${remaining}`);
   }
 }
