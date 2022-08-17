@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
         }
       }, error => {
         console.log(error);
-        this.toartrs.error(error.error.message);
+        this.toartrs.error('Phải nhập hết trường');
       }
     );
   }
