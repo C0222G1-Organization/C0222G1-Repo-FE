@@ -22,10 +22,9 @@
       </div>
     </div>
     <div class="row my-2">
-      <div class="col-10 mx-auto">
-        <p class="text-light text m-0 text-indent">
-          {{news.content}}
-        </p>
+      <div class="col-10 mx-auto d-flex justify-content-center">
+        <div [innerHTML]="news.content" class="text-light mx-auto text m-0 text-indent">
+        </div>
       </div>
     </div>
   </div>
