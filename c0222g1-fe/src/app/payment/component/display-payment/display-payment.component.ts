@@ -114,7 +114,7 @@ export class DisplayPaymentComponent implements OnInit {
     });
     // tslint:disable-next-line:max-line-length
     let content = '<p style="text-align: right; margin: 5px 10px; font-weight: bold; font-size: 13px; font-style: italic; color: white;">Đơn vị tính: VND</p>' +
-    '<table class="table table-striped table-dark"><thead><tr>' +
+      '<table class="table table-striped table-dark"><thead><tr>' +
       '<th>Tên dịch vụ</th>' +
       '<th>Số lượng</th>' +
       '<th>Đơn vị</th>' +
