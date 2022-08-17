@@ -39,6 +39,15 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const items = document.querySelectorAll('ul li');
+    console.log(items);
+    items.forEach((item) => {
+      item.addEventListener('click', () => {
+        console.log('check check');
+        document.querySelector('li.active').classList.remove('active');
+        item.classList.add('active');
+      });
+    });
     this.checkLogin();
     this.checkRoles();
     if (sessionStorage.getItem('loopTimeCustomer') === '0') {
@@ -47,14 +56,6 @@ export class HeaderComponent implements OnInit {
 
     this.endTime = this.convertStringToDate(sessionStorage.getItem('startTime'));
     this.endTime.setSeconds(this.endTime.getSeconds() + Number(sessionStorage.getItem('remainingTime')));
-
-    const items = document.querySelectorAll('ul li');
-    items.forEach((item) => {
-      item.addEventListener('click', () => {
-        document.querySelector('li.active').classList.remove('active');
-        item.classList.add('active');
-      });
-    });
   }
 
   convertStringToDate(dateString: string): Date {

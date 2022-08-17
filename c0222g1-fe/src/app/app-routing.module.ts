@@ -12,6 +12,7 @@ import {HomePageRoutingModule} from "./home-page/home-page-routing.module";
 import {StatisticRoutingModule} from "./statistic/statistic-routing.module";
 import {ServerErrorComponent} from "./common-component/server-error/server-error.component";
 import {NotFoundComponent} from "./common-component/not-found/not-found.component";
+import {ProductRoutingModule} from "./product/product-routing.module";
 
 const routes: Routes = [
   {
@@ -36,7 +37,8 @@ const routes: Routes = [
     PaymentRoutingModule,
     RegistrationRoutingModule,
     StatisticRoutingModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    ProductRoutingModule
   ],
   exports: [RouterModule]
 })
