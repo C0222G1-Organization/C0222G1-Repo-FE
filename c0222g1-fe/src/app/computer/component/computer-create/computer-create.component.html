@@ -5,11 +5,13 @@
     <div class="form-floating textbox mb-4">
       <input type="text" class="form-control input" id="ma" placeholder="Mã máy" formControlName="code"
              style="padding-top: 10px" autocomplete="off" (change)="checkCode($event.target.value)">
-      <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('code').touched
+      <div>
+      <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('code').dirty
                 && formComputer.hasError('required', 'code')">Mã máy không được để trống.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('code').dirty
                 && formComputer.hasError('pattern', 'code')">Mã máy phải có định dạng CPXXXX (X là số).</p>
-      <p style="color: red; font-size: 0.8rem" *ngIf="isExitsCode == true">Mã máy đã tồn tại.</p>
+      <p style="color: red; font-size: 0.8rem"  *ngIf="isExitsCode == true">Mã máy đã tồn tại.</p>
+      </div>
       <label for="vi-tri" style="color: white">
         Mã máy
         <span class="text-danger">*</span>
@@ -143,7 +145,7 @@
     <div class="">
       <div class="row mb-8 mt-4 ms-5 justify-content-center">
         <button type="button" class="btn btn-outline-light w-25" (click)="cancel()" >Hủy bỏ</button>
-        <button type="submit" class="btn btn-primary w-25 ms-3" >Thêm mới</button>
+        <button type="submit" class="btn btn-primary w-25 ms-3"  [disabled]="formComputer.invalid">Thêm mới</button>
       </div>
     </div>
   </form>
