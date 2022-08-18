@@ -38,13 +38,15 @@
               <input formControlName="starDate" id="startDate" type="date"
                      class="form-control input-search " style="width: 200px">
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.get('starDate').hasError('errorDateAge16') && formSearch.get('starDate').dirty">Ngày sinh phải lớn hơn 16 tuổi .
+                   *ngIf="formSearch.get('starDate').hasError('errorDateAge16') && formSearch.get('starDate').dirty">
+                Ngày sinh phải lớn hơn 16 tuổi .
               </div>
               <div style="font-size: small" class="text-danger"
                    *ngIf="formSearch.hasError('errorStartDateMoreEndDate') && formSearch.dirty">Ngày  sinh phải nhỏ hơn ngày đến.
               </div>
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.get('starDate').hasError('errorDate1975') && formSearch.get('starDate').dirty">Bạn nhập tuổi quá lớn.
+                   *ngIf="formSearch.get('starDate').hasError('errorDate1975') && formSearch.get('starDate').dirty">Bạn
+                nhập tuổi quá lớn.
               </div>
 
             </div>
@@ -78,7 +80,8 @@
                      class="input-search form-control"
                      placeholder="Nhập địa chỉ">
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.get('address').hasError('pattern') && formSearch.get('address').dirty">Nhập địa chỉ sai định dạng.
+                   *ngIf="formSearch.get('address').hasError('pattern') && formSearch.get('address').dirty">Nhập địa chỉ
+                sai định dạng.
               </div>
             </div>
             <div style="font-size: small" class="text-danger"
@@ -103,7 +106,9 @@
                    ">Ngày phải không dược lớn hơn hiện tại
               </div>
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.hasError('errorStartDateMoreEndDate') && formSearch.dirty">Ngày  đến phải lớn hơn ngày sinh  từ.
+                   *ngIf="formSearch.hasError('errorStartDateMoreEndDate') && formSearch.dirty">Ngày đến phải lớn hơn
+                ngày
+                sinh từ.
               </div>
             </div>
           </div>
@@ -198,7 +203,7 @@
     <!--    button create and delete all-->
     <div class="row " id="btn-outside">
       <div class="col-4">
-        <button routerLink="/customers/create" class="btn btn-primary">Thêm mới khách hàng </button>
+        <button routerLink="/customers/create" class="btn btn-primary">Thêm mới khách hàng</button>
       </div>
       <div class="col-4"></div>
       <div class="col-4">
@@ -218,62 +223,61 @@
                            maxSize=7></pagination-controls>
 
     </div>
-
   </div>
-</div>
 
 
-<!-- Delete Modal-->
-<div class="modal fade " id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel1">Xóa khách hàng</h5>
-      </div>
-      <div class="modal-body" *ngIf="map.size==0">
-        <table class="table table-dark">
-          <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Tên</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>1</td>
-            <td>{{idCustomerDelete.name}}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="modal-body" *ngIf="map.size!==0">
-        <table class="table table-dark">
-          <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Tên</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let customer of map | keyvalue ; let i = index">
-            <td>{{i + 1}}</td>
-            <td>{{customer.value.name}}</td>
-          </tr>
-          </tbody>
-        </table>
+  <!-- Delete Modal-->
+  <div class="modal fade " id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel1">Xóa khách hàng</h5>
+        </div>
+        <div class="modal-body" *ngIf="map.size==0">
+          <table class="table table-dark">
+            <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Tên</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>1</td>
+              <td>{{idCustomerDelete.name}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-body" *ngIf="map.size!==0">
+          <table class="table table-dark">
+            <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Tên</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let customer of map | keyvalue ; let i = index">
+              <td>{{i + 1}}</td>
+              <td>{{customer.value.name}}</td>
+            </tr>
+            </tbody>
+          </table>
 
-      </div>
-      <div class="modal-footer">
-        <button (click)="close()" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button *ngIf="map.size ==0" type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                (click)="deleteCustomer()">Xóa
-        </button>
-        <button *ngIf="map.size!==0" type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                (click)="DeleteById()">Xóa1
-        </button>
+        </div>
+        <div class="modal-footer">
+          <button (click)="close()" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng
+          </button>
+          <button *ngIf="map.size ==0" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                  (click)="deleteCustomer()">Xóa
+          </button>
+          <button *ngIf="map.size!==0" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                  (click)="DeleteById()">Xóa1
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </body>
 

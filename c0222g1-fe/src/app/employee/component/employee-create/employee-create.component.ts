@@ -35,7 +35,7 @@ export class EmployeeCreateComponent implements OnInit {
       code: new FormControl('', [Validators.required, Validators.pattern('^EMP[0-9]{4}$')]),
       name: new FormControl('', [Validators.required, Validators.pattern('^([A-Z][^A-Z0-9\\s]+)(\\s[A-Z][^A-Z0-9\\s]+)*$')]),
       email: new FormControl('', [Validators.required, Validators.email]),
-    // tslint:disable-next-line:max-line-length
+      // tslint:disable-next-line:max-line-length
       phone: new FormControl('', [Validators.required, Validators.pattern('^(0|84+)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$')]),
       dob: new FormControl('', [Validators.required, this.check18Age]),
       salary: new FormControl('', [Validators.required]),
@@ -43,9 +43,9 @@ export class EmployeeCreateComponent implements OnInit {
       startWork: new FormControl('', [Validators.required]),
       statusDelete: new FormControl(0, [Validators.required]),
       image: new FormControl('', [Validators.required]),
-    appUser: new FormGroup({
+      appUser: new FormGroup({
         username: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\\\w\\\\W ]+[^ ]$')]),
-      // tslint:disable-next-line:max-line-length
+        // tslint:disable-next-line:max-line-length
         password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
       }),
       position: new FormControl('', [Validators.required]),
@@ -75,7 +75,7 @@ export class EmployeeCreateComponent implements OnInit {
       this.districtList = [];
       this.communeList = [];
     } else {
-      this.employeeService.getAllDistrict(Number($event)).subscribe(
+      this.employeeService.getDistrictsByProvinceId(Number($event)).subscribe(
         value => this.districtList = value);
     }
   }
@@ -86,7 +86,7 @@ export class EmployeeCreateComponent implements OnInit {
     if ($event === '') {
       this.communeList = [];
     } else {
-      this.employeeService.getAllCommune(Number($event)).subscribe(
+      this.employeeService.getCommunesByDistrictId(Number($event)).subscribe(
         value => this.communeList = value);
     }
   }
@@ -105,8 +105,6 @@ export class EmployeeCreateComponent implements OnInit {
       finalize(() => {
         fileRef.getDownloadURL().subscribe((url) => {
           this.employeeForm.patchValue({image: url});
-          console.log(url);
-          console.log(this.employeeForm.value);
           this.employeeService.create(this.employeeForm.value).subscribe(
             () => {
               this.toastr.success('Thêm mới thành công', 'Nhân Viên');
