@@ -60,4 +60,9 @@ export class GameDetailComponent implements OnInit {
       this.editState = false;
     }
   }
+
+  editGame(id: number) {
+    id = Number(id);
+    this.router.navigateByUrl('games/edit/' + id);
+  }
 }

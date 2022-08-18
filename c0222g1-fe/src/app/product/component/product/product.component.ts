@@ -88,6 +88,7 @@ export class ProductComponent implements OnInit {
         this.productList = value.content;
         this.totalElements = value.totalElements;
         this.page = 0;
+        this.toast.success('Tìm kiếm kết quả thành công');
       }
       if (value === null) {
         this.toast.error('Không tìm thấy kết quả');

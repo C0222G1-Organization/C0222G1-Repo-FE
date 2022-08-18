@@ -73,7 +73,7 @@ export class EmployeeService {
 
   create(employee: Employee): Observable<void> {
     console.log(employee);
-    return this.httpClient.post<void>(apiUrl + '/employee/add', employee);
+    return this.httpClient.post<void>(apiUrl + '/employee/create', employee);
   }
 
 
