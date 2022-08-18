@@ -21,6 +21,7 @@ export class CreateComponent implements OnInit {
   checkImg: boolean;
   regexImg = false;
   public Editor = ClassicEditor;
+  check = true;
 
   constructor(private newsService: NewsService,
               private storage: AngularFireStorage,
@@ -32,10 +33,10 @@ export class CreateComponent implements OnInit {
   selectedFile: File = null;
   gameCateList: GameCategory[];
   formNews = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\w\\W ]+[^ ]$'),
+    title: new FormControl('', [Validators.required,
       Validators.minLength(20), Validators.maxLength(150)]),
     imageUrl: new FormControl('', [Validators.required]),
-    content: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\w\\W ]+[^ ]$'), Validators.minLength(200)]),
+    content: new FormControl('', [Validators.required, Validators.minLength(200)]),
     createDate: new FormControl(this.getCurrentDateTime()),
     views: new FormControl(0),
     author: new FormControl('', [Validators.required,
@@ -70,8 +71,10 @@ export class CreateComponent implements OnInit {
   }
 
   create() {
+    this.check = false;
     if (this.formNews.invalid) {
       this.toastr.error('Nhập đầy đủ thông tin.');
+      this.check = true;
       return;
     }
     const nameImg = this.getCurrentDateTime() + this.selectedFile.name;

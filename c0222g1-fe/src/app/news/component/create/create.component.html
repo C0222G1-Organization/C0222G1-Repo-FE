@@ -71,10 +71,12 @@
               <button type="button" routerLink="/news" class="button w-100 h-100 rounded text-light">Trở về</button>
             </div>
           </div>
-          <div class="col-lg-6 px-3">
-            <button (click)="create()"  type="button" class="button-primary w-100 rounded text-light">Đăng bài</button>
+          <div class="col-lg-6 px-3 position-relative">
+            <button [disabled]="!check" (click)="create()"  type="button" class="button-primary w-100 rounded position-absolute text-light">Đăng bài</button>
+            <div *ngIf="!check" class="spinner-border text-light spinner position-absolute" role="status"></div>
           </div>
         </div>
       </form>
   </div>
 </div>
+
