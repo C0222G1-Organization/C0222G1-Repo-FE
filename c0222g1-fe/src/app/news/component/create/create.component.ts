@@ -9,13 +9,13 @@ import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {Title} from '@angular/platform-browser';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import BackgroundColor from 'ckeditor5-background-color/src/backgroundcolor';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css']
 })
-
 export class CreateComponent implements OnInit {
   checkImgSize = false;
   checkImg: boolean;

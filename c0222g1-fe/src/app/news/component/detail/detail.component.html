@@ -1,7 +1,9 @@
 <div class="container-fluid">
   <div class="container">
     <div class="row">
-      <img class="main-img rounded" src="{{news.imageUrl}}" alt="Girl in a jacket">
+      <div class="col-12 mx-auto">
+        <img class="w-100" src="{{news.imageUrl}}">
+      </div>
     </div>
     <div class="row">
       <div class="col-10 mx-auto">
@@ -23,8 +25,8 @@
     </div>
     <div class="row my-2">
       <div class="col-10 mx-auto d-flex justify-content-center">
-        <div [innerHTML]="news.content" class="text-light mx-auto text m-0 text-indent">
-        </div>
+          <div id="content" class="text text-light w-100 img-fluid" [innerHTML]="news.content">
+          </div>
       </div>
     </div>
   </div>
