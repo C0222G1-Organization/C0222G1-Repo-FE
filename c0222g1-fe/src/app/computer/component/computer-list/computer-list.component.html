@@ -49,8 +49,11 @@
               </div>
             </form>
             <div class="input-field">
-              <button class="btn btn-outline-secondary mb-2" (click)="search()" [disabled]="formSearch.invalid" style="right: 0">Tìm kiếm</button>
-              <button class="btn btn-outline-secondary mb-2" (click)="reset()" style="right: 0"><i class="fa-solid fa-arrows-rotate"></i></button>
+              <button class="btn btn-outline-secondary mb-2" (click)="search()" [disabled]="formSearch.invalid"
+                      style="right: 0">Tìm kiếm
+              </button>
+              <button class="btn btn-outline-secondary mb-2" (click)="reset()" style="right: 0"><i
+                class="fa-solid fa-arrows-rotate"></i></button>
             </div>
           </div>
         </div>
@@ -83,7 +86,7 @@
           <td>
             <input class="card-notify-year-checkbox" type="checkbox" value="{{computer.id}}"
                    [(ngModel)]="computers[i].checked">
-            {{i + size + number +1}}
+            {{i + size + number + 1}}
           </td>
           <td>{{computer.code}}</td>
           <td *ngIf="computer.status.includes('1',0)">Bình thường</td>
@@ -96,9 +99,6 @@
           <td>{{computer.manufacturer}}</td>
           <td>{{computer.warranty}} năm</td>
           <td *ngIf="checkShow">
-            <button class="btn btn-outline-secondary color-icon" routerLink="/computers/edit/{{computer.id}}"><i class="fa-solid fa-pencil"></i></button>
-            <button class="btn btn-outline-secondary "  (click)="getInfo(computer)" data-bs-toggle="modal"
-          <td>
             <button class="btn btn-outline-secondary color-icon" routerLink="/computers/edit/{{computer.id}}"><i
               class="fa-solid fa-pencil"></i></button>
             <button class="btn btn-outline-secondary " (click)="getInfo(computer)" data-bs-toggle="modal"
@@ -108,10 +108,14 @@
         <tr *ngIf="computers.length == 0">
           <td colspan="10">
             <div class="container mt-2 justify-content-center">
-              <img src="https://i.pinimg.com/originals/73/b0/05/73b0054acf8be08b254ba90945a19d09.gif"
-                   style="width: 100%; height: 400px">
+              <img src="https://i.giphy.com/media/HTSsuRrErs54g1Tqr5/giphy.webp" style="width: 100%; height: 350px">
             </div>
           </td>
+        </tr>
+        <tr *ngIf="computers.length == 0">
+          <th style="text-align: center; font-size: 1.3rem" colspan="10">
+            Không có máy nào
+          </th>
         </tr>
         </tbody>
       </table>

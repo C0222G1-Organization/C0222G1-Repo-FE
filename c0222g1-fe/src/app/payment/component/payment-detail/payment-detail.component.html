@@ -1,81 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>YÊU CẦU DỊCH VỤ</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Arimo&family=Playfair+Display&family=Roboto&display=swap"
-        rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta charset="UTF-8">
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-          integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-          crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-          integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
-          crossorigin="anonymous"></script>
-  <script src="https://kit.fontawesome.com/b29d237812.js" crossorigin="anonymous"></script>
-  <style>
-    body {
-      font-family: 'Arimo', sans-serif;
-      font-family: 'Playfair Display', serif;
-      font-family: 'Roboto', sans-serif;
-    !important;
-      background-color: #121212;
-      color: #9a9a9a;
-    }
-
-    .container {
-      padding: 0 0;
-    }
-
-    .table-dark {
-      --bs-table-bg: #202020 !important;
-      --bs-table-striped-bg: #2a2a2a !important;
-      --bs-table-striped-color: #a8a8a8 !important;
-      --bs-table-active-bg: #373b3e;
-      --bs-table-active-color: #fff;
-      --bs-table-hover-bg: #323539;
-      --bs-table-hover-color: #fff;
-      color: #a8a8a8 !important;
-      border-color: #2a2a2a !important
-    }
-
-    td, th {
-      text-align: center;
-    }
-
-    th {
-      color: white;
-    }
-
-    .avatar {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .avatar img {
-      height: 100px;
-      width: auto;
-    }
-
-    .modal-header, .modal-footer {
-      padding: 0.5em 0.5em;
-    }
-
-    .btn {
-      color: #9a9a9a;
-    }
-
-    input {
-      text-align: right;
-    }
-  </style>
-</head>
 <body>
 <div class="container-fluid pb-5">
   <div class="container">
@@ -127,7 +49,8 @@
           </div>
           <div class="col-4 mb-3">
             <label class="col-md-4 col-sm-12" for="price">Đơn giá</label>
-            <input id="price" class="col-md-7 col-sm-12 form-control-sm" type="text" value="{{productPrice | number}}" readonly>
+            <input id="price" class="col-md-7 col-sm-12 form-control-sm" type="text" value="{{productPrice | number}}"
+                   readonly>
           </div>
           <div class="col-4 mb-3">
             <label class="col-md-4 col-sm-12" for="total">Thành tiền</label>
@@ -182,7 +105,7 @@
         <td>{{orderItem.prices * orderItem.quantity | number}}</td>
         <td>
           <a class="btn text-white" data-bs-toggle="modal"
-             data-bs-target="#deleteModal" (click)="getIdDelete(orderItem.id)">
+             data-bs-target="#deleteModal" (click)="getProductToDelete(orderItem)">
             <i class="fa-solid fa-xmark"></i>
           </a>
         </td>
@@ -190,12 +113,16 @@
       </tbody>
     </table>
   </div>
-  <div class="container" style="text-align: right">
-    <p>{{totalOfOrder}}</p>
+  <div *ngIf="orderProductList.length===0" class="text-center">
+    <img height="100px" src="https://cdn-icons-png.flaticon.com/512/1265/1265907.png" alt="">
+  </div>
+  <div *ngIf="totalOfOrder > 0" class="container text-white" style="text-align: right;">
+    <span><strong style="font-style: italic;">Tổng thanh toán: </strong></span>
+    <span style="padding-right: 1.5em">{{totalOfOrder | number}}</span>
   </div>
   <div>
-    <div class="text-center mt-2">
-      <button [hidden]="orderProductList.length===0" class="btn btn-outline-light" data-bs-toggle="modal"
+    <div class="text-center mt-4">
+      <button [hidden]="orderProductList.length===0" class="btn btn-primary text-white" data-bs-toggle="modal"
               data-bs-target="#orderModal">
         GỬI YÊU CẦU
       </button>
@@ -205,26 +132,26 @@
 </body>
 
 <!-- Modal Delete -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+<div class="modal fade modal-bs-sm" id="deleteModal" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-dark">XÁC NHẬN XÓA LỰA CHỌN</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"
-                style="border: none; background: white">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white text-center">XÓA LỰA CHỌN</h5>
+        <button type="button" class="close bg-dark" data-bs-dismiss="modal" aria-label="Close"
+                style="border: none; color: white">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div id="confirmDelete">
         <div class="modal-body">
           <div class="d-block">
-            <h5 class="font-italic font-weight-bold mt-1 text-dark">Bạn chắc chắn hoàn tác dịch vụ này?</h5>
+            <h5 class="font-italic font-weight-bold mt-1 text-dark" id="nameDelete"></h5>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-dark btn-sm" data-bs-dismiss="modal">HỦY</button>
-          <button data-bs-dismiss="modal" class="btn btn-dark btn-sm" (click)="undoChooseProduct()">XÁC NHẬN</button>
+          <button data-bs-dismiss="modal" class="btn-sm btn-primary" (click)="undoChooseProduct()">XÁC NHẬN</button>
         </div>
       </div>
     </div>
@@ -236,10 +163,10 @@
      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-dark">XÁC NHẬN YÊU CẦU</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"
-                style="border: none; background: white">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">XÁC NHẬN YÊU CẦU</h5>
+        <button type="button" class="close bg-dark" data-bs-dismiss="modal" aria-label="Close"
+                style="border: none; color: white">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -251,10 +178,10 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-dark btn-sm" data-bs-dismiss="modal">HỦY</button>
-          <button data-bs-dismiss="modal" class="btn btn-dark btn-sm" (click)="orderToDatabase()">XÁC NHẬN</button>
+          <button data-bs-dismiss="modal" class="btn-sm btn-primary" (click)="orderToDatabase()">XÁC NHẬN</button>
         </div>
       </div>
     </div>
   </div>
 </div>
-</html>
+

@@ -14,11 +14,11 @@
                class="form-text text-danger mt-1 px-2">Không được để trống.
           </div>
           <div *ngIf="employeeForm.controls.code.hasError('pattern') && employeeForm.controls.code.touched"
-               class="form-text text-danger mt-1 px-2">Mã sai định dạng.
+               class="form-text text-danger mt-1 px-2">Định dạng mã nhân viên bắt buộc là EMPXXXX.
           </div>
 
           <div *ngIf="employeeForm.controls.code.hasError('pattern') && employeeForm.controls.code.touched"
-               class="form-text text-danger mt-1 px-2">Mã sai định dạng.
+               class="form-text text-danger mt-1 px-2">Định dạng mã nhân viên bắt buộc là EMPXXXX.
           </div>
 
           <label for="Code-Employee" style="color: white">
@@ -249,8 +249,6 @@
                    placeholder="Tài khoản"
                    style="padding-top: 10px">
             <div *ngIf="employeeForm.get('appUser').hasError('required','username') && employeeForm.get('appUser').get('username').touched"class="form-text text-danger mt-1 px-2">Không được để trống.</div>
-
-            <div *ngIf="employeeForm.get('appUser').hasError('pattern','username') && employeeForm.get('appUser').get('username').touched" class="form-text text-danger mt-1 px-2">Không được để khoảng cách.</div>
 
             <!--            <div *ngIf="employeeForm.controls.username.hasError('required') && employeeForm.controls.username.touched"class="form-text text-danger mt-1 px-2"></div>-->
 

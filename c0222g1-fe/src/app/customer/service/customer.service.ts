@@ -4,10 +4,10 @@ import {HttpClient} from '@angular/common/http';
 import {CustomerDTO} from '../model/customerDTO';
 import {Observable} from 'rxjs';
 import {Customer} from '../model/customer';
-import { UpdateCustomerDto } from '../model/customer-update-dto';
-import { Province } from '../model/province';
-import { District } from '../model/district';
-import { Commune } from '../model/commune';
+import {UpdateCustomerDto} from '../model/customer-update-dto';
+import {Province} from '../model/province';
+import {District} from '../model/district';
+import {Commune} from '../model/commune';
 
 @Injectable({
   providedIn: 'root'
@@ -42,21 +42,11 @@ export class CustomerService {
     return this.httpClient.delete<Customer>('http://localhost:8080/customer/deleteCustomerBy?id=' + id);
   }
 
-
-  /**
-   * Create by: DuyNT
-   * Date Create: 11/08/2022
-   * function: get info of customer by id from database
-   */
-  public findCustomerById(id: number): Observable<Customer> {
-    return this.httpClient.get<Customer>(`${this.ApiUrl_8080}/${id}`);
-  }
-
-
   saveCustomer(customerDTO: UpdateCustomerDto): Observable<void> {
     console.log(customerDTO);
-    return this.httpClient.post<void>(this.ApiUrl_8080 , customerDTO);
+    return this.httpClient.post<void>(this.ApiUrl_8080, customerDTO);
   }
+
   getAllProvince(): Observable<Province[]> {
     return this.httpClient.get<Province[]>(this.ApiUrl + '/province');
   }
@@ -68,12 +58,13 @@ export class CustomerService {
   getAllCommune(districtId: number): Observable<Commune[]> {
     return this.httpClient.get<Commune[]>(this.ApiUrl + '/commune/' + districtId);
   }
+
   getCustomerByID(id: number): Observable<UpdateCustomerDto> {
     return this.httpClient.get<UpdateCustomerDto>(this.ApiUrl_8080 + '/getCustomer/' + id);
   }
 
   updateCustomer(id: number, customer: Customer): Observable<UpdateCustomerDto> {
-    return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id , customer);
+    return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id, customer);
   }
 
   checkUserName(userName: string): Observable<string> {
@@ -91,4 +82,24 @@ export class CustomerService {
   checkPhone(phone: string): Observable<string> {
     return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkPhone/' + phone);
   }
+
+  updateCustomerInfo(id: number, customer: CustomerDTO): Observable<void> {
+    return this.httpClient.patch<void>(this.ApiUrl_8080 + '/update/' + id, customer);
+  }
+
+  checkMatchesPassword(password: string, id: number): Observable<string> {
+    return this.httpClient.get<string>(this.ApiUrl_8080 + '/matchesPassword/' + password + '/' + id);
+  }
+
+  /**
+   * Create by: LuanND
+   * Date Create: 17/08/2022
+   * Description: add new time remaining
+   * @param id: is ID object payment send to API
+   * @param remaining: time remaining customer can play
+   */
+  setTimeRemaining(id: number, remaining: number): Observable<any> {
+    return this.httpClient.get<string>(this.ApiUrl_8080 + `/setOutOfTime?id=${id}&remaining=${remaining}`);
+  }
 }
+
