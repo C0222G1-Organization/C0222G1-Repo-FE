@@ -29,13 +29,14 @@ export class ComputerListComponent implements OnInit {
   totalPages: any;
   itemsPerPage = 5;
   computerCodeDelete: string;
-  size = 0;
+  size: number;
   number = 0;
   checkShow = false;
   map = new Map();
   computerDeleteList: any[] = [];
   computerTypes: ComputerType[] = [];
   checkDelete: any;
+
 
   constructor(private computerService: ComputerService,
               private toastr: ToastrService,
@@ -75,6 +76,7 @@ export class ComputerListComponent implements OnInit {
       value.end,
       value.status,
       value.typeId).subscribe((list: any) => {
+      this.size = list.size * this.page;
       this.computers = list.content;
       if (this.computers.length !== null) {
         this.computers = list.content;
@@ -132,7 +134,6 @@ export class ComputerListComponent implements OnInit {
     if (page < 1 || page > this.totalPages) {
       this.toastr.error('Vui lòng nhập đúng');
     }
-    this.size = 5 * (page - 1);
     this.page = page - 1;
     this.findAll();
   }
@@ -251,7 +252,7 @@ export class ComputerListComponent implements OnInit {
     if (abstractControl.value.start === '' || abstractControl.value.end === '') {
       return null;
     }
-    if (start < end) {
+    if (start > end) {
       return {errorDate: true};
     }
     return null;
