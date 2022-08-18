@@ -31,7 +31,6 @@ export class ComputerEditComponent implements OnInit {
       warranty: new FormControl('', Validators.required),
       computerType: new FormGroup({
         id: new FormControl('', Validators.required),
-        name: new FormControl('', Validators.required)
       })
 
     }, this.checkStartDate
@@ -65,7 +64,6 @@ export class ComputerEditComponent implements OnInit {
       return null;
     }
   }
-
 
 
   getAll() {
