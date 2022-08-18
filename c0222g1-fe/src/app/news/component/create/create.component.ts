@@ -21,7 +21,7 @@ export class CreateComponent implements OnInit {
   checkImg: boolean;
   regexImg = false;
   public Editor = ClassicEditor;
-  private check = true;
+  check = true;
 
   constructor(private newsService: NewsService,
               private storage: AngularFireStorage,

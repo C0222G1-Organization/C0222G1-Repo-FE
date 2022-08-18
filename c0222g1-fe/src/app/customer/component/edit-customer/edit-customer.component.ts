@@ -8,7 +8,7 @@ import {District} from '../../model/district';
 import {Commune} from '../../model/commune';
 import {ToastrService} from 'ngx-toastr';
 import {Title} from '@angular/platform-browser';
-import {CustomerDTO} from "../../model/customerDTO";
+
 
 
 @Component({
@@ -57,7 +57,9 @@ export class EditCustomerComponent implements OnInit {
   isExitsUser = false;
   isExitsEmail = false;
   isExitsPhone = false;
-
+  isHiddenNewPassword = false;
+  isHiddenOldPassword = false;
+  isNotMatchesPassword = false;
   constructor(private customerService: CustomerService,
               private activatedRoute: ActivatedRoute,
               private route: Router,
@@ -84,7 +86,11 @@ export class EditCustomerComponent implements OnInit {
         userName: new FormControl('', [Validators.required, this.notBlank, Validators.pattern('[a-zA-z0-9]{5,50}') ])
       }),
       // tslint:disable-next-line:max-line-length
-      password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
+      password: new FormGroup({
+        // tslint:disable-next-line:max-line-length
+        password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
+        confirmPassword: new FormControl('', Validators.required)
+      }, this.checkConfirmPassword),
       activeStatus: new  FormControl(''),
       province: new FormGroup({
         id: new FormControl(0),
@@ -97,7 +103,8 @@ export class EditCustomerComponent implements OnInit {
       commune: new FormGroup({
         id: new FormControl(0),
         name: new FormControl('', Validators.required)
-      })
+      }),
+      oldPassword: new FormControl('', Validators.required)
     });
     const id = Number(this.activatedRoute.snapshot.params.id);
     this.customerService.getCustomerByID(id).subscribe(value => {
@@ -123,7 +130,12 @@ export class EditCustomerComponent implements OnInit {
     customerDTO.userName.id = this.customerEdit.id;
     customerDTO.phoneNumber.id = this.customerEdit.id;
     customerDTO.email.id = this.customerEdit.id;
-    this.customerService.updateCustomer(this.customerEdit.id, this.editCustomerForm.value).subscribe(res => {
+    if (this.editCustomerForm.value.password.password === '') {
+      customerDTO.password = 'zxcxzczxczc!@!@#132';
+    } else {
+      customerDTO.password = this.editCustomerForm.value.password.password;
+    }
+    this.customerService.updateCustomerDTO(this.customerEdit.id, customerDTO).subscribe(res => {
       this.toast.success('Chỉnh sửa thông tin khách hàng thành công!');
       this.route.navigateByUrl('/customers');
       this.editCustomerForm.reset();
@@ -138,6 +150,12 @@ export class EditCustomerComponent implements OnInit {
         this.toast.error(error.error.phoneNumber);
       }
     });
+  }
+
+  private checkConfirmPassword(abstractControl: AbstractControl): any {
+    const password = abstractControl.value.password;
+    const confirmPassword = abstractControl.value.confirmPassword;
+    return (password === confirmPassword) ? null : {notSame: true};
   }
 
   private notBlank(abstractControl: AbstractControl): any {
@@ -243,7 +261,28 @@ export class EditCustomerComponent implements OnInit {
     if (String($event) === '') {
       this.isExitsPhone = false;
     }
-    console.log(this.isExitsPhone);
+  }
+  showAndHidden() {
+    console.log(this.isHiddenOldPassword);
+    if (this.isHiddenOldPassword) {
+      this.isHiddenOldPassword = false;
+    } else {
+      this.isHiddenOldPassword = true;
+    }
+  }
+
+  matchesPassword($event: Event) {
+    this.customerService.checkMatchesPassword(String($event), this.customerEdit.id).subscribe(
+      value => {
+        if (value) {
+          this.isNotMatchesPassword = false;
+          this.isHiddenNewPassword = true;
+        } else {
+          this.isNotMatchesPassword = true;
+          this.isHiddenNewPassword = false;
+        }
+      }
+    );
   }
 }
 

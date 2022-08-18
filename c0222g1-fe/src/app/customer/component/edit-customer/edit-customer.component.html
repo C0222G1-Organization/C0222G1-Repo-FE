@@ -108,8 +108,9 @@
         <div class="form-floating textbox" formGroupName="province">
           <select class="form-select select input"
                   aria-haspopup="true" id="city"
-                  style="padding: 10px 15px 0 15px" (change)="getDistrictList($event.target.value)" formControlName="id">
-            <option value="" >Chọn thành phố</option>
+                  style="padding: 10px 15px 0 15px" (change)="getDistrictList($event.target.value)"
+                  formControlName="id">
+            <option value="">Chọn thành phố</option>
             <option class="options" value="{{province.id}}"
                     *ngFor="let province of provinceList"
                     style="height: 50px">{{province.name}}</option>
@@ -127,9 +128,9 @@
                   class="form-select select input"
                   aria-haspopup="true" id="district" style="padding: 10px 15px 0 15px">
             <option value="" class="option" style="height: 50px">Chọn quận</option>
-            <option  value="{{district.id}}"
-                     *ngFor="let district of districtList"
-                     class="option" style="height: 50px">{{district.name}}</option>
+            <option value="{{district.id}}"
+                    *ngFor="let district of districtList"
+                    class="option" style="height: 50px">{{district.name}}</option>
           </select>
           <label for="district" style="color: white">
             Quận
@@ -183,36 +184,10 @@
           </div>
         </div>
       </div>
-
-<!--      <div class="col-md-6" style="padding-right: 15px">-->
-<!--        <div class="form-floating textbox mb-4">-->
-<!--          <div class="form-floating textbox">-->
-<!--            <input type="password" class="form-control input"-->
-<!--                   id="pass-word" placeholder="Mật khẩu"-->
-<!--                   style="padding-top: 10px" formControlName="password">-->
-<!--            <label for="pass-word" style="color: white">-->
-<!--              Mật khẩu-->
-<!--              <span class="text-danger">*</span>-->
-<!--            </label>-->
-<!--            <div class="mb-3 text-danger"-->
-<!--                 *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.required">-->
-<!--              <small>Mật khẩu không được để trống!</small>-->
-<!--            </div>-->
-<!--            <div class="mb-3 text-danger"-->
-<!--                 *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.pattern">-->
-<!--              <small>Nhập đúng định dạng mật khẩu!</small>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-    </div>
-
-
-
-    <div class="row my-4" style="padding-right: 15px">
-      <div class="col-4">
+      <div class="col-md-6" style="padding-right: 15px">
         <div class="form-floating textbox">
-          <select class="form-select select input" aria-haspopup="true" id="status" style="padding: 10px 15px 0 15px" formControlName="activeStatus">
+          <select class="form-select select input" aria-haspopup="true" id="status" style="padding: 10px 15px 0 15px"
+                  formControlName="activeStatus">
             <option value="1" class="option">Đang hoạt động</option>
             <option value="0" class="option">Không hoạt động</option>
           </select>
@@ -226,15 +201,102 @@
           </div>
         </div>
       </div>
-      <div class="row mt-5">
-        <div class="col-md-4"></div>
-        <div class="col-md-4" style="text-align: center; width: 100%">
-          <button name="button" class="btn btn-primary btn-responsive w-25" style="height: 40px" (click)="onsubmit()">Lưu</button>
-          <button name="button" class="btn btn-outline-light btn-responsive w-25 ms-3" style="height: 40px" (click)="cancel()">Hủy</button>
-        </div>
-        <div class="col-md-4"></div>
+      <!--      <div class="col-md-6" style="padding-right: 15px">-->
+      <!--        <div class="form-floating textbox mb-4">-->
+      <!--          <div class="form-floating textbox">-->
+      <!--            <input type="password" class="form-control input"-->
+      <!--                   id="pass-word" placeholder="Mật khẩu"-->
+      <!--                   style="padding-top: 10px" formControlName="password">-->
+      <!--            <label for="pass-word" style="color: white">-->
+      <!--              Mật khẩu-->
+      <!--              <span class="text-danger">*</span>-->
+      <!--            </label>-->
+      <!--            <div class="mb-3 text-danger"-->
+      <!--                 *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.required">-->
+      <!--              <small>Mật khẩu không được để trống!</small>-->
+      <!--            </div>-->
+      <!--            <div class="mb-3 text-danger"-->
+      <!--                 *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.pattern">-->
+      <!--              <small>Nhập đúng định dạng mật khẩu!</small>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
+    </div>
+
+
+    <div class="row my-4">
+      <div class="col-md-2" style="display: flex; justify-content: center; align-items: center; padding: 10px; padding-bottom: 18px" >
+        <input style="width: 100%; height: 50px" type="button" (click)="showAndHidden()" class="btn btn-primary" value="Đổi mật khẩu">
       </div>
+      <div class="col-md-10" >
+        <div class="form-floating textbox mb-4" *ngIf="isHiddenOldPassword === true">
+          <input type="password" class="form-control input"
+                 id="checkOldPassword" placeholder="Xác nhận mật khẩu cũ"
+                  formControlName="oldPassword"
+                  (change)="matchesPassword($event.target.value)">
+          <label for="date-of-birth" style="color: white">
+            Xác nhận mật khẩu cũ
+            <span class="text-danger">*</span>
+          </label>
+          <div class="mb-3 text-danger"
+               *ngIf="isNotMatchesPassword === true">
+            <small>Không trùng khớp!</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="this.isHiddenNewPassword === true" class="row my-4" formGroupName="password">
+      <div class="col-md-6" style="padding-right: 15px">
+        <div class="form-floating textbox mb-4">
+          <input type="password" class="form-control input"
+                 id="pass-word" placeholder="Họ và tên"
+                 style="padding-top: 10px" formControlName="password">
+          <label for="pass-word" style="color: white">
+            Mật khẩu
+            <span class="text-danger">*</span>
+          </label>
+          <span class="text-danger"
+                *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.pattern">
+          Nhập sai định dạng!
+        </span>
+          <span class="text-danger"
+                *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.required">
+          Không được để trống!
+        </span>
+        </div>
+      </div>
+      <div class="col-md-6 " style="padding-right: 15px">
+        <div class="form-floating textbox mb-4">
+          <input type="password" class="form-control input"
+                 id="confirm-pass-word" placeholder="Xác nhận mật khẩu"
+                 style="padding-top: 10px" formControlName="confirmPassword">
+          <label for="confirm-pass-word" style="color: white">
+            Xác nhận mật khẩu
+            <span class="text-danger">*</span>
+          </label>
+          <span class="text-danger"
+                *ngIf="editCustomerForm.get('password').hasError('notSame') &&
+                                      (editCustomerForm.get('password').touched || editCustomerForm.get('password').dirty)">
+              Không khớp!
+            </span>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-4"></div>
+      <div class="col-md-4" style="text-align: center; width: 100%">
+        <button name="button" class="btn btn-primary btn-responsive w-25" style="height: 40px" (click)="onsubmit()">
+          Lưu
+        </button>
+        <button name="button" class="btn btn-outline-light btn-responsive w-25 ms-3" style="height: 40px"
+                (click)="cancel()">Hủy
+        </button>
+      </div>
+      <div class="col-md-4"></div>
     </div>
   </form>
 </div>
 </body>
+

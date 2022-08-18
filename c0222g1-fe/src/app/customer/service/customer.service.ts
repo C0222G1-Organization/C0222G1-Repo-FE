@@ -67,6 +67,11 @@ export class CustomerService {
     return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id, customer);
   }
 
+
+  updateCustomerDTO(id: number, customer: UpdateCustomerDto): Observable<UpdateCustomerDto> {
+    return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id, customer);
+  }
+
   checkUserName(userName: string): Observable<string> {
     return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkUserName/' + userName);
   }

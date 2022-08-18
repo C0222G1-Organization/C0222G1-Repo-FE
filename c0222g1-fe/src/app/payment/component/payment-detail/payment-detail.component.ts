@@ -29,7 +29,7 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   deleteProduct: any;
   quantity = 0;
 
-  imageSrc = 'https://nairobigames.center/wp-content/uploads/2019/10/Nairobi-GDC-FINAL-LOGO-TRANS.png';
+  imageSrc = '../../../../assets/img/img-login/banner-login.png';
 
   productCategoryList: ProductCategory[];
 
@@ -131,7 +131,7 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
     this.productPrice = 0;
     this.quantity = 0;
     this.totalPayment = 0;
-    this.imageSrc = 'https://nairobigames.center/wp-content/uploads/2019/10/Nairobi-GDC-FINAL-LOGO-TRANS.png';
+    this.imageSrc = '../../../../assets/img/img-login/banner-login.png';
   }
 
   showTotalPayment(value: any) {

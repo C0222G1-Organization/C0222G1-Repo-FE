@@ -256,7 +256,7 @@
                      class="form-control bg-dark text-white border-white"
                      placeholder="Nhập mật khẩu xác nhận">
             </div>
-            <div class="text-small text-white p-0"
+            <div class="text-small text-danger p-0"
                  *ngIf="!customerForm.controls.confirmPassword?.valid
                                 && (customerForm.controls.confirmPassword?.dirty ||customerForm.controls.confirmPassword?.touched)">
               <div [hidden]="!customerForm.controls.confirmPassword.errors.required">
