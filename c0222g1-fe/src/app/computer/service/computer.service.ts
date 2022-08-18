@@ -55,10 +55,10 @@ export class ComputerService {
           end: string,
           status: string,
           typeId: string): Observable<SearchDto[]> {
-    if (start === '') {
+    if (start === '' || start === null) {
       start = '1900-10-10';
     }
-    if (end === '') {
+    if (end === '' || end === null) {
       end = '2200-10-10';
     }
     if (status === null) {
