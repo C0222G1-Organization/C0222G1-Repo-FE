@@ -42,7 +42,8 @@
                 Ngày sinh phải lớn hơn 16 tuổi .
               </div>
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.hasError('errorStartDateMoreEndDate') && formSearch.dirty">Ngày  sinh phải nhỏ hơn ngày đến.
+                   *ngIf="formSearch.hasError('errorStartDateMoreEndDate') && formSearch.dirty">Ngày sinh phải nhỏ hơn
+                ngày đến.
               </div>
               <div style="font-size: small" class="text-danger"
                    *ngIf="formSearch.get('starDate').hasError('errorDate1975') && formSearch.get('starDate').dirty">Bạn
@@ -279,5 +280,6 @@
       </div>
     </div>
   </div>
+</div>
 </body>
 
