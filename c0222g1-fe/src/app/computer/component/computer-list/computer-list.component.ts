@@ -3,8 +3,9 @@ import {ComputerService} from '../../service/computer.service';
 import {SearchDto} from '../../model/search-dto';
 import {ToastrService} from 'ngx-toastr';
 import {ComputerType} from '../../model/computer-type';
-import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Title} from '@angular/platform-browser';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-computer-list',
@@ -14,27 +15,22 @@ import {Title} from '@angular/platform-browser';
 
 export class ComputerListComponent implements OnInit {
   formSearch: FormGroup = new FormGroup({
-    code: new FormControl(''),
-    location: new FormControl(''),
+    code: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
+    location: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
     start: new FormControl('', this.checkStart),
     end: new FormControl('', this.checkEnd),
     typeId: new FormControl(''),
     status: new FormControl(''),
   }, this.checkDate);
-  code = '';
-  location = '';
-  start = '';
-  end = '';
-  status = '';
-  typeId = '';
   computers: SearchDto[] = [];
   computer: SearchDto;
   page = 0;
   totalItems: any;
   totalPages: any;
-  itemsPerPage = 2;
+  itemsPerPage = 5;
   computerCodeDelete: string;
-  idDelete: string;
+  size = 0;
+  number = 0;
   checkShow = false;
   map = new Map();
   computerDeleteList: any[] = [];
@@ -43,13 +39,37 @@ export class ComputerListComponent implements OnInit {
 
   constructor(private computerService: ComputerService,
               private toastr: ToastrService,
-              private title: Title) {
+              private title: Title,
+              private router: Router) {
     this.title.setTitle('Danh sách máy');
   }
 
   ngOnInit(): void {
     this.findAll();
     this.getAllComputerType();
+    sessionStorage.getItem('roles') === 'ADMIN' ? this.checkShow = true : this.checkShow = false;
+  }
+
+  reset() {
+    this.formSearch = new FormGroup({
+      code: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
+      location: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
+      start: new FormControl('', this.checkStart),
+      end: new FormControl('', this.checkEnd),
+      typeId: new FormControl(''),
+      status: new FormControl(''),
+    }, this.checkDate);
+  }
+
+  reset() {
+    this.formSearch = new FormGroup({
+      code: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
+      location: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
+      start: new FormControl('', this.checkStart),
+      end: new FormControl('', this.checkEnd),
+      typeId: new FormControl(''),
+      status: new FormControl(''),
+    }, this.checkDate);
   }
 
   /**
@@ -67,27 +87,26 @@ export class ComputerListComponent implements OnInit {
       value.status,
       value.typeId).subscribe((list: any) => {
       this.computers = list.content;
-      if (this.computers.length === 0) {
-        this.toastr.error('Không tìm thấy');
-      } else {
+      if (this.computers.length !== null) {
         this.computers = list.content;
         this.totalItems = list.totalElements;
         this.totalPages = list.totalPages;
+        this.reset();
       }
       this.isAllCheckBoxChecked();
     }, error => {
-      this.toastr.error('Không tìm thấy');
+      this.router.navigateByUrl('/500');
     });
   }
 
   /**
    * Created by: PhucNQ
    * Date created: 14/08/2022
-   * Function: findAll
+   * Function: search
    */
   search() {
     const value = this.formSearch.value;
-    if (this.page > 0){
+    if (this.page > 0) {
       this.page = 0;
     }
     this.computerService.findAll(this.page,
@@ -104,6 +123,8 @@ export class ComputerListComponent implements OnInit {
         this.computers = list.content;
         this.totalItems = list.totalElements;
         this.totalPages = list.totalPages;
+        this.size = list.size;
+        this.number = list.number;
       }
       this.isAllCheckBoxChecked();
     }, error => {
@@ -123,7 +144,7 @@ export class ComputerListComponent implements OnInit {
     if (page < 1 || page > this.totalPages) {
       this.toastr.error('Vui lòng nhập đúng');
     }
-    this.page = page;
+    this.size = 5 * (page - 1);
     this.page = page - 1;
     this.findAll();
   }
@@ -155,10 +176,6 @@ export class ComputerListComponent implements OnInit {
    * Function: delete
    */
   delete() {
-    // sessionStorage.getItem('roles')
-    // if(sessionStorage.getItem('roles') === 'ADMIN'){
-    //   this.buttondelete = true;
-    // }
     this.computerService.delete(this.computer.id).subscribe(res => {
       if (this.computers.length === 1) {
         if (this.page === 0) {
@@ -209,34 +226,23 @@ export class ComputerListComponent implements OnInit {
    * Function: deleteAllComputer()
    */
   deleteMultiComputer() {
-    // sessionStorage.getItem('roles')
-    // if(sessionStorage.getItem('roles') === 'ADMIN'){
-    //   this.buttondelete = true;
-    // }
     this.computerDeleteList = this.computers.filter(computer => computer.checked).map(p => p.code);
     if (this.computerDeleteList.length !== 0) {
       for (const computer of this.map.values()) {
         this.computerService.delete(computer.id).subscribe(value => {
-          if (this.computers.length === 1) {
-            if (this.page === 0) {
-              this.page = 0;
-            } else {
-              this.page -= 1;
-            }
-          }
-          if (this.computers.length > 1) {
-            if (this.page === 0) {
-              this.page = 0;
-            } else {
-              this.page -= 1;
-            }
-          }
         }, error => {
           this.checkDelete = error;
         }, () => {
-          this.ngOnInit();
+          this.findAll();
         });
         computer.checked = false;
+      }
+      if (this.computers.length === this.computerDeleteList.length) {
+        if (this.page === 0) {
+          this.page = 0;
+        } else {
+          this.page -= 1;
+        }
       }
       if (this.checkDelete == null) {
         this.toastr.success('Xóa thành công');
@@ -246,22 +252,34 @@ export class ComputerListComponent implements OnInit {
     }
   }
 
+  /**
+   * Created by: PhucNQ
+   * Date created: 14/08/2022
+   * Function: checkDate()
+   */
   checkDate(abstractControl: AbstractControl): any {
     const start = new Date(abstractControl.value.start);
     const end = new Date(abstractControl.value.end);
-    if (abstractControl.value.starDate === '' || abstractControl.value.endDate === '') {
+    if (abstractControl.value.start === '' || abstractControl.value.end === '') {
       return null;
     }
     if (start < end) {
-      return null;
-    } else {
       return {errorDate: true};
     }
+    return null;
   }
 
+  /**
+   * Created by: PhucNQ
+   * Date created: 14/08/2022
+   * Function: checkStart()
+   */
   checkStart(abstractControl: AbstractControl): any {
     const start = new Date(abstractControl.value);
     const now = new Date();
+    if (abstractControl.value === '') {
+      return null;
+    }
     if (now.getFullYear() - start.getFullYear() > 0 && start.getFullYear() > 1950) {
       return null;
     } else if (now.getFullYear() - start.getFullYear() === 0) {
@@ -283,9 +301,17 @@ export class ComputerListComponent implements OnInit {
     }
   }
 
+  /**
+   * Created by: PhucNQ
+   * Date created: 14/08/2022
+   * Function: checkEnd()
+   */
   checkEnd(abstractControl: AbstractControl): any {
     const end = new Date(abstractControl.value);
     const now = new Date();
+    if (abstractControl.value === '') {
+      return null;
+    }
     if (now.getFullYear() - end.getFullYear() < 0 && end.getFullYear()) {
       return null;
     } else if (now.getFullYear() - end.getFullYear() === 0) {
