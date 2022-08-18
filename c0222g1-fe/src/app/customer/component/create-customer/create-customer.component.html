@@ -223,11 +223,11 @@
         </div>
       </div>
 
-      <div class="row" style="padding-right: 15px">
-        <div class="col-md-4">
+      <div class="row" >
+        <div class="col-md-6">
           <div class="form-floating textbox">
-            <select disabled class="form-select select input" aria-haspopup="true" id="status"
-                    style="padding: 10px 15px 0 15px"
+            <select  disabled class="form-select select input" aria-haspopup="true" id="status"
+                    style="padding: 10px 15px 0 15px; width: 422px; height: 60px"
                     formControlName="activeStatus">
               <option value="1" class="option">Đang hoạt động</option>
             </select>
@@ -239,6 +239,18 @@
                  *ngIf="customerForm.controls.activeStatus.hasError('required')&& customerForm.controls.activeStatus.touched">
               <small>Trạng thái không được để trống!</small>
             </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-floating textbox">
+            <input type="number" class="form-control input"
+                   id="time" placeholder="Thời gian chơi(phút)"
+                   style="padding-top: 10px; width: 422px" formControlName="remainingTime">
+            <label for="time" style="color: white">
+              Thời gian chơi
+              <span class="text-danger">*</span>
+            </label>
           </div>
         </div>
       </div>

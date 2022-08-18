@@ -6,7 +6,8 @@ import {ToastrService} from 'ngx-toastr';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {ReponseBody} from '../../model/reponse-body';
-import {query} from '@angular/animations';
+import {ProductService} from '../../../product/service/product.service';
+import {CustomerService} from '../../../customer/service/customer.service';
 
 declare var $: any;
 
@@ -20,6 +21,8 @@ export class DisplayPaymentComponent implements OnInit {
   constructor(private route: Router,
               private toast: ToastrService,
               private paymentService: PaymentService,
+              private productService: ProductService,
+              private customerService: CustomerService,
               private activatedRoute: ActivatedRoute,
               private title: Title) {
     this.title.setTitle('THÔNG TIN THANH TOÁN');
@@ -31,7 +34,15 @@ export class DisplayPaymentComponent implements OnInit {
   totalItems: any;
   itemsPerPage = 5;
   totalPages;
-  sPaypal = 0;
+
+  /**
+   * Create: LuanND
+   * Date: 17/08/2022
+   * Description: method payment by paypal
+   * @param id: is ID of object payment to create request
+   * return none
+   */
+  totalPay: number;
 
   ngOnInit(): void {
     const id = Number(this.activatedRoute.snapshot.params.paymentId);
@@ -50,6 +61,12 @@ export class DisplayPaymentComponent implements OnInit {
     }
   }
 
+  /**
+   * Create: LuanND
+   * Date: 17/08/2022
+   * Description: get page from API
+   * return none
+   */
   getAllPayment() {
     this.paymentService.getAllPagePayment(this.page).subscribe((value: any) => {
       this.listPayment = value.content;
@@ -61,6 +78,12 @@ export class DisplayPaymentComponent implements OnInit {
     });
   }
 
+  /**
+   * Create: LuanND
+   * Date: 17/08/2022
+   * Description: Calculator total pay service of customer
+   * return none
+   */
   calculatorPayment() {
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.listPayment.length; i++) {
@@ -72,57 +95,85 @@ export class DisplayPaymentComponent implements OnInit {
     }
   }
 
+  /**
+   * Create: LuanND
+   * Date: 17/08/2022
+   * Description: Visible button payment by paypal
+   * @param id: is block contain button payment by paypal
+   * return none
+   */
   statePaypal(id: number) {
-    if (this.sPaypal === 0) {
-      this.sPaypal = 1;
-      document.getElementById('myPaypal').classList.remove('hiddenPaypal');
-      document.getElementById('myPaypal').classList.add('displayPaypal');
+    const state = $('#payWithPaypal').val;
+    if (state) {
       this.paymentWithPaypal(id);
-    } else {
-      this.sPaypal = 0;
-      document.getElementById('myPaypal').classList.add('hiddenPaypal');
-      document.getElementById('myPaypal').classList.remove('displayPaypal');
     }
   }
 
+  /**
+   * Create: LuanND
+   * Date: 17/08/2022
+   * Description: Visible button payment by paypal
+   * @param id: is block contain button payment by paypal
+   * return none
+   */
+  stateMomo(id: number) {
+    const state = $('#payWithMomo').val;
+    if (state) {
+      this.paymentWithMomo(id);
+    }
+  }
+
+  /**
+   * Create: LuanND
+   * Date: 17/08/2022
+   * Description: get method payment
+   * @param id: is ID of object payment need execution
+   * return none
+   */
   getPayment(id: number) {
     document.getElementById('body-payment').innerHTML = '<div class="container">\n' +
       '          <div id="paypalMethod">\n' +
       '            <h4 class="text-white">Paypal</h4>\n' +
       // tslint:disable-next-line:max-line-length
-      '            <button class="btn btn-primary form-control mt-2 mb-2" id="payWithPaypal" ">Payment with Paypal</button>\n' +
-      '            <div id="myPaypal" class="hiddenPaypal btn-outline-dark"></div>\n' +
+      '            <div class="form-group"><div class="form-check form-switch">' +
+      '            <input class="form-check-input" type="checkbox" role="switch" id="payWithPaypal">' +
+      '            <label class="form-check-label text-white" for="flexSwitchCheckDefault">Tạo đơn thanh toán Paypal</label>' +
+      '            </div></div>' +
       '          </div>\n' +
+      '<div id="container-paypal" class="hiddenPaypal"><div id="myPaypal"></div></div>' +
       '          <div id="momoMethod">\n' +
       '            <h4 class="text-white">Momo</h4>\n' +
-      '            <button class="btn btn-primary form-control btn-outline-dark text-white" id="payWithMomo" ">Momo</button>\n' +
+      '            <div class="form-group"><div class="form-check form-switch">' +
+      '            <input class="form-check-input" type="checkbox" role="switch" id="payWithMomo">' +
+      '            <label class="form-check-label text-white" for="flexSwitchCheckDefault">Tạo đơn thanh toán MoMo</label>' +
+      '            </div></div>' +
       '          </div>\n' +
       '        </div>\n' +
       '        <p class="text-danger font-italic text-center">*Vui lòng chọn phương thức thanh toán</p>';
-    document.getElementById('payWithPaypal').addEventListener('click', () => {
+    document.getElementById('payWithPaypal').addEventListener('change', () => {
       this.statePaypal(id);
     });
-    document.getElementById('payWithMomo').addEventListener('click', () => {
-      this.paymentWithMomo(id);
+    document.getElementById('payWithMomo').addEventListener('change', () => {
+      this.stateMomo(id);
     });
   }
 
+  /**
+   * Create: LuanND
+   * Date: 17/08/2022
+   * Description: get list service of customer and format money
+   * @param id: is ID of payment object to get list service customer
+   * return none
+   */
   getService(id: number) {
     const formatter = Intl.NumberFormat('decimal', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     });
     // tslint:disable-next-line:max-line-length
-    let content = '<p style="text-align: right; margin: 5px 10px; font-weight: bold; font-size: 13px; font-style: italic; color: white;">Đơn vị tính: VND</p>' +
-    '<table class="table table-striped table-dark"><thead><tr>' +
-      '<th>Tên dịch vụ</th>' +
-      '<th>Số lượng</th>' +
-      '<th>Đơn vị</th>' +
-      '<th>Đơn giá</th>' +
-      '<th>Tổng tiền</th>' +
-      '</tr>' +
-      '</thead>' +
-      '<tbody>';
+    let content = `<p style="text-align: right; margin: 5px 10px; font-weight: bold; font-size: 13px; font-style: italic; color: white;">Đơn vị tính: VND</p>
+      <table class="table table-striped table-dark"><thead><tr><th>Tên dịch vụ</th><th>Số lượng</th><th>Đơn vị</th>
+      <th>Đơn giá</th><th>Tổng tiền</th></tr></thead><tbody>`;
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.listPayment.length; i++) {
       if (this.listPayment[i].id === id) {
@@ -134,20 +185,15 @@ export class DisplayPaymentComponent implements OnInit {
             '<td>' + this.listPayment[i].paymentDetailList[j].product.unit + '</td>' +
             '<td>' + formatter.format(this.listPayment[i].paymentDetailList[j].product.prices) + '</td>' +
             // tslint:disable-next-line:max-line-length
-            '<td>' + formatter.format(this.listPayment[i].paymentDetailList[j].product.prices * this.listPayment[i].paymentDetailList[j].amount) + '</td>' +
-            // tslint:disable-next-line:max-line-length
-            '</tr> + ' + '<tr><td colspan="4"> Tổng tiền dich vụ: </td>' + '<td rowspan="2">' + formatter.format(this.listPayment[i].totalPay) + '</td></tr>';
+            '<td>' + formatter.format(this.listPayment[i].paymentDetailList[j].product.prices * this.listPayment[i].paymentDetailList[j].amount) + '</td>';
         }
+        // tslint:disable-next-line:max-line-length
+        content += '</tr> + ' + '<tr><td colspan="4"> Tổng tiền dich vụ: </td>' + '<td rowspan="2">' + formatter.format(this.listPayment[i].totalPay) + '</td></tr>';
       }
     }
-    content += '</tbody>\n' +
-      '</table>';
+    content += `</tbody></table>`;
     document.getElementById('body-service').innerHTML = content;
-    // const parentTable = document.getElementById('table-service');
-    // console.log(parentTable);
-    // parentTable.removeChild(parentTable.children[0]);
   }
-
   paymentWithPaypal(id: number) {
     document.getElementById('myPaypal').innerHTML = '';
     let reponseBody: ReponseBody = {};
@@ -162,27 +208,29 @@ export class DisplayPaymentComponent implements OnInit {
      * Created by: LuanND
      * Date created: 11/08/2022
      * @render() : execute load sandbox Paypal fill block
-     * @param(id) : Position will be render load
-     * @param(currency) : unit currency payment
-     * @param(value) : total money need payment
-     * @param(onApprove) : it'll be execute when payment has approved
+     * @param id : Position will be render load
+     * @param currency : unit currency payment
+     * @param value : total money need payment
+     * @param onApprove : it'll be execute when payment has approved
      */
     render(
       {
         id: '#myPaypal',
-        currency: 'USD',
-        value: obj.totalPay.toString(),
+        currency: 'VND',
+        value: (obj.totalPay / 23000).toFixed(2).toString(),
         onApprove: (details) => {
           this.obj = details;
+          this.totalPay = obj.totalPay;
           this.paymentService.setStatePayment(id).subscribe();
           $('#modelPaymentMethodId').modal('hide');
           $('#modelResultId').modal('show');
           this.toast.success('Thanh toán thành công.');
-
+          this.getPage(this.page);
+          // Number(details.purchase_units[0].amount.value)
           reponseBody = {
             id: details.id,
             status: details.status,
-            value: Number(details.purchase_units[0].amount.value),
+            value: this.totalPay,
             email: details.purchase_units[0].payee.email_address,
             fullName: details.purchase_units[0].shipping.name.full_name,
             address: details.purchase_units[0].shipping.address.address_line_1,
@@ -195,11 +243,23 @@ export class DisplayPaymentComponent implements OnInit {
           this.paymentService.sendEmail(reponseBody).subscribe(value => {
             console.log(value);
           });
+
+          this.updateCustomer(id);
+          this.productService.setDataProduct(id).subscribe(value => {
+            console.log(value);
+          });
         }
       }
     );
   }
 
+  /**
+   * Create: LuanND
+   * Date: 17/08/2022
+   * Description: Method payment by Momo
+   * @pram id: is ID of object payment to create request
+   * return none
+   */
   paymentWithMomo(id: number) {
     let obj: Payment = {};
     // tslint:disable-next-line:prefer-for-of
@@ -212,8 +272,8 @@ export class DisplayPaymentComponent implements OnInit {
     const accessKey = 'kSj697M5vBZ5V4iO';
     const orderInfo = 'Test';
     const partnerCode = 'MOMOUVVS20220801';
-    const redirectUrl = 'http://localhost:4200/payment/success';
-    const ipnUrl = 'http://localhost:4200/payment/success';
+    const redirectUrl = 'http://localhost:4200/payment';
+    const ipnUrl = 'http://localhost:4200/payment';
     // QR : captureWallet
     // ATM : payWithATM
     // Momo wallet : linkWallet
@@ -286,8 +346,37 @@ export class DisplayPaymentComponent implements OnInit {
     });
   }
 
+  /**
+   * Create: LuanND
+   * Date: 17/08/2022
+   * Description: add time play for customer
+   * @param id: is ID of object customer to update time remaining
+   * return none
+   */
+  updateCustomer(id: number) {
+    this.paymentService.getById(id).subscribe(value => {
+      const customer = value.record.customer;
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < value.paymentDetailList.length; i++) {
+        if (value.paymentDetailList[i].product.id === 11) {
+          customer.remainingTime += value.paymentDetailList[i].amount * 3600;
+          this.customerService.setTimeRemaining(customer.id, customer.remainingTime).subscribe(mapList => {
+            console.log(mapList);
+          });
+        }
+      }
+    });
+  }
+
+  /**
+   * Create: LuanND
+   * Date: 17/08/2022
+   * Description: get page from API
+   * @param page: is position to request to API get list
+   * return Page<Payment>
+   */
   getPage(page) {
-    if (Number(page) < 1 || Number(page) > this.totalPages) {
+    if (Number(page) < 0 || Number(page) > this.totalPages) {
       this.toast.error('Vui lòng nhập đúng');
     }
     this.page = Number(page);
@@ -298,5 +387,23 @@ export class DisplayPaymentComponent implements OnInit {
       this.totalPages = value.totalPages;
       this.calculatorPayment();
     });
+  }
+
+  /**
+   * Create: LuanND
+   * Date: 17/08/2022
+   * Description: check list for detail or all record
+   * return Page<Payment>
+   */
+  checkList() {
+    if (this.listPayment.length === 1) {
+      this.route.navigateByUrl('');
+    } else {
+      if (this.page === 0) {
+        this.getAllPayment();
+      } else {
+        this.getPage(this.page);
+      }
+    }
   }
 }

@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
   newsCard = false;
   serviceCard = false;
   statisticalCard = false;
+  urlNameHeader = '';
 
   endTimeMillisecs: any;
   cDateMillisecs: any;
@@ -73,7 +74,6 @@ export class HeaderComponent implements OnInit {
         item.classList.add('active');
       });
     });
-
 
     setTimeout(() => {
       if (sessionStorage.getItem('loopTimeCustomer') !== null) {
@@ -143,8 +143,7 @@ export class HeaderComponent implements OnInit {
       }
 
       if (this.countRequest >= 10) {
-        console.log(this.difference / 1000);
-        console.log(sessionStorage.getItem('remainingTime'));
+
         sessionStorage.setItem('remainingTime', String(Math.trunc(this.difference / 1000)));
 
         this.authService.setOutOfTime(Number(sessionStorage.getItem('customerId')), Math.trunc(this.difference / 1000)).subscribe(value => {
@@ -221,13 +220,13 @@ export class HeaderComponent implements OnInit {
       this.serviceCard = true;
       this.statisticalCard = false;
     }
-    console.log(this.roles);
-    console.log('customerCard ' + this.customerCard);
-    console.log('employeeCard ' + this.employeeCard);
-    console.log('computerCard ' + this.computerCard);
-    console.log('gameCard ' + this.gameCard);
-    console.log('newsCard ' + this.newsCard);
-    console.log('serviceCard ' + this.serviceCard);
-    console.log('statisticalCard ' + this.statisticalCard);
+
+    if (sessionStorage.getItem('loopTimeCustomer') !== null) {
+      if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+        this.urlNameHeader = 'customers/home-page';
+      } else {
+        this.urlNameHeader = '';
+      }
+    }
   }
 }

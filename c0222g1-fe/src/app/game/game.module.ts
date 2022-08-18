@@ -9,6 +9,7 @@ import { GameComponent } from './component/game/game.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { GameDetailComponent } from './component/game-detail/game-detail.component';
 import {SafePipe} from './SafePipe';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {SafePipe} from './SafePipe';
     GameRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    CKEditorModule,
   ]
 })
 export class GameModule { }

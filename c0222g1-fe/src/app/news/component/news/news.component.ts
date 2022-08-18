@@ -17,6 +17,7 @@ export class NewsComponent implements OnInit {
   listNews: News[];
   topNews: News[];
   searchTitle: string;
+  createState = false;
 
   constructor(private newsService: NewsService, private toastr: ToastrService, private route: Router, private title: Title) {
     this.title.setTitle('Tin tức game');
@@ -25,6 +26,7 @@ export class NewsComponent implements OnInit {
   ngOnInit(): void {
     this.getAllTopNews();
     this.getAllNews();
+    this.checkRole();
   }
 
   getAllTopNews() {
@@ -76,5 +78,14 @@ export class NewsComponent implements OnInit {
         console.log(this.listNews);
       }
     );
+  }
+
+  checkRole() {
+    if (sessionStorage.getItem('roles') === 'EMPLOYEE' || sessionStorage.getItem('roles') == 'ADMIN') {
+      this.createState = true;
+    }
+    if (sessionStorage.getItem('roles') === 'CUSTOMER') {
+      this.createState = false;
+    }
   }
 }
