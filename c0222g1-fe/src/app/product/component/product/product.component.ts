@@ -35,7 +35,9 @@ export class ProductComponent implements OnInit {
 
 
   formProduct = new FormGroup({
-    nameProduct: new FormControl('', Validators.pattern('^[\-0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s?]+$'))
+    nameProduct: new FormControl('',
+      [Validators.pattern('^[0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s? ]+$'),
+        Validators.maxLength(25)])
   });
 
   checkRole(): string {
@@ -75,10 +77,12 @@ export class ProductComponent implements OnInit {
   }
 
   search() {
+    // this.name = this.formProduct.value;
     this.name = this.name.trim();
     if (this.page !== 0) {
       this.page = 0;
     }
+    // console.log(this.formProduct.value);
     this.productService.findAllProduct(this.name, this.page).subscribe((value: any) => {
       if (value !== null) {
         this.productList = value.content;
@@ -99,6 +103,11 @@ export class ProductComponent implements OnInit {
     this.getAllProduct();
   }
 
+  valueOfDelete(nameProduct: string, id: number) {
+    this.nameProduct = nameProduct;
+    this.id = id;
+  }
+
   delete() {
     this.productService.delete(this.id).subscribe(value => {
       if (this.productList.length === 1) {
@@ -117,14 +126,8 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  valueOfDelete(nameProduct: string, id: number) {
-    this.nameProduct = nameProduct;
-    this.id = id;
-  }
-
   getSelectedProducts() {
     this.selectedNameProducts = this.productList.filter(product => product.checked);
-    console.log(this.selectedNameProducts);
   }
 
   checkProduct(id: number) {
@@ -134,7 +137,9 @@ export class ProductComponent implements OnInit {
         break;
       }
     }
+    // Dùng để gửi tên các sản phẩm ứng với id
     this.getSelectedProducts();
+
   }
 
   isAllCheckBoxChecked() {
@@ -144,16 +149,18 @@ export class ProductComponent implements OnInit {
       } else {
         this.map.delete(value.id);
       }
-      console.log(value);
+
     });
     return this.productList.every(e => e.checked);
   }
 
+  // chọn tất cả record
   checkAllCheckBox(event: any) {
     this.productList.forEach(x => x.checked = event.target.checked);
     this.getSelectedProducts();
   }
 
+  // Xóa tất cả
   deleteProductList() {
     this.selectedIdProducts = this.productList.filter(product => product.checked).map(p => p.id);
     for (const product of this.selectedIdProducts) {
