@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 export class LogoutComponent implements OnInit {
   data: Map<string, any> = new Map<string, any>();
 
+  loop: any;
   constructor(private authService: AuthService, private toartrs: ToastrService, private router: Router) {
   }
 
@@ -28,10 +29,11 @@ export class LogoutComponent implements OnInit {
       this.returnComputer();
     }
     sessionStorage.removeItem('roles');
-    sessionStorage.removeItem('loopTimeCustomer');
+    sessionStorage.setItem('loopTimeCustomer', '1');
     sessionStorage.removeItem('remainingTime');
     sessionStorage.removeItem('startTime');
     sessionStorage.removeItem('endTime');
+    clearInterval(this.loop);
     this.toartrs.success('Đã đăng xuất');
     this.authService.sendData('logout', 'logout');
     setTimeout(() => {

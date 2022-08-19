@@ -1,91 +1,129 @@
 <div class="container mt-5" id="table-computer">
   <div class="row">
-    <h2 class="text-center text-white">Danh sách nhân viên</h2>
-    <div class="container text-white my-5">
+    <h2 class="text-center text-white">DANH SÁCH NHÂN VIÊN</h2>
+    <form [formGroup]="formSearch" novalidate>
+      <div class="container text-white my-5">
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6">
+            <div class="row my-2">
+              <div class=" col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="codeE" style="color: white" class="col-form-label fontFamily">Nhập mã: </label>
+                  <input id="codeE" type="text" class="input-search form-control m-0" style="margin-right: 0"
+                         placeholder="Nhập mã" formControlName="code">
+                  <small class="fontError text-danger" *ngIf="formSearch.controls.code.hasError('pattern')">
+                    Không được nhập ký tự đặc biệt.
+                  </small>
+                  <small class="fontError text-danger" *ngIf="formSearch.controls.code.hasError('maxlength')">
+                    Không được nhập quá 20 ký tự.
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="dobfrom" style="color: white" class="col-form-label fontFamily">Ngày sinh bắt
+                    đầu: </label>
+                  <input id="dobfrom" type="date" class="form-control input-search" formControlName="dobfrom">
+                  <p class="text-danger" *ngIf="formSearch.hasError('errorDob') &&
+                                                        (formSearch.controls.dobfrom.dirty || formSearch.controls.dobfrom.touched)">
+                    Không được nhập trước ngày kết thúc.
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="dobend" style="color: white" class="col-form-label fontFamily">Ngày sinh đến: </label>
+                  <input id="dobend" type="date" class="form-control input-search" formControlName="dobend">
+                </div>
+              </div>
+              <div class="col-lg-3 col-xl-3 w-15 form-group">
+                <div>
+                  <label for="position" style="color: white" class="col-form-label fontFamily">Vị trí: </label>
+                  <select id="position" class="input-search-position-employee w-100 form-select"
+                          formControlName="position">
+                    <option selected value="" class="w-100">Vui lòng chọn</option>
+                    <option *ngFor="let item of positions" [ngValue]="item.id">{{item.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6">
-          <div class="row mb-4">
-            <div class=" col-lg-3 col-xl-3 w-15">
-              <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Nhập mã: </label>
-                <input id="id" type="text" class="input-search form-control m-0" style="margin-right: 0"
-                       placeholder="Nhập mã" [(ngModel)]="code">
+          <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6">
+            <div class="row">
+              <div class="col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="address" style="color: white" class="col-form-label fontFamily">Địa chỉ: </label>
+                  <input id="address" type="text" class="input-search form-control m-0" style="margin-right: 0"
+                         placeholder="Nhập địa chỉ" formControlName="address">
+                  <p class="text-danger" *ngIf="formSearch.controls.address.hasError('check18') &&
+                                      (formSearch.controls.address.dirty || formSearch.controls.address.touched)">
+                    Không được nhập ký tự đặc biệt.
+                  </p>
+                </div>
               </div>
-            </div>
-            <div class="col-lg-3 col-xl-3 w-15">
-              <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Ngày sinh bắt đầu: </label>
-                <input type="date" class="form-control input-search" [(ngModel)]="dobfrom">
+              <div class="col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="workf" style="color: white" class="col-form-label fontFamily">Ngày vào làm: </label>
+                  <input id="workf" type="date" class="input-search form-control" formControlName="workf">
+                  <p class="text-danger" *ngIf="formSearch.hasError('errorDate') &&
+                                                        (formSearch.controls.workf.dirty || formSearch.controls.workf.touched)">
+                    Không được nhập sau ngày kết thúc.
+                  </p>
+                </div>
               </div>
-            </div>
-            <div class="col-lg-3 col-xl-3 w-15">
-              <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Ngày bắt đầu: </label>
-                <input type="date" class="form-control input-search" [(ngModel)]="workf">
+              <div class="col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="workt" style="color: white" class="col-form-label fontFamily">Ngày vào làm đến: </label>
+                  <input id="workt" type="date" class="form-control input-search" formControlName="workt">
+                  <p class="text-danger" *ngIf="formSearch.controls.workt.hasError('futureDate') &&
+                                                        (formSearch.controls.workt.dirty || formSearch.controls.workt.touched)">
+                    Không được nhập sau ngày hiện tại.
+                  </p>
+                </div>
               </div>
-            </div>
-            <div class="col-lg-3 col-xl-3 w-15">
-              <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Vị trí: </label>
-                <select class="input-search-position-employee w-100 form-select" [(ngModel)]="position">
-                  <option selected value="">--Select--</option>
-                  <option *ngFor="let item of positions" [ngValue]="item.id">{{item.name}}</option>
-                </select>
+              <div class="col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="nameE" style="color: white" class="col-form-label fontFamily">Tên nhân viên: </label>
+                  <input id="nameE" type="text" class="input-search form-control m-0" style="margin-right: 0"
+                         placeholder="Nhập tên nhân viên" formControlName="name">
+                  <p class="text-danger" *ngIf="formSearch.controls.name.hasError('pattern') &&
+                                      (formSearch.controls.name.dirty || formSearch.controls.name.touched)">
+                    Không được nhập ký tự đặc biệt.
+                  </p>
+                  <p class="text-danger" *ngIf="formSearch.controls.name.hasError('maxlength') &&
+                                      (formSearch.controls.name.dirty || formSearch.controls.name.touched)">
+                    Không được nhập quá 20 ký tự.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6">
-          <div class="row">
-            <div class="col-lg-3 col-xl-3 w-15">
-              <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Địa chỉ: </label>
-                <input id="address" type="text" class="input-search form-control m-0" style="margin-right: 0"
-                       placeholder="Nhập địa chỉ" [(ngModel)]="address">
-              </div>
-            </div>
-            <div class="col-lg-3 col-xl-3 w-15">
-              <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Ngày sinh đến: </label>
-                <input type="date" class="input-search form-control" [ngModel]="dobe">
-              </div>
-            </div>
-            <div class="col-lg-3 col-xl-3 w-15">
-              <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Đến: </label>
-                <input type="date" class="form-control input-search" [ngModel]="workt">
-              </div>
-            </div>
-            <div class="col-lg-3 col-xl-3 w-15">
-              <div>
-                <label style="color: white" for="id" class="col-form-label fontFamily">Tên nhân viên: </label>
-                <input id="nameE" type="text" class="input-search form-control m-0" style="margin-right: 0"
-                       placeholder="Nhập tên nhân viên" [(ngModel)]="name">
-              </div>
-            </div>
+
+        <div class="row">
+          <div class="col-8 col-sm-8 col-md-8 col-lg-8 mt-3">
+            <button class="btn btn-outline-secondary" (click)="search()" [disabled]="formSearch.invalid"
+                    style="right: 0; margin-right: 10px">Tìm kiếm
+            </button>
+            <button class="btn btn-outline-secondary" (click)="reset()"><i class="fa-solid fa-arrows-rotate"
+                                                                           style="color: #9a9a9a"></i></button>
+          </div>
+          <div class="col-4 col-sm-4 col-md-4 col-lg-4">
           </div>
         </div>
       </div>
-
-
-      <div class="row">
-        <div class="col-8 col-sm-8 col-md-8 col-lg-8 mt-3">
-          <button class="btn btn-outline-secondary" (click)="search()" style="right: 0">Tìm kiếm</button>
-        </div>
-        <div class="col-4 col-sm-4 col-md-4 col-lg-4">
-        </div>
-      </div>
-    </div>
-
+    </form>
     <div class="row">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="container">
-          <table class="table table-dark w-100">
+          <table class="table table-dark w-100" *ngIf="totalElements>0">
             <thead class="hiddenText">
             <tr>
-              <input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)">
+              <th><input type="checkbox" [checked]="isAllCheckBoxChecked1()" (change)="checkMultipleCheckBox($event)">
+              </th>
+              <th scope="col">STT</th>
               <th scope="col">Mã nhân viên</th>
               <th scope="col">Họ và tên</th>
               <th scope="col">Địa chỉ</th>
@@ -99,49 +137,77 @@
             </thead>
             <tbody class="hiddenText">
             <tr
-              *ngFor="let employee of employees| paginate:{itemsPerPage:2, currentPage: page +1, totalItems: totalElements}, let i = index">
+              *ngFor="let employee of employees| paginate:{itemsPerPage:5, currentPage: page , totalItems: totalElements}, let i = index">
               <td><input class="card-notify-year-checkbox" type="checkbox" value="{{employee.id}}"
-                         [(ngModel)]="employees[i].checked" id="check" (click)="enable()"></td>
+                         [(ngModel)]="employees[i].checked" (click)="checkEmployee(employee.id)" id="check"></td>
+              <td>{{(i + 1 + size) }}</td>
               <td>{{employee.code}}</td>
               <td>{{employee.name}}</td>
-              <td>{{employee.cmName}},{{employee.disName}},{{employee.proName}}</td>
-              <td>{{employee.dob}}</td>
-              <td>{{employee.email}}</td>
+              <td class="hiddenText">{{employee.cmName}},{{employee.disName}},{{employee.proName}}</td>
+              <td>{{employee.dob| date: 'dd/MM/yyyy'}}</td>
+              <td class="hiddenText">{{employee.email}}</td>
               <td>{{employee.phone}}</td>
               <td>{{employee.posiName}}</td>
               <td>{{exp(employee)}}</td>
               <td>
-                <button class="btn btn-outline-warning "><i class="fa-solid fa-pencil"></i></button>
-                <button class="btn btn-outline-danger " data-bs-toggle="modal"
+                <button class="btn btn-outline-secondary"><i class="fa-solid fa-pencil"
+                                                             (click)="edit(employee.id)"></i>
+                </button>
+
+                <button class="btn btn-outline-secondary" data-bs-toggle="modal"
                         data-bs-target="#deleteModal" (click)="getEmployee(employee)"><i class="fa-solid fa-trash"></i>
                 </button>
               </td>
             </tr>
-
             </tbody>
-
           </table>
+          <div *ngIf="totalElements === 0" style="margin-left: 250px;position: center">
+            <img src="https://i.giphy.com/media/HTSsuRrErs54g1Tqr5/giphy.webp" style="height: 300px; width: 500px">
+            <br>
+            <span style="margin-left: 150px; font-size: 1.3rem; color: #9a9a9a">Không có kết quả nào.</span>
+          </div>
         </div>
       </div>
-      </div>
+    </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
-      <pagination-controls (pageChange)="getPage($event)"></pagination-controls>
+  <div class="row" *ngIf="employees.length > 0">
+    <div class="col-md-2"></div>
+    <div class="row mb-0" style="margin-top: 1rem;">
+      <div class="w-100 d-flex justify-content-center">
+        <pagination-controls (pageChange)="getPage(page = $event)"
+                             previousLabel="Trước"
+                             nextLabel="Sau"
+                             autoHide="true"
+                             maxSize=7>
+        </pagination-controls>
+      </div>
     </div>
-    <div class="col-md-3"></div>
+    <div class="row align-items-center">
+      <div class="w-100 d-flex justify-content-center">
+        <div class="col-auto m-1">
+          <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>
+        </div>
+        <div class="col-auto m-1">
+          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
+                 (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
+        </div>
+        <div class="col-auto m-1">
+          <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-1"></div>
   </div>
-  <div class="row d-flex" id="btn-outside">
-    <div class="col-4 col-sm-4 col-md-4 col-lg-4">
-      <button class="btn btn-outline-secondary m-2">Thêm mới nhân viên</button>
+  <div class="container row d-flex" id="btn-outside">
+    <div class="col-3 p-0">
+      <button class="btn btn-primary m-2" routerLink="/employees/create">Thêm mới nhân viên</button>
     </div>
-    <div class="col-4 col-sm-4 col-md-4 col-lg-4"></div>
-    <div class="col-4 col-sm-4 col-md-4 col-lg-4">
-      <div class="float-end">
-        <button class="btn btn-outline-danger " data-bs-toggle="modal"
-                data-bs-target="#deleteGroupModal" id="btn" [disabled]="!isAllCheckBoxChecked()">Xóa tất cả
+    <div class="col-6"></div>
+    <div class="col-3" style="right: 0">
+      <div class="float-end" *ngIf="employees.length>0">
+        <button class="btn btn-outline-secondary" style="right: 0" data-bs-toggle="modal"
+                data-bs-target="#deleteGroupModal" id="btn">Xóa tất cả
         </button>
       </div>
     </div>
@@ -156,10 +222,9 @@
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel1">Xóa nhân viên</h5>
       </div>
-      <div class="modal-body">
-        Bạn có chắc chắn muốn xóa nhân viên có tên là <span style="font-weight: bold; color: #ff4146"
-                                                            id="name">{{nameDelete}}</span> không?
-      </div>
+      <ol style="width: 300px; margin-top: 10px">
+        <li style="color: #9a9a9a; font-size: 1.2rem">{{nameDelete}}</li>
+      </ol>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteEmployee()">Xóa</button>
@@ -175,15 +240,22 @@
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel2">Xóa nhân viên</h5>
       </div>
-      <div class="modal-body">
+      <div *ngIf="selectedEmployee.length===0">
+        <p class="text text-danger">Không có nhân viên nào được chọn.</p>
+      </div>
+      <div class="modal-body" *ngIf="selectedEmployee.length >0">
         Bạn có chắc chắn muốn xóa những nhân viên này không?
+        <ol>
+          <li *ngFor="let selectEmployee of selectedEmployee">{{selectEmployee.name}}</li>
+        </ol>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteAll()">Xóa</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteEmployeeList()"
+                [disabled]="selectedEmployee.length == 0">Xóa
+        </button>
       </div>
     </div>
   </div>
 </div>
-
 

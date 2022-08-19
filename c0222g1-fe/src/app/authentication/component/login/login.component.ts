@@ -93,11 +93,11 @@ export class LoginComponent implements OnInit {
             sessionStorage.setItem('startTime', startTime);
           }
         }, error => {
-          if (error.status === 500) {
-            this.toartrs.error('Có lỗi từ server');
-          } else {
-            this.toartrs.error(error.error.message);
-          }
+        if (error.status === 500) {
+          this.toartrs.error('Có lỗi từ server');
+        } else {
+          this.toartrs.error(error.error.message);
+        }
         }
       );
     }
