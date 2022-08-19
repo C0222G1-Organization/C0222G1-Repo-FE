@@ -38,13 +38,16 @@
               <input formControlName="starDate" id="startDate" type="date"
                      class="form-control input-search " style="width: 200px">
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.get('starDate').hasError('errorDateAge16') && formSearch.get('starDate').dirty">Ngày sinh phải lớn hơn 16 tuổi .
+                   *ngIf="formSearch.get('starDate').hasError('errorDateAge16') && formSearch.get('starDate').dirty">
+                Ngày sinh phải lớn hơn 16 tuổi .
               </div>
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.hasError('errorStartDateMoreEndDate') && formSearch.dirty">Ngày  sinh phải nhỏ hơn ngày đến.
+                   *ngIf="formSearch.hasError('errorStartDateMoreEndDate') && formSearch.dirty">Ngày sinh phải nhỏ hơn
+                ngày đến.
               </div>
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.get('starDate').hasError('errorDate1975') && formSearch.get('starDate').dirty">Bạn nhập tuổi quá lớn.
+                   *ngIf="formSearch.get('starDate').hasError('errorDate1975') && formSearch.get('starDate').dirty">Bạn
+                nhập tuổi quá lớn.
               </div>
 
             </div>
@@ -78,7 +81,8 @@
                      class="input-search form-control"
                      placeholder="Nhập địa chỉ">
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.get('address').hasError('pattern') && formSearch.get('address').dirty">Nhập địa chỉ sai định dạng.
+                   *ngIf="formSearch.get('address').hasError('pattern') && formSearch.get('address').dirty">Nhập địa chỉ
+                sai định dạng.
               </div>
             </div>
             <div style="font-size: small" class="text-danger"
@@ -99,11 +103,12 @@
                      type="date"
                      class="input-search form-control">
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.get('endDate').hasError('errorEndDate') && formSearch.get('endDate').touched
-                   ">Ngày phải không dược lớn hơn hiện tại
+                   *ngIf="formSearch.get('endDate').hasError('errorEndDate') && formSearch.get('endDate').dirty
+                   ">Ngày  không dược lớn hơn hiện tại
               </div>
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.hasError('errorStartDateMoreEndDate') && formSearch.dirty">Ngày  đến phải lớn hơn ngày sinh  từ.
+                   *ngIf="formSearch.hasError('errorStartDateMoreEndDate') && formSearch.dirty">Ngày đến phải lớn hơn
+                ngày sinh.
               </div>
             </div>
           </div>
@@ -129,7 +134,7 @@
   </div>
   <!--  table-->
   <div style=" height: 370px">
-    <table class="table table-dark w-100">
+    <table class="table table-dark w-100" *ngIf="listCustomer.length!==0">
       <thead>
       <tr>
 
@@ -142,7 +147,7 @@
         <th class="th-w15" scope="col">Họ và tên</th>
         <th class="th-w15" scope="col">Email</th>
         <th class="th-w10" scope="col">Ngày sinh</th>
-        <th class="th-w15" scope="col">Địa chỉ</th>
+        <th class="th-w20" scope="col">Địa chỉ</th>
         <th class="th-w10" scope="col">SĐT</th>
         <th class="th-w10" scope="col">Trạng thái</th>
         <th scope="col">Chức năng</th>
@@ -154,7 +159,7 @@
         <!--          <td><input type="checkbox" [checked]="statusCheckBox" (change)="getIdCheck(temp,$event.target.checked)"></td>-->
         <td><input class="card-notify-year-checkbox" type="checkbox" value="{{temp.id}}"
                    [(ngModel)]="listCustomer[i].checked "></td>
-        <td class="w-5">{{temp.id}}</td>
+        <td class="w-5">{{i + size + 1 }}</td>
         <td class="w-10">{{temp.name}}</td>
         <td class="w-10 hiddenText" data-bs-toggle="tooltip" data-bs-placement="top"
             title="{{temp.email}}">{{temp.email}}</td>
@@ -164,9 +169,9 @@
           - {{temp.nameDistrict}} - {{temp.nameProvince}} </td>
         <td class="w-10">{{temp.phoneNumber}}</td>
         <!--        <td class="w-10">{{temp.activeStatus == 1 ? 'Đang hoạt động' : 'Ngưng hoạt động'}}</td>-->
-        <td *ngIf="temp.activeStatus==1"><i style="margin-left: 25px; color: rgb(14,114,236)"
+        <td *ngIf="temp.activeStatus==1"><i style="margin-left: 25px; color: rgb(47,236,14);font-size: 10px"
                                             class="fa-solid fa-circle"></i></td>
-        <td *ngIf="temp.activeStatus==0"><i style="margin-left: 25px; color: rgba(24,23,23,0.8)"
+        <td *ngIf="temp.activeStatus==0"><i style="margin-left: 25px; color: rgba(24,23,23,0.07)"
                                             class="fa-solid fa-circle"></i></td>
         <td class="w-5">
           <button class="btn btn-outline-secondary" routerLink="/customers/edit/{{temp.id}}">
@@ -188,24 +193,29 @@
       </tbody>
 
     </table>
-    <div *ngIf="listCustomer.length==0" style="position: absolute ; top: 500px ; right: 40%">
-      <img src="https://giaiphaptinhhoa.com/wp-content/uploads/2016/11/search-problem.png"
-           style="width: 200px; height: 200px">
+    <div *ngIf="listCustomer.length==0" style="position: absolute ; top: 300px ; right: 40%">
+      <img src="https://i.giphy.com/media/HTSsuRrErs54g1Tqr5/giphy.webp"
+           style="width: 350px; height: 350px">
+      <h2 style="text-align: center ; color: white;margin-left: 50px">Không có khách hàng</h2>
     </div>
 
   </div>
   <div>
     <!--    button create and delete all-->
     <div class="row " id="btn-outside">
-      <div class="col-4">
-        <button routerLink="/customers/create" class="btn btn-primary">Thêm mới khách hàng </button>
+      <div class="col-4" >
+<div *ngIf="map.size!==0">
+  <button style="margin-right: 11px" class="btn btn-primary " data-bs-toggle="modal"
+          data-bs-target="#deleteModal">Xóa
+  </button>
+</div>
+
       </div>
-      <div class="col-4"></div>
-      <div class="col-4">
-        <div style="text-align: right" *ngIf="map.size!==0">
-          <button style="margin-right: 11px" class="btn btn-primary " data-bs-toggle="modal"
-                  data-bs-target="#deleteModal">Xóa
-          </button>
+      <div class="col-4" ></div>
+      <div class="col-4" style="text-align: right">
+        <div >
+          <button routerLink="/customers/create" class="btn btn-primary">Thêm mới khách hàng</button>
+
         </div>
       </div>
 
@@ -223,15 +233,17 @@
 </div>
 
 
-<!-- Delete Modal-->
-<div class="modal fade " id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content object">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel1">Xóa khách hàng</h5>
+        <h5 class="modal-title text-white" id="exampleModalLabel">Thông báo</h5>
       </div>
-      <div class="modal-body" *ngIf="map.size==0">
-        <table class="table table-dark">
+      <div class="modal-body text-white" *ngIf="map.size==0">
+        <h6>Bạn có muốn xóa khách hàng</h6>
+        <table style="width: 100%">
           <thead>
           <tr>
             <th scope="col">#</th>
@@ -246,8 +258,9 @@
           </tbody>
         </table>
       </div>
-      <div class="modal-body" *ngIf="map.size!==0">
-        <table class="table table-dark">
+      <div class="modal-body text-white" *ngIf="map.size!==0">
+        <h6>Bạn có muốn xóa khách hàng</h6>
+        <table style="width: 100%">
           <thead>
           <tr>
             <th scope="col">#</th>
@@ -261,21 +274,21 @@
           </tr>
           </tbody>
         </table>
-
       </div>
       <div class="modal-footer">
+
         <button (click)="close()" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
         <button *ngIf="map.size ==0" type="button" class="btn btn-primary" data-bs-dismiss="modal"
                 (click)="deleteCustomer()">Xóa
         </button>
         <button *ngIf="map.size!==0" type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                (click)="DeleteById()">Xóa1
+                (click)="DeleteById()">
+          Xóa
         </button>
       </div>
     </div>
   </div>
 </div>
-
 
 </body>
 

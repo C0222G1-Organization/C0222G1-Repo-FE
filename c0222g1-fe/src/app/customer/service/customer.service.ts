@@ -4,10 +4,10 @@ import {HttpClient} from '@angular/common/http';
 import {CustomerDTO} from '../model/customerDTO';
 import {Observable} from 'rxjs';
 import {Customer} from '../model/customer';
-import { UpdateCustomerDto } from '../model/customer-update-dto';
-import { Province } from '../model/province';
-import { District } from '../model/district';
-import { Commune } from '../model/commune';
+import {UpdateCustomerDto} from '../model/customer-update-dto';
+import {Province} from '../model/province';
+import {District} from '../model/district';
+import {Commune} from '../model/commune';
 
 @Injectable({
   providedIn: 'root'
@@ -55,8 +55,9 @@ export class CustomerService {
 
   saveCustomer(customerDTO: UpdateCustomerDto): Observable<void> {
     console.log(customerDTO);
-    return this.httpClient.post<void>(this.ApiUrl_8080 , customerDTO);
+    return this.httpClient.post<void>(this.ApiUrl_8080, customerDTO);
   }
+
   getAllProvince(): Observable<Province[]> {
     return this.httpClient.get<Province[]>(this.ApiUrl + '/province');
   }
@@ -68,12 +69,13 @@ export class CustomerService {
   getAllCommune(districtId: number): Observable<Commune[]> {
     return this.httpClient.get<Commune[]>(this.ApiUrl + '/commune/' + districtId);
   }
+
   getCustomerByID(id: number): Observable<UpdateCustomerDto> {
     return this.httpClient.get<UpdateCustomerDto>(this.ApiUrl_8080 + '/getCustomer/' + id);
   }
 
   updateCustomer(id: number, customer: Customer): Observable<UpdateCustomerDto> {
-    return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id , customer);
+    return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id, customer);
   }
 
   checkUserName(userName: string): Observable<string> {
@@ -90,5 +92,9 @@ export class CustomerService {
 
   checkPhone(phone: string): Observable<string> {
     return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkPhone/' + phone);
+  }
+
+  deleteListCustomer(lisCustomer): Observable<any> {
+    return this.httpClient.post<any>('http://localhost:8080/customer/deleteListCustomer/',lisCustomer);
   }
 }

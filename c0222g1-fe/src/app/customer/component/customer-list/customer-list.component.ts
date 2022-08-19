@@ -17,13 +17,12 @@ export class CustomerListComponent implements OnInit {
   listCheckBox: number[] = [];
   idCustomerDelete: CustomerDTO = {};
   length = this.listCheckBox.length;
-  listCustomerCheck: CustomerDTO[] = [];
-  statusCheckBox: boolean;
   map = new Map();
-  statusCheckBoxAll: boolean;
   id: number;
   checked: boolean;
-  endDayState = false;
+  size: number;
+  totalPage;
+
 
   constructor(private customerService: CustomerService, private toast: ToastrService, private title: Title) {
     this.title.setTitle('C02G1|Danh sách khách hàng');
@@ -41,6 +40,7 @@ export class CustomerListComponent implements OnInit {
   }, this.validateStarDayAndEndDay);
 
   ngOnInit(): void {
+    console.log("page" + this.page);
     this.getAllCustomer();
     console.log(this.length);
   }
@@ -80,14 +80,19 @@ export class CustomerListComponent implements OnInit {
       getValueForm.endDate,
       getValueForm.activeStatus)
       .subscribe((data: any) => {
-        if (data.numberOfElements === 0 && data.totalElements !== 0) {
-          this.page = 0;
-          this.getAllCustomer();
-        }
+        this.size = data.size * (this.page);
+        this.totalPage = data.getTotalPages;
+        console.log(data);
+
         this.listCustomer = data.content;
         this.element = data.totalElements;
         if (this.element === 0) {
           this.toast.warning('Không có khách hàng nào trong danh sách ');
+        }
+        console.log(this.listCustomer.length);
+        if (this.listCustomer.length === 0 && this.element !== 0) {
+          this.page = this.page - 1;
+          this.ngOnInit();
         }
       });
   }
@@ -131,25 +136,24 @@ export class CustomerListComponent implements OnInit {
 
   deleteCustomer() {
     this.customerService.deleteCustomerById(this.idCustomerDelete.id).subscribe(value => {
-        this.toast.info('Xóa thành công');
-        this.ngOnInit();
-      }
-    );
+      this.toast.info('Xóa thành công');
+      this.ngOnInit();
+    });
   }
 
 
   DeleteById() {
+    let i = 0;
     for (const key of this.map.values()) {
       this.customerService.deleteCustomerById(key.id).subscribe(value => {
-        this.page = 0;
-        this.ngOnInit();
+        if (i === this.map.size) {
+          this.ngOnInit();
+          i++;
+        }
       });
       key.checked = false;
     }
-
     this.toast.info('Xóa thành công');
-
-
   }
 
   close() {
