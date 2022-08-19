@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" style="position: sticky;top: 0;z-index: 99">
   <!--    header-->
   <div class="row header" style="margin-bottom: 2rem">
     <nav class="navbar navbar-expand-lg navbar-light">
@@ -8,101 +8,99 @@
                 aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand text-white" href="#"> <img src="../../../assets/img/logo.png" width="80"/></a>
+        <a class="navbar-brand text-white" routerLink=""> <img src="../../../assets/img/logo.png" width="80"/></a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item active">
-              <a class="nav-link" style="color: #a8a8a8" href="#">Trang chủ</a>
+              <a class="nav-link" style="color: #a8a8a8" routerLink="">Trang chủ</a>
             </li>
             <li class="nav-item dropdown" *ngIf="employeeCard">
-              <a class="nav-link" href="#" id="navbarDropdown" role="button"
-                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
-                Nhân Viên
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" routerLink="employees">Danh sách</a>
-                <a class="dropdown-item" routerLink="employees/create">Thêm mới</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Tác vụ khác</a>
+              <div *ngIf="employeeCard">
+                <a class="nav-link" href="#" id="navbarDropdown" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
+                  Nhân Viên
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" routerLink="employees">Danh sách</a>
+                  <a class="dropdown-item" routerLink="employees/create">Thêm mới</a>
+                </div>
               </div>
             </li>
-            <li class="nav-item dropdown" *ngIf="computerCard">
-              <a class="nav-link" href="#" id="navbarDropdownCustomer" role="button"
-                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
-                Khách Hàng
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" routerLink="customers">Danh sách</a>
-                <a class="dropdown-item" routerLink="customers/create">Thêm mới</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Tác vụ khác</a>
+            <li class="nav-item dropdown">
+              <div *ngIf="customerCard">
+                <a class="nav-link" href="#" id="navbarDropdownCustomer" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
+                  Khách Hàng
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" routerLink="customers">Danh sách</a>
+                  <a class="dropdown-item" routerLink="customers/create">Thêm mới</a>
+                </div>
               </div>
             </li>
-            <li class="nav-item dropdown" *ngIf="computerCard">
-              <a class="nav-link" href="#" id="navbarDropdownComputer" role="button"
-                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
-                Danh Sách Máy
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" routerLink="computers">Danh sách</a>
-                <a class="dropdown-item" routerLink="computers/create">Thêm mới</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Tác vụ khác</a>
+            <li class="nav-item dropdown">
+              <div *ngIf="computerCard">
+                <a class="nav-link" href="#" id="navbarDropdownComputer" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
+                  Danh Sách Máy
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" routerLink="computers">Danh sách</a>
+                  <a class="dropdown-item" routerLink="computers/create">Thêm mới</a>
+                </div>
               </div>
             </li>
-            <li class="nav-item dropdown" *ngIf="gameCard">
-              <a class="nav-link" href="#" id="navbarDropdownGame" role="button"
-                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
-                Game
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" routerLink="games">Danh sách</a>
-                <a class="dropdown-item" routerLink="games/create">Thêm mới</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Tác vụ khác</a>
+            <li class="nav-item dropdown">
+              <div *ngIf="gameCard">
+                <a class="nav-link" href="#" id="navbarDropdownGame" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
+                  Game
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" routerLink="games">Danh sách</a>
+                  <a class="dropdown-item" routerLink="games/create">Thêm mới</a>
+                </div>
               </div>
             </li>
-            <li class="nav-item dropdown" *ngIf="newsCard">
-              <a class="nav-link" href="#" id="navbarDropdownNews" role="button"
-                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
-                Tin Tức
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" routerLink="news">Danh sách</a>
-                <a class="dropdown-item" routerLink="news/create">Thêm mới</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Tác vụ khác</a>
+            <li class="nav-item dropdown">
+              <div *ngIf="newsCard">
+                <a class="nav-link" href="#" id="navbarDropdownNews" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
+                  Tin Tức
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" routerLink="news">Danh sách</a>
+                  <a class="dropdown-item" routerLink="news/create">Thêm mới</a>
+                </div>
               </div>
             </li>
-            <li class="nav-item dropdown" *ngIf="serviceCard">
-              <a class="nav-link" href="#" id="navbarDropdownProduct" role="button"
-                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
-                Dịch Vụ
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" routerLink="products">Danh sách</a>
-                <a class="dropdown-item" routerLink="products/create">Thêm mới</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Tác vụ khác</a>
+            <li class="nav-item dropdown">
+              <div *ngIf="serviceCard">
+                <a class="nav-link" href="#" id="navbarDropdownProduct" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
+                  Dịch Vụ
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" routerLink="products">Danh sách</a>
+                </div>
               </div>
             </li>
-            <li class="nav-item" *ngIf="statisticalCard">
-              <a class="nav-link" style="color: #a8a8a8" routerLink="statistic">Thống Kê</a>
+            <li class="nav-item">
+              <div *ngIf="statisticalCard">
+                <a class="nav-link" style="color: #a8a8a8" routerLink="statistic">Thống Kê</a>
+              </div>
             </li>
           </ul>
           <form class="d-flex" *ngIf="login">
-            <a class="nav-link" style="color: #a8a8a8"><b><span id="dayss"></span> <span id="hourss">00</span>:<span id="minss">00</span>:<span id="secondss">00</span></b></a>
+            <a class="nav-link" style="color: #a8a8a8" *ngIf="showTime"><b><span id="dayss"></span> <span id="hourss">00</span>:<span id="minss">00</span>:<span id="secondss">00</span></b></a>
 
             <a class="nav-link" style="color: #a8a8a8">Xin Chào</a>
-<!--                                    <a class="btn-main text-white" routerLink="home-page-customer">{{username}}</a>-->
-            <a  class="btn btn-primary"  routerLink="customers/home-page">{{username}}</a>
+            <a  class="btn btn-primary" routerLink="{{urlNameHeader}}">{{username}}</a>
             <a class="nav-link" style="color: #a8a8a8" routerLink="sign-out">Đăng Xuất</a>
-<!--            <a class="nav-link" style="color: #a8a8a8" routerLink="sign-up">Đăng Ký</a>-->
-<!--            <button class="btn-main text-white" routerLink="sign-in">Đăng Nhập</button>-->
           </form>
           <form class="d-flex" *ngIf="login==false">
-                        <a class="nav-link" style="color: #a8a8a8" routerLink="sign-up">Đăng Ký</a>
-                        <button class="btn btn-primary" routerLink="sign-in">Đăng Nhập</button>
+            <a class="nav-link" style="color: #a8a8a8" routerLink="sign-up">Đăng Ký</a>
+            <button class="btn btn-primary" routerLink="sign-in">Đăng Nhập</button>
           </form>
         </div>
       </div>

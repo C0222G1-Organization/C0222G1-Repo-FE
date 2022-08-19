@@ -1,39 +1,35 @@
 <div class="container-fluid">
   <div class="container">
     <!--   carousel-->
-    <div class="row">
+    <div class="row mb-2">
       <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12">
-        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-          <div class="carousel-inner">
-              <div *ngFor="let game of top3Games; let index = index;let isFirst = first" [ngClass]="{active:isFirst}"
-                   class="carousel-item container-img-carousel">
-                <img [src]="game.imageUrl" class="d-block image" alt="...">
-                <button (click)="getGameAndUpdate(game.id)" class="btn-image-carousel">Chơi ngay</button>
-              </div>
-          </div>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"
-                  data-bs-slide="next">
-            <span class="" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+        <div class="row">
+            <div class="container-img-carousel">
+              <img [src]="activeCarouselUrl" class="d-block image-carousel" alt="...">
+              <button (click)="playGame()" class="btn-image-carousel">Chơi ngay</button>
+            </div>
         </div>
       </div>
       <div class="col-xl-3 col-lg-3 col-md-0 col-sm-0">
-        <div class="row">
-          <div *ngFor="let game of top3Games; index as i">
-            <div class="row list-row mb-4">
-              <button class="btn-yellow btn-block">Top {{i + 1}}</button>
-            </div>
-            <div class="row list-row mb-4" style="align-items: center">
-              <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7">
-                <div class="row">
-                  <img [src]="game.imageUrl" class="list-image-game" alt="...">
+        <div class="row" style="margin-left: 1rem">
+          <div class="row mb-4" *ngFor="let game of topCarouselGames; index as i">
+            <div class="row progress-main position-relative">
+              <div class="row list-row position-absolute card-game-main">
+                <div class="col-8">
+                  <div class="row">
+                    <img [src]="game.imageUrl" class="list-image-game" alt="...">
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="row" style="padding-top: 1.5rem">
+                    <a class="text-white text-decoration-none"
+                       routerLink="games/detail/{{game.id}}">{{game.name}}</a>
+                  </div>
                 </div>
               </div>
-              <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5">
-                <div class="row">
-                  <a class="text-white text-decoration-none" routerLink="games/detail/{{game.id}}">{{game.name}}</a>
-                </div>
+              <div class="progress-bar-main" *ngIf="enableProgress(i)" [ngStyle]="{'width': progressWidth + '%'}" aria-valuenow="25"
+                   aria-valuemin="0"
+                   aria-valuemax="100">
               </div>
             </div>
           </div>
@@ -49,17 +45,18 @@
     </div>
     <div class="row">
       <div class="row" style="flex-wrap: wrap; justify-content: start">
-        <div *ngFor="let game of popularGames" class="card zoom container-img bg-dark card-game" data-aos = "fade-left">
+        <div *ngFor="let game of popularGames" class="card zoom container-img bg-dark card-game" data-aos="fade-left">
           <img class="card-img-top image"
                [src]="game.imageUrl"
                alt="Card image cap">
-          <div class="middle">
+          <div *ngIf="editState" class="middle">
             <div class="row mb-2">
               <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
             </div>
             <div class="row">
               <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
-                      data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
+                      data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa
+              </button>
             </div>
           </div>
           <div class="card-body row" style="justify-items: center">
@@ -68,7 +65,8 @@
             </div>
             <div class="row">
               <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
-                                                            class="btn-second btn-sm">Chơi</button>  {{ game.playedTimes}} lượt chơi</span>
+                                                            class="btn-second btn-sm">Chơi</button>
+                {{ game.playedTimes}} lượt chơi</span>
             </div>
           </div>
         </div>
@@ -84,18 +82,19 @@
         <h4 class="text-white"><i class="fa-solid icon-body fa-gift"></i>Game đề xuất</h4>
       </div>
       <div class="row">
-        <div *ngFor="let game of hotGames" class="col-6 container-img" data-aos = "fade-right">
+        <div *ngFor="let game of hotGames" class="col-6 container-img" data-aos="fade-right">
           <div class="row mb-3">
             <img [src]="game.imageUrl"
                  class="d-block image" alt="...">
           </div>
-          <div class="middle-md">
+          <div *ngIf="editState" class="middle-md">
             <div class="row mb-2">
               <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
             </div>
             <div class="row">
               <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
-                      data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
+                      data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa
+              </button>
             </div>
           </div>
           <div class="row mb-2">
@@ -103,7 +102,8 @@
           </div>
           <div class="row">
               <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
-                                                            class="btn-second btn-sm">Chơi</button>  {{ game.playedTimes}} lượt chơi</span>
+                                                            class="btn-second btn-sm">Chơi</button>
+                {{ game.playedTimes}} lượt chơi</span>
           </div>
         </div>
       </div>
@@ -119,17 +119,18 @@
     </div>
     <div class="row">
       <div class="row" style="flex-wrap: wrap; justify-content: start">
-        <div *ngFor="let game of newGames" class="card zoom container-img bg-dark card-game" data-aos = "fade-left">
+        <div *ngFor="let game of newGames" class="card zoom container-img bg-dark card-game" data-aos="fade-left">
           <img class="card-img-top image"
                [src]="game.imageUrl"
                alt="Card image cap">
-          <div class="middle">
+          <div *ngIf="editState" class="middle">
             <div class="row mb-2">
               <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
             </div>
             <div class="row">
               <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
-                      data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
+                      data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa
+              </button>
             </div>
           </div>
           <div class="card-body row" style="justify-items: center">
@@ -138,7 +139,8 @@
             </div>
             <div class="row">
               <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
-                                                            class="btn-second btn-sm">Chơi</button>  {{ game.playedTimes}} lượt chơi</span>
+                                                            class="btn-second btn-sm">Chơi</button>
+                {{ game.playedTimes}} lượt chơi</span>
             </div>
           </div>
         </div>
@@ -148,7 +150,6 @@
       <h5 class="text-white" style="margin-left: 1rem">Danh sách rỗng. Không có game mới</h5>
     </div>
   </div>
-  <button id="myBtn" title="Go to top"><i class="fa-solid fa-arrow-up" style="font-size: 2rem"></i></button>
 
   <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

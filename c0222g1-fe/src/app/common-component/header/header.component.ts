@@ -9,7 +9,6 @@ import {Router} from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
   username = '';
   login = false;
   data: Map<string, any> = new Map<string, any>();
@@ -21,6 +20,7 @@ export class HeaderComponent implements OnInit {
   newsCard = false;
   serviceCard = false;
   statisticalCard = false;
+  urlNameHeader = '';
 
   endTimeMillisecs: any;
   cDateMillisecs: any;
@@ -33,16 +33,35 @@ export class HeaderComponent implements OnInit {
   loop: any;
   countRequest = 1;
   endTime: Date;
+  showTime = true;
+  headerEmployee = false;
 
 
   constructor(private authService: AuthService, private toartrs: ToastrService, private router: Router) {
   }
 
   ngOnInit(): void {
+    sessionStorage.getItem('roles') === 'CUSTOMER' ? this.headerEmployee = false : this.headerEmployee = true;
+    this.authService.checkData.subscribe(value => {
+      if (value !== undefined) {
+        this.data = value;
+        if (this.data.has('customer')) {
+          this.showTime = true;
+        } else {
+          this.showTime = false;
+        }
+      }
+    });
     this.checkLogin();
     this.checkRoles();
-    if (sessionStorage.getItem('loopTimeCustomer') === '0') {
-      this.countDownDate();
+    if (sessionStorage.getItem('loopTimeCustomer') !== null) {
+      if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+        this.showTime = true;
+        this.countDownDate();
+      } else {
+        this.showTime = false;
+        sessionStorage.setItem('loopTimeCustomer', '1');
+      }
     }
 
     this.endTime = this.convertStringToDate(sessionStorage.getItem('startTime'));
@@ -55,6 +74,18 @@ export class HeaderComponent implements OnInit {
         item.classList.add('active');
       });
     });
+
+    setTimeout(() => {
+      if (sessionStorage.getItem('loopTimeCustomer') !== null) {
+        if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+          this.showTime = true;
+          this.countDownDate();
+        } else {
+          this.showTime = false;
+          sessionStorage.setItem('loopTimeCustomer', '1');
+        }
+      }
+    }, 2000);
   }
 
   convertStringToDate(dateString: string): Date {
@@ -112,8 +143,7 @@ export class HeaderComponent implements OnInit {
       }
 
       if (this.countRequest >= 10) {
-        console.log(this.difference / 1000);
-        console.log(sessionStorage.getItem('remainingTime'));
+
         sessionStorage.setItem('remainingTime', String(Math.trunc(this.difference / 1000)));
 
         this.authService.setOutOfTime(Number(sessionStorage.getItem('customerId')), Math.trunc(this.difference / 1000)).subscribe(value => {
@@ -151,6 +181,20 @@ export class HeaderComponent implements OnInit {
 
 
   private checkRoles() {
+    this.authService.checkData.subscribe(value => {
+      if (value !== undefined) {
+        this.data = value;
+        if (this.data.has('logout')) {
+          this.customerCard = false;
+          this.employeeCard = false;
+          this.computerCard = false;
+          this.gameCard = true;
+          this.newsCard = true;
+          this.serviceCard = true;
+          this.statisticalCard = false;
+        }
+      }
+    });
     if (this.roles === 'EMPLOYEE') {
       this.customerCard = true;
       this.employeeCard = false;
@@ -176,14 +220,13 @@ export class HeaderComponent implements OnInit {
       this.serviceCard = true;
       this.statisticalCard = false;
     }
-    console.log(this.roles);
-    console.log('customerCard ' + this.customerCard);
-    console.log('employeeCard ' + this.employeeCard);
-    console.log('computerCard ' + this.computerCard);
-    console.log('gameCard ' + this.gameCard);
-    console.log('newsCard ' + this.newsCard);
-    console.log('serviceCard ' + this.serviceCard);
-    console.log('statisticalCard ' + this.statisticalCard);
 
+    if (sessionStorage.getItem('loopTimeCustomer') !== null) {
+      if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+        this.urlNameHeader = 'customers/home-page';
+      } else {
+        this.urlNameHeader = '';
+      }
+    }
   }
 }

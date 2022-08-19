@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {NewsService} from '../../service/news.service';
 import {News} from '../../model/news';
 import {ToastrService} from 'ngx-toastr';
+import {Router} from '@angular/router';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-news',
@@ -15,13 +17,16 @@ export class NewsComponent implements OnInit {
   listNews: News[];
   topNews: News[];
   searchTitle: string;
+  createState = false;
 
-  constructor(private newsService: NewsService, private toastr: ToastrService) {
+  constructor(private newsService: NewsService, private toastr: ToastrService, private route: Router, private title: Title) {
+    this.title.setTitle('Tin tức game');
   }
 
   ngOnInit(): void {
     this.getAllTopNews();
     this.getAllNews();
+    this.checkRole();
   }
 
   getAllTopNews() {
@@ -52,20 +57,35 @@ export class NewsComponent implements OnInit {
   }
 
   updateViews(id) {
-    this.newsService.updateViews(id).subscribe();
+    this.newsService.updateViews(id).subscribe(
+      value => {},
+      error => {},
+      () => {
+        this.route.navigateByUrl(`news/detail/${id}`);
+      }
+    );
   }
 
   search() {
+    this.searchTitle = this.searchTitle.trim();
     if (this.searchTitle === '') {
           this.getAllNews();
           return;
         }
-    this.searchTitle = this.searchTitle.trim();
     this.newsService.getAllNews(0, this.searchTitle).subscribe((value: any) => {
         this.listNews = value.content;
         this.totalItems = value.totalElements;
         console.log(this.listNews);
       }
     );
+  }
+
+  checkRole() {
+    if (sessionStorage.getItem('roles') === 'EMPLOYEE' || sessionStorage.getItem('roles') == 'ADMIN') {
+      this.createState = true;
+    }
+    if (sessionStorage.getItem('roles') === 'CUSTOMER') {
+      this.createState = false;
+    }
   }
 }

@@ -7,6 +7,9 @@ import {AngularFireStorage} from '@angular/fire/storage';
 import {finalize} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
+import {Title} from '@angular/platform-browser';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import BackgroundColor from 'ckeditor5-background-color/src/backgroundcolor';
 
 @Component({
   selector: 'app-create',
@@ -16,22 +19,29 @@ import {ToastrService} from 'ngx-toastr';
 export class CreateComponent implements OnInit {
   checkImgSize = false;
   checkImg: boolean;
+  regexImg = false;
+  public Editor = ClassicEditor;
+  check = true;
 
   constructor(private newsService: NewsService,
               private storage: AngularFireStorage,
               private router: Router,
-              private toastr: ToastrService) {}
+              private toastr: ToastrService,
+              private title: Title) {
+    this.title.setTitle('Thêm tin tức');
+  }
   selectedFile: File = null;
   gameCateList: GameCategory[];
   formNews = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\w\\W ]+[^ ]$'),
+    title: new FormControl('', [Validators.required,
       Validators.minLength(20), Validators.maxLength(150)]),
     imageUrl: new FormControl('', [Validators.required]),
-    content: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\w\\W ]+[^ ]$'), Validators.minLength(200)]),
+    content: new FormControl('', [Validators.required, Validators.minLength(200)]),
     createDate: new FormControl(this.getCurrentDateTime()),
     views: new FormControl(0),
-    author: new FormControl('', [Validators.required, Validators.pattern('^[^ ][A-Za-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéê' +
-        'ìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ][^ ]$'),
+    author: new FormControl('', [Validators.required,
+      // tslint:disable-next-line:max-line-length
+      Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$'),
       Validators.minLength(2), Validators.maxLength(50)]),
     gameCategory: new FormControl('', [Validators.required])
   });
@@ -45,16 +55,26 @@ export class CreateComponent implements OnInit {
     );
   }
 
+
+
   onFileSelected(event) {
+    this.regexImg = false;
     if (event.target.files[0].size > 9000000) {
       return;
     }
     this.selectedFile = event.target.files[0];
+    if (!event.target.files[0].name.match('^.*\\.(jpg|JPG)$')) {
+      this.regexImg = true;
+      return;
+    }
+    this.formNews.patchValue({imageUrl: this.selectedFile.name});
   }
 
   create() {
+    this.check = false;
     if (this.formNews.invalid) {
       this.toastr.error('Nhập đầy đủ thông tin.');
+      this.check = true;
       return;
     }
     const nameImg = this.getCurrentDateTime() + this.selectedFile.name;
@@ -77,7 +97,10 @@ export class CreateComponent implements OnInit {
           );
         });
       })
-    ).subscribe(); }
+    ).subscribe();
+
+  }
+
 
   getCurrentDateTime(): string {
     return formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss', 'en-US');
@@ -91,6 +114,9 @@ export class CreateComponent implements OnInit {
     }
     if (event.target.files[0].size > 9000000) {
       this.checkImgSize = true;
+      return;
+    }
+    if (!event.target.files[0].name.match('^.*\\.(jpg|JPG)$')) {
       return;
     }
     this.checkImgSize = false;

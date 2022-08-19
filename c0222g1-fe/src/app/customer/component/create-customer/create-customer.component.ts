@@ -6,7 +6,7 @@ import {Province} from '../../model/province';
 import {District} from '../../model/district';
 import {Commune} from '../../model/commune';
 import {ToastrService} from 'ngx-toastr';
-import { UpdateCustomerDto } from '../../model/customer-update-dto';
+import {UpdateCustomerDto} from '../../model/customer-update-dto';
 import {Title} from '@angular/platform-browser';
 
 
@@ -34,18 +34,21 @@ export class CreateCustomerComponent implements OnInit {
       email: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+@[A-Za-z0-9]+(\\.[A-Za-z0-9]+){1,2}$'), Validators.required])
     }),
     phoneNumber: new FormGroup({
-      phone: new FormControl('' , [Validators.pattern('^[0-9]{10,12}$'), Validators.required])
+      // tslint:disable-next-line:max-line-length
+      phone: new FormControl('', [Validators.pattern('^(0|84+)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$'), Validators.required])
     }),
     userName: new FormGroup({
-      userName: new FormControl('', [Validators.required, this.notBlank, Validators.pattern('[a-zA-z0-9]{5,50}') ])
+      userName: new FormControl('', [Validators.required, this.notBlank, Validators.pattern('[a-zA-z0-9]{5,50}')])
     }),
     // tslint:disable-next-line:max-line-length
     password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
-    activeStatus: new  FormControl(1),
+    activeStatus: new FormControl(1),
     province: new FormControl('', Validators.required),
     district: new FormControl('', Validators.required),
-    commune: new FormControl('', Validators.required)
+    commune: new FormControl('', Validators.required),
+    remainingTime: new FormControl('', Validators.required)
   });
+
   constructor(private activatedRoute: ActivatedRoute,
               private route: Router,
               private customerService: CustomerService,
@@ -57,6 +60,7 @@ export class CreateCustomerComponent implements OnInit {
   ngOnInit(): void {
     this.customerService.getAllProvince().subscribe(value => this.provinceList = value);
   }
+
   getUser() {
     return this.customerForm.get('userName').get('userName');
   }
@@ -93,6 +97,7 @@ export class CreateCustomerComponent implements OnInit {
         value => this.communeList = value);
     }
   }
+
   private notBlank(abstractControl: AbstractControl): any {
     // tslint:disable-next-line:variable-name
     const string: string = abstractControl.value;
@@ -102,6 +107,8 @@ export class CreateCustomerComponent implements OnInit {
   submit() {
     console.log(this.customerForm);
     this.updateCustomerDto = this.customerForm.value;
+    this.updateCustomerDto.remainingTime = this.updateCustomerDto.remainingTime * 60;
+    console.log(this.updateCustomerDto);
     this.customerService.saveCustomer(this.updateCustomerDto).subscribe(
       value => {
         this.toast.success('Thêm mới khách hàng thành công!');
@@ -111,12 +118,20 @@ export class CreateCustomerComponent implements OnInit {
       }
     );
   }
+
   cancel() {
-    this.customerForm.reset();
+    this.route.navigateByUrl('/customers');
   }
+
   private check16Age(abstractControl: AbstractControl): any {
+    if (abstractControl.value === '') {
+      return null;
+    }
     const today = new Date();
     const birthDate = new Date(abstractControl.value);
+    if (birthDate === undefined) {
+      return true;
+    }
     let age = today.getFullYear() - birthDate.getFullYear();
     const m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
@@ -124,17 +139,17 @@ export class CreateCustomerComponent implements OnInit {
     }
     return (age >= 16) ? null : {not16: true};
   }
+
   checkUserName($event: Event) {
     this.customerService.checkUserName(String($event)).subscribe(
       value => {
         if (value) {
           this.isExitsUser = true;
+        } else {
+          this.isExitsUser = false;
         }
       }
     );
-    if (String($event) === '') {
-      this.isExitsUser = false;
-    }
   }
 
   checkEmail($event: Event) {

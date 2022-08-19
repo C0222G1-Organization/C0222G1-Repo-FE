@@ -391,9 +391,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-color: #cccc;
 }
 .texarea {
-  padding-top: 1.5em !important;
+  padding-top: 1.4em !important;
   border: none;
-  height: 3.8em !important;
+
 }
 .texarea:focus {
   background-color: #484848;
@@ -474,3 +474,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width:  100%;
 }
 
+
+.spinner {
+  left: 0;
+  right: 0;
+  margin-left: 20em;
+  margin-right: auto;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+}
