@@ -102,14 +102,12 @@ export class RemainingTimeComponent implements OnInit {
               this.remainingTimeRequest = Math.trunc(this.difference / 1000);
               this.authService.setOutOfTime(Number(sessionStorage.getItem('customerId')), this.remainingTimeRequest).subscribe(value2 => {
                 sessionStorage.setItem('remainingTime', String(this.remainingTimeRequest));
-                this.toartrs.success('set remaining time successful');
               }, error => {
                 this.toartrs.error('Lỗi ' + error.status + ' kết nối server: set out of time2');
               });
             }
             if (this.remainingTimeBackEnd > Number(sessionStorage.getItem('remainingTime'))) {
               sessionStorage.setItem('remainingTime', String(this.remainingTimeBackEnd));
-              this.toartrs.success('set remaining time successful');
             }
           }
         }, error => {
