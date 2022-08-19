@@ -44,7 +44,7 @@ export class EmployeeCreateComponent implements OnInit {
       statusDelete: new FormControl(0, [Validators.required]),
       image: new FormControl('', [Validators.required]),
       appUser: new FormGroup({
-        username: new FormControl('', [Validators.required]),
+        username: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\\\w\\\\W ]+[^ ]$')]),
         // tslint:disable-next-line:max-line-length
         password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
       }),

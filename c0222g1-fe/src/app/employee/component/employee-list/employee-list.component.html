@@ -143,9 +143,11 @@
               <td>{{(i + 1 + size) }}</td>
               <td>{{employee.code}}</td>
               <td>{{employee.name}}</td>
-              <td class="hiddenText">{{employee.cmName}},{{employee.disName}},{{employee.proName}}</td>
+              <td class="hiddenText" data-bs-toggle="tooltip" data-bs-placement="top"
+              title="{{employee.cmName}}, {{employee.disName}}, {{employee.proName}}">{{employee.cmName}}, {{employee.disName}}, {{employee.proName}}</td>
               <td>{{employee.dob| date: 'dd/MM/yyyy'}}</td>
-              <td class="hiddenText">{{employee.email}}</td>
+              <td class="hiddenText" data-bs-toggle="tooltip" data-bs-placement="top"
+              title="{{employee.email}}">{{employee.email}}</td>
               <td>{{employee.phone}}</td>
               <td>{{employee.posiName}}</td>
               <td>{{exp(employee)}}</td>
