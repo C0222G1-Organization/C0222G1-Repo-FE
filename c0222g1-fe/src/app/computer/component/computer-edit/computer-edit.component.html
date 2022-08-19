@@ -10,7 +10,7 @@
                 && formEditComputer.hasError('required', 'code')">Mã máy không được để trống.</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="isExitsCode == true">Mã máy đã tồn tại.</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('code').dirty
-                && formEditComputer.hasError('pattern', 'code')">Mã máy phải có định dạng CPXXXX (X là số).</span></div>
+                && formEditComputer.hasError('pattern', 'code')">Mã máy phải có định dạng CPXXXX (Ví dụ: CP0001...).</span></div>
       </div>
 
       <label for="vi-tri" style="color: white">
@@ -41,7 +41,7 @@
         <div><span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').touched
                 && formEditComputer.hasError('required', 'location')">Vị trí máy không được để trống.</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').dirty
-                && formEditComputer.hasError('pattern', 'location')">Vị trí máy phải có định dạng AXXX (X là số).</span></div>
+                && formEditComputer.hasError('pattern', 'location')">Vị trí máy phải có định dạng AXXXX (ví dụ: A0001...).</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').dirty
                 && formEditComputer.hasError('location')">Không được trùng vị trí.</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="isExitsLocation == true">Vị trí này đã có máy.</span></div>
@@ -59,7 +59,7 @@
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('startUsedDate').touched
                 && formEditComputer.hasError('required', 'startUsedDate')">Ngày không được để trống.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('startUsedDate').dirty
-                && formEditComputer.hasError('dateerror')">Ngày đưa vào hoạt dộng phải bé hơn ngày hiện tại.</p>
+                && formEditComputer.hasError('dateerror')">Ngày đưa vào hoạt dộng phải bé hơn hoặc bằng ngày hiện tại.</p>
       <label for="start" style="color: white">
         Ngày đưa vào hoạt động
         <span class="text-danger">*</span>

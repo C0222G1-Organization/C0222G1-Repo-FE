@@ -474,4 +474,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width:  100%;
 }
 
-.cke_contents{border:solid 1px #696969;background-color: #d30d0d;}
+
+.spinner {
+  left: 0;
+  right: 0;
+  margin-left: 20em;
+  margin-right: auto;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+}

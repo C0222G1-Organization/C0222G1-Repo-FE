@@ -2,14 +2,19 @@
   <!--    footer-->
   <div class="row footer">
     <div class="row mb-3">
-                <span>
-                    <i class="fa-brands icon-footer fa-square-facebook"></i>
-                    <i class="fa-brands icon-footer fa-twitter"></i>
-                    <i class="fa-brands icon-footer fa-youtube"></i>
-                </span>
+      <div class="col-6">
+         <span>
+           <i class="fa-brands icon-footer fa-square-facebook"></i>
+           <i class="fa-brands icon-footer fa-twitter"></i>
+           <i class="fa-brands icon-footer fa-youtube"></i>
+         </span>
+      </div>
+      <div class="col-6 d-flex justify-content-end">
+          <button (click)="backToTop()" id="backToTop" title="Back to top"><i class="fa-solid fa-arrow-up" style="font-size: 2rem"></i></button>
+      </div>
     </div>
     <div class="row mb-2">
-      <div class="col-3">
+      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
         <div class="row">
           <p class="text-footer font-weight-bold">Chi tiết liên hệ:</p>
         </div>
@@ -23,18 +28,21 @@
             20:00 hàng ngày</p>
         </div>
       </div>
-      <div class="col-3">
+      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
         <div class="row">
           <p class="text-footer font-weight-bold">Các chi nhánh:</p>
         </div>
         <div class="row">
-          <p class="text-white"><i class="fa-solid icon-footer-second fa-location-dot"></i> Chi nhánh 1: 295 Nguyễn Tất Thành</p>
-          <p class="text-white"><i class="fa-solid icon-footer-second fa-location-dot"></i> Chi nhánh 2: 262 Hàm Nghi</p>
+          <p class="text-white"><i class="fa-solid icon-footer-second fa-location-dot"></i> Chi nhánh 1: 295 Nguyễn Tất
+            Thành</p>
+          <p class="text-white"><i class="fa-solid icon-footer-second fa-location-dot"></i> Chi nhánh 2: 262 Hàm Nghi
+          </p>
           <p class="text-white"><i class="fa-solid icon-footer-second fa-location-dot"></i> Chi nhánh 3: 123 Lê Duẩn</p>
-          <p class="text-white"><i class="fa-solid icon-footer-second fa-location-dot"></i> Chi nhánh 4: 102 Ngô Quyền</p>
+          <p class="text-white"><i class="fa-solid icon-footer-second fa-location-dot"></i> Chi nhánh 4: 102 Ngô Quyền
+          </p>
         </div>
       </div>
-      <div class="col-3">
+      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
         <div class="row">
           <p class="text-footer font-weight-bold">Đối tác:</p>
         </div>
@@ -47,7 +55,7 @@
           <p class="text-white"><i class="fa-solid icon-footer-second fa-handshake-simple"></i> Techsoft</p>
         </div>
       </div>
-      <div class="col-3">
+      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
         <div class="row">
           <p class="text-footer font-weight-bold">Thông tin khác:</p>
         </div>
@@ -67,4 +75,11 @@
     </div>
   </div>
 </div>
+<script>
+  $(document).ready(function () {
+    $('#backToTop').on('click', function (e) {
+      $('html, body').animate({scrollTop: 0}, '50');
+    });
+  })
+</script>
 

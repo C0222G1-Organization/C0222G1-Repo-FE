@@ -10,6 +10,8 @@ import {Observable} from 'rxjs';
 import {finalize} from 'rxjs/operators';
 import {formatDate} from '@angular/common';
 import {Title} from '@angular/platform-browser';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 
 @Component({
   selector: 'app-game-update',
@@ -17,6 +19,7 @@ import {Title} from '@angular/platform-browser';
   styleUrls: ['./game-update.component.css']
 })
 export class GameUpdateComponent implements OnInit {
+  public Editor = ClassicEditor;
   id: number;
   selectedFile: File = null;
   editImageState = false;
@@ -32,7 +35,7 @@ export class GameUpdateComponent implements OnInit {
   isExitsGameName = false;
   gameCategory: GameCategory[];
   gameForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(150)]),
+    name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(150)]),
     createDate: new FormControl(this.getCurrentDateTime()),
     playedTimes: new FormControl(0),
     trailerUrl: new FormControl('', [Validators.required,
