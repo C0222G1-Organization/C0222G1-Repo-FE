@@ -10,7 +10,7 @@
                 && formComputer.hasError('required', 'code')">Mã máy không được để trống.</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="isExitsCode == true">Mã máy đã tồn tại.</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('code').dirty
-                && formComputer.hasError('pattern', 'code')">Mã máy phải có định dạng CPXXXX (Ví dụ: CP0001....).</span></div>
+                && formComputer.hasError('pattern', 'code')">Mã máy phải có định dạng CPXXXX (Ví dụ: CP0001,...).</span></div>
       </div>
       <label for="vi-tri" style="color: white">
         Mã máy
@@ -38,7 +38,7 @@
         <div><span style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('location').touched
                 && formComputer.hasError('required', 'location')">Vị trí máy không được để trống.</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('location').dirty
-                && formComputer.hasError('pattern', 'location')">Vị trí máy phải có định dạng AXXXX (Ví dụ: A0001....).</span></div>
+                && formComputer.hasError('pattern', 'location')">Vị trí máy phải có định dạng AXXXX (Ví dụ: A0001,...).</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('location').dirty
                 && formComputer.hasError('location')">Không được trùng vị trí.</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="isExitsLocation == true">Vị trí này đã có máy.</span></div>
