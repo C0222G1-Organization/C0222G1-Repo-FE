@@ -5,7 +5,7 @@
         <div class="p-0 col-6">
             <input [(ngModel)]="searchTitle" (change)="search()" class="search form-control-sm me-2 position-absolute" type="search" placeholder="Tìm kiếm" aria-label="Search" >
         </div>
-        <div class="p-0 col-6 d-flex justify-content-end">
+        <div *ngIf="createState" class="p-0 col-6 d-flex justify-content-end">
           <button type="button" routerLink="/news/create" class="btn btn-outline-secondary rounded-pill">Thêm mới tin</button>
         </div>
       </div>

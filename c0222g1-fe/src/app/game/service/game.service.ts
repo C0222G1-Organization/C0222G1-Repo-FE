@@ -12,6 +12,8 @@ export class GameService {
 
   constructor(private http: HttpClient) { }
   createGame(game: Game): Observable<any> {
+    console.log('check game');
+    console.log(game);
     return this.http.post<any>(API_URL + '/games', game);
   }
 
