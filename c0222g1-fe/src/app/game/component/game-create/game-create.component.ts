@@ -12,13 +12,14 @@ import {AngularFireStorage} from '@angular/fire/storage';
 import {formatDate} from '@angular/common';
 import {Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
-
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 @Component({
   selector: 'app-game-create',
   templateUrl: './game-create.component.html',
   styleUrls: ['./game-create.component.css']
 })
 export class GameCreateComponent implements OnInit {
+  public Editor = ClassicEditor;
   gameForm: FormGroup;
   gameCategory: GameCategory[];
   selectedFile: File = null;
@@ -42,8 +43,8 @@ export class GameCreateComponent implements OnInit {
   ngOnInit(): void {
     this.getAllGameCateGory();
     this.gameForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(150)
-       ]),
+      name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(150)
+      ]),
       createDate: new FormControl(this.getCurrentDateTime()),
       playedTimes: new FormControl(0),
       trailerUrl: new FormControl('', [Validators.required,
@@ -53,7 +54,8 @@ export class GameCreateComponent implements OnInit {
       content: new FormControl('', [Validators.required , Validators.minLength(15)]),
       gameCategory: new FormGroup({
         id: new FormControl('', Validators.required)
-      })
+      }),
+      deleteStatus: new FormControl(false)
     });
   }
 
@@ -113,10 +115,6 @@ export class GameCreateComponent implements OnInit {
     };
   }
   create() {
-    // if (this.gameForm.invalid) {
-    //   this.toastr.error('Nhập đầy đủ thông tin.');
-    //   return;
-    // }
     const imageUrl = this.getCurrentDateTime() + this.selectedFile.name;
     const filePath = `game/${imageUrl}`;
     const fileRef = this.storage.ref(filePath);
@@ -132,7 +130,7 @@ export class GameCreateComponent implements OnInit {
               this.toastr.success('Tạo mới thàng công.');
             },
             error => {
-              this.toastr.error('Tạo mới thất bại thất bại, hãy thử lại!.');
+              this.toastr.error('Tạo mới thất bại');
             }
           );
         });
@@ -159,4 +157,3 @@ export class GameCreateComponent implements OnInit {
     }
   }
 }
-

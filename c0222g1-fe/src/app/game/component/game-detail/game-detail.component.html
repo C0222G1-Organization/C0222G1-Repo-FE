@@ -1,45 +1,52 @@
-<div class="container-fluid d-flex justify-content-center p-0 bg">
-  <div class="container col-lg-10 m-0 w-100">
-    <form>
-      <div class="mt-3">
-        <h5 class="text-center text-light font-weight-bold pt-4">{{game.name}}</h5>
+<div class="container-fluid">
+  <div class="container">
+    <div class="row mb-2">
+      <div class="col-6">
+        <h3 class="text-white">{{game.name}}</h3>
       </div>
-      <div class="row mt-4">
-        <div class="row d-flex justify-content-between col-lg-8 mx-auto ">
-          <div class="m-0 box-video">
-            <iframe class="w-100" style="height: 27em" [src]="this.trailerUrl | safe"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen></iframe>
-          </div>
-        </div>
-
-
-        <div class="row col-lg-8 mx-auto mb-4 ">
-          <div class="col-lg-4 border-start border-2 px-3">
-            <p class=" font-weight-bold text-secondary p-0"> Ngày tạo:</p>
-            <span class="text-light font-weight-bold pt-4 mt-3">{{game.createDate}}</span>
-          </div>
-          <div class="col-lg-4 border-start border-2 px-3">
-            <p class="font-weight-bold  text-secondary"> Thể loại game:</p>
-            <span class="text-light font-weight-bold pt-4 mt-3">{{game.gameCategory.name}}</span>
-          </div>
-          <div class="col-lg-4 border-start border-2 px-3">
-            <p class="font-weight-bold  text-secondary"> Số lượt chơi:</p>
-            <span class="text-light font-weight-bold pt-4 mt-3">{{game.playedTimes}}</span>
-          </div>
-        </div>
-
-        <div class="row mt-3 mb-4">
-          <div class="col-lg-8 mx-auto px-3">
-            <p class="font-weight-bold pt-4 text-secondary"> Nội dung :</p>
-            <span class="text-light font-weight-bold pt-4 mt-3">{{game.content}}</span>
-          </div>
-        </div>
-
+      <div *ngIf="editState" class="col-6 d-flex justify-content-end p-0">
+        <button class="btn-second" (click)="editGame(game.id)">Chỉnh sửa</button>
       </div>
-    </form>
+    </div>
+    <div class="row">
+      <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+        <iframe style="width: 100%; height: 500px" [src]="game.trailerUrl | safe"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+      </div>
+      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-0">
+        <div class="row mb-3 p-0" style="margin-left: 2rem;">
+          <img class="p-0" [src]="game.imageUrl" alt="Card image cap">
+        </div>
+        <div class="row mb-2 p-0" style="margin-left: 2rem;">
+          <h4 class="text-white p-0">{{game.name}}</h4>
+        </div>
+        <div class="row mb-3 p-0" style="margin-left: 2rem;">
+          <div class="col-6 p-0">
+            <button class="text-white btn-grey">{{game.gameCategory.name}}</button>
+          </div>
+          <div class="col-6">
+          </div>
+        </div>
+        <div class="row mb-4 p-0" style="margin-left: 2rem;">
+          <div class="row">
+            <p class="text-content p-0">Ngày phát hành: {{game.createDate | date:"dd/MM/yy"}}</p>
+          </div>
+          <div class="row">
+            <span class="text-content p-0"><button
+              class="btn-grey text-white">{{game.playedTimes}}</button> lượt chơi</span>
+          </div>
+        </div>
+        <div class="row" style="margin-left: 2rem">
+          <button class="btn-second" style="padding: 15px 0" (click)="playGame()">CHƠI NGAY</button>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row text-white">
+      <div id="content" class="text text-light w-100 img-fluid" [innerHTML]="game.content">
+      </div>
+    </div>
   </div>
 </div>
-
-

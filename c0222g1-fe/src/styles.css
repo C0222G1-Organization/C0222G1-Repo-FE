@@ -64,7 +64,7 @@ body {
 }
 
 .btn-main {
-  background-color:  #0078f2 !important;
+  background-color: #0078f2 !important;
   border: none;
   padding: 5px 10px;
 }
@@ -74,6 +74,13 @@ body {
   border: none;
   border-radius: 3px;
   padding: 5px 10px;
+}
+
+.btn-grey {
+  background-color: #494747;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
 .btn-second-non-border {
@@ -322,17 +329,17 @@ li.active::after {
   color: #121212 !important;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+/*!* Chrome, Safari, Edge, Opera *!*/
+/*input::-webkit-outer-spin-button,*/
+/*input::-webkit-inner-spin-button {*/
+/*  -webkit-appearance: none;*/
+/*  margin: 0;*/
+/*}*/
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
+/*!* Firefox *!*/
+/*input[type=number] {*/
+/*  -moz-appearance: textfield;*/
+/*}*/
 
 ::-webkit-scrollbar-track
 {
