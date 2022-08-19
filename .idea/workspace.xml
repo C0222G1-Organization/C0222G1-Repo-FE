@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1305b7f0-55bf-460a-8dc8-683105a6fca6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="470ef571-38d0-41af-afb3-367508938fe4" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,10 +10,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectId" id="2DC10OgICIGbIChEp3QdkJN4jTh" />
+  <component name="ProjectId" id="2DYQ9zbPOo7rmzQOy2B7vGuwbJx" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -25,65 +19,29 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../C0222G1_Nguyen_Hoang_Hao_module5/case_study_angular" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.path.for.package.eslint" value="project" />
-    <property name="node.js.path.for.package.tslint" value="project" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="ts.external.directory.path" value="D:\C0222G1_hoanghao_project\C0222G1-Repo-FE\c0222g1-fe\node_modules\typescript\lib" />
-    <property name="vue.rearranger.settings.migration" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../C0222G1_hoanghao_project/C0222G1-Repo-FE" />
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="1305b7f0-55bf-460a-8dc8-683105a6fca6" name="Default Changelist" comment="" />
-      <created>1660188028845</created>
+      <changelist id="470ef571-38d0-41af-afb3-367508938fe4" name="Default Changelist" comment="" />
+      <created>1660873390513</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1660188028845</updated>
-      <workItem from="1660188031048" duration="39000" />
-      <workItem from="1660188123030" duration="14300000" />
-      <workItem from="1660226348903" duration="3923000" />
-      <workItem from="1660266166805" duration="15796000" />
-      <workItem from="1660318858804" duration="7128000" />
-      <workItem from="1660356139659" duration="34665000" />
-      <workItem from="1660461361290" duration="22664000" />
-      <workItem from="1660492122024" duration="1485000" />
-      <workItem from="1660531951026" duration="774000" />
-      <workItem from="1660746147600" duration="2470000" />
-      <workItem from="1660834067614" duration="85000" />
+      <updated>1660873390513</updated>
+      <workItem from="1660873394858" duration="648000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="oldMeFiltersMigrated" value="true" />
-  </component>
   <component name="WindowStateProjectService">
-    <state x="463" y="138" key="FileChooserDialogImpl" timestamp="1660746795066">
+    <state x="463" y="138" key="FileChooserDialogImpl" timestamp="1660874045147">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="463" y="138" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1660746795066" />
-    <state x="305" y="299" width="1077" height="476" key="dock-window-1" timestamp="1660705040415">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="305" y="299" width="1077" height="476" key="dock-window-1/0.0.1366.768@0.0.1366.768" timestamp="1660705040415" />
+    <state x="463" y="138" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1660874045147" />
   </component>
 </project>
