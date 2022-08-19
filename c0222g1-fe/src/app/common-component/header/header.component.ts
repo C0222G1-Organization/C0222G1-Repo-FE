@@ -215,9 +215,9 @@ export class HeaderComponent implements OnInit {
       this.customerCard = false;
       this.employeeCard = false;
       this.computerCard = false;
-      this.gameCard = true;
-      this.newsCard = true;
-      this.serviceCard = true;
+      this.gameCard = false;
+      this.newsCard = false;
+      this.serviceCard = false;
       this.statisticalCard = false;
     }
 
