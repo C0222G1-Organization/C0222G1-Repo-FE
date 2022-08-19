@@ -8,11 +8,11 @@
                 aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand text-white" href="#"> <img src="../../../assets/img/logo.png" width="80"/></a>
+        <a class="navbar-brand text-white" routerLink=""> <img src="../../../assets/img/logo.png" width="80"/></a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item active">
-              <a class="nav-link" style="color: #a8a8a8" href="#">Trang chủ</a>
+              <a class="nav-link" style="color: #a8a8a8" routerLink="">Trang chủ</a>
             </li>
             <li class="nav-item dropdown" *ngIf="employeeCard">
               <div *ngIf="employeeCard">
@@ -82,7 +82,6 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" routerLink="products">Danh sách</a>
-                  <a class="dropdown-item" routerLink="products/create">Thêm mới</a>
                 </div>
               </div>
             </li>
@@ -96,7 +95,7 @@
             <a class="nav-link" style="color: #a8a8a8" *ngIf="showTime"><b><span id="dayss"></span> <span id="hourss">00</span>:<span id="minss">00</span>:<span id="secondss">00</span></b></a>
 
             <a class="nav-link" style="color: #a8a8a8">Xin Chào</a>
-            <a  class="btn btn-primary" routerLink="customers/home-page">{{username}}</a>
+            <a  class="btn btn-primary" routerLink="{{urlNameHeader}}">{{username}}</a>
             <a class="nav-link" style="color: #a8a8a8" routerLink="sign-out">Đăng Xuất</a>
           </form>
           <form class="d-flex" *ngIf="login==false">

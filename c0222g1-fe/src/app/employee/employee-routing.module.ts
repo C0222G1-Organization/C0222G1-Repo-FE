@@ -24,7 +24,7 @@ const routes: Routes = [
 
   },
   {
-    path: 'employees/add',
+    path: 'employees/create',
     component: EmployeeCreateComponent
 
   },

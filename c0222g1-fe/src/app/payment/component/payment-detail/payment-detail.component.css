@@ -1,13 +1,10 @@
 body {
-  /*font-family: 'Arimo', sans-serif;*/
-  /*font-family: 'Playfair Display', serif;*/
   font-family: 'Roboto', sans-serif!important;
   background-color: #121212;
   color: #9a9a9a;
 }
 
 .container {
-  /*background: #2A2A2A;*/
   padding: 0 0;
 }
 
@@ -47,13 +44,11 @@ th{
 }
 
 .modal-header, .modal-footer{
-  /*background-color: #121212;*/
   padding: 0.5em 0.5em;
+  color: whitesmoke;
+  text-align: center;
 }
 
-.modal-body{
-  /*background-color: #202020;*/
-}
 
 option{
   text-align: left;
@@ -63,4 +58,9 @@ option{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+input {
+  text-align: right;
+  border-radius: 5px;
 }

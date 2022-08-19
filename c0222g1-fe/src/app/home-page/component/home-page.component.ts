@@ -22,9 +22,7 @@ export class HomePageComponent implements OnInit {
   editState = false;
   playState = false;
   progressWidth: number;
-  progressWidth2: number;
-  progressWidth3: number;
-  progressWidth4: number;
+  activeCarouselGameId: number;
   activeCarouselUrl = '';
 
   constructor(private toastr: ToastrService,
@@ -46,9 +44,12 @@ export class HomePageComponent implements OnInit {
   }
 
   getCarouselGames() {
-    this.homePageService.getTop3Games(0).subscribe((games: any) => {
-      this.topCarouselGames = games.content;
-      this.activeCarouselUrl = this.topCarouselGames[0].imageUrl;
+    this.homePageService.getTopGames(0).subscribe((games: any) => {
+      if (games != null) {
+        this.topCarouselGames = games.content;
+        this.activeCarouselUrl = this.topCarouselGames[0].imageUrl;
+        this.activeCarouselGameId = this.topCarouselGames[0].id;
+      }
     });
   }
 
@@ -130,50 +131,34 @@ export class HomePageComponent implements OnInit {
 
   changeProgress() {
     this.progressWidth = 0;
-    this.progressWidth2 = 0;
-    this.progressWidth3 = 0;
-    this.progressWidth4 = 0;
     let index = 0;
     setInterval(() => {
-      if (this.progressWidth != 100 && this.progressWidth2 == 0 && this.progressWidth3 == 0 && this.progressWidth4 == 0) {
+      if (this.progressWidth != 100){
         this.progressWidth += 0.5;
-      } else if (this.progressWidth == 100){
+      } else {
         this.progressWidth = 0;
-        this.activeCarouselUrl = this.topCarouselGames[1].imageUrl;
+        index += 1;
+        if (index != this.topCarouselGames.length){
+          this.activeCarouselUrl = this.topCarouselGames[index].imageUrl;
+          this.activeCarouselGameId = this.topCarouselGames[index].id;
+        } else {
+          index = 0;
+          this.activeCarouselUrl = this.topCarouselGames[index].imageUrl;
+          this.activeCarouselGameId = this.topCarouselGames[index].id;
+        }
       }
+    }, 20);
+  }
 
-      if (this.progressWidth2 != 100 && this.progressWidth == 0 && this.progressWidth3 == 0 && this.progressWidth4 == 0) {
-        this.progressWidth = 0;
-        this.progressWidth2 += 0.5;
-      } else if (this.progressWidth2 == 100){
-        this.progressWidth2 = 0;
-        this.activeCarouselUrl = this.topCarouselGames[2].imageUrl;
-      }
+  enableProgress(i: number) {
+    if (this.activeCarouselUrl == this.topCarouselGames[i].imageUrl) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-      if (this.progressWidth3 != 100 && this.progressWidth2 == 0  && this.progressWidth == 0 && this.progressWidth4 == 0) {
-        this.progressWidth2 = 0;
-        this.progressWidth3 += 0.5;
-      } else if (this.progressWidth3 == 100){
-        this.progressWidth3 = 0;
-        this.activeCarouselUrl = this.topCarouselGames[3].imageUrl;
-      }
-
-      if (this.progressWidth4 != 100 && this.progressWidth2 == 0  && this.progressWidth == 0 && this.progressWidth3 == 0) {
-        this.progressWidth3 = 0;
-        this.progressWidth4 += 0.5;
-      } else if (this.progressWidth4 == 100){
-        this.progressWidth4 = 0;
-        this.activeCarouselUrl = this.topCarouselGames[0].imageUrl;
-      }
-    }, 25);
-
-    // setInterval(() => {
-    //   if (index != 4) {
-    //     this.activeCarouselUrl = this.top3Games[index].imageUrl;
-    //     index += 1;
-    //   } else {
-    //     index = 0;
-    //   }
-    // }, 2600)
+  playGame() {
+    this.getGameAndUpdate(this.activeCarouselGameId);
   }
 }

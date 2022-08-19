@@ -45,7 +45,8 @@ export class CreateCustomerComponent implements OnInit {
     activeStatus: new FormControl(1),
     province: new FormControl('', Validators.required),
     district: new FormControl('', Validators.required),
-    commune: new FormControl('', Validators.required)
+    commune: new FormControl('', Validators.required),
+    remainingTime: new FormControl('', Validators.required)
   });
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -106,6 +107,8 @@ export class CreateCustomerComponent implements OnInit {
   submit() {
     console.log(this.customerForm);
     this.updateCustomerDto = this.customerForm.value;
+    this.updateCustomerDto.remainingTime = this.updateCustomerDto.remainingTime * 60;
+    console.log(this.updateCustomerDto);
     this.customerService.saveCustomer(this.updateCustomerDto).subscribe(
       value => {
         this.toast.success('Thêm mới khách hàng thành công!');

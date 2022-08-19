@@ -90,7 +90,6 @@ export class EmployeeUpdateComponent implements OnInit {
   findEmployeeById(id) {
     this.employeeService.findByIdEmployee(id).subscribe(value => {
       this.employee = value;
-      this.employee.appUser.password = '';
       console.log(this.employee);
       this.employeeFormEdit.patchValue(value);
       this.employeeFormEdit.patchValue({commune: this.employee.commune});
@@ -208,7 +207,7 @@ export class EmployeeUpdateComponent implements OnInit {
   }
 
   cancel() {
-    this.toastr.error('Đã hủy bỏ', 'Nhân viên');
+    this.toastr.error('Đã hủy bỏ');
     this.route.navigateByUrl('/employees');
   }
 
@@ -225,9 +224,9 @@ export class EmployeeUpdateComponent implements OnInit {
           this.employeeFormEdit.patchValue({image: url});
           this.employeeService.editEmployee(this.id, this.employeeFormEdit.value).subscribe(
             () => {
-              this.toastr.success('Lưu thành công', 'Nhân Viên');
+              this.toastr.success('Lưu thành công');
               this.route.navigateByUrl('/employees');
-            }, (error => this.toastr.error('Sửa thất bại', 'Nhân Viên')),
+            }, (error => this.toastr.error('Sửa thất bại')),
             () => {
               this.ngOnInit();
             }
