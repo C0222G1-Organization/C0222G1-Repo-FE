@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
   newsCard = false;
   serviceCard = false;
   statisticalCard = false;
+  urlNameHeader = '';
 
   endTimeMillisecs: any;
   cDateMillisecs: any;
@@ -73,7 +74,6 @@ export class HeaderComponent implements OnInit {
         item.classList.add('active');
       });
     });
-
 
     setTimeout(() => {
       if (sessionStorage.getItem('loopTimeCustomer') !== null) {
@@ -220,6 +220,13 @@ export class HeaderComponent implements OnInit {
       this.newsCard = true;
       this.serviceCard = true;
       this.statisticalCard = false;
+    }
+    if (sessionStorage.getItem('loopTimeCustomer') !== null) {
+      if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+        this.urlNameHeader = 'customers/home-page';
+      } else {
+        this.urlNameHeader = '';
+      }
     }
     console.log(this.roles);
     console.log('customerCard ' + this.customerCard);

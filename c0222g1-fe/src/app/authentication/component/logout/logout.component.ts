@@ -29,6 +29,9 @@ export class LogoutComponent implements OnInit {
     }
     sessionStorage.removeItem('roles');
     sessionStorage.removeItem('loopTimeCustomer');
+    sessionStorage.removeItem('remainingTime');
+    sessionStorage.removeItem('startTime');
+    sessionStorage.removeItem('endTime');
     this.toartrs.success('Đã đăng xuất');
     this.authService.sendData('logout', 'logout');
     setTimeout(() => {
