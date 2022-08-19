@@ -1,66 +1,63 @@
 import {Component, OnInit} from '@angular/core';
-import {Computer} from '../../model/computer';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ComputerService} from '../../service/computer.service';
-import {ToastrService} from 'ngx-toastr';
 import {ComputerTypeService} from '../../service/computer-type.service';
+import {Computer} from '../../model/computer';
 import {ComputerType} from '../../model/computer-type';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
 import {Title} from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-computer-create',
-  templateUrl: './computer-create.component.html',
-  styleUrls: ['./computer-create.component.css']
+  selector: 'app-computer-edit',
+  templateUrl: './computer-edit.component.html',
+  styleUrls: ['./computer-edit.component.css']
 })
-export class ComputerCreateComponent implements OnInit {
-  computerType: ComputerType[];
-  computer: Computer[];
-  control: FormControl;
+export class ComputerEditComponent implements OnInit {
   isExitsCode = false;
   isExitsLocation = false;
-  formComputer = new FormGroup({
+  formEditComputer = new FormGroup({
       id: new FormControl(),
       code: new FormControl('', [Validators.required,
         Validators.pattern('^(CP)[0-9]{4}$')]),
-      status: new FormControl(1, Validators.required),
+      status: new FormControl('', Validators.required),
       location: new FormControl('', [Validators.required,
         Validators.pattern('^[A-Z][0-9]{4}$')]),
       startUsedDate: new FormControl('', [Validators.required, this.checkYear]),
-      configuration: new FormControl('', [Validators.required, Validators.minLength(3),
-        Validators.maxLength(20), Validators.pattern('^\\w+( \\w+)*$')]),
+      configuration: new FormControl('', [Validators.required, Validators.pattern('^\\w+( \\w+)*$')]),
       manufacturer: new FormControl('', [Validators.required, Validators.minLength(1),
         Validators.maxLength(20)]),
-      deleteStatus: new FormControl(0),
+      deleteStatus: new FormControl(''),
       warranty: new FormControl('', Validators.required),
       computerType: new FormGroup({
-        id: new FormControl('', Validators.required)
+        id: new FormControl('', Validators.required),
       })
+
     }, this.checkStartDate
   );
+  id: number;
+  computerType: ComputerType[];
 
   constructor(private computerService: ComputerService,
-              private toast: ToastrService,
               private computerTypeService: ComputerTypeService,
+              private activatedRoute: ActivatedRoute,
+              private toast: ToastrService,
               private route: Router,
               private title: Title) {
-    this.title.setTitle('Trang thêm mới');
-  }
-
-  getAllComputerType() {
-    this.computerTypeService.getAll().subscribe(value => {
-      this.computerType = value;
-      console.log(value);
-    });
+    this.title.setTitle('Trang chỉnh sửa');
   }
 
   ngOnInit(): void {
-    this.getAllComputerType();
+    this.id = Number(this.activatedRoute.snapshot.params.id);
+    this.getAll();
+    this.findById(this.id);
   }
 
   checkStartDate(abstractControl: AbstractControl): any {
     const date = new Date(abstractControl.value.startUsedDate);
     const now = new Date();
+    console.log(date);
+    console.log(now);
     if (date > now) {
       return {dateerror: true};
     } else {
@@ -69,31 +66,41 @@ export class ComputerCreateComponent implements OnInit {
   }
 
 
+  getAll() {
+    this.computerTypeService.getAll().subscribe(value => {
+      this.computerType = value;
+      console.log(value);
+    });
+  }
+
+  findById(id) {
+    this.computerService.findById(id).subscribe(value => {
+      this.formEditComputer.patchValue(value);
+      console.log(value);
+    }, error => {
+      this.route.navigateByUrl('/500');
+    });
+  }
+
   cancel() {
     this.toast.error('Sửa thất bại', 'Computer');
     this.route.navigateByUrl('/computers');
   }
 
-  submitCreate() {
-    const computer = this.formComputer.value;
-    console.log(computer);
-    for (const i of this.computerType) {
-      if (i.id == computer.computerType.id) {
-        computer.computerType.name = i.name;
-        break;
-      }
-    }
-    this.computerService.createComputer(this.formComputer.value).subscribe(value => {
-      this.toast.success('Thêm mới thành công!', 'Computer');
-      // this.formComputer.reset();
-      this.route.navigateByUrl('/computers');
-    });
+  submit() {
+    this.computerService.editComputer(this.id, this.formEditComputer.value).subscribe(value => {
+        this.toast.success('Sửa thành công', 'Computer');
+        this.route.navigateByUrl('/computers');
+      },
+      error => {
+        this.toast.error('Sửa thất bại', 'Computer');
+      });
   }
 
   checkYear(abstractControl: AbstractControl) {
-    const sYear = abstractControl.value.substr(0, 4);
-    console.log(sYear);
-    return sYear >= 2000 ? null : {not2000: true};
+    const sYear = abstractControl.value.substr(6, 9);
+    // const curYear=new Date().getFullYear()
+    return sYear <= 2000 ? null : {not2000: true};
   }
 
   checkCode($event: Event) {
@@ -108,8 +115,7 @@ export class ComputerCreateComponent implements OnInit {
     );
   }
 
-  checkLocation($event: Event,
-  ) {
+  checkLocation($event: Event) {
     this.computerService.checkLocation(String($event)).subscribe(
       value => {
         if (value) {
@@ -120,5 +126,4 @@ export class ComputerCreateComponent implements OnInit {
       }
     );
   }
-
 }
