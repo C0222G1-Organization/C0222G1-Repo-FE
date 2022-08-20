@@ -11,8 +11,8 @@ import {AuthGuardEmployeeAdminService} from '../authentication/service/auth-guar
 const routes: Routes = [
   {
     path: 'games/create',
-    component: GameCreateComponent
-    // role admin/employee : KienNDT
+    component: GameCreateComponent,
+    canActivate: [AuthGuardEmployeeAdminService]
   },
   {
     path: 'games/edit/:id',

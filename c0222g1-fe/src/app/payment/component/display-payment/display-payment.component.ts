@@ -35,6 +35,15 @@ export class DisplayPaymentComponent implements OnInit {
   itemsPerPage = 5;
   totalPages;
 
+  /**
+   * Create: LuanND
+   * Date: 17/08/2022
+   * Description: method payment by paypal
+   * @param id: is ID of object payment to create request
+   * return none
+   */
+  totalPay: number;
+
   ngOnInit(): void {
     const id = Number(this.activatedRoute.snapshot.params.paymentId);
     if (isNaN(id)) {
@@ -95,11 +104,22 @@ export class DisplayPaymentComponent implements OnInit {
    */
   statePaypal(id: number) {
     const state = $('#payWithPaypal').val;
-    console.log('change state: ' + state);
     if (state) {
-      document.getElementById('container-paypal').classList.remove('hiddenPaypal');
-      document.getElementById('container-paypal').classList.add('displayPaypal');
       this.paymentWithPaypal(id);
+    }
+  }
+
+  /**
+   * Create: LuanND
+   * Date: 17/08/2022
+   * Description: Visible button payment by paypal
+   * @param id: is block contain button payment by paypal
+   * return none
+   */
+  stateMomo(id: number) {
+    const state = $('#payWithMomo').val;
+    if (state) {
+      this.paymentWithMomo(id);
     }
   }
 
@@ -117,21 +137,24 @@ export class DisplayPaymentComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       '            <div class="form-group"><div class="form-check form-switch">' +
       '            <input class="form-check-input" type="checkbox" role="switch" id="payWithPaypal">' +
-      '            <label class="form-check-label text-white" for="flexSwitchCheckDefault">Thanh toán bằng Paypal</label>' +
+      '            <label class="form-check-label text-white" for="flexSwitchCheckDefault">Tạo đơn thanh toán Paypal</label>' +
       '            </div></div>' +
       '          </div>\n' +
       '<div id="container-paypal" class="hiddenPaypal"><div id="myPaypal"></div></div>' +
       '          <div id="momoMethod">\n' +
       '            <h4 class="text-white">Momo</h4>\n' +
-      '            <button class="btn btn-primary form-control btn-outline-dark text-white" id="payWithMomo" ">Momo</button>\n' +
+      '            <div class="form-group"><div class="form-check form-switch">' +
+      '            <input class="form-check-input" type="checkbox" role="switch" id="payWithMomo">' +
+      '            <label class="form-check-label text-white" for="flexSwitchCheckDefault">Tạo đơn thanh toán MoMo</label>' +
+      '            </div></div>' +
       '          </div>\n' +
       '        </div>\n' +
       '        <p class="text-danger font-italic text-center">*Vui lòng chọn phương thức thanh toán</p>';
     document.getElementById('payWithPaypal').addEventListener('change', () => {
       this.statePaypal(id);
     });
-    document.getElementById('payWithMomo').addEventListener('click', () => {
-      this.paymentWithMomo(id);
+    document.getElementById('payWithMomo').addEventListener('change', () => {
+      this.stateMomo(id);
     });
   }
 
@@ -171,14 +194,6 @@ export class DisplayPaymentComponent implements OnInit {
     content += `</tbody></table>`;
     document.getElementById('body-service').innerHTML = content;
   }
-
-  /**
-   * Create: LuanND
-   * Date: 17/08/2022
-   * Description: method payment by paypal
-   * @param id: is ID of object payment to create request
-   * return none
-   */
   paymentWithPaypal(id: number) {
     document.getElementById('myPaypal').innerHTML = '';
     let reponseBody: ReponseBody = {};
@@ -201,19 +216,21 @@ export class DisplayPaymentComponent implements OnInit {
     render(
       {
         id: '#myPaypal',
-        currency: 'USD',
-        value: obj.totalPay.toString(),
+        currency: 'VND',
+        value: (obj.totalPay / 23000).toFixed(2).toString(),
         onApprove: (details) => {
           this.obj = details;
+          this.totalPay = obj.totalPay;
           this.paymentService.setStatePayment(id).subscribe();
           $('#modelPaymentMethodId').modal('hide');
           $('#modelResultId').modal('show');
           this.toast.success('Thanh toán thành công.');
           this.getPage(this.page);
+          // Number(details.purchase_units[0].amount.value)
           reponseBody = {
             id: details.id,
             status: details.status,
-            value: Number(details.purchase_units[0].amount.value),
+            value: this.totalPay,
             email: details.purchase_units[0].payee.email_address,
             fullName: details.purchase_units[0].shipping.name.full_name,
             address: details.purchase_units[0].shipping.address.address_line_1,

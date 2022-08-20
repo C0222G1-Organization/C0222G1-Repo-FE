@@ -16,25 +16,25 @@ import {Title} from '@angular/platform-browser';
 export class ComputerCreateComponent implements OnInit {
   computerType: ComputerType[];
   computer: Computer[];
+  control: FormControl;
   isExitsCode = false;
   isExitsLocation = false;
   formComputer = new FormGroup({
       id: new FormControl(),
       code: new FormControl('', [Validators.required,
         Validators.pattern('^(CP)[0-9]{4}$')]),
-      status: new FormControl('', Validators.required),
+      status: new FormControl(1, Validators.required),
       location: new FormControl('', [Validators.required,
         Validators.pattern('^[A-Z][0-9]{4}$')]),
       startUsedDate: new FormControl('', [Validators.required, this.checkYear]),
-      configuration: new FormControl('', [Validators.required, Validators.minLength(2),
+      configuration: new FormControl('', [Validators.required, Validators.minLength(3),
         Validators.maxLength(20), Validators.pattern('^\\w+( \\w+)*$')]),
       manufacturer: new FormControl('', [Validators.required, Validators.minLength(1),
         Validators.maxLength(20)]),
       deleteStatus: new FormControl(0),
       warranty: new FormControl('', Validators.required),
       computerType: new FormGroup({
-        id: new FormControl('', Validators.required),
-        name: new FormControl('', Validators.required)
+        id: new FormControl('', Validators.required)
       })
     }, this.checkStartDate
   );
@@ -108,7 +108,8 @@ export class ComputerCreateComponent implements OnInit {
     );
   }
 
-  checkLocation($event: Event) {
+  checkLocation($event: Event,
+  ) {
     this.computerService.checkLocation(String($event)).subscribe(
       value => {
         if (value) {

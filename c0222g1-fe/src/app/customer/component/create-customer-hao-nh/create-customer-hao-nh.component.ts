@@ -37,16 +37,15 @@ export class CreateCustomerHaoNHComponent implements OnInit {
   ngOnInit(): void {
     this.customerService.getAllProvince().subscribe(value => {this.provinceList = value; console.log(value); });
     this.customerForm =  new FormGroup({
-      id: new FormControl(),
       // tslint:disable-next-line:max-line-length
       name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s?]+$'),
         Validators.required, this.notBlank, Validators.minLength(5), Validators.maxLength(50)]),
-      dateOfBirth: new FormControl('', [Validators.pattern('^[a-zA-Z\\s?]+$'), this.check16Age]),
+      dateOfBirth: new FormControl('', [Validators.required, this.check16Age]),
       email: new FormGroup({
         email: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+@[A-Za-z0-9]+(\\.[A-Za-z0-9]+){1,2}$'), Validators.required])
       }),
       phoneNumber: new FormGroup({
-        phone: new FormControl('', [Validators.pattern('^(0|84\\+)[0-9]{9,11}$'),
+        phone: new FormControl('', [Validators.pattern('^(0|84+)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$'),
           Validators.required])
       }),
       userName: new FormGroup({
@@ -57,7 +56,7 @@ export class CreateCustomerHaoNHComponent implements OnInit {
         password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,50}'),
           Validators.required]),
         // tslint:disable-next-line:max-line-length
-        confirmPassword: new FormControl('', Validators.required)
+        confirmPassword: new FormControl('')
       }, this.checkConfirmPassword),
       province: new FormControl('', Validators.required),
       district: new FormControl('', Validators.required),
@@ -97,9 +96,6 @@ export class CreateCustomerHaoNHComponent implements OnInit {
   private checkConfirmPassword(abstractControl: AbstractControl): any {
     const password = abstractControl.value.password;
     const confirmPassword = abstractControl.value.confirmPassword;
-    if (confirmPassword === '') {
-      return null;
-    }
     return (password === confirmPassword) ? null : {notSame: true};
   }
 
@@ -150,17 +146,19 @@ export class CreateCustomerHaoNHComponent implements OnInit {
   }
 
   submit() {
-    this.updateCustomerDto = this.customerForm.value;
-    this.updateCustomerDto.password = this.customerForm.value.password.password;
-    this.customerService.createCustomer(this.updateCustomerDto).subscribe(
-      value => {
-        this.router.navigateByUrl('/sign-in');
-        this.toast.success('Đăng ký thành công');
-      },
-      error => {
-        this.toast.error('Đăng ký thật bại');
-      }
-    );
+    if (this.customerForm.invalid) {
+      this.customerForm.markAllAsTouched();
+    } else {
+      this.updateCustomerDto = this.customerForm.value;
+      this.updateCustomerDto.password = this.customerForm.value.password.password;
+      this.customerService.createCustomer(this.updateCustomerDto).subscribe(
+        value => {
+          this.router.navigateByUrl('/sign-in');
+          this.toast.success('Đăng ký thành công');
+        }
+      );
+    }
+    console.log(this.customerForm);
   }
 
   cancel() {
@@ -185,7 +183,7 @@ export class CreateCustomerHaoNHComponent implements OnInit {
         password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,50}'),
           Validators.required]),
         // tslint:disable-next-line:max-line-length
-        confirmPassword: new FormControl('', Validators.required)
+        confirmPassword: new FormControl('')
       }, this.checkConfirmPassword),
       province: new FormControl('', Validators.required),
       district: new FormControl('', Validators.required),

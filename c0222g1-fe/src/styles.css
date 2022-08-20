@@ -64,7 +64,7 @@ body {
 }
 
 .btn-main {
-  background-color:  #0078f2 !important;
+  background-color: #0078f2 !important;
   border: none;
   padding: 5px 10px;
 }
@@ -74,6 +74,13 @@ body {
   border: none;
   border-radius: 3px;
   padding: 5px 10px;
+}
+
+.btn-grey {
+  background-color: #494747;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
 .btn-second-non-border {
@@ -140,8 +147,8 @@ li.active::after {
 }
 
 .list-image-game {
-  width: 35rem;
-  margin-right: 1rem;
+  width: 560px;
+  margin-right: 16px;
   border-radius: 5px;
 }
 
@@ -157,10 +164,6 @@ li.active::after {
 }
 
 /*image hover*/
-.container-img {
-  position: relative;
-  width: 50%;
-}
 
 .container-img-carousel {
   position: relative;
@@ -170,21 +173,6 @@ li.active::after {
 .container-img-carousel img {
   width: 100%;
   height: auto;
-}
-
-.container-img-carousel .btn-image-carousel {
-  position: absolute;
-  z-index: 1;
-  top: 93%;
-  left: 10.2%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  background-color: white;
-  font-size: 16px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  padding: 12px 24px;
-  border: none;
-  cursor: pointer;
 }
 
 .container-img-carousel .text-carousel {
@@ -216,6 +204,10 @@ li.active::after {
   backface-visibility: hidden;
 }
 
+.image-pointer{
+  cursor: pointer;
+}
+
 .image-carousel {
   opacity: 1;
   display: block;
@@ -229,6 +221,7 @@ li.active::after {
 .middle {
   transition: .5s ease;
   opacity: 0;
+  z-index: 99;
   position: absolute;
   top: 30%;
   left: 50%;
@@ -248,17 +241,6 @@ li.active::after {
   text-align: center;
 }
 
-.container-img:hover .image {
-  opacity: 1;
-}
-
-.container-img:hover .middle {
-  opacity: 1;
-}
-
-.container-img:hover .middle-md {
-  opacity: 1;
-}
 
 .bg-dark {
   background-color: #121212 !important;
@@ -322,17 +304,17 @@ li.active::after {
   color: #121212 !important;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+/*!* Chrome, Safari, Edge, Opera *!*/
+/*input::-webkit-outer-spin-button,*/
+/*input::-webkit-inner-spin-button {*/
+/*  -webkit-appearance: none;*/
+/*  margin: 0;*/
+/*}*/
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
+/*!* Firefox *!*/
+/*input[type=number] {*/
+/*  -moz-appearance: textfield;*/
+/*}*/
 
 ::-webkit-scrollbar-track
 {
