@@ -74,7 +74,7 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
           this.totalOfOrder += this.orderProduct.prices * this.quantity;
           for (let i = 0; i - 1 < this.orderProductList.length - 1; i++) {
             if (this.orderProductList[i].id === this.orderProduct.id) {
-              this.orderProductList[i].quantity += this.orderProduct.quantity;
+              this.orderProductList[i].quantity += this.quantity;
               this.checkExist = true;
             }
           }
@@ -82,6 +82,8 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
             this.orderProductList.push(this.orderProduct);
           }
           this.checkExist = false;
+          this.resetValue();
+          this.getAllProductForOrder();
         }
       } else {
         this.toast.error('Cần nhập số dương.');

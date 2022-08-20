@@ -231,23 +231,28 @@
           <div class="sub-info form-group row col-8">
             <div class="col-12 p-0">
               <input type="{{inputType}}" (keydown.enter)="checkOldPassword($event.target.value)"
-                     class="form-control bg-dark text-white border-white"
+                     class="form-control bg-dark text-white border-white" formControlName="oldPassword"
                      placeholder="Nhập mật khẩu cũ">
             </div>
-            <div *ngIf="openPasswordToEdit === false" class="text-small text-danger p-0">
+            <div *ngIf="matchOldPass === false" class="text-small text-danger p-0">
               <div>
                 Mật khẩu cũ không chính xác.
               </div>
             </div>
+            <div *ngIf="matchOldPass === true" class="text-small text-success p-0">
+              <div>
+                Bạn đã nhập đúng mật khẩu cũ.
+              </div>
+            </div>
           </div>
-          <div *ngIf="openPasswordToEdit" class="col-1 ml-2">
+          <div *ngIf="content===fakePassword" class="col-1 ml-2">
             <a class="btn">
               <i class="fa-solid fa-eye text-white" (click)="setType()"></i>
             </a>
           </div>
         </div>
 
-        <div *ngIf="openPasswordToEdit" class="col-12 d-flex input-form">
+        <div *ngIf="matchOldPass === true" class="col-12 d-flex input-form">
           <div class="col-3 p-0">
             <label class="col-form-label text-right">Mật khẩu mới</label>
           </div>
@@ -268,21 +273,20 @@
               </div>
             </div>
           </div>
-          <div *ngIf="openPasswordToEdit" class="col-1 ml-2">
+          <div *ngIf="matchOldPass === true" class="col-1 ml-2">
             <a class="btn">
               <i class="fa-solid fa-eye text-white" (click)="setType()"></i>
             </a>
           </div>
         </div>
 
-        <div *ngIf="openPasswordToEdit" class="col-12 d-flex input-form">
+        <div *ngIf="matchOldPass === true" class="col-12 d-flex input-form">
           <div class="col-3 p-0">
             <label class="col-form-label text-right">Xác nhận</label>
           </div>
           <div class="sub-info form-group row col-8">
             <div class="col-12 p-0">
               <input formControlName="confirmPassword" type="{{confirmInputType}}"
-                     (keydown)="activeSaving($event.target.value)"
                      class="form-control bg-dark text-white border-white"
                      placeholder="Nhập mật khẩu xác nhận">
             </div>
@@ -300,7 +304,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="content!==fakePassword" class="col-1 ml-2">
+          <div *ngIf="matchOldPass === true" class="col-1 ml-2">
             <a class="btn">
               <i class="fa-solid fa-eye text-white" (click)="setConfirmType()"></i>
             </a>
@@ -310,7 +314,7 @@
         <div class="text-center">
           <a class="btn btn-outline-light btn-sm mb-3 option-button" type="button" routerLink="/customers/home-page">QUAY
             LẠI</a>
-          <button class="btn btn-primary btn-sm mb-3 option-button text-white"
+          <button [disabled]="content===''" class="btn btn-primary btn-sm mb-3 option-button text-white"
                   (click)="onsubmit()">
             LƯU THAY ĐỔI
           </button>
