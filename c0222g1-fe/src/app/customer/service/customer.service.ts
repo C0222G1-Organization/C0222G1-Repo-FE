@@ -63,9 +63,9 @@ export class CustomerService {
     return this.httpClient.get<UpdateCustomerDto>(this.ApiUrl_8080 + '/getCustomer/' + id);
   }
 
-  updateCustomer(id: number, customer: Customer): Observable<UpdateCustomerDto> {
-    return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id, customer);
-  }
+  // updateCustomer(id: number, customer: Customer): Observable<UpdateCustomerDto> {
+  //   return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id, customer);
+  // }
 
 
   updateCustomerDTO(id: number, customer: UpdateCustomerDto): Observable<UpdateCustomerDto> {
@@ -92,8 +92,8 @@ export class CustomerService {
     return this.httpClient.patch<void>(this.ApiUrl_8080 + '/update/' + id, customer);
   }
 
-  checkMatchesPassword(password: string, id: number): Observable<string> {
-    return this.httpClient.get<string>(this.ApiUrl_8080 + '/matchesPassword/' + password + '/' + id);
+  checkMatchesPassword(password: string, id: number): Observable<boolean> {
+    return this.httpClient.get<boolean>(this.ApiUrl_8080 + '/matchesPassword/' + password + '/' + id);
   }
 
   /**
