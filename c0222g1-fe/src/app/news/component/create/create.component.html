@@ -15,7 +15,6 @@
               <div *ngIf="formNews.controls.title.hasError('minlength') && formNews.controls.title.dirty && formNews.controls.title.hasError('pattern') == false" class="form-text text-danger mt-1 px-2">Tiêu đề quá ngắn.</div>
               <div *ngIf="formNews.controls.title.hasError('maxlength') && formNews.controls.title.dirty && formNews.controls.title.hasError('pattern') == false" class="form-text text-danger mt-1 px-2">Tiêu đề quá dài.</div>
             </div>
-<!--            && formNews.controls.title.hasError('minlength') == false && formNews.controls.title.hasError('maxlength') == false-->
             <div class="col-lg-6 px-3">
               <div class="form-floating textbox ">
                 <input formControlName="author" type="text" class="form-control input" id="author" placeholder="tên game" (keydown.enter)="create()">
