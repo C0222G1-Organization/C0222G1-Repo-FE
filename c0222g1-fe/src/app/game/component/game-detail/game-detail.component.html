@@ -6,6 +6,8 @@
       </div>
       <div *ngIf="editState" class="col-6 d-flex justify-content-end p-0">
         <button class="btn-second" (click)="editGame(game.id)">Chỉnh sửa</button>
+        <button class="btn-second" (click)="getInfoGame(game.id, game.name)" style="margin-left: 1rem"
+                data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
       </div>
     </div>
     <div class="row">
@@ -46,6 +48,25 @@
     <hr>
     <div class="row text-white">
       <div id="content" class="text text-light w-100 img-fluid" [innerHTML]="game.content">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content object">
+      <div class="modal-header">
+        <h5 class="modal-title text-white" id="exampleModalLabel">Thông báo</h5>
+      </div>
+      <div class="modal-body text-white">
+        Bạn có chắc chắn muốn xóa game <b>{{this.selectedName}}</b> hay không?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-second-non-border" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" (click)="deleteGameById()" class="btn-main text-white" data-bs-dismiss="modal">Xóa
+        </button>
       </div>
     </div>
   </div>

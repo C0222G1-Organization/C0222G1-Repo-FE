@@ -23,7 +23,7 @@ export class ComputerCreateComponent implements OnInit {
       id: new FormControl(),
       code: new FormControl('', [Validators.required,
         Validators.pattern('^(CP)[0-9]{4}$')]),
-      status: new FormControl('', Validators.required),
+      status: new FormControl(1, Validators.required),
       location: new FormControl('', [Validators.required,
         Validators.pattern('^[A-Z][0-9]{4}$')]),
       startUsedDate: new FormControl('', [Validators.required, this.checkYear]),
