@@ -7,10 +7,7 @@ import {AuthGuardEmployeeAdminService} from '../authentication/service/auth-guar
 
 const routes: Routes = [
   {
-    path: 'payment', pathMatch: 'full', redirectTo: 'display'
-  },
-  {
-    path: 'display', component: DisplayPaymentComponent,
+    path: 'payment', component: DisplayPaymentComponent,
   canActivate: [AuthGuardEmployeeAdminService]
   },
   {
@@ -19,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'order-service', component: PaymentDetailComponent
-    // customer
+    // customer, admin, customer
   }
 ];
 
