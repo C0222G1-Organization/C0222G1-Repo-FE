@@ -550,7 +550,7 @@ export class StatisticComponent implements OnInit {
     this.dateHidden = false;
     this.ngOnInit();
     this.resetHidden = true;
-    this.time[2] = '1 month';
-    this.selectDefault = '1 month';
+    // this.time[2] = '1 month';
+    // this.selectDefault = '1 month';
   }
 }

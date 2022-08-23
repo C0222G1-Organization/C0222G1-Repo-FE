@@ -14,7 +14,7 @@ const routes: Routes = [
   canActivate: [AuthGuardEmployeeAdminService]
   },
   {
-    path: 'display/:paymentId', component: DisplayPaymentComponent
+    path: 'payment/:paymentId', component: DisplayPaymentComponent
     // employee, admin, customer
   },
   {
