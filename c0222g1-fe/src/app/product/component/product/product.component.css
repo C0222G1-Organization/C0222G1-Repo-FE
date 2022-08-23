@@ -181,3 +181,9 @@ input[id="cb1"] {
   margin: auto;
 }
 
+.hiddenText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+}

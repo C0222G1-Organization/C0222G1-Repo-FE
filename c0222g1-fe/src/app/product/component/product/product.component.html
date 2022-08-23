@@ -7,7 +7,7 @@
       <div class="d-flex justify-content-between">
         <form [formGroup]="formProduct" novalidate>
           <div class="w-100 d-flex px-0">
-            <input type="text" class="input-search form-control" style="width: 250px"
+            <input type="search" class="input-search form-control" style="width: 250px"
                    placeholder=" Nhập tên dịch vụ" formControlName="nameProduct" [(ngModel)]="name"
                    id="nameProduct" (keydown.enter)="search()">
             <button type="button" class="btn btn-outline-secondary mx-4" (click)="search()"
@@ -17,18 +17,22 @@
         </form>
         <!--        check box chọn tất cả-->
 
-        <div class="d-flex " *ngIf="role === 'ADMIN' || role === 'EMPLOYEE'">
-          <div class="form-group mx-5 box">
+        <div>
+          <button class="btn btn-outline-secondary" (click)="bestSeller()">Dịch vụ nổi bật</button>
+        </div>
+
+        <div class="d-flex" *ngIf="role === 'ADMIN' || role === 'EMPLOYEE'">
+          <div class="mx-3" style="float: right" *ngIf="(role === 'ADMIN' || role === 'EMPLOYEE') && map.size > 0">
+            <button class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#deleteAll">Xóa tất cả
+            </button>
+          </div>
+          <div class="form-group">
             <input style="float: right" type="checkbox" id="html" [checked]="isAllCheckBoxChecked()"
                    (change)="checkAllCheckBox($event)">
             <label class="box" for="html" style="color: #cbc6c6; font-size: 1.1rem; text-align: center">
               <span class="label-custom" style="justify-content: center"> Chọn tất cả</span>
             </label>
-          </div>
-          <div style="float: right" *ngIf="(role === 'ADMIN' || role === 'EMPLOYEE') && map.size > 0">
-            <button class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#deleteAll">Xóa tất cả
-            </button>
           </div>
         </div>
         <div style="float: right" *ngIf="role === 'CUSTOMER'">
@@ -74,7 +78,7 @@
           <div class="card w-90 bg-card mt-5" *ngIf="formProduct.valid">
             <img src="{{product.imageUrl}}" class="card-img-top" alt="...">
             <div class="card-body">
-              <h4>{{product.nameProduct}}</h4>
+              <h4 class="hiddenText" data-toggle="tooltip" title="{{product.nameProduct}}">{{product.nameProduct}}</h4>
               <span class="card-detail-badge" style="font-size: 16px">{{product.prices | number}}<sup>vnd</sup></span>
               <button class="btn btn-outline-secondary" style="float: right;"
                       (click)="valueOfDelete(product.nameProduct, product.id)"
@@ -167,7 +171,7 @@
           dịch vụ</p>
       </div>
       <ol style="width: 300px; margin-top: 10px">
-        <li style="color: #9a9a9a; font-size: 1.2rem"
+        <li style="++color: #9a9a9a; font-size: 1.2rem"
             *ngFor="let product of selectedNameProducts">
           &nbsp;&nbsp;{{product.nameProduct}}
         </li>

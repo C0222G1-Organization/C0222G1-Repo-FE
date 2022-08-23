@@ -45,4 +45,9 @@ export class ProductService {
   loadInfoProductById(id: number): Observable<Product> {
     return this.http.get<Product>(this.API + '/' + id);
   }
+
+  showListBestSeller(name: string, page: number): Observable<Product[]> {
+    console.log(name);
+    return this.http.get<Product[]>(this.API + '/list-best-seller?name=' + name + '&page=' + page);
+  }
 }

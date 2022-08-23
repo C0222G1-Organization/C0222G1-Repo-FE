@@ -117,7 +117,7 @@ export class ProductComponent implements OnInit {
         this.productList = value.content;
         this.totalElements = value.totalElements;
         this.page = 0;
-        this.toast.success('Bạn đã tìm thấy ' + this.totalElements + ' kết quả' );
+        this.toast.success('Bạn đã tìm thấy ' + this.totalElements + ' kết quả');
       }
       if (value === null) {
         this.toast.error('Không tìm thấy kết quả');
@@ -231,5 +231,16 @@ export class ProductComponent implements OnInit {
     if (this.selectedIdProducts.length > 0) {
       this.toast.success('Xóa sản phẩm thành công');
     }
+  }
+
+  bestSeller() {
+    this.productService.showListBestSeller(this.name, this.page).subscribe((value: any) => {
+      if (value != null) {
+        this.productList = value.content;
+        this.totalElements = value.totalElements;
+      }
+    }, error => {
+      this.route.navigateByUrl('/500');
+    });
   }
 }
