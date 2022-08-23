@@ -20,7 +20,7 @@ export class RemainingTimeComponent implements OnInit {
   endTime: Date;
   remainingTimeBackEnd = 0;
   data: Map<string, any> = new Map<string, any>();
-  loop = 0;
+  loop: NodeJS.Timeout;
   countRequest = 1;
   remainingTimeRequest = 0;
 
