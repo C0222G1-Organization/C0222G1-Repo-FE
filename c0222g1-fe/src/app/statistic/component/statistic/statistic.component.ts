@@ -46,6 +46,8 @@ export class StatisticComponent implements OnInit {
       sort: new FormControl('none'),
       type: new FormControl('computer')
     }, this.invalidDate);
+    this.statisticForm.patchValue({startDate: this.pastDay, endDate: this.today, sort: 'none', type: 'computer'});
+    this.onSubmit();
   }
 
   invalidDate(abstractControl: AbstractControl) {
