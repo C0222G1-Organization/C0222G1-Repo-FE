@@ -14,7 +14,10 @@
           </label>
           <button [disabled]="selectedGames.length == 0" class="btn btn-opacity-border-sm text-white"
                   data-bs-toggle="modal" data-bs-target="#deleteMultipleModal"
-                  (click)="getSelectedGames()" style="margin-left: 1rem; margin-right: 4rem">Xóa
+                  (click)="getSelectedGames()" style="margin-left: 1rem">Xóa
+          </button>
+          <button class="btn btn-primary text-white"
+                  routerLink="/games/create" style="margin-left: 1rem; margin-right: 4rem">Thêm mới
           </button>
         </div>
       </div>
@@ -26,7 +29,7 @@
       <div class="row" style="flex-wrap: wrap; justify-content: start">
         <div *ngFor="let game of games | paginate :
           {itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}"
-             class="card container-img bg-dark card-game">
+             class="card container-list-img bg-dark">
           <img class="card-img-top image"
                [src]="game.imageUrl"
                alt="Card image cap">
@@ -45,7 +48,7 @@
             </div>
             <div class="row">
               <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
-                                                            class="btn-second btn-sm">Chơi</button>  {{ game.playedTimes}} lượt chơi</span>
+                                                            class="btn-second btn-sm">Tải</button>  {{ game.playedTimes}} lượt Tải</span>
             </div>
           </div>
           <div *ngIf="editState">
@@ -104,7 +107,7 @@
           <h5 class="modal-title text-white" id="exampleModalLabel2">Thông báo</h5>
         </div>
         <div class="modal-body text-white">
-          <p>Bạn có chắc chắn muốn xóa các nhân viên sau hay không?</p>
+          <p>Bạn có chắc chắn muốn xóa các game sau hay không?</p>
           <ol>
             <li *ngFor="let selectedGames of selectedGames">{{selectedGames.name}}</li>
           </ol>

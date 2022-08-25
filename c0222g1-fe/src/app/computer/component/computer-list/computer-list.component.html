@@ -11,13 +11,13 @@
               <div class="fields">
                 <div class="input-field input-search">
                   <label>Mã máy</label>
-                  <input type="text" class="input-search" formControlName="code" placeholder="Nhập mã máy">
+                  <input (keydown.enter)="search()" type="text" class="input-search" formControlName="code" placeholder="Nhập mã máy">
                   <span style="color: red; font-size: 0.8rem" *ngIf="formSearch.get('code').dirty
                 && formSearch.hasError('pattern', 'code')">Không được nhập khoảng trắng</span>
                 </div>
                 <div class="input-field">
-                  <label>Ngày bắt đầu</label>
-                  <input type="date" formControlName="start" class="input-search">
+                  <label>Ngày bắt đầu sử dụng</label>
+                  <input (keydown.enter)="search()" type="date" formControlName="start" class="input-search">
                   <span style="color: red; font-size: 0.8rem" *ngIf="formSearch.get('start').dirty
                 && formSearch.hasError('invalid', 'start')">Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày hiện tại và năm phải lớn 1950</span>
                 </div>
@@ -31,19 +31,17 @@
                 </div>
                 <div class="input-field">
                   <label>Vị trí</label>
-                  <input type="text" class="input-search" formControlName="location" placeholder="Nhập vị trí máy">
+                  <input (keydown.enter)="search()" type="text" class="input-search" formControlName="location" placeholder="Nhập vị trí máy">
                 </div>
                 <div class="input-field">
-                  <label>Ngày kết thúc</label>
-                  <input type="date" formControlName="end" class="input-search">
-                  <span style="color: red; font-size: 0.8rem" *ngIf="formSearch.get('end').dirty
-                && formSearch.hasError('invalid', 'end')">Ngày kết thúc phải lớn ngày hiện tại</span>
+                  <label>Ngày kết thúc sử dụng</label>
+                  <input (keydown.enter)="search()" type="date" formControlName="end" class="input-search">
                 </div>
                 <div class="input-field">
                   <label>Loại máy</label>
                   <select style="min-width: 100px" formControlName="typeId" class="input-search form-select">
                     <option value="">--Chọn loại máy--</option>
-                    <option *ngFor="let type of computerTypes" value="{{type.id}}">Máy {{type.name}}</option>
+                    <option *ngFor="let type of computerTypes" value="{{type.id}}">{{type.name}}</option>
                   </select>
                 </div>
               </div>
@@ -62,14 +60,14 @@
   </div>
   <div class="row">
     <div class="container">
-      <table class="table table-dark w-100">
+      <table class="table table-dark w-100 table-responsive">
         <thead>
         <tr>
           <th scope="col">
             <input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)">
             #
           </th>
-          <th scope="col">ID Máy</th>
+          <th scope="col">Mã Máy</th>
           <th scope="col">Trạng thái</th>
           <th scope="col">Vị trí</th>
           <th scope="col">Thời gian bắt đầu</th>
@@ -94,8 +92,8 @@
           <td>{{computer.location}}</td>
           <td>{{computer.start | date: "dd/MM/yyyy"}}</td>
           <td>{{computer.configuration}}</td>
-          <td *ngIf="computer.type.includes('1',0)">Máy FPS</td>
-          <td *ngIf="computer.type.includes('2',0)">Máy MOBA</td>
+          <td *ngIf="computer.type.includes('1',0)">Máy VIP</td>
+          <td *ngIf="computer.type.includes('2',0)">Máy Thường</td>
           <td>{{computer.manufacturer}}</td>
           <td>{{computer.warranty}} năm</td>
           <td *ngIf="checkShow">
@@ -128,7 +126,7 @@
     <div class="col-4"></div>
     <div class="col-4">
       <div class="float-end">
-        <button class="btn btn-primary m-2" data-bs-toggle="modal"
+        <button class="btn btn-danger m-2" *ngIf="map.size != 0" data-bs-toggle="modal"
                 data-bs-target="#deleteAllModal">Xóa
         </button>
       </div>
@@ -144,14 +142,14 @@
       </pagination-controls>
     </div>
   </div>
-  <div class="row align-items-center" *ngIf="computers.length > 5">
+  <div class="row align-items-center" *ngIf="totalPages > 1">
     <div class="w-100 d-flex justify-content-center">
       <div class="col-auto m-1">
         <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>
       </div>
       <div class="col-auto m-1">
         <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
-               (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
+               (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 50px">
       </div>
       <div class="col-auto m-1">
         <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
@@ -168,13 +166,11 @@
         <h5 class="modal-title" id="exampleModalLabel1">Xác nhận thông tin máy</h5>
       </div>
       <div class="modal-body">
-        <ol style="width: 300px; margin-top: 10px">
-          <li style="color: #9a9a9a; font-size: 1.2rem">{{computerCodeDelete}}</li>
-        </ol>
+        Bạn chắc chắn có muốn xóa máy có mã máy <span style="font-weight: bold; font-size: 1.2rem; color: #be2b2c">{{computerCodeDelete}}</span> không?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" (click)="delete()" data-bs-dismiss="modal">Xóa</button>
+        <button type="button" class="btn btn-danger" (click)="delete()" data-bs-dismiss="modal">Xóa</button>
       </div>
     </div>
   </div>
@@ -186,15 +182,16 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Xác nhận thông tin máy</h5>
+        <h5 class="modal-title">Xác nhận thông tin máy muốn xóa</h5>
       </div>
       <div class="modal-body">
         <div *ngIf="map.size == 0" style="font-weight: bold">
           Không có máy nào được chọn!
         </div>
         <div class="container" *ngIf="map.size != 0">
+          <h6>Bạn chắc chắn có muốn xóa các máy có mã máy là:</h6>
           <ol style="width: 300px; margin-top: 10px">
-            <li *ngFor="let c of map | keyvalue; index as i" style="color: #9a9a9a; font-size: 1.2rem">
+            <li *ngFor="let c of map | keyvalue; index as i" style="color: #be2b2c; font-weight: bold; font-size: 1.2rem">
               &nbsp;&nbsp;{{c.value.code}}
             </li>
           </ol>
@@ -202,7 +199,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" (click)="deleteMultiComputer()" data-bs-dismiss="modal">Xóa
+        <button type="button" class="btn btn-danger" (click)="deleteMultiComputer()" data-bs-dismiss="modal">Xóa
         </button>
       </div>
     </div>

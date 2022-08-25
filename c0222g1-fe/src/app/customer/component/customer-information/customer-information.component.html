@@ -20,25 +20,21 @@
           <div class="col-3 p-0">
             <label class="col-form-label text-right" for="fullName">Họ và tên</label>
           </div>
-          <div *ngIf="content!==customer.name" class="sub-info form-group row col-8">
+          <div class="sub-info form-group row col-8">
             <div class="col-12 p-0">
-              <input formControlName="name" type="text" class="form-control" readonly>
-            </div>
-          </div>
-          <div *ngIf="content===customer.name" class="sub-info form-group row col-8">
-            <div class="col-12 p-0">
-              <input formControlName="name" type="text" id="fullName"
+              <input *ngIf="content!==customer.name" formControlName="name" type="text" class="form-control" readonly>
+              <input *ngIf="content===customer.name" formControlName="name" type="text" id="fullName"
                      class="form-control bg-dark text-white"
                      placeholder="Nhập họ tên">
-            </div>
-            <div class="text-small text-danger p-0"
-                 *ngIf="!customerForm.controls.name?.valid
+              <div class="text-small text-danger p-0 error"
+                   *ngIf="!customerForm.controls.name?.valid
                 && (customerForm.controls.name?.dirty ||customerForm.controls.name?.touched)">
-              <div [hidden]="!customerForm.controls.name.errors.required">
-                Họ và tên là bắt buộc.
-              </div>
-              <div [hidden]="!customerForm.controls.name.errors.pattern">
-                Họ và tên chỉ bao gồm ký tự chữ.
+                <div [hidden]="!customerForm.controls.name.errors.required">
+                  Họ và tên là bắt buộc.
+                </div>
+                <div [hidden]="!customerForm.controls.name.errors.pattern">
+                  Họ và tên chỉ bao gồm ký tự chữ.
+                </div>
               </div>
             </div>
           </div>
@@ -53,18 +49,16 @@
           <div class="col-3 p-0">
             <label class="col-form-label text-right" for="dateOfBirth">Ngày sinh</label>
           </div>
-          <div *ngIf="content!==customer.dateOfBirth.toString()" class="sub-info form-group row col-8">
+          <div class="sub-info form-group row col-8">
             <div class="col-12 p-0">
-              <input readonly [value]="customerForm.get('dateOfBirth').value | date: 'dd/MM/yyyy'" type="text"
+              <input *ngIf="content!==customer.dateOfBirth.toString()" readonly
+                     [value]="customerForm.get('dateOfBirth').value | date: 'dd/MM/yyyy'" type="text"
                      class="form-control">
-            </div>
-          </div>
-          <div *ngIf="content===customer.dateOfBirth.toString()" class="sub-info form-group row col-8">
-            <div class="col-12 p-0">
-              <input formControlName="dateOfBirth" type="date" id="dateOfBirth"
+              <input *ngIf="content===customer.dateOfBirth.toString()" formControlName="dateOfBirth" type="date"
+                     id="dateOfBirth"
                      class="form-control bg-dark text-white"
                      placeholder="Nhập ngày sinh">
-              <div class="text-danger"
+              <div class="text-danger error"
                    *ngIf="(customerForm.controls.dateOfBirth.dirty || customerForm.controls.dateOfBirth.touched)">
                 <div *ngIf="customerForm.controls.dateOfBirth.hasError('dateNotExist')">
                   Ngày sinh không tồn tại.
@@ -89,26 +83,23 @@
           <div class="col-3 p-0">
             <label class="col-form-label text-right" for="email">Email</label>
           </div>
-          <div *ngIf="content!==customer.email" class="sub-info form-group row col-8"
-               formGroupName="email">
+          <div class="sub-info form-group row col-8" formGroupName="email">
             <div class="col-12 p-0">
-              <input id="email" formControlName="email" type="text" class="form-control" readonly>
-            </div>
-          </div>
-          <div *ngIf="content===customer.email" class="sub-info form-group row col-8" formGroupName="email">
-            <div class="col-12 p-0">
-              <input formControlName="email" type="text" class="form-control bg-dark text-white"
+              <input *ngIf="content!==customer.email" id="email" formControlName="email" type="text"
+                     class="form-control" readonly>
+              <input *ngIf="content===customer.email" formControlName="email" type="text"
+                     class="form-control bg-dark text-white"
                      placeholder="Nhập email" (change)="checkEmail($event.target.value)">
               <div *ngIf="getEmail().invalid && (getEmail().touched || getEmail().dirty)">
-                <div class="text-danger" *ngIf="getEmail().errors.pattern">
+                <div class="text-danger error" *ngIf="getEmail().errors.pattern">
                   Nhập email sai định dạng.
                 </div>
-                <div class="text-danger" *ngIf="getEmail().errors.required">
+                <div class="text-danger error" *ngIf="getEmail().errors.required">
                   Email không được để trống.
                 </div>
               </div>
               <div *ngIf="(getEmail().touched || getEmail().dirty)">
-                <div class="text-danger"
+                <div class="text-danger error"
                      *ngIf="isExitsEmail == true">
                   Email đã tồn tại.
                 </div>
@@ -178,18 +169,14 @@
           <div class="col-3 p-0">
             <label class="col-form-label text-right" for="phoneNumber">Số điện thoại</label>
           </div>
-          <div *ngIf="content!==customer.phoneNumber" class="sub-info form-group row col-8" formGroupName="phoneNumber">
+          <div class="sub-info form-group row col-8" formGroupName="phoneNumber">
             <div class="col-12 p-0">
-              <input formControlName="phone" type="text" class="form-control"
+              <input *ngIf="content!==customer.phoneNumber" formControlName="phone" type="text" class="form-control"
                      placeholder="Nhập số điện thoại" readonly>
-            </div>
-          </div>
-          <div *ngIf="content===customer.phoneNumber" class="sub-info form-group row col-8" formGroupName="phoneNumber">
-            <div class="col-12 p-0">
-              <input formControlName="phone" type="text" id="phoneNumber"
+              <input *ngIf="content===customer.phoneNumber" formControlName="phone" type="text" id="phoneNumber"
                      class="form-control bg-dark text-white"
                      placeholder="Nhập số điện thoại" (change)="checkPhone($event.target.value)">
-              <div class="text-danger" *ngIf="getPhone().invalid && (getPhone().touched || getPhone().dirty)">
+              <div class="text-danger error" *ngIf="getPhone().invalid && (getPhone().touched || getPhone().dirty)">
                 <div *ngIf="getPhone().errors.pattern">
                   Số điện thoại bắt đầu từ 09 và có 10 số.
                 </div>
@@ -211,26 +198,22 @@
           <div class="col-3 p-0">
             <label class="col-form-label text-right">Mật khẩu</label>
           </div>
-          <div *ngIf="content!==fakePassword" class="sub-info form-group row col-8">
+          <div class="sub-info form-group row col-8">
             <div class="col-12 p-0">
-              <input value="{{fakePassword}}" type="password" class="form-control"
+              <input *ngIf="content!==fakePassword" value="{{fakePassword}}" type="password" class="form-control"
                      placeholder="Nhập mật khẩu" readonly>
-            </div>
-          </div>
-          <div *ngIf="content===fakePassword" class="sub-info form-group row col-8">
-            <div class="col-12 p-0">
-              <input formControlName="password" type="{{inputType}}"
-                     class="form-control bg-dark text-white border-white"
-                     placeholder="Nhập mật khẩu mới">
-            </div>
-            <div class="text-small text-white p-0"
-                 *ngIf="!customerForm.controls.password.valid
-                                && (customerForm.controls.password.dirty ||customerForm.controls.password.touched)">
-              <div [hidden]="!customerForm.controls.password.errors.required">
-                Vui lòng nhập mật khẩu!
+              <input *ngIf="content===fakePassword" type="{{inputType}}" (keydown.enter)="checkOldPassword($event.target.value)"
+                     class="form-control bg-dark text-white border-white" formControlName="oldPassword"
+                     placeholder="Nhập mật khẩu cũ">
+              <div *ngIf="matchOldPass === false" class="text-small text-danger p-0 error">
+                <div>
+                  Mật khẩu cũ không chính xác.
+                </div>
               </div>
-              <div [hidden]="!customerForm.controls.password.errors.pattern">
-                Mật khẩu phải chứa các ký tự in thường, in hoa và ký tự số!
+              <div *ngIf="matchOldPass === true" class="text-small text-success p-0 error">
+                <div>
+                  Bạn đã nhập đúng mật khẩu cũ.
+                </div>
               </div>
             </div>
           </div>
@@ -246,7 +229,35 @@
           </div>
         </div>
 
-        <div *ngIf="content===fakePassword" class="col-12 d-flex input-form">
+        <div *ngIf="matchOldPass === true" class="col-12 d-flex input-form">
+          <div class="col-3 p-0">
+            <label class="col-form-label text-right">Mật khẩu mới</label>
+          </div>
+          <div class="sub-info form-group row col-8">
+            <div class="col-12 p-0">
+              <input type="{{inputType}}" formControlName="password"
+                     class="form-control bg-dark text-white border-white"
+                     placeholder="Nhập mật khẩu mới">
+            </div>
+            <div class="text-small text-danger p-0 error"
+                 *ngIf="!customerForm.controls.password.valid
+                                && (customerForm.controls.password.dirty ||customerForm.controls.password.touched)">
+              <div [hidden]="!customerForm.controls.password.errors.required">
+                Vui lòng nhập mật khẩu mới.
+              </div>
+              <div [hidden]="!customerForm.controls.password.errors.pattern">
+                Mật khẩu phải chứa các ký tự in thường, in hoa và ký tự số.
+              </div>
+            </div>
+          </div>
+          <div *ngIf="matchOldPass === true" class="col-1 ml-2">
+            <a class="btn">
+              <i class="fa-solid fa-eye text-white" (click)="setType()"></i>
+            </a>
+          </div>
+        </div>
+
+        <div *ngIf="matchOldPass === true" class="col-12 d-flex input-form">
           <div class="col-3 p-0">
             <label class="col-form-label text-right">Xác nhận</label>
           </div>
@@ -256,21 +267,21 @@
                      class="form-control bg-dark text-white border-white"
                      placeholder="Nhập mật khẩu xác nhận">
             </div>
-            <div class="text-small text-danger p-0"
+            <div class="text-small text-danger p-0 error"
                  *ngIf="!customerForm.controls.confirmPassword?.valid
                                 && (customerForm.controls.confirmPassword?.dirty ||customerForm.controls.confirmPassword?.touched)">
               <div [hidden]="!customerForm.controls.confirmPassword.errors.required">
-                Vui lòng nhập mật khẩu xác nhận!
+                Vui lòng nhập mật khẩu xác nhận.
               </div>
               <div [hidden]="!customerForm.controls.confirmPassword.errors.pattern">
-                Mật khẩu phải chứa các ký tự in thường, in hoa và các ký tự số!
+                Mật khẩu phải chứa các ký tự in thường, in hoa và ký tự số.
               </div>
               <div [hidden]="!customerForm.controls.confirmPassword.errors.mustMatch">
-                Mật khẩu xác nhận chưa trùng khớp!
+                Mật khẩu xác nhận chưa trùng khớp.
               </div>
             </div>
           </div>
-          <div *ngIf="content===fakePassword" class="col-1 ml-2">
+          <div *ngIf="matchOldPass === true" class="col-1 ml-2">
             <a class="btn">
               <i class="fa-solid fa-eye text-white" (click)="setConfirmType()"></i>
             </a>
@@ -280,8 +291,7 @@
         <div class="text-center">
           <a class="btn btn-outline-light btn-sm mb-3 option-button" type="button" routerLink="/customers/home-page">QUAY
             LẠI</a>
-          <button [disabled]="content===''"
-                  class="btn btn-primary btn-sm mb-3 option-button text-white"
+          <button [disabled]="content===''" class="btn btn-primary btn-sm mb-3 option-button text-white"
                   (click)="onsubmit()">
             LƯU THAY ĐỔI
           </button>

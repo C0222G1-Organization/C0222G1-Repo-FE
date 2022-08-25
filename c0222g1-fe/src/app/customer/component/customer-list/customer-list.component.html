@@ -84,15 +84,12 @@
                    *ngIf="formSearch.get('address').hasError('pattern') && formSearch.get('address').dirty">Nhập địa chỉ
                 sai định dạng.
               </div>
+              <div style="font-size: small" class="text-danger"
+                   *ngIf="formSearch.controls.address.hasError('maxlength') && formSearch.controls.address.dirty"> Bạn
+                nhập quá dài.
+              </div>
             </div>
-            <div style="font-size: small" class="text-danger"
-                 *ngIf="formSearch.controls.address.hasError('minlength') && formSearch.controls.address.dirty"> Vui
-              lòng nhập.
-            </div>
-            <div style="font-size: small" class="text-danger"
-                 *ngIf="formSearch.controls.address.hasError('maxlength') && formSearch.controls.address.dirty"> Bạn
-              nhập quá dài
-            </div>
+
           </div>
           <div class="col-4 d-flex">
             <div class="col-4">
@@ -157,7 +154,7 @@
       <tr
         *ngFor="let temp of listCustomer | paginate: {itemsPerPage: 5, currentPage: page+1, totalItems: element};let i = index">
         <!--          <td><input type="checkbox" [checked]="statusCheckBox" (change)="getIdCheck(temp,$event.target.checked)"></td>-->
-        <td><input class="card-notify-year-checkbox" type="checkbox" value="{{temp.id}}"
+        <td><input  (change)="getIdCheck(temp,$event.target.checked)" class="card-notify-year-checkbox" type="checkbox" value="{{temp.id}}"
                    [(ngModel)]="listCustomer[i].checked "></td>
         <td class="w-5">{{i + size + 1 }}</td>
         <td class="w-10">{{temp.name}}</td>

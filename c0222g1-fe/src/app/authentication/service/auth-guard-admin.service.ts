@@ -9,7 +9,7 @@ export class AuthGuardAdminService implements CanActivate {
   constructor(private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const roles = sessionStorage.getItem('roles');
+    const roles = localStorage.getItem('roles');
     if (roles === 'ADMIN') {
       return true;
     } else {

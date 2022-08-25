@@ -22,15 +22,15 @@
             <select name="" id="category" class="col-md-7 col-sm-12 form-control-sm text-center"
                     (change)="getProductOptionList($event.target.value)">
               <option [value]="null">Vui lòng chọn</option>
-              <option [value]="category.id" *ngFor="let category of productCategoryList">{{category.name}}</option>
+              <option value="{{category.id}}" [selected]="category.id===2" *ngFor="let category of productCategoryList">{{category.name}}</option>
             </select>
           </div>
           <div class="col-4 mb-2">
             <label for="product" class="col-md-4 col-sm-12">Sản phẩm</label>
             <select name="" id="product" class="col-md-7 col-sm-12 form-control-sm text-center"
                     (change)="getProductById($event.target.value)">
-              <option value="">Vui lòng chọn</option>
-              <option value="{{productObject.id}}"
+              <option [value]="null">Vui lòng chọn</option>
+              <option value="{{productObject.id}}" [selected]="productObject.id==11"
                       *ngFor="let productObject of productList">{{productObject.nameProduct}}</option>
             </select>
           </div>

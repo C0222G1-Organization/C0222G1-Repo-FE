@@ -10,17 +10,15 @@ export class JwtInterceptor implements HttpInterceptor {
   // @ts-ignore
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let authReq  = req;
-    console.log(sessionStorage);
-    if (sessionStorage.getItem('username') && sessionStorage.getItem('token')) {
+    if (localStorage.getItem('username') && localStorage.getItem('token')) {
       authReq = req.clone({
         setHeaders: {
-          Authorization: sessionStorage.getItem('token'),
+          Authorization: localStorage.getItem('token'),
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
         }
       });
     }
-    console.log(authReq);
     return next.handle(authReq);
   }
 }

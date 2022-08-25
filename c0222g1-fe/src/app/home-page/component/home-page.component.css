@@ -11,7 +11,152 @@
   border-radius: 10px;
 }
 
+.top-game-img-container {
+  padding: 0;
+  top: -25px;
+  right: -25px;
+  margin: 0;
+  position: absolute;
+}
+
 .card-game-main {
-  margin-left: 0.2rem;
-  margin-top: 1rem;
+  margin-left: 3px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.top-game-image {
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.container-img:hover .image {
+  opacity: 1;
+}
+.container-img:hover .middle-md {
+  opacity: 1;
+}
+.container-list-img:hover .middle {
+  opacity: 1;
+}
+
+/*// Small devices (landscape phones, 576px and up) sm*/
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .top-game-hidden {
+    display: none;
+  }
+  .container-img {
+    position: relative;
+    width: 100%;
+  }
+
+  .container-list-img {
+    position: relative;
+    width: 50%;
+  }
+
+  .container-img-carousel .btn-image-carousel {
+    position: absolute;
+    z-index: 1;
+    top: 85%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: white;
+    font-size: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+/*// Medium devices (tablets, 768px and up) md*/
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .top-game-hidden {
+    display: none;
+  }
+  .container-img {
+    position: relative;
+    width: 50%;
+  }
+
+  .container-list-img {
+    position: relative;
+    width: 50%;
+  }
+
+  .container-img-carousel .btn-image-carousel {
+    position: absolute;
+    z-index: 1;
+    top: 87%;
+    left: 15%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: white;
+    font-size: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+/*// Large devices (desktops, 992px and up) lg*/
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .top-game-hidden {
+    display: none;
+  }
+  .container-img {
+    position: relative;
+    width: 50%;
+  }
+
+  .container-list-img {
+    position: relative;
+    width: 50%;
+  }
+
+  .container-img-carousel .btn-image-carousel {
+    position: absolute;
+    z-index: 1;
+    top: 93%;
+    left: 12%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: white;
+    font-size: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+/*// Extra large devices (large desktops, 1200px and up) xl*/
+@media (min-width: 1200px) {
+  .container-img {
+    position: relative;
+    width: 50%;
+  }
+  .container-list-img {
+    position: relative;
+    width: 25%;
+  }
+  .container-img-carousel .btn-image-carousel {
+    position: absolute;
+    z-index: 1;
+    top: 93%;
+    left: 10.2%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: white;
+    font-size: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+  }
 }
