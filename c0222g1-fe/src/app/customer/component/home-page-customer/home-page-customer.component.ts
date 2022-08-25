@@ -4,6 +4,7 @@ import {JwtResponseCustomer} from '../../model/jwt-response-customer';
 import {Title} from '@angular/platform-browser';
 import {ToastrService} from 'ngx-toastr';
 import {Router} from '@angular/router';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-home-page-customer',
@@ -12,36 +13,45 @@ import {Router} from '@angular/router';
 })
 export class HomePageCustomerComponent implements OnInit {
 
-  jwtReponseCustomer = {customer: {}} as JwtResponseCustomer;
-  currentDate: any;
+  // jwtReponseCustomer = {customer: {}} as JwtResponseCustomer;
+  currentDate: Date;
   cDateMillisecs: any;
+  endTimeMillisecs: any;
   difference: any;
   seconds: any;
   minutes: any;
   hours: any;
   days: any;
   loop: any;
+  endTime: Date;
   customerId: number = Number(sessionStorage.getItem('customerId'));
 
-  constructor(private authService: AuthService, private title: Title, private toartrs: ToastrService, private router: Router) {
+  constructor(private authService: AuthService, private title: Title,
+              private toartrs: ToastrService, private router: Router,
+              public datepipe: DatePipe) {
   }
 
   ngOnInit(): void {
     this.title.setTitle('Trang chủ khách hàng');
-    this.jwtReponseCustomer.customer.name = sessionStorage.getItem('name');
-    this.jwtReponseCustomer.startTime = sessionStorage.getItem('startTime');
-    this.jwtReponseCustomer.endTime = sessionStorage.getItem('endTime');
-    this.jwtReponseCustomer.computerCode = sessionStorage.getItem('computerCode');
-    this.convertStringToDate(sessionStorage.getItem('endTime'));
+    document.getElementById('fullName').innerText = sessionStorage.getItem('name');
+    document.getElementById('startTime').innerText = sessionStorage.getItem('startTime');
+    this.endTime = this.convertStringToDate(sessionStorage.getItem('startTime'));
+    this.endTime.setSeconds(this.endTime.getSeconds() + Number(sessionStorage.getItem('remainingTime')));
+    const endTime = this.datepipe.transform(this.endTime, 'HH:mm:ss dd-MM-yyyy');
+    // @ts-ignore
+    sessionStorage.setItem('endTime', endTime);
+    console.log(this.endTime);
+    document.getElementById('endTime').innerText = endTime;
+    document.getElementById('computerCode').innerText = sessionStorage.getItem('computerCode');
     this.countDownDate();
   }
 
-  convertStringToDate(dateString: string) {
+  convertStringToDate(dateString: string): Date {
     const [timeComponents, dateComponents] = dateString.split(' ');
     const [day, month, year] = dateComponents.split('-');
     const [hours, minutes, seconds] = timeComponents.split(':');
     const date = new Date(+year, +month - 1, +day, +hours, +minutes, +seconds);
-    sessionStorage.setItem('milisecsEndTime', String(date.getTime()));
+    return date;
   }
 
 
@@ -49,9 +59,11 @@ export class HomePageCustomerComponent implements OnInit {
     this.loop = setInterval(() => {
       this.currentDate = new Date();
       this.cDateMillisecs = this.currentDate.getTime();
+      this.endTimeMillisecs = this.endTime.getTime();
+      // console.log(this.cDateMillisecs);
       // @ts-ignore
-      this.difference = sessionStorage.getItem('milisecsEndTime') - this.cDateMillisecs;
-
+      this.difference = this.endTimeMillisecs - this.cDateMillisecs;
+      // console.log(this.difference);
       this.seconds = Math.floor(this.difference / 1000);
       this.minutes = Math.floor(this.seconds / 60);
       this.hours = Math.floor(this.minutes / 60);

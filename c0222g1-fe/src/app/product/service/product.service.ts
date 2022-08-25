@@ -16,7 +16,9 @@ export class ProductService {
   private API_CATE = 'http://localhost:8080/product/listCategory';
 
   findAllProduct(name: string, page: number): Observable<Product[]> {
+    console.log(name);
     return this.http.get<Product[]>(this.API + '/list?name=' + name + '&page=' + page);
+
   }
 
   findAllProductForOrder(): Observable<Product[]> {
@@ -42,5 +44,14 @@ export class ProductService {
 
   loadInfoProductById(id: number): Observable<Product> {
     return this.http.get<Product>(this.API + '/' + id);
+  }
+
+  /**
+   * Created: LuanND
+   * Date: 17/08/2022
+   * @param id: is ID of object payment to get list service
+   */
+  setDataProduct(id: number): Observable<void> {
+    return this.http.get<void>(this.API + '/data/' + id);
   }
 }

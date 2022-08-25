@@ -3,9 +3,11 @@ import {DatePipe} from '@angular/common';
 import {Title} from '@angular/platform-browser';
 import {InputStatistic} from '../../model/input-statistic';
 import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+
 import {Chart, registerables} from 'chart.js';
 import {StatisticService} from '../../service/statistic/statistic.service';
 import {isDate} from 'rxjs/internal-compatibility';
+
 
 Chart.register(...registerables);
 
@@ -27,18 +29,25 @@ export class StatisticComponent implements OnInit {
   statisticInput: InputStatistic;
   pastDay = this.datePipe.transform(new Date().setDate(new Date().getDate() - 30), 'yyyy-MM-dd');
   today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-  statisticForm = new FormGroup({
-    startDate: new FormControl(this.pastDay, this.dateNotExist),
-    endDate: new FormControl(this.today, this.dateInFuture),
-    sort: new FormControl('none'),
-    type: new FormControl('computer')
-  }, this.invalidDate);
   private myChart: Chart;
+  statisticForm: FormGroup;
   errorChart = true;
   errorServer = true;
   errorList = true;
+  dateHidden = false;
+  statisticDateHidden = false;
+  resetHidden = true;
+  time: string[] = ['1 week', '2 week', '1 month', '2 month', '1 quarter', '2 quarter', '1 year'];
 
   ngOnInit(): void {
+    this.statisticForm = new FormGroup({
+      startDate: new FormControl(this.pastDay, this.dateNotExist),
+      endDate: new FormControl(this.today, this.dateInFuture),
+      sort: new FormControl('none'),
+      type: new FormControl('computer')
+    }, this.invalidDate);
+    this.statisticForm.patchValue({startDate: this.pastDay, endDate: this.today, sort: 'none', type: 'computer'});
+    this.onSubmit();
   }
 
   invalidDate(abstractControl: AbstractControl) {
@@ -83,19 +92,18 @@ export class StatisticComponent implements OnInit {
       this.statisticService.getStatisticByComputer(this.statisticInput.startDate, this.statisticInput.endDate)
         .subscribe(value => {
             this.listStatisticByComputer = value;
-            console.log(value);
             this.errorChart = false;
             this.errorServer = true;
             this.errorList = true;
           },
           error => {
             if (error.status === 400) {
-              this.errorList = false,
-                this.errorChart = true;
+              this.errorList = false;
+              this.errorChart = true;
               this.errorServer = true;
             } else {
-              this.errorServer = false,
-                this.errorChart = true;
+              this.errorServer = false;
+              this.errorChart = true;
               this.errorList = true;
             }
           }, () => {
@@ -103,10 +111,10 @@ export class StatisticComponent implements OnInit {
               this.listStatisticByComputer.sort((a, b) => (a.computer > b.computer) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'ascending') {
-              this.listStatisticByComputer.sort((a, b) => (a.hour > b.hour) ? 1 : -1);
+              this.listStatisticByComputer.sort((a, b) => (Number(a.hour) > Number(b.hour)) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'decrease') {
-              this.listStatisticByComputer.sort((a, b) => (a.hour < b.hour) ? 1 : -1);
+              this.listStatisticByComputer.sort((a, b) => (Number(a.hour) < Number(b.hour)) ? 1 : -1);
             }
             this.destroyChart();
             this.createChartComputer();
@@ -116,19 +124,18 @@ export class StatisticComponent implements OnInit {
       this.statisticService.getStatisticByMonth(this.statisticInput.startDate, this.statisticInput.endDate)
         .subscribe(value => {
             this.listStatisticByMonth = value;
-            console.log(value);
             this.errorChart = false;
             this.errorServer = true;
             this.errorList = true;
           },
           error => {
             if (error.status === 400) {
-              this.errorList = false,
-                this.errorChart = true;
+              this.errorList = false;
+              this.errorChart = true;
               this.errorServer = true;
             } else {
-              this.errorServer = false,
-                this.errorChart = true;
+              this.errorServer = false;
+              this.errorChart = true;
               this.errorList = true;
             }
           },
@@ -137,10 +144,10 @@ export class StatisticComponent implements OnInit {
               this.listStatisticByMonth.sort((a, b) => (a.month > b.month) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'ascending') {
-              this.listStatisticByMonth.sort((a, b) => (a.total > b.total) ? 1 : -1);
+              this.listStatisticByMonth.sort((a, b) => (Number(a.total) > Number(b.total)) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'decrease') {
-              this.listStatisticByMonth.sort((a, b) => (a.total < b.total) ? 1 : -1);
+              this.listStatisticByMonth.sort((a, b) => (Number(a.total) < Number(b.total)) ? 1 : -1);
             }
             this.destroyChart();
             this.createChartMonth();
@@ -150,20 +157,18 @@ export class StatisticComponent implements OnInit {
       this.statisticService.getStatisticByAccount(this.statisticInput.startDate, this.statisticInput.endDate)
         .subscribe(value => {
             this.listStatisticByAccount = value;
-            console.log(value);
-            console.log(value);
             this.errorChart = false;
             this.errorServer = true;
             this.errorList = true;
           },
           error => {
             if (error.status === 400) {
-              this.errorList = false,
-                this.errorChart = true;
+              this.errorList = false;
+              this.errorChart = true;
               this.errorServer = true;
             } else {
-              this.errorServer = false,
-                this.errorChart = true;
+              this.errorServer = false;
+              this.errorChart = true;
               this.errorList = true;
             }
           },
@@ -172,10 +177,10 @@ export class StatisticComponent implements OnInit {
               this.listStatisticByAccount.sort((a, b) => (a.account > b.account) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'ascending') {
-              this.listStatisticByAccount.sort((a, b) => (a.revenue > b.revenue) ? 1 : -1);
+              this.listStatisticByAccount.sort((a, b) => (Number(a.revenue) > Number(b.revenue)) ? 1 : -1);
             }
             if (this.statisticInput.sort === 'decrease') {
-              this.listStatisticByAccount.sort((a, b) => (a.revenue < b.revenue) ? 1 : -1);
+              this.listStatisticByAccount.sort((a, b) => (Number(a.revenue) < Number(b.revenue)) ? 1 : -1);
             }
             this.destroyChart();
             this.createChartAccount();
@@ -184,6 +189,8 @@ export class StatisticComponent implements OnInit {
   }
 
   onChange(value: any) {
+    this.dateHidden = true;
+    this.resetHidden = false;
     switch (value) {
       case '1 week':
         this.statisticForm.patchValue({
@@ -266,7 +273,7 @@ export class StatisticComponent implements OnInit {
             yAxisKey: 'hour'
           },
           backgroundColor: [
-            '#FFF448'
+            '#0099FF'
           ],
           borderWidth: 1
         }]
@@ -338,7 +345,7 @@ export class StatisticComponent implements OnInit {
             yAxisKey: 'service'
           },
           backgroundColor: [
-            '#FFF447'
+            '#0099FF'
           ],
           borderWidth: 1
         },
@@ -434,7 +441,7 @@ export class StatisticComponent implements OnInit {
             yAxisKey: 'revenue'
           },
           backgroundColor: [
-            '#FFF447'
+            '#0099FF'
           ],
           borderWidth: 1
         },
@@ -535,4 +542,15 @@ export class StatisticComponent implements OnInit {
     }
   }
 
+  hiddenStatisticDate(value: any) {
+    this.statisticDateHidden = true;
+    this.resetHidden = false;
+  }
+
+  onReset() {
+    this.statisticDateHidden = false;
+    this.dateHidden = false;
+    this.ngOnInit();
+    this.resetHidden = true;
+  }
 }

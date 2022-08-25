@@ -1,15 +1,23 @@
 <body>
 <h2 class="text-center text-title text-white my-2" style="font-size: 2.2rem">DANH SÁCH DỊCH VỤ</h2>
+
 <div class="container mt-4">
   <div class="d-flex justify-content-center row">
     <div class="col-10">
-      <div class="d-flex justify-content-between w-100">
-        <div class="w-50 d-flex px-0">
-          <input type="text" class="input-search form-control w-50" [(ngModel)]="name"
-                 placeholder=" Nhập tên dịch vụ " (keydown.enter)="search()">
-          <button type = "button" class="btn btn-outline-secondary mx-4" (click)="search()">Tìm kiếm</button>
-        </div>
-        <div class="w-50 d-flex px-0">
+      <div class="d-flex justify-content-between">
+        <form [formGroup]="formProduct" novalidate>
+          <div class="w-100 d-flex px-0">
+            <input type="text" class="input-search form-control" style="width: 250px"
+                   placeholder=" Nhập tên dịch vụ" formControlName="nameProduct" [(ngModel)]="name"
+                   id="nameProduct" (keydown.enter)="search()">
+            <button type="button" class="btn btn-outline-secondary mx-4" (click)="search()"
+                    [disabled]="formProduct.invalid">Tìm kiếm
+            </button>
+          </div>
+        </form>
+        <!--        check box chọn tất cả-->
+
+        <div class="d-flex " *ngIf="role === 'ADMIN' || role === 'EMPLOYEE'">
           <div class="form-group mx-5 box">
             <input style="float: right" type="checkbox" id="html" [checked]="isAllCheckBoxChecked()"
                    (change)="checkAllCheckBox($event)">
@@ -17,83 +25,120 @@
               <span class="label-custom" style="justify-content: center"> Chọn tất cả</span>
             </label>
           </div>
-          <div>
-            <button class="btn btn-outline-secondary"
-                    data-bs-toggle="modal" data-bs-target="#form-create" style="float: right">Thêm mới
+          <div style="float: right" *ngIf="(role === 'ADMIN' || role === 'EMPLOYEE') && map.size > 0">
+            <button class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#deleteAll">Xóa tất cả
             </button>
           </div>
+        </div>
+        <div style="float: right" *ngIf="role === 'CUSTOMER'">
+          <a routerLink="/order-service">
+            <button class="btn btn-primary">Gọi dịch vụ
+            </button>
+          </a>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<!--  Validate cho ô tìm kiếm-->
+<div class="container">
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <div class="text-danger" *ngIf="formProduct.valid">
+        &nbsp;
+      </div>
+      <div class="text-danger" *ngIf="formProduct.controls.nameProduct.hasError('pattern')
+        && (formProduct.controls.nameProduct.dirty || formProduct.controls.nameProduct.touched)">
+        Không được nhập kí tự đặc biệt.
+      </div>
+
+      <div class="text-danger" *ngIf="formProduct.controls.nameProduct.hasError('maxlength')
+        && (formProduct.controls.nameProduct.dirty || formProduct.controls.nameProduct.touched)">
+        Không được nhập quá 25 kí tự.
+      </div>
+    </div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
 <div class="container">
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
       <div class="row">
         <div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3"
-             *ngFor="let product of productList | paginate: { itemsPerPage: 4, currentPage: page + 1, totalItems: totalElements }, let i = index">
-          <div *ngIf="totalElements > 0">
-            <div class="card w-90 bg-card mt-5">
-              <img src="{{product.imageUrl}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h4>{{product.nameProduct}}</h4>
-                <span class="card-detail-badge" style="font-size: 16px">{{product.prices}}<sup>vnd</sup></span>
-                <button class="btn btn-outline-secondary" style="float: right;"
-                        (click)="valueOfDelete(product.nameProduct, product.id)"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteModal"><i style=" font-size: 1rem"
-                                                         class="fa-solid fa-trash"></i>
-                </button>
-                <button class="btn btn-outline-secondary" style="margin-left: 45px">
-                  <i style=" font-size: 1rem" class="fa-solid fa-pencil"></i>
-                </button>
-                <div *ngIf="product.quantity <= 5">
-                  <span class="card-notify-year-custom">x{{product.quantity}}</span>
-                </div>
-                <div *ngIf="product.quantity > 5">
-                  <span class="card-notify-year">x{{product.quantity}}</span>
-                </div>
-                <div>
-                  <input class="card-notify-year-checkbox" type="checkbox" value="{{product.id}}"
-                         [(ngModel)]="productList[i].checked">
-                </div>
+             *ngFor="let product of productList | paginate: { itemsPerPage: 8, currentPage: page + 1, totalItems: totalElements }, let i = index">
+
+          <div class="card w-90 bg-card mt-5" *ngIf="formProduct.valid">
+            <img src="{{product.imageUrl}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h4>{{product.nameProduct}}</h4>
+              <span class="card-detail-badge" style="font-size: 16px">{{product.prices | number}}<sup>vnd</sup></span>
+              <button class="btn btn-outline-secondary" style="float: right;"
+                      (click)="valueOfDelete(product.nameProduct, product.id)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#deleteModal" *ngIf="role === 'ADMIN' || role === 'EMPLOYEE'"><i
+                style="font-size: 1rem" class="fa-solid fa-xmark"></i>
+              </button>
+              <button class="btn btn-outline-secondary" style="margin-left: 45px"
+                      *ngIf="role === 'ADMIN' || role === 'EMPLOYEE'">
+                <i style=" font-size: 1rem" class="fa-solid fa-pencil"></i>
+              </button>
+              <div *ngIf="product.quantity <= 5 && (role === 'ADMIN' || role === 'EMPLOYEE')">
+                <span class="card-notify-year-custom">x{{product.quantity}}</span>
+              </div>
+              <div *ngIf="product.quantity > 5 && (role === 'ADMIN' || role === 'EMPLOYEE')">
+                <span class="card-notify-year">x{{product.quantity}}</span>
+              </div>
+              <div *ngIf="role === 'ADMIN' || role === 'EMPLOYEE'">
+                <input class="card-notify-year-checkbox" type="checkbox" value="{{product.id}}"
+                       [(ngModel)]="productList[i].checked" (click)="checkProduct(product.id)">
               </div>
             </div>
           </div>
         </div>
       </div>
-      <br>
-      <div *ngIf="productList.length !== 0">
-        <div style="float: right">
-          <button class="btn btn-outline-secondary" data-bs-toggle="modal"
-                  data-bs-target="#deleteAll" [disabled]="!isAllCheckBoxChecked()">Delete Selected Product
-          </button>
-        </div>
-      </div>
     </div>
-  </div>
-  <div class="col-md-1"></div>
-</div>
-<br>
-<div class="container">
-  <div class="col-md-1"></div>
-  <div class="col-md-10 d-flex">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
-      <div *ngIf="productList.length !== 0">
-        <div>
-          <pagination-controls (pageChange)="getPage($event)" style="float: right"></pagination-controls>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4"></div>
   </div>
   <div class="col-md-1"></div>
 </div>
 
+<!-- Khi không có sản phẩm nào-->
+<div class="container">
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-6 mx-5" *ngIf="productList.length === 0 || formProduct.invalid">
+      <img src="https://i.giphy.com/media/HTSsuRrErs54g1Tqr5/giphy.webp">
+      <br>
+      <br>
+      <p style="margin-left: 90px; font-size: 2rem">Không có sản phẩm nào</p>
+    </div>
+    <div class="col-3"></div>
+  </div>
+</div>
+<br>
+
+<!-- Phân trang-->
+<div class="container">
+  <div class="col-md-1"></div>
+  <div class="col-md-10 d-flex">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <div *ngIf="productList.length !== 0 && formProduct.valid && totalElements >= 8" style="margin-right: 30px">
+        <pagination-controls previousLabel="Trước"
+                             nextLabel="Sau" (pageChange)="getPage($event)"
+                             style="float: right">
+        </pagination-controls>
+      </div>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+
+<!-- Modal delete 1-->
 <div class="modal" id="deleteModal">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -101,8 +146,9 @@
         <p style="text-align: center; font-size: 1.5rem" class="modal-title w-100 text-center" id="name">Xóa
           dịch vụ</p>
       </div>
-      <p style="text-align: center; font-size: 20px">Bạn có muốn xóa dịch vụ <span
-        style="color: orangered">{{nameProduct}}</span> không?</p>
+      <ol style="width: 300px; margin-top: 10px">
+        <li style="color: #9a9a9a; font-size: 1.2rem">{{nameProduct}}</li>
+      </ol>
       <div class="modal-footer">
         <button type="button" class="btn btn-dark " data-bs-dismiss="modal">Đóng</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="delete()">
@@ -112,7 +158,7 @@
     </div>
   </div>
 </div>
-
+<!-- Modal delete all-->
 <div class="modal" id="deleteAll">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -120,8 +166,12 @@
         <p style="text-align: center; font-size: 1.5rem" class="modal-title w-100 text-center">Xóa
           dịch vụ</p>
       </div>
-      <p style="text-align: center; font-size: 20px">Bạn có muốn xóa dịch vụ
-      </p>
+      <ol style="width: 300px; margin-top: 10px">
+        <li style="color: #9a9a9a; font-size: 1.2rem"
+            *ngFor="let product of selectedNameProducts">
+          &nbsp;&nbsp;{{product.nameProduct}}
+        </li>
+      </ol>
       <div class="modal-footer">
         <button type="button" class="btn btn-dark " data-bs-dismiss="modal">Đóng</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteProductList()">
@@ -131,5 +181,4 @@
     </div>
   </div>
 </div>
-
 </body>

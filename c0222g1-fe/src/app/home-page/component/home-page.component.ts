@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Game} from "../../game/model/game";
 import {ToastrService} from "ngx-toastr";
 import {Title} from "@angular/platform-browser";
@@ -16,17 +16,21 @@ export class HomePageComponent implements OnInit {
   selectedName: string;
   game: Game;
   popularGames: Game[] = [];
-  top3Games: Game[] = [];
+  topCarouselGames: Game[] = [];
   newGames: Game[] = [];
   hotGames: Game[] = [];
-  isOpen = true;
+  editState = false;
+  playState = false;
+  progressWidth: number;
+  activeCarouselGameId: number;
+  activeCarouselUrl = '';
 
   constructor(private toastr: ToastrService,
               private title: Title,
               private homePageService: HomePageService,
               private activatedRoute: ActivatedRoute,
               private route: Router) {
-    this.title.setTitle('C02G1 | Trang chủ');
+    this.title.setTitle('C02G1');
   }
 
 
@@ -34,12 +38,18 @@ export class HomePageComponent implements OnInit {
     this.getAllPopularGames();
     this.getAllNewGames();
     this.getAllHotGames();
-    this.getTop3Games();
+    this.getCarouselGames();
+    this.checkRole();
+    this.changeProgress();
   }
 
-  getTop3Games() {
-    this.homePageService.getTop3Games(0).subscribe((games: any) => {
-      this.top3Games = games.content;
+  getCarouselGames() {
+    this.homePageService.getTopGames(0).subscribe((games: any) => {
+      if (games != null) {
+        this.topCarouselGames = games.content;
+        this.activeCarouselUrl = this.topCarouselGames[0].imageUrl;
+        this.activeCarouselGameId = this.topCarouselGames[0].id;
+      }
     });
   }
 
@@ -95,13 +105,60 @@ export class HomePageComponent implements OnInit {
   }
 
   getGameAndUpdate(id: number) {
-    console.log('dang bam')
-    this.homePageService.findById(id).subscribe(game => {
-      this.game = game;
-      this.game.playedTimes += 1;
-      this.updatePlayedTimes(id);
-    }, error => {
-      console.log('error')
-    });
+    if (this.playState == true) {
+      this.homePageService.findById(id).subscribe(game => {
+        this.game = game;
+        this.game.playedTimes += 1;
+        this.updatePlayedTimes(id);
+      }, error => {
+        console.log('error')
+      });
+    } else {
+      this.toastr.error("Bạn cần phải đăng nhập");
+    }
+  }
+
+  checkRole() {
+    if (sessionStorage.getItem('roles') == 'EMPLOYEE' || sessionStorage.getItem('roles') == 'ADMIN') {
+      this.editState = true;
+      this.playState = true;
+    }
+    if (sessionStorage.getItem('roles') == 'CUSTOMER') {
+      this.playState = true;
+      this.editState = false;
+    }
+  }
+
+  changeProgress() {
+    this.progressWidth = 0;
+    let index = 0;
+    setInterval(() => {
+      if (this.progressWidth != 100){
+        this.progressWidth += 0.5;
+      } else {
+        this.progressWidth = 0;
+        index += 1;
+        if (index != this.topCarouselGames.length){
+          this.activeCarouselUrl = this.topCarouselGames[index].imageUrl;
+          this.activeCarouselGameId = this.topCarouselGames[index].id;
+        } else {
+          index = 0;
+          this.activeCarouselUrl = this.topCarouselGames[index].imageUrl;
+          this.activeCarouselGameId = this.topCarouselGames[index].id;
+        }
+      }
+    }, 20);
+  }
+
+  enableProgress(i: number) {
+    if (this.activeCarouselUrl == this.topCarouselGames[i].imageUrl) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  playGame() {
+    this.getGameAndUpdate(this.activeCarouselGameId);
   }
 }

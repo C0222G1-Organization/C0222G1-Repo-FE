@@ -2,20 +2,29 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Payment} from '../model/payment';
-import {Customer} from '../../customer/model/customer';
 import {Record} from '../model/record';
+import {ReponseBody} from '../model/reponse-body';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentService {
   URL_API_PAYMENT = 'http://localhost:8080/payment';
+  URL_API_SEND_MAIL = 'http://localhost:8080/mail/send';
 
   constructor(private httpClient: HttpClient) {
   }
 
   getAllPayment(): Observable<Payment[]> {
     return this.httpClient.get<Payment[]>(this.URL_API_PAYMENT + '/list');
+  }
+
+  getAllPagePayment(page: number): Observable<Payment[]> {
+    return this.httpClient.get<Payment[]>(this.URL_API_PAYMENT + `/display?page=${page}`);
+  }
+
+  sendEmail(reponseBody: ReponseBody): Observable<string> {
+    return this.httpClient.post<string>(this.URL_API_SEND_MAIL, reponseBody);
   }
 
   getById(id: number): Observable<Payment> {
