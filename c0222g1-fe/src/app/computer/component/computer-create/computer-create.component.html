@@ -19,9 +19,8 @@
     </div>
 
     <div class="form-floating textbox mb-4">
-      <select class="form-select select input" aria-haspopup="true"
+      <select disabled class="form-select select input" aria-haspopup="true"
               id="status" formControlName="status" style="padding: 10px 15px 0 15px">
-        <option value="" class="option" style="height: 50px" disabled="">Chọn trạng thái</option>
         <option value="1" class="option" style="height: 50px">Bình thường</option>
       </select>
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('status').touched
@@ -144,12 +143,10 @@
       </div>
     </div>
 
-    <div class="">
       <div class="row mb-8 mt-4 ms-5 justify-content-center">
         <button type="button" class="btn btn-outline-light w-25" (click)="cancel()">Hủy bỏ</button>
         <button type="submit" class="btn btn-primary w-25 ms-3" [disabled]="formComputer.invalid">Thêm mới</button>
       </div>
-    </div>
   </form>
 </div>
 </body>

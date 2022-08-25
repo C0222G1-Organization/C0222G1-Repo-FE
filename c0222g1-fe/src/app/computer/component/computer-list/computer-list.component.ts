@@ -75,12 +75,12 @@ export class ComputerListComponent implements OnInit {
       value.end,
       value.status,
       value.typeId).subscribe((list: any) => {
+      this.size = list.size * this.page;
       this.computers = list.content;
       if (this.computers.length !== null) {
         this.computers = list.content;
         this.totalItems = list.totalElements;
         this.totalPages = list.totalPages;
-        this.reset();
       }
       this.isAllCheckBoxChecked();
     }, error => {
