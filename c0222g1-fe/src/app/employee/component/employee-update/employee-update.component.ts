@@ -36,9 +36,10 @@ export class EmployeeUpdateComponent implements OnInit {
   msg = '';
   selectedFile: File = null;
   checkImage = false;
+  check = true;
 
   employeeFormEdit = new FormGroup({
-      code: new FormControl(this.employee.code, [Validators.required, Validators.pattern('^EMP[0-9]{4}$')]),
+      code: new FormControl(this.employee.code, [Validators.required]),
       // tslint:disable-next-line:max-line-length
       name: new FormControl(this.employee.name, [Validators.required, Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$')]),
       email: new FormControl(this.employee.email, [Validators.required, Validators.email]),
@@ -49,7 +50,7 @@ export class EmployeeUpdateComponent implements OnInit {
       salary: new FormControl(this.employee.salary, [Validators.required, Validators.minLength(5), Validators.maxLength(10)]),
       startWork: new FormControl(this.employee.startWork, [Validators.required]),
       statusDelete: new FormControl(0, [Validators.required]),
-      image: new FormControl(this.employee.image, [Validators.required]),
+      image: new FormControl(this.employee.image),
       appUser: new FormGroup({
         username: new FormControl(this.appUser.username, Validators.required),
         // tslint:disable-next-line:max-line-length

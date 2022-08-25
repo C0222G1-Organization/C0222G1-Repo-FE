@@ -20,7 +20,7 @@ export class RemainingTimeComponent implements OnInit {
   endTime: Date;
   remainingTimeBackEnd = 0;
   data: Map<string, any> = new Map<string, any>();
-  loop = 0;
+  loop: any;
   countRequest = 1;
   remainingTimeRequest = 0;
 
@@ -83,7 +83,6 @@ export class RemainingTimeComponent implements OnInit {
         document.getElementById('remaining-time-days').innerText = this.remainingTimeDays + ' ngày ';
       }
       if (document.getElementById('remaining-time-hours') === null) {
-        alert(document.getElementById('remaining-time-hours'));
         clearInterval(this.loop);
       }
       document.getElementById('remaining-time-hours').innerText = this.remainingTimeHours;

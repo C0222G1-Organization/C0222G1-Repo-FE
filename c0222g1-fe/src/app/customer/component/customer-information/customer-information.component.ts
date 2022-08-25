@@ -148,6 +148,9 @@ export class CustomerInformationComponent implements OnInit {
       const id = sessionStorage.getItem('customerId');
       this.customerService.getCustomerByID(Number(id)).subscribe(value => {
           this.customer = value;
+          console.log(value);
+          console.log('value');
+          // alert(value.userName.userName);
           this.oldPassword = this.customer.password;
           this.customer.password = '';
           this.customerForm.patchValue(this.customer);
@@ -252,16 +255,17 @@ export class CustomerInformationComponent implements OnInit {
 
   checkEmail($event: Event) {
     this.isExitsEmail = false;
-    if (String($event) === '') {
+    if (String($event) === '' || String($event) === this.customer.email.email) {
       this.isExitsEmail = false;
-    }
-    this.customerService.checkEmail(String($event)).subscribe(
-      value => {
-        if (value) {
-          this.isExitsEmail = true;
+    } else {
+      this.customerService.checkEmail(String($event)).subscribe(
+        value => {
+          if (value) {
+            this.isExitsEmail = true;
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   /**
@@ -394,6 +398,7 @@ export class CustomerInformationComponent implements OnInit {
         this.content = '';
         this.matchOldPass = undefined;
         this.isEditPassword = false;
+        this.checkToSave = false;
       }, error => {
         this.toast.error('Cập nhật không thành công.');
         if (error.error.email !== undefined) {
@@ -417,6 +422,7 @@ export class CustomerInformationComponent implements OnInit {
           this.matchOldPass = true;
           this.checkToSave = false;
           this.openPasswordToEdit = false;
+          this.content = this.fakePassword;
         } else {
           this.matchOldPass = false;
           this.checkToSave = false;

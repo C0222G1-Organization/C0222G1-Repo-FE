@@ -211,6 +211,7 @@ export class EmployeeListComponent implements OnInit {
     this.size = 5 * (page - 1);
     this.page = page - 1;
     this.getAll();
+
   }
 
   checkEmployee(id: number) {

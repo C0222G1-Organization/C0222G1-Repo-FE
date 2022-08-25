@@ -28,6 +28,8 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   checkExist = false;
   deleteProduct: any;
   quantity = 0;
+  selectId = 0;
+  categorySelectId = 0;
 
   imageSrc = '../../../../assets/img/img-login/banner-login.png';
 
@@ -47,6 +49,13 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   getProductCategoryList() {
     this.productService.findAllProductCategory().subscribe(value => {
       this.productCategoryList = value;
+      for (let i = 0; i - 1 < this.productCategoryList.length - 1; i++) {
+        if (this.productCategoryList[i].name === 'Dịch vụ khác') {
+          this.categorySelectId = this.productCategoryList[i].id;
+          this.getProductOptionList(this.categorySelectId);
+        }
+      }
+
     });
   }
 
@@ -54,6 +63,12 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
     this.productService.findAllProductForOrder().subscribe((value: any) => {
       if (value != null) {
         this.productList = value;
+        for (let i = 0; i - 1 < this.productList.length - 1; i++) {
+          if (this.productList[i].nameProduct === 'Giờ chơi') {
+            this.selectId = this.productList[i].id;
+            this.getProductById(this.selectId);
+          }
+        }
       }
     }, error => {
       console.log('ERROR AT GET LIST PRODUCT BY CATEGORY ID');
@@ -84,6 +99,7 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
           this.checkExist = false;
           this.resetValue();
           this.getAllProductForOrder();
+          this.getProductCategoryList();
         }
       } else {
         this.toast.error('Cần nhập số dương.');
@@ -180,7 +196,7 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
         };
         this.paymentDetailService.savePaymentDetail(paymentDetail).subscribe(value1 => {
           if (i === this.orderProductList.length - 1) {
-            this.route.navigateByUrl('/display/' + value.id);
+            this.route.navigateByUrl('/payment/' + value.id);
           }
         });
       }
