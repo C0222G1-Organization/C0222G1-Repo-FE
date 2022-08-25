@@ -31,6 +31,10 @@ import { ServerErrorComponent } from './common-component/server-error/server-err
 import { NotFoundComponent } from './common-component/not-found/not-found.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import { RemainingTimeComponent } from './common-component/remaining-time/remaining-time.component';
+import { AboutUsComponent } from './common-component/footer/about-us/about-us.component';
+import { LinkComponent } from './common-component/footer/link/link.component';
+import { JobsComponent } from './common-component/footer/jobs/jobs.component';
+import { LicenseComponent } from './common-component/footer/license/license.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +45,10 @@ import { RemainingTimeComponent } from './common-component/remaining-time/remain
     ServerErrorComponent,
     NotFoundComponent,
     RemainingTimeComponent,
+    AboutUsComponent,
+    LinkComponent,
+    JobsComponent,
+    LicenseComponent,
   ],
   imports: [
     BrowserModule,

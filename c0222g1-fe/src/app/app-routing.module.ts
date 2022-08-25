@@ -13,10 +13,26 @@ import {StatisticRoutingModule} from './statistic/statistic-routing.module';
 import {ServerErrorComponent} from './common-component/server-error/server-error.component';
 import {NotFoundComponent} from './common-component/not-found/not-found.component';
 import {ProductRoutingModule} from './product/product-routing.module';
+import {AboutUsComponent} from "./common-component/footer/about-us/about-us.component";
+import {LinkComponent} from "./common-component/footer/link/link.component";
+import {JobsComponent} from "./common-component/footer/jobs/jobs.component";
+import {LicenseComponent} from "./common-component/footer/license/license.component";
 
 const routes: Routes = [
   {
     path: '500', component: ServerErrorComponent
+  },
+  {
+    path: 'about-us', component: AboutUsComponent
+  },
+  {
+    path: 'link', component: LinkComponent
+  },
+  {
+    path: 'jobs', component: JobsComponent
+  },
+  {
+    path: 'license', component: LicenseComponent
   },
   {path: '**', component: NotFoundComponent},
   {
