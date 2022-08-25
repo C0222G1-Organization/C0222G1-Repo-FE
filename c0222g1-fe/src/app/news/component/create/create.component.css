@@ -5,6 +5,10 @@
   text-decoration: none;
 }
 
+.header {
+  margin-bottom: 0 !important;
+}
+
 a:hover {
   cursor: pointer;
 }
@@ -484,4 +488,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   bottom: 0;
   margin-top: auto;
   margin-bottom: auto;
+}
+
+.spinner-modal {
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.load {
+  margin: auto 0;
 }

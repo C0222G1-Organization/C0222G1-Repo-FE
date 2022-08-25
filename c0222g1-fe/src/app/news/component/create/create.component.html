@@ -1,21 +1,25 @@
+<div *ngIf="checkmodal" class="w-100 spinner-modal h-100 position-fixed">
+  <div class="load mx-auto spinner-border text-light spinner position-absolute" role="status"></div>
+</div>
 <div class="container-fluid d-flex justify-content-center p-0 bg">
   <div class="container m-0 w-100">
-      <form [formGroup]="formNews" class="rounded col-lg-10 mx-auto px-4 pb-4">
+      <form #localForm="ngForm" (ngSubmit)="create()" [formGroup]="formNews" class="rounded col-lg-10 mx-auto px-4 pb-4">
           <div class=" mt-3">
             <h5 class="text-center text-light font-weight-bold pt-4">THÊM TIN TỨC</h5>
           </div>
-          <div class="row mt-4">
-            <div class="col-lg-6 px-3">
+          <div class="row ">
+            <div class="col-lg-6 px-3 mt-2">
               <div class="form-floating textbox">
                 <input formControlName="title" type="text" class="form-control input input-text" id="title" placeholder="tên game" (keydown.enter)="create()">
                 <label for="title" class="text-light">Tiêu đề:<span class="text-danger"> *</span></label>
               </div>
+<!--              <div class="form-text text-danger mt-1 px-2 invalid-feedback">Nhập tiêu đề.</div>-->
               <div *ngIf="formNews.controls.title.hasError('required') && formNews.controls.title.touched" class="form-text text-danger mt-1 px-2">Nhập tiêu đề.</div>
               <div *ngIf="formNews.controls.title.hasError('minlength') && formNews.controls.title.dirty" class="form-text text-danger mt-1 px-2">Tiêu đề quá ngắn.</div>
               <div *ngIf="formNews.controls.title.hasError('maxlength') && formNews.controls.title.dirty" class="form-text text-danger mt-1 px-2">Tiêu đề quá dài.</div>
+
             </div>
-<!--            && formNews.controls.title.hasError('minlength') == false && formNews.controls.title.hasError('maxlength') == false-->
-            <div class="col-lg-6 px-3">
+            <div class="col-lg-6 px-3 mt-2">
               <div class="form-floating textbox ">
                 <input formControlName="author" type="text" class="form-control input" id="author" placeholder="tên game" (keydown.enter)="create()">
                 <label for="author" class="text-light">Tác giả:<span class="text-danger"> *</span></label>
@@ -34,11 +38,11 @@
         <div class="row mt-4">
             <div class="col-lg-12 px-3">
               <div class=" m-0">
-              <input (keydown.enter)="create()" (click)="checkImage()" accept="image/png, image/jpeg" type="file" (change)="selectFile($event)" #userPhoto (change)="onFileSelected($event)" id="upload" hidden>
+              <input (click)="setRequiredImg()" (keydown.enter)="create()" accept="image/png, image/jpeg" type="file" #userPhoto (change)="onFileSelected($event)" id="upload" hidden>
               <label class="input-img w-100 rounded" for="upload">Hình ảnh:<span class="text-danger"> *</span></label>
-                <div *ngIf="checkImgSize == true" class="form-text text-danger mt-1 px-2">Kích thước ảnh quá lớn.</div>
-                <div *ngIf="checkImg == true && checkImgSize == false && regexImg == false" class="form-text text-danger mt-1 px-2">Chọn ảnh.</div>
-                <div *ngIf="regexImg == true && checkImgSize == false" class="form-text text-danger mt-1 px-2">Sai định dạng ảnh.</div>
+                <div *ngIf="checkImgSize" class="form-text text-danger mt-1 px-2">Kích thước ảnh quá lớn.</div>
+                <div *ngIf="checkImg && !checkImgSize && !regexImg" class="form-text text-danger mt-1 px-2">Chọn ảnh.</div>
+                <div *ngIf="regexImg" class="form-text text-danger mt-1 px-2">Sai định dạng ảnh.</div>
               </div>
             </div>
           </div>
@@ -63,17 +67,18 @@
               </div>
             </div>
             </div>
-        <div class="row mt-4">
-          <div class="col-lg-6 px-3">
+        <div class="row ">
+          <div class="col-lg-6 px-3 mt-4">
             <div class="form-floating">
               <button type="button" routerLink="/news" class="button w-100 h-100 rounded text-light">Trở về</button>
             </div>
           </div>
-          <div class="col-lg-6 px-3 position-relative">
-            <button [disabled]="!check" (click)="create()"  type="button" class="button-primary w-100 rounded position-absolute text-light">Đăng bài</button>
-            <div *ngIf="!check" class="spinner-border text-light spinner position-absolute" role="status"></div>
+          <div class="col-lg-6 px-3 mt-4">
+            <button type="submit" class="button-primary w-100 rounded text-light">Đăng bài</button>
           </div>
         </div>
       </form>
   </div>
 </div>
+
+

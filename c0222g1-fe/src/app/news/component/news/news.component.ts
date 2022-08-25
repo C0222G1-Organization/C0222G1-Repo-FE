@@ -32,16 +32,15 @@ export class NewsComponent implements OnInit {
   getAllTopNews() {
     this.newsService.getAllNews(0, this.searchTitle).subscribe((value: any) => {
         this.topNews = value.content;
-        console.log(this.topNews);
       }
     );
   }
 
   getAllNews() {
-    this.newsService.getAllNews(0, this.searchTitle).subscribe((value: any) => {
-      this.listNews = value.content;
-      this.totalItems = value.totalElements;
-      console.log(this.listNews);
+    this.newsService.getAllNews(this.page, this.searchTitle).subscribe((value: any) => {
+        this.listNews = value.content;
+        this.totalItems = value.totalElements;
+        console.log(this.page);
       }
     );
   }
@@ -51,15 +50,17 @@ export class NewsComponent implements OnInit {
     page = page - 1;
     this.newsService.getAllNews(page, this.searchTitle).subscribe((value: any) => {
       this.listNews = value.content;
-      console.log(value);
+      console.log('phân trang' + this.page);
       this.totalItems = value.totalElements;
     });
   }
 
   updateViews(id) {
     this.newsService.updateViews(id).subscribe(
-      value => {},
-      error => {},
+      value => {
+      },
+      error => {
+      },
       () => {
         this.route.navigateByUrl(`news/detail/${id}`);
       }
@@ -67,24 +68,30 @@ export class NewsComponent implements OnInit {
   }
 
   search() {
+    if (this.page > 0) {
+      this.page = 0;
+    }
     this.searchTitle = this.searchTitle.trim();
     if (this.searchTitle === '') {
-          this.getAllNews();
-          return;
-        }
+      this.getAllNews();
+      return;
+    }
     this.newsService.getAllNews(0, this.searchTitle).subscribe((value: any) => {
         this.listNews = value.content;
         this.totalItems = value.totalElements;
+        if (value.content == null) {
+          this.toastr.success('không tìm thấy kết quả');
+        }
         console.log(this.listNews);
-      }
+      },
     );
   }
 
   checkRole() {
-    if (localStorage.getItem('roles') === 'EMPLOYEE' || localStorage.getItem('roles') == 'ADMIN') {
+    if (sessionStorage.getItem('roles') === 'EMPLOYEE' || sessionStorage.getItem('roles') === 'ADMIN') {
       this.createState = true;
     }
-    if (localStorage.getItem('roles') === 'CUSTOMER') {
+    if (sessionStorage.getItem('roles') === 'CUSTOMER') {
       this.createState = false;
     }
   }

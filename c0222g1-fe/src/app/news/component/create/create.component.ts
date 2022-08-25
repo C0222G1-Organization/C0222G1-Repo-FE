@@ -9,7 +9,6 @@ import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {Title} from '@angular/platform-browser';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import BackgroundColor from 'ckeditor5-background-color/src/backgroundcolor';
 
 @Component({
   selector: 'app-create',
@@ -21,7 +20,7 @@ export class CreateComponent implements OnInit {
   checkImg: boolean;
   regexImg = false;
   public Editor = ClassicEditor;
-  check = true;
+  checkmodal = false;
 
   constructor(private newsService: NewsService,
               private storage: AngularFireStorage,
@@ -40,8 +39,10 @@ export class CreateComponent implements OnInit {
     createDate: new FormControl(this.getCurrentDateTime()),
     views: new FormControl(0),
     author: new FormControl('', [Validators.required,
-      // tslint:disable-next-line:max-line-length
-      Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$'),
+      Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]' +
+        '[a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ]' +
+        '[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]' +
+        '[a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$'),
       Validators.minLength(2), Validators.maxLength(50)]),
     gameCategory: new FormControl('', [Validators.required])
   });
@@ -55,26 +56,25 @@ export class CreateComponent implements OnInit {
     );
   }
 
-
-
   onFileSelected(event) {
-    this.regexImg = false;
     if (event.target.files[0].size > 9000000) {
+      this.checkImgSize = true;
       return;
     }
-    this.selectedFile = event.target.files[0];
-    if (!event.target.files[0].name.match('^.*\\.(jpg|JPG)$')) {
+    if (!event.target.files[0].name.match('^.*\\.(jpg|JPG|png|PNG)$')) {
       this.regexImg = true;
       return;
     }
+    this.selectedFile = event.target.files[0];
     this.formNews.patchValue({imageUrl: this.selectedFile.name});
+    this.selectFile();
   }
 
   create() {
-    this.check = false;
+    this.checkmodal = true;
     if (this.formNews.invalid) {
       this.toastr.error('Nhập đầy đủ thông tin.');
-      this.check = true;
+      this.checkmodal = false;
       return;
     }
     const nameImg = this.getCurrentDateTime() + this.selectedFile.name;
@@ -93,12 +93,12 @@ export class CreateComponent implements OnInit {
             },
             error => {
               this.toastr.error('Đăng bài thất bại, hãy thử lại.');
+              this.checkmodal = false;
             }
           );
         });
       })
     ).subscribe();
-
   }
 
 
@@ -106,23 +106,15 @@ export class CreateComponent implements OnInit {
     return formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss', 'en-US');
   }
 
-  //
-
-  selectFile(event: any) {
-    if (!event.target.files[0] || event.target.files[0].length === 0) {
-      return;
-    }
-    if (event.target.files[0].size > 9000000) {
-      this.checkImgSize = true;
-      return;
-    }
-    if (!event.target.files[0].name.match('^.*\\.(jpg|JPG)$')) {
+  selectFile() {
+    if (!this.selectedFile || this.selectedFile.name === '') {
       return;
     }
     this.checkImgSize = false;
     this.checkImg = false;
+    this.regexImg = false;
 
-    const mimeType = event.target.files[0].type;
+    const mimeType = this.selectedFile.type;
 
     if (mimeType.match(/image\/*/) == null) {
       this.msg = 'Only images are supported';
@@ -130,7 +122,7 @@ export class CreateComponent implements OnInit {
     }
 
     const reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
+    reader.readAsDataURL(this.selectedFile);
 
     // tslint:disable-next-line:variable-name
     reader.onload = (_event) => {
@@ -139,10 +131,9 @@ export class CreateComponent implements OnInit {
     };
   }
 
-  checkImage() {
-    if (!this.selectedFile || this.selectedFile.name === '') {
+  setRequiredImg() {
+    setTimeout(() => {
       this.checkImg = true;
-      return;
-    }
+    }, 1000);
   }
 }
