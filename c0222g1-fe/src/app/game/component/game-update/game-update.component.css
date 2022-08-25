@@ -460,3 +460,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .preview-img {
   width: 100%;
 }
+.spinner {
+  left: 0;
+  right: 0;
+  margin-left: 20em;
+  margin-right: auto;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+}

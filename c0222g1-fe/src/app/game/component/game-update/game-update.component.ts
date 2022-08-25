@@ -30,7 +30,7 @@ export class GameUpdateComponent implements OnInit {
   imageUrl = '';
   checkImg: boolean;
   checkImgSize = false;
-  check: boolean;
+  check = true;
   regexImageUrl = false;
   isExitsGameName = false;
   gameCategory: GameCategory[];
@@ -134,6 +134,12 @@ export class GameUpdateComponent implements OnInit {
   }
 
   submit() {
+    this.check = false;
+    if (this.gameForm.invalid) {
+      this.toastr.error('Nhập đầy đủ thông tin!');
+      this.check = true;
+      return;
+    }
     if (this.selectedFile !== null) {
       const imageUrl = this.getCurrentDateTime() + this.selectedFile.name;
       const filePath = `game/${imageUrl}`;
@@ -150,7 +156,8 @@ export class GameUpdateComponent implements OnInit {
                 this.toastr.success('Chỉnh sửa thàng công.');
               },
               error => {
-                this.toastr.error('Chỉnh sửa thất bại thất bại, hãy thử lại.');
+                this.check = true;
+                this.toastr.error('Chỉnh sửa thất bại thất bại, hãy thử lại!');
               }
             );
           });
@@ -163,7 +170,7 @@ export class GameUpdateComponent implements OnInit {
           this.toastr.success('Chỉnh sửa thàng công.');
         },
         error => {
-          this.toastr.error('Chỉnh sửa thất bại thất bại, hãy thử lại.');
+          this.toastr.error('Chỉnh sửa thất bại thất bại, hãy thử lại!.');
         }
       );
     }
