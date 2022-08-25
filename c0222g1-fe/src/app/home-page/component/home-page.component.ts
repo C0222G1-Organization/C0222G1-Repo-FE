@@ -95,12 +95,12 @@ export class HomePageComponent implements OnInit {
 
   updatePlayedTimes(id: number) {
     this.homePageService.updateGame(id, this.game).subscribe(res => {
-      this.toastr.success("Đang khởi động game");
+      this.toastr.success("Đang tải game");
       this.getAllHotGames();
       this.getAllNewGames();
       this.getAllPopularGames();
     }, error => {
-      this.toastr.error("Khởi động thất bại");
+      this.toastr.error("Bạn cần đăng nhập");
     })
   }
 
@@ -119,11 +119,11 @@ export class HomePageComponent implements OnInit {
   }
 
   checkRole() {
-    if (sessionStorage.getItem('roles') == 'EMPLOYEE' || sessionStorage.getItem('roles') == 'ADMIN') {
+    if (localStorage.getItem('roles') == 'EMPLOYEE' || localStorage.getItem('roles') == 'ADMIN') {
       this.editState = true;
       this.playState = true;
     }
-    if (sessionStorage.getItem('roles') == 'CUSTOMER') {
+    if (localStorage.getItem('roles') == 'CUSTOMER') {
       this.playState = true;
       this.editState = false;
     }

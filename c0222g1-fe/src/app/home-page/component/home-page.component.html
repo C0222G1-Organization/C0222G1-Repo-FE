@@ -1,12 +1,12 @@
 <div class="container-fluid">
   <div class="container">
     <!--   carousel-->
-    <div class="row mb-2">
+    <div *ngIf="topCarouselGames.length != 0" class="row mb-2">
       <div class="col-xl-9 col-lg-12 col-md-12 col-sm-12">
         <div class="row">
           <div class="container-img-carousel">
             <img [src]="activeCarouselUrl" class="d-block image-carousel" alt="...">
-            <button (click)="playGame()" class="btn-image-carousel">Chơi ngay</button>
+            <button (click)="playGame()" class="btn-image-carousel">Tải ngay</button>
           </div>
         </div>
       </div>
@@ -15,7 +15,7 @@
           <div class="row mb-4" *ngFor="let game of topCarouselGames; index as i" routerLink="games/detail/{{game.id}}"
                style="cursor: pointer">
             <div class="row progress-main position-relative">
-              <div class="row position-absolute  card-game-main">
+              <div class="row position-absolute card-game-main">
                 <div class="col-8">
                   <div class="row">
                     <img [src]="game.imageUrl" class="top-game-image" alt="...">
@@ -26,6 +26,15 @@
                     <p class="text-white">{{game.name}}</p>
                   </div>
                 </div>
+              </div>
+              <div *ngIf="i == 0" class="top-game-img-container d-flex justify-content-end">
+                <img src="assets/img/top-game/top-1.png" width="70"/>
+              </div>
+              <div *ngIf="i == 1" class="top-game-img-container d-flex justify-content-end">
+                <img src="assets/img/top-game/top-2.png" width="70"/>
+              </div>
+              <div *ngIf="i == 2" class="top-game-img-container d-flex justify-content-end">
+                <img src="assets/img/top-game/top-3.png" width="70"/>
               </div>
               <div class="progress-bar-main" *ngIf="enableProgress(i)" [ngStyle]="{'width': progressWidth + '%'}"
                    aria-valuenow="25"
@@ -66,8 +75,8 @@
             </div>
             <div class="row">
               <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
-                                                            class="btn-second btn-sm">Chơi</button>
-                {{ game.playedTimes}} lượt chơi</span>
+                                                            class="btn-second btn-sm">Tải</button>
+                {{ game.playedTimes}} lượt Tải</span>
             </div>
           </div>
         </div>
@@ -102,8 +111,8 @@
             </div>
             <div class="row">
               <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
-                                                            class="btn-second btn-sm">Chơi</button>
-                {{ game.playedTimes}} lượt chơi</span>
+                                                            class="btn-second btn-sm">Tải</button>
+                {{ game.playedTimes}} lượt Tải</span>
             </div>
           </div>
         </div>
@@ -139,8 +148,8 @@
               </div>
               <div class="row">
               <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
-                                                            class="btn-second btn-sm">Chơi</button>
-                {{ game.playedTimes}} lượt chơi</span>
+                                                            class="btn-second btn-sm">Tải</button>
+                {{ game.playedTimes}} lượt Tải</span>
               </div>
             </div>
           </div>
@@ -170,3 +179,4 @@
       </div>
     </div>
   </div>
+</div>
