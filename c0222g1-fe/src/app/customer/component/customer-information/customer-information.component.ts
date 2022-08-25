@@ -13,7 +13,6 @@ import {isDate} from 'rxjs/internal-compatibility';
 import {AuthService} from '../../../authentication/service/auth.service';
 import {CustomValidators} from './custom-validators';
 import {UpdateCustomer} from '../../model/update-customer';
-
 @Component({
   selector: 'app-customer-information',
   templateUrl: './customer-information.component.html',
@@ -23,15 +22,17 @@ export class CustomerInformationComponent implements OnInit {
   content = '';
   oldPassword: string;
   fakePassword = 'zxcxzczxczc!@!@#132';
+  oldPasswordToEdit: string;
+  isEditPassword = false;
+  matchOldPass: boolean;
+  openPasswordToEdit: boolean;
   isExitsEmail = false;
   isExitsPhone = false;
   inputType: string;
   confirmInputType: string;
   typePassword = false;
   typeConfirmPassword = false;
-  hour: any;
-  minutes: any;
-
+  checkToSave = false;
   endTimeMillisecs: any;
   cDateMillisecs: any;
   currentDate: any;
@@ -43,7 +44,6 @@ export class CustomerInformationComponent implements OnInit {
   loop: any;
   countRequest = 1;
   endTime: Date;
-
   customer: UpdateCustomerDto = {
     id: 0,
     name: '',
@@ -80,7 +80,6 @@ export class CustomerInformationComponent implements OnInit {
   districtList: District[];
   communeList: Commune[];
   customerForm: FormGroup;
-
   constructor(private activatedRoute: ActivatedRoute,
               private route: Router,
               private customerService: CustomerService,
@@ -90,15 +89,12 @@ export class CustomerInformationComponent implements OnInit {
               private authService: AuthService) {
     this.title.setTitle('Thông tin cá nhân');
   }
-
-
   ngOnInit(): void {
     this.loadInfoCustomer();
     this.endTime = this.convertStringToDate(localStorage.getItem('startTime'));
     this.endTime.setSeconds(this.endTime.getSeconds() + Number(localStorage.getItem('remainingTime')));
     this.countDownDate();
   }
-
   /**
    * Create by: DuyNT
    * Date Create: 11/08/2022
@@ -122,6 +118,8 @@ export class CustomerInformationComponent implements OnInit {
         userName: new FormControl('', Validators.required)
       }),
       // tslint:disable-next-line:max-line-length
+      oldPassword: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,50}'), Validators.required]),
+      // tslint:disable-next-line:max-line-length
       password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,50}'), Validators.required]),
       // tslint:disable-next-line:max-line-length
       confirmPassword: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,50}'), Validators.required]),
@@ -143,6 +141,9 @@ export class CustomerInformationComponent implements OnInit {
       const id = localStorage.getItem('customerId');
       this.customerService.getCustomerByID(Number(id)).subscribe(value => {
           this.customer = value;
+          console.log(value);
+          console.log('value');
+          // alert(value.userName.userName);
           this.oldPassword = this.customer.password;
           this.customer.password = '';
           this.customerForm.patchValue(this.customer);
@@ -164,33 +165,6 @@ export class CustomerInformationComponent implements OnInit {
         });
     }
   }
-
-  onsubmit() {
-    const customerDTO: UpdateCustomer = this.customerForm.value;
-    if (this.customerForm.value.password === '') {
-      customerDTO.password = this.fakePassword;
-    }
-    customerDTO.id = this.customer.id;
-    console.log('DTO');
-    console.log(customerDTO);
-    this.customerService.updateCustomerInfo(this.customer.id, customerDTO).subscribe(res => {
-      this.loadInfoCustomer();
-      this.toast.success('Cập nhật thành công!');
-      this.content = '';
-    }, error => {
-      this.toast.error('Cập nhật không thành công!');
-      if (error.error.email !== undefined) {
-        this.toast.error(error.error.email);
-      }
-      if (error.error.userName !== undefined) {
-        this.toast.error(error.error.userName);
-      }
-      if (error.error.phoneNumber !== undefined) {
-        this.toast.error(error.error.phoneNumber);
-      }
-    });
-  }
-
   private check16Age(abstractControl: AbstractControl): any {
     if (abstractControl.value !== '') {
       const today = new Date();
@@ -205,7 +179,6 @@ export class CustomerInformationComponent implements OnInit {
       return {noneValue: true};
     }
   }
-
   checkDateNotExist(abstractControl: AbstractControl) {
     if (abstractControl.value !== '') {
       const v = abstractControl.value;
@@ -217,7 +190,6 @@ export class CustomerInformationComponent implements OnInit {
       return {dateNotExist: false};
     }
   }
-
   checkPhone($event: Event) {
     this.customerService.checkPhone(String($event)).subscribe(
       value => {
@@ -229,17 +201,13 @@ export class CustomerInformationComponent implements OnInit {
     if (String($event) === '') {
       this.isExitsPhone = false;
     }
-    console.log(this.isExitsPhone);
   }
-
   getPhone() {
     return this.customerForm.get('phoneNumber').get('phone');
   }
-
   getEmail() {
     return this.customerForm.get('email').get('email');
   }
-
   getDistrictList($event: Event) {
     // @ts-ignore
     if ($event === '') {
@@ -259,59 +227,53 @@ export class CustomerInformationComponent implements OnInit {
         });
     }
   }
-
   getCommuneList($event: Event) {
-    console.log($event);
     // @ts-ignore
     if ($event === '') {
       this.communeList = [];
     } else {
       this.customerService.getAllCommune(Number($event)).subscribe(
         value => {
-          console.log('value');
-          console.log(value);
           this.communeList = value;
-          console.log('commune list');
-          console.log(this.communeList);
         });
     }
   }
-
   checkEmail($event: Event) {
     this.isExitsEmail = false;
-    if (String($event) === '') {
+    if (String($event) === '' || String($event) === this.customer.email.email) {
       this.isExitsEmail = false;
-    }
-    this.customerService.checkEmail(String($event)).subscribe(
-      value => {
-        if (value) {
-          this.isExitsEmail = true;
+    } else {
+      this.customerService.checkEmail(String($event)).subscribe(
+        value => {
+          if (value) {
+            this.isExitsEmail = true;
+          }
         }
-      }
-    );
+      );
+    }
   }
-
   /**
    * Create by: DuyNT
    * Date Create: 11/08/2022
    * function: active edit on each input item
    */
   activeEdit(item: any) {
+    if (item === this.fakePassword) {
+      this.isEditPassword = true;
+    }
+    this.openPasswordToEdit = true;
     this.typePassword = true;
     this.typeConfirmPassword = true;
-    console.log(item);
     this.content = item;
     this.setType();
     this.setConfirmType();
   }
-
   /**
    * Create by: DuyNT
    * Date Create: 11/08/2022
    * function: set type to show or hidden password
    */
   setType() {
-    console.log(this.typePassword);
     this.typePassword = !this.typePassword;
     if (this.typePassword === false) {
       this.inputType = 'password';
@@ -319,14 +281,12 @@ export class CustomerInformationComponent implements OnInit {
       this.inputType = 'text';
     }
   }
-
   /**
    * Create by: DuyNT
    * Date Create: 11/08/2022
    * function: set type to show or hidden confirm password
    */
   setConfirmType() {
-    console.log(this.typeConfirmPassword);
     this.typeConfirmPassword = !this.typeConfirmPassword;
     if (this.typeConfirmPassword === false) {
       this.confirmInputType = 'password';
@@ -334,7 +294,6 @@ export class CustomerInformationComponent implements OnInit {
       this.confirmInputType = 'text';
     }
   }
-
   convertStringToDate(dateString: string): Date {
     const [timeComponents, dateComponents] = dateString.split(' ');
     const [day, month, year] = dateComponents.split('-');
@@ -342,7 +301,6 @@ export class CustomerInformationComponent implements OnInit {
     const date = new Date(+year, +month - 1, +day, +hours, +minutes, +seconds);
     return date;
   }
-
   countDownDate() {
     this.loop = setInterval(() => {
       this.currentDate = new Date();
@@ -353,15 +311,12 @@ export class CustomerInformationComponent implements OnInit {
       this.minutess = Math.floor(this.secondss / 60);
       this.hourss = Math.floor(this.minutess / 60);
       this.dayss = Math.floor(this.hourss / 24);
-
       this.hourss %= 24;
       this.minutess %= 60;
       this.secondss %= 60;
-
       this.hourss = this.hourss < 10 ? '0' + this.hourss : this.hourss;
       this.minutess = this.minutess < 10 ? '0' + this.minutess : this.minutess;
       this.secondss = this.secondss < 10 ? '0' + this.secondss : this.secondss;
-
       if (this.difference < 1000) {
         clearInterval(this.loop);
         localStorage.removeItem('token');
@@ -378,9 +333,7 @@ export class CustomerInformationComponent implements OnInit {
           this.route.navigate(['']);
         });
       }
-
       if (this.countRequest >= 10) {
-
         localStorage.setItem('remainingTime', String(Math.trunc(this.difference / 1000)));
         this.authService.setOutOfTime(Number(localStorage.getItem('customerId')), Math.trunc(this.difference / 1000)).subscribe(value => {
           // this.toartrs.success('đã update remaining time với server');
@@ -391,8 +344,78 @@ export class CustomerInformationComponent implements OnInit {
       } else {
         this.countRequest++;
       }
-
     }, 1000);
   }
-
+  onsubmit() {
+    this.checkBeforeSaving();
+    if (this.customerForm.value.password !== '' && this.customerForm.value.password === this.customerForm.value.confirmPassword) {
+      this.checkToSave = true;
+    }
+    if (this.checkToSave) {
+      const customerDTO: UpdateCustomer = this.customerForm.value;
+      if (this.customerForm.value.password === '') {
+        customerDTO.password = this.fakePassword;
+      }
+      customerDTO.id = this.customer.id;
+      this.customerService.updateCustomerInfo(this.customer.id, customerDTO).subscribe(res => {
+        if (this.isEditPassword === true && this.customerForm.value.oldPassword === '') {
+          this.toast.success('Giữ nguyên mật khẩu cũ.');
+        } else if (this.isEditPassword === true && this.customerForm.value.password === '') {
+          this.toast.success('Giữ nguyên mật khẩu cũ.');
+        } else {
+          this.toast.success('Cập nhật thành công.');
+        }
+        this.loadInfoCustomer();
+        this.openPasswordToEdit = false;
+        this.content = '';
+        this.matchOldPass = undefined;
+        this.isEditPassword = false;
+        this.checkToSave = false;
+      }, error => {
+        this.toast.error('Cập nhật không thành công.');
+        if (error.error.email !== undefined) {
+          this.toast.error(error.error.email);
+        }
+        if (error.error.userName !== undefined) {
+          this.toast.error(error.error.userName);
+        }
+        if (error.error.phoneNumber !== undefined) {
+          this.toast.error(error.error.phoneNumber);
+        }
+      });
+    }
+  }
+  checkOldPassword(oldPassword: any) {
+    this.oldPasswordToEdit = oldPassword;
+    if (oldPassword !== '') {
+      this.customerService.checkMatchesPassword(this.oldPasswordToEdit, this.customer.id).subscribe(result => {
+        if (result) {
+          this.matchOldPass = true;
+          this.checkToSave = false;
+          this.openPasswordToEdit = false;
+          this.content = this.fakePassword;
+        } else {
+          this.matchOldPass = false;
+          this.checkToSave = false;
+        }
+      });
+    } else {
+      this.checkToSave = true;
+    }
+  }
+  checkBeforeSaving() {
+    if (this.customerForm.value.oldPassword !== '') {
+      this.checkOldPassword(this.customerForm.value.oldPassword);
+      if (this.checkToSave === false) {
+        return true;
+      }
+    } else if (this.customerForm.value.oldPassword === '') {
+      this.checkToSave = true;
+    }
+    if (this.customerForm.value.password !== '' && this.customerForm.value.password === this.customerForm.value.confirmPassword) {
+      this.checkToSave = true;
+    } else if (this.customerForm.value.password === '' && this.customerForm.value.password === this.customerForm.value.confirmPassword) {
+      this.checkToSave = true;
+    }
+  }
 }
