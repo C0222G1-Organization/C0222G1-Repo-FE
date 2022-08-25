@@ -2,7 +2,16 @@
   <div class="h-auto w-auto ml-1 mr-1" style="border-radius: 10px; background-color: #2a2a2a; margin: 10% 0">
     <h1 class="text-center text-white pt-4 pb-4" style="font-family: 'Roboto', sans-serif;">THÔNG TIN THANH TOÁN</h1>
     <div class="table-container">
-      <p class="text-white" style="text-align: right ;font-weight: bold; font-size: 13px; font-style: italic">Đơn vị tính: VND</p>
+            <div class="row">
+              <div class="form-group col-3 ml-1 mb-1">
+                <input #inputElement *ngIf="searchCode" type="text" class="form-control" id="input-code" placeholder="Nhập hoá đơn"
+                       (keydown.enter)="searchByCodeName(inputElement.value)">
+              </div>
+              <div class="col-6"></div>
+              <div class="col-3"><p class="text-white"
+                                    style="text-align: right ;font-weight: bold; font-size: 13px; font-style: italic">Đơn vị
+                tính: VND</p></div>
+            </div>
       <table class="table table-striped table-dark">
         <thead>
         <tr>
@@ -55,7 +64,7 @@
         </pagination-controls>
       </div>
     </div>
-    <div class="row align-items-center" *ngIf="listPayment.length > 1">
+    <div class="row align-items-center" *ngIf="listPayment.length > 1 && visibleGoTo == true">
       <div class="w-100 d-flex justify-content-center">
         <div class="col-auto m-1">
           <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>
