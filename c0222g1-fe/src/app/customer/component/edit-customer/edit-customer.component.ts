@@ -11,6 +11,7 @@ import {Title} from '@angular/platform-browser';
 
 
 
+
 @Component({
   selector: 'app-edit-customer',
   templateUrl: './edit-customer.component.html',
@@ -58,8 +59,6 @@ export class EditCustomerComponent implements OnInit {
   isExitsEmail = false;
   isExitsPhone = false;
   isHiddenNewPassword = false;
-  isHiddenOldPassword = false;
-  isNotMatchesPassword = false;
   constructor(private customerService: CustomerService,
               private activatedRoute: ActivatedRoute,
               private route: Router,
@@ -76,8 +75,8 @@ export class EditCustomerComponent implements OnInit {
         '[a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$'), Validators.required,
         Validators.minLength(5), Validators.maxLength(50), this.notBlank]),
       dateOfBirth: new FormControl('', [Validators.pattern('^[a-zA-Z\\s?]+$'), Validators.required, this.check16Age]),
-      email: new FormGroup({
-        email: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+@[A-Za-z0-9]+(\\.[A-Za-z0-9]+){1,2}$'), Validators.required])
+      email: new FormGroup({email: new FormControl('', [Validators.pattern
+        ('^[A-Za-z0-9]+@[A-Za-z0-9]+(\\.[A-Za-z0-9]+){1,2}$'), Validators.required, this.notBlank])
       }),
       phoneNumber: new FormGroup({
         phone: new FormControl('' , [Validators.pattern('^[0-9]{10,12}$'), Validators.required])
@@ -92,6 +91,7 @@ export class EditCustomerComponent implements OnInit {
         confirmPassword: new FormControl('', Validators.required)
       }, this.checkConfirmPassword),
       activeStatus: new  FormControl(''),
+      remainingTime: new FormControl(0, Validators.required),
       province: new FormGroup({
         id: new FormControl(0),
         name: new FormControl('', Validators.required),
@@ -152,7 +152,7 @@ export class EditCustomerComponent implements OnInit {
     });
   }
 
-  private checkConfirmPassword(abstractControl: AbstractControl): any {
+   checkConfirmPassword(abstractControl: AbstractControl): any {
     const password = abstractControl.value.password;
     const confirmPassword = abstractControl.value.confirmPassword;
     return (password === confirmPassword) ? null : {notSame: true};
@@ -227,28 +227,18 @@ export class EditCustomerComponent implements OnInit {
     }
   }
 
-  checkUserName($event: Event) {
-    this.customerService.checkUserNameInEdit(String($event), this.customerEdit.id).subscribe(
-      value => {
-        this.isExitsUser = !!value;
-      }
-    );
-    if (String($event) === '') {
-      this.isExitsUser = false;
-    }
-  }
-
   checkEmail($event: Event) {
-    if (String($event) === '') {
+    if (String($event) === '' || String($event) === this.customerEdit.email.email) {
       this.isExitsEmail = false;
-    }
-    this.customerService.checkEmail(String($event)).subscribe(
-      value => {
-        if (value) {
-          this.isExitsEmail = true;
+    } else {
+      this.customerService.checkEmail(String($event)).subscribe(
+        value => {
+          if (value) {
+            this.isExitsEmail = true;
+          }
         }
-      }
-    );
+      );
+    }
   }
   checkPhone($event: Event) {
     this.customerService.checkPhone(String($event)).subscribe(
@@ -263,26 +253,11 @@ export class EditCustomerComponent implements OnInit {
     }
   }
   showAndHidden() {
-    console.log(this.isHiddenOldPassword);
-    if (this.isHiddenOldPassword) {
-      this.isHiddenOldPassword = false;
+    if (this.isHiddenNewPassword) {
+      this.isHiddenNewPassword = false;
     } else {
-      this.isHiddenOldPassword = true;
+      this.isHiddenNewPassword = true;
     }
-  }
-
-  matchesPassword($event: Event) {
-    this.customerService.checkMatchesPassword(String($event), this.customerEdit.id).subscribe(
-      value => {
-        if (value) {
-          this.isNotMatchesPassword = false;
-          this.isHiddenNewPassword = true;
-        } else {
-          this.isNotMatchesPassword = true;
-          this.isHiddenNewPassword = false;
-        }
-      }
-    );
   }
 }
 

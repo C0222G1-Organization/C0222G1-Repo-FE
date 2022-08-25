@@ -23,6 +23,7 @@ export class CreateCustomerComponent implements OnInit {
   isExitsUser = false;
   isExitsEmail = false;
   isExitsPhone = false;
+  check = true;
   customerForm: FormGroup = new FormGroup({
     // tslint:disable-next-line:max-line-length
     name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨ' +
@@ -30,18 +31,19 @@ export class CreateCustomerComponent implements OnInit {
       'ỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s?]+$'), Validators.required,
       Validators.minLength(5), Validators.maxLength(50), this.notBlank]),
     dateOfBirth: new FormControl('', [Validators.pattern('^[a-zA-Z\\s?]+$'), Validators.required, this.check16Age]),
-    email: new FormGroup({
-      email: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+@[A-Za-z0-9]+(\\.[A-Za-z0-9]+){1,2}$'), Validators.required])
+    email: new FormGroup({email: new FormControl('', [Validators.pattern(
+      '^[A-Za-z0-9]+@[A-Za-z0-9]+(\\.[A-Za-z0-9]+){1,2}$'), Validators.required, this.notBlank])
     }),
     phoneNumber: new FormGroup({
       // tslint:disable-next-line:max-line-length
-      phone: new FormControl('', [Validators.pattern('^(0|84+)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$'), Validators.required])
-    }),
-    userName: new FormGroup({
-      userName: new FormControl('', [Validators.required, this.notBlank, Validators.pattern('[a-zA-z0-9]{5,50}')])
+      phone: new FormControl('', [Validators.pattern('^(0|84+)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$'),
+        Validators.required])
+    }), userName: new FormGroup({
+      userName: new FormControl('', [Validators.required,
+        this.notBlank, Validators.pattern('[a-zA-z0-9]{5,50}'), Validators.minLength(5), Validators.maxLength(50)])
     }),
     // tslint:disable-next-line:max-line-length
-    password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
+    password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required, Validators.minLength(5), Validators.maxLength(50)]),
     activeStatus: new FormControl(1),
     province: new FormControl('', Validators.required),
     district: new FormControl('', Validators.required),
@@ -81,10 +83,16 @@ export class CreateCustomerComponent implements OnInit {
     // @ts-ignore
     if ($event === '') {
       this.districtList = [];
+      this.customerForm.get('district').setValue('');
       this.communeList = [];
+      this.customerForm.get('commune').setValue('');
     } else {
       this.customerService.getAllDistrict(Number($event)).subscribe(
-        value => this.districtList = value);
+        value => {
+          this.districtList = value;
+          this.customerForm.get('district').setValue('');
+          this.customerForm.get('commune').setValue('');
+        });
     }
   }
 
@@ -92,6 +100,7 @@ export class CreateCustomerComponent implements OnInit {
     // @ts-ignore
     if ($event === '') {
       this.communeList = [];
+      this.customerForm.get('commune').setValue('');
     } else {
       this.customerService.getAllCommune(Number($event)).subscribe(
         value => this.communeList = value);
@@ -105,16 +114,20 @@ export class CreateCustomerComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.customerForm);
+    this.check = false;
     this.updateCustomerDto = this.customerForm.value;
     this.updateCustomerDto.remainingTime = this.updateCustomerDto.remainingTime * 60;
-    console.log(this.updateCustomerDto);
     this.customerService.saveCustomer(this.updateCustomerDto).subscribe(
       value => {
         this.toast.success('Thêm mới khách hàng thành công!');
         this.route.navigateByUrl('/customers');
       },
       error => {
+        if (this.customerForm.invalid) {
+          this.toast.error('Nhập đầy đủ thông tin.');
+          this.check = true;
+          return;
+        }
       }
     );
   }
@@ -130,39 +143,47 @@ export class CreateCustomerComponent implements OnInit {
     const today = new Date();
     const birthDate = new Date(abstractControl.value);
     if (birthDate === undefined) {
-      return true;
+      return null;
     }
     let age = today.getFullYear() - birthDate.getFullYear();
     const m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-    return (age >= 16) ? null : {not16: true};
+    if (age <= 16) {
+      return {not16: true};
+    } else if (age >= 100) {
+      return {after100: true};
+    } else {
+      return null;
+    }
   }
 
   checkUserName($event: Event) {
     this.customerService.checkUserName(String($event)).subscribe(
       value => {
-        if (value) {
-          this.isExitsUser = true;
-        } else {
-          this.isExitsUser = false;
-        }
+        this.isExitsUser = !!value;
       }
     );
+    if (String($event) === '') {
+      this.isExitsUser = false;
+    }
   }
 
   checkEmail($event: Event) {
-    if (String($event) === '') {
-      this.isExitsEmail = false;
-    }
     this.customerService.checkEmail(String($event)).subscribe(
       value => {
+        console.log(value);
         if (value) {
           this.isExitsEmail = true;
+        } else {
+          this.isExitsEmail = false;
         }
       }
     );
+    if (String($event) === '') {
+      this.isExitsEmail = false;
+    }
   }
 
   checkPhone($event: Event) {
@@ -170,12 +191,13 @@ export class CreateCustomerComponent implements OnInit {
       value => {
         if (value) {
           this.isExitsPhone = true;
+        } else {
+          this.isExitsPhone = false;
         }
       }
     );
     if (String($event) === '') {
       this.isExitsPhone = false;
     }
-    console.log(this.isExitsPhone);
   }
 }

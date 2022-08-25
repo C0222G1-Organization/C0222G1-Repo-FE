@@ -7,7 +7,7 @@
         <div class="form-floating textbox mb-4">
           <input type="text" class="form-control input"
                  id="full-name" placeholder="Họ và tên"
-                 style="padding-top: 10px" formControlName="name">
+                 style="padding-top: 10px" formControlName="name" autocomplete="off">
           <label for="full-name" style="color: white">
             Họ và tên
             <span class="text-danger">*</span>
@@ -38,7 +38,7 @@
         <div class="form-floating textbox mb-4">
           <input type="date" class="form-control input"
                  id="date-of-birth" placeholder="Họ và tên"
-                 style="padding-top: 10px" formControlName="dateOfBirth">
+                 style="padding-top: 10px" formControlName="dateOfBirth" autocomplete="off">
           <label for="date-of-birth" style="color: white">
             Ngày sinh
             <span class="text-danger">*</span>
@@ -60,7 +60,7 @@
         <div class="form-floating textbox mb-4">
           <input type="email" class="form-control input"
                  id="email" placeholder="Họ và tên"
-                 style="padding-top: 10px" formControlName="email" (change)="checkEmail($event.target.value)">
+                 style="padding-top: 10px" formControlName="email" (change)="checkEmail($event.target.value)" autocomplete="off">
           <label for="email" style="color: white">
             Email
             <span class="text-danger">*</span>
@@ -83,7 +83,7 @@
         <div class="form-floating textbox mb-4" formGroupName="phoneNumber">
           <input type="text" class="form-control input"
                  id="phone-number" placeholder="Họ và tên"
-                 style="padding-top: 10px" formControlName="phone" (change)="checkPhone($event.target.value)">
+                 style="padding-top: 10px" formControlName="phone" (change)="checkPhone($event.target.value)" autocomplete="off">
           <label for="phone-number" style="color: white">
             Số điện thoại
             <span class="text-danger">*</span>
@@ -156,12 +156,12 @@
       </div>
 
     </div>
-    <div class="row my-4">
+    <div class="row mt-5">
       <div class="col-md-6" style="padding-right: 15px">
         <div class="form-floating textbox mb-4" formGroupName="userName">
           <input readonly type="text" class="form-control input"
                  id="user-name" placeholder="Họ và tên"
-                 style="padding-top: 10px" formControlName="userName" (change)="checkUserName($event.target.value)">
+                 style="padding-top: 10px" formControlName="userName" autocomplete="off">
           <label for="user-name" style="color: white">
             Tài khoản
             <span class="text-danger">*</span>
@@ -200,59 +200,37 @@
             <small>Trạng thái không được để trống!</small>
           </div>
         </div>
-      </div>
-      <!--      <div class="col-md-6" style="padding-right: 15px">-->
-      <!--        <div class="form-floating textbox mb-4">-->
-      <!--          <div class="form-floating textbox">-->
-      <!--            <input type="password" class="form-control input"-->
-      <!--                   id="pass-word" placeholder="Mật khẩu"-->
-      <!--                   style="padding-top: 10px" formControlName="password">-->
-      <!--            <label for="pass-word" style="color: white">-->
-      <!--              Mật khẩu-->
-      <!--              <span class="text-danger">*</span>-->
-      <!--            </label>-->
-      <!--            <div class="mb-3 text-danger"-->
-      <!--                 *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.required">-->
-      <!--              <small>Mật khẩu không được để trống!</small>-->
-      <!--            </div>-->
-      <!--            <div class="mb-3 text-danger"-->
-      <!--                 *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.pattern">-->
-      <!--              <small>Nhập đúng định dạng mật khẩu!</small>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
+    </div>
     </div>
 
-
     <div class="row my-4">
-      <div class="col-md-2" style="display: flex; justify-content: center; align-items: center; padding: 10px; padding-bottom: 18px" >
-        <input style="width: 100%; height: 50px" type="button" (click)="showAndHidden()" class="btn btn-primary" value="Đổi mật khẩu">
-      </div>
-      <div class="col-md-10" >
-        <div class="form-floating textbox mb-4" *ngIf="isHiddenOldPassword === true">
-          <input type="password" class="form-control input"
-                 id="checkOldPassword" placeholder="Xác nhận mật khẩu cũ"
-                  formControlName="oldPassword"
-                  (change)="matchesPassword($event.target.value)">
-          <label for="date-of-birth" style="color: white">
-            Xác nhận mật khẩu cũ
+      <div class="col-md-12">
+        <div class="form-floating textbox">
+          <input type="number" class="form-control input"
+                 id="time" placeholder="Thời gian chơi(phút)"
+                 style="padding-top: 10px; width: 422px" formControlName="remainingTime" autocomplete="off">
+          <label for="time" style="color: white">
+            Chỉnh sửa giờ chơi(Giây)
             <span class="text-danger">*</span>
           </label>
           <div class="mb-3 text-danger"
-               *ngIf="isNotMatchesPassword === true">
-            <small>Không trùng khớp!</small>
+               *ngIf="editCustomerForm.controls.remainingTime.hasError('required')&& editCustomerForm.controls.remainingTime.touched">
+            <small>Thời gian chơi không được để trống!</small>
           </div>
         </div>
       </div>
     </div>
-
+    <div class="row my-4">
+      <div class="col-md-2" style="display: flex; justify-content: center; align-items: center; padding: 10px; padding-bottom: 18px" >
+        <input style="width: 100%; height: 50px" type="button" (click)="showAndHidden()" class="btn btn-primary" value="Đổi mật khẩu" autocomplete="off">
+      </div>
+    </div>
     <div *ngIf="this.isHiddenNewPassword === true" class="row my-4" formGroupName="password">
       <div class="col-md-6" style="padding-right: 15px">
         <div class="form-floating textbox mb-4">
           <input type="password" class="form-control input"
                  id="pass-word" placeholder="Họ và tên"
-                 style="padding-top: 10px" formControlName="password">
+                 style="padding-top: 10px" formControlName="password" autocomplete="off">
           <label for="pass-word" style="color: white">
             Mật khẩu
             <span class="text-danger">*</span>
@@ -271,7 +249,7 @@
         <div class="form-floating textbox mb-4">
           <input type="password" class="form-control input"
                  id="confirm-pass-word" placeholder="Xác nhận mật khẩu"
-                 style="padding-top: 10px" formControlName="confirmPassword">
+                 style="padding-top: 10px" formControlName="confirmPassword" autocomplete="off">
           <label for="confirm-pass-word" style="color: white">
             Xác nhận mật khẩu
             <span class="text-danger">*</span>
@@ -284,7 +262,7 @@
         </div>
       </div>
     </div>
-    <div class="row mt-5">
+    <div class="row mt-3">
       <div class="col-md-4"></div>
       <div class="col-md-4" style="text-align: center; width: 100%">
         <button name="button" class="btn btn-primary btn-responsive w-25" style="height: 40px" (click)="onsubmit()">
