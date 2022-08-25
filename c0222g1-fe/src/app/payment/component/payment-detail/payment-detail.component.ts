@@ -196,7 +196,7 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
         };
         this.paymentDetailService.savePaymentDetail(paymentDetail).subscribe(value1 => {
           if (i === this.orderProductList.length - 1) {
-            this.route.navigateByUrl('/payment/' + value.id);
+            this.route.navigateByUrl('/payment/' + value.record.customer.id);
           }
         });
       }

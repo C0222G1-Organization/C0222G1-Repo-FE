@@ -7,7 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {ReponseBody} from '../../model/reponse-body';
 import {ProductService} from '../../../product/service/product.service';
-import {CustomerService} from '../../../customer/service/customer.service';
+import {AuthService} from '../../../authentication/service/auth.service';
 
 declare var $: any;
 
@@ -22,7 +22,7 @@ export class DisplayPaymentComponent implements OnInit {
               private toast: ToastrService,
               private paymentService: PaymentService,
               private productService: ProductService,
-              private customerService: CustomerService,
+              private authService: AuthService,
               private activatedRoute: ActivatedRoute,
               private title: Title) {
     this.title.setTitle('THÔNG TIN THANH TOÁN');
@@ -34,6 +34,7 @@ export class DisplayPaymentComponent implements OnInit {
   totalItems: any;
   itemsPerPage = 5;
   totalPages;
+  visibleGoTo = false;
 
   /**
    * Create: LuanND
@@ -43,21 +44,33 @@ export class DisplayPaymentComponent implements OnInit {
    * return none
    */
   totalPay: number;
+  searchCode = false;
 
   ngOnInit(): void {
+    localStorage.getItem('roles') === 'CUSTOMER' ? this.searchCode = false : this.searchCode = true;
     const id = Number(this.activatedRoute.snapshot.params.paymentId);
     if (isNaN(id)) {
       this.getAllPayment();
+      this.visibleGoTo = true;
     } else {
-      this.paymentService.getById(id).subscribe((value: any) => {
+      if (Number(localStorage.getItem('customerId')) === id) {
         this.listPayment = [];
-        this.listPayment.push(value);
-        this.totalItems = value.totalElements;
-        this.totalPages = value.totalPages;
-        this.calculatorPayment();
-      }, error => {
-        this.toast.error('Không tìm thấy');
-      });
+        this.paymentService.getAllPayment().subscribe((value: any) => {
+          // tslint:disable-next-line:prefer-for-of
+          for (let i = 0 ; i < value.length ; i++) {
+            if (value[i].record.customer.id === id && value[i].paymentStatus !== 1) {
+              this.listPayment.push(value[i]);
+            }
+          }
+          this.calculatorPayment();
+          this.totalItems = 0;
+          this.totalPages = 0;
+          this.itemsPerPage = this.listPayment.length;
+          this.visibleGoTo = false;
+        });
+      } else {
+        this.route.navigateByUrl('/401');
+      }
     }
   }
 
@@ -73,8 +86,25 @@ export class DisplayPaymentComponent implements OnInit {
       this.totalItems = value.totalElements;
       this.totalPages = value.totalPages;
       this.calculatorPayment();
+      this.visibleGoTo = true;
     }, error => {
       this.route.navigateByUrl('/500');
+    });
+  }
+
+  searchByCodeName(code: string) {
+    this.page = 0;
+    this.paymentService.searchPaymentByCode(code, this.page).subscribe((value: any) => {
+      if (value.content.length === 0) {
+        this.toast.error('Không tìm thấy');
+      } else {
+        this.listPayment = value.content;
+        this.totalItems = value.totalElements;
+        this.totalPages = value.totalPages;
+        this.calculatorPayment();
+      }
+    }, error => {
+      this.toast.error('Không tìm thấy');
     });
   }
 
@@ -194,6 +224,7 @@ export class DisplayPaymentComponent implements OnInit {
     content += `</tbody></table>`;
     document.getElementById('body-service').innerHTML = content;
   }
+
   paymentWithPaypal(id: number) {
     document.getElementById('myPaypal').innerHTML = '';
     let reponseBody: ReponseBody = {};
@@ -360,7 +391,7 @@ export class DisplayPaymentComponent implements OnInit {
       for (let i = 0; i < value.paymentDetailList.length; i++) {
         if (value.paymentDetailList[i].product.id === 11) {
           customer.remainingTime += value.paymentDetailList[i].amount * 3600;
-          this.customerService.setTimeRemaining(customer.id, customer.remainingTime).subscribe(mapList => {
+          this.authService.setOutOfTime(customer.id, customer.remainingTime).subscribe(mapList => {
             console.log(mapList);
           });
         }

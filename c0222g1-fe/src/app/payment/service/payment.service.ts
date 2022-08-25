@@ -44,4 +44,8 @@ export class PaymentService {
     console.log('saving');
     return this.httpClient.post<Payment>(this.URL_API_PAYMENT + '/create', record);
   }
+
+  searchPaymentByCode(code: string, page: number): Observable<Payment[]> {
+    return this.httpClient.get<Payment[]>(this.URL_API_PAYMENT + `/search?page=${page}&code=${code}`);
+  }
 }
