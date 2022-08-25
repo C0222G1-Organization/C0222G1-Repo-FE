@@ -4,11 +4,26 @@
 
 .text {
   text-align: justify;
+  overflow: hidden;
+
 }
 
 .pl {
   padding-left: 1em;
 }
-.text-indent {
-  text-indent: 1.5em;
+
+img {
+  width: 48.50125em;
+}
+
+img {
+  width: 100% !important;
+}
+
+.img-100 img {
+  width: 20em!important;
+}
+
+#content img {
+  width: 100%;
 }

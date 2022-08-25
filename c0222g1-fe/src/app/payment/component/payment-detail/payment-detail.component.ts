@@ -6,7 +6,6 @@ import {Product} from '../../../product/model/Product';
 import {PaymentDetailService} from '../../service/payment-detail.service';
 import {Router} from '@angular/router';
 import {Record} from '../../model/record';
-import {Payment} from '../../model/payment';
 import {PaymentService} from '../../service/payment.service';
 import {PaymentDetail} from '../../model/payment-detail';
 import {Title} from '@angular/platform-browser';
@@ -19,20 +18,20 @@ import {Title} from '@angular/platform-browser';
 export class PaymentDetailComponent implements OnInit, OnChanges {
   product: Product = null;
   record: Record = null;
-  paymentAfterOrder: Payment;
   productUnit = '';
   productPrice = 0;
   orderProduct: Product = null;
   productList: Product[];
   orderProductList = Array<Product>();
   totalPayment: number;
-  totalOfOrder: number;
+  totalOfOrder = 0;
   checkExist = false;
+  deleteProduct: any;
   quantity = 0;
-  count = 1;
-  idDelete: number;
+  selectId = 0;
+  categorySelectId = 0;
 
-  imageSrc = 'https://nairobigames.center/wp-content/uploads/2019/10/Nairobi-GDC-FINAL-LOGO-TRANS.png';
+  imageSrc = '../../../../assets/img/img-login/banner-login.png';
 
   productCategoryList: ProductCategory[];
 
@@ -42,7 +41,7 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
               private paymentService: PaymentService,
               private route: Router,
               private title: Title) {
-    this.title.setTitle('YÊU CẦU DỊCH VỤ');
+    this.title.setTitle('Yêu cầu dịch vụ');
     this.getProductCategoryList();
     this.getAllProductForOrder();
   }
@@ -50,6 +49,13 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   getProductCategoryList() {
     this.productService.findAllProductCategory().subscribe(value => {
       this.productCategoryList = value;
+      for (let i = 0; i - 1 < this.productCategoryList.length - 1; i++) {
+        if (this.productCategoryList[i].name === 'Dịch vụ khác') {
+          this.categorySelectId = this.productCategoryList[i].id;
+          this.getProductOptionList(this.categorySelectId);
+        }
+      }
+
     });
   }
 
@@ -57,7 +63,12 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
     this.productService.findAllProductForOrder().subscribe((value: any) => {
       if (value != null) {
         this.productList = value;
-        console.log(value);
+        for (let i = 0; i - 1 < this.productList.length - 1; i++) {
+          if (this.productList[i].nameProduct === 'Giờ chơi') {
+            this.selectId = this.productList[i].id;
+            this.getProductById(this.selectId);
+          }
+        }
       }
     }, error => {
       console.log('ERROR AT GET LIST PRODUCT BY CATEGORY ID');
@@ -68,19 +79,33 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   }
 
   updateOrderList() {
-    if (this.quantity > 0) {
-      this.orderProduct = this.product;
-      this.orderProduct.quantity = this.quantity;
-      for (let i = 0; i - 1 < this.orderProductList.length - 1; i++) {
-        if (this.orderProductList[i].id === this.orderProduct.id) {
-          this.orderProductList[i].quantity += this.quantity;
-          this.checkExist = true;
+    if (this.product !== null) {
+      if (this.quantity > 0) {
+        if (this.quantity > this.product.quantity) {
+          this.toast.error('Hiện chỉ còn ' + this.product.quantity + ' sản phẩm này trong kho, ' + 'vui lòng chọn lại.');
+        } else {
+          this.orderProduct = this.product;
+          this.orderProduct.quantity = this.quantity;
+          this.totalOfOrder += this.orderProduct.prices * this.quantity;
+          for (let i = 0; i - 1 < this.orderProductList.length - 1; i++) {
+            if (this.orderProductList[i].id === this.orderProduct.id) {
+              this.orderProductList[i].quantity += this.quantity;
+              this.checkExist = true;
+            }
+          }
+          if (!this.checkExist) {
+            this.orderProductList.push(this.orderProduct);
+          }
+          this.checkExist = false;
+          this.resetValue();
+          this.getAllProductForOrder();
+          this.getProductCategoryList();
         }
+      } else {
+        this.toast.error('Cần nhập số dương.');
       }
-      if (!this.checkExist) {
-        this.orderProductList.push(this.orderProduct);
-      }
-      this.checkExist = false;
+    } else {
+      this.toast.error('Vui lòng chọn sản phẩm.');
     }
   }
 
@@ -88,21 +113,19 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   getProductById(productId: any) {
     this.resetValue();
     if (productId === null) {
-      this.product = null;
+      this.toast.error('Sản phẩm ngừng kinh doanh.');
     } else {
       this.productService.loadInfoProductById(Number(productId)).subscribe(result => {
         this.product = result;
         this.productUnit = this.product.unit;
         this.productPrice = this.product.prices;
         this.imageSrc = this.product.imageUrl;
-        console.log(this.imageSrc);
       });
     }
   }
 
   getProductOptionList(value: any) {
     this.resetValue();
-    console.log(value);
     if (value.toString() === 'null') {
       this.getAllProductForOrder();
     } else {
@@ -117,12 +140,10 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   }
 
   getRecordById() {
-    if (!sessionStorage.getItem('token')) {
-      // const id = Number(sessionStorage.getItem('recordId'));
-      const id = 1;
+    if (sessionStorage.getItem('token')) {
+      const id = Number(sessionStorage.getItem('recordId'));
       this.paymentDetailService.loadInfoRecordById(id).subscribe(value => {
         this.record = value;
-        console.log(this.record);
       });
     }
   }
@@ -132,7 +153,7 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
     this.productPrice = 0;
     this.quantity = 0;
     this.totalPayment = 0;
-    this.imageSrc = 'https://nairobigames.center/wp-content/uploads/2019/10/Nairobi-GDC-FINAL-LOGO-TRANS.png';
+    this.imageSrc = '../../../../assets/img/img-login/banner-login.png';
   }
 
   showTotalPayment(value: any) {
@@ -145,22 +166,27 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
 
   undoChooseProduct() {
     for (let i = 0; i - 1 < this.orderProductList.length - 1; i++) {
-      if (this.orderProductList[i].id === this.idDelete) {
+      if (this.orderProductList[i].id === this.deleteProduct.id) {
+        this.totalOfOrder -= this.deleteProduct.prices * this.deleteProduct.quantity;
         this.orderProductList.splice(i, 1);
       }
     }
-    this.toast.success('XÓA THÀNH CÔNG.');
+    this.toast.success('Hoàn tác thành công.');
   }
 
-  getIdDelete(id: number) {
-    this.idDelete = id;
+  getProductToDelete(value: Product) {
+    this.deleteProduct = value;
+    if (this.deleteProduct !== null) {
+      // tslint:disable-next-line:max-line-length
+      document.getElementById('nameDelete').innerHTML = 'Bạn có muốn hoàn tác dịch vụ ' + '<span style="font-weight: bold; color: #0d6efd">' + value.nameProduct + '</span> ?';
+    } else {
+      console.log('Error at get product to delete!');
+    }
   }
 
   orderToDatabase() {
     this.paymentService.savePayment(this.record).subscribe(value => {
-      console.log(value);
-      this.toast.success('YÊU CẦU THÀNH CÔNG.');
-
+      this.toast.success('Yêu cầu thành công.');
       // tslint:disable-next-line:prefer-for-of
       for (let i = 0; i < this.orderProductList.length; i++) {
         const paymentDetail: PaymentDetail = {
@@ -170,7 +196,7 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
         };
         this.paymentDetailService.savePaymentDetail(paymentDetail).subscribe(value1 => {
           if (i === this.orderProductList.length - 1) {
-            this.route.navigateByUrl('/display/' + value.id);
+            this.route.navigateByUrl('/payment/' + value.id);
           }
         });
       }

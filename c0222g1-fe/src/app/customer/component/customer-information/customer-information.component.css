@@ -12,6 +12,10 @@ label, p {
   color: #9a9a9a;
 }
 
+label{
+  font-weight: bold;
+}
+
 .input-form {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
@@ -62,7 +66,27 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1
 }
 
-select{
+select {
   color: #9a9a9a;
+  text-align: left;
+  padding: 0;
 }
 
+.address {
+  justify-content: space-between;
+  display: flex;
+}
+
+.address-item {
+  background-color: #343a40;
+  color: white;
+}
+
+.address-edit {
+  background-color: #121212;
+  color: white;
+}
+
+.address-div{
+  width: 33%;
+}

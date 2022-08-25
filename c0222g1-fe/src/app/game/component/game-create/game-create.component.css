@@ -460,3 +460,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .preview-img {
   width: 100%;
 }
+#fileErrorMessage {
+  color: red;
+  font-weight: bold;
+}
+
+.hide {
+  display: none;
+}
