@@ -8,10 +8,11 @@ body {
   background-color: #2A2A2A;
   border-color: #a8a8a8;
   border-width: 1px;
-  width: 75%;
+  /*width: 75%;*/
   box-shadow: none;
 }
-.input:hover{
+
+.input:hover {
   border-color: white;
 }
 
@@ -22,6 +23,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0.6;
   filter: invert(0.8);
   box-shadow: none;
+}
+
+select {
+  background-image: url(../../../../assets/img/icon.png);
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator:hover {

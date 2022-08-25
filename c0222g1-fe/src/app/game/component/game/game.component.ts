@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Game} from '../../model/game';
 import {GameService} from '../../service/game.service';
 import {Title} from '@angular/platform-browser';
 import {ToastrService} from 'ngx-toastr';
 
 import {Route, Router} from '@angular/router';
+import {GameCreateComponent} from "../game-create/game-create.component";
 
 @Component({
   selector: 'app-game',
@@ -37,6 +38,7 @@ export class GameComponent implements OnInit {
     this.getGames(this.page - 1);
     this.checkRole();
   }
+
 
   getGames(page: number) {
     this.gameService.getAllGames(page).subscribe((games: any) => {
@@ -190,5 +192,14 @@ export class GameComponent implements OnInit {
       this.playState = true;
       this.editState = false;
     }
+  }
+
+  updateGameListAfterCreated(game: Game) {
+    console.log('update nek');
+    this.games.push(game);
+  }
+
+  findGameById(id: number) {
+    this.gameService.findById(id).subscribe(game => {this.game = game});
   }
 }
