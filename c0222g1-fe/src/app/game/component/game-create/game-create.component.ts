@@ -31,6 +31,7 @@ export class GameCreateComponent implements OnInit {
   checkImg: boolean;
   regexImg = false;
   isExitsGameName = false;
+  check = true;
   constructor(private gameService: GameService,
               private gameCategoryService: GameCategoryService,
               private toastr: ToastrService,
@@ -43,13 +44,11 @@ export class GameCreateComponent implements OnInit {
   ngOnInit(): void {
     this.getAllGameCateGory();
     this.gameForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(150)
-      ]),
+      name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(150)]),
       createDate: new FormControl(this.getCurrentDateTime()),
       playedTimes: new FormControl(0),
       trailerUrl: new FormControl('', [Validators.required,
-        Validators.pattern('https?:\\/\\/(www\\.)?' +
-          '[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}b([-a-zA-Z0-9()@:%_+.~#?&//=]*)')]),
+        Validators.pattern('^https:\\/\\/www\\.youtube\\.com\\/embed\\/\\S*$')]),
       imageUrl: new FormControl('', [Validators.required], ),
       content: new FormControl('', [Validators.required , Validators.minLength(15)]),
       gameCategory: new FormGroup({
@@ -76,11 +75,11 @@ export class GameCreateComponent implements OnInit {
     if (event.target.files[0].size > 9000000) {
       return;
     }
-    this.selectedFile = event.target.files[0];
     if (!event.target.files[0].name.match('^.*\\.(jpg|JPG)$')) {
       this.regexImg = true;
       return;
     }
+    this.selectedFile = event.target.files[0];
     this.gameForm.patchValue({imageUrl: this.selectedFile.name});
   }
 
@@ -115,6 +114,12 @@ export class GameCreateComponent implements OnInit {
     };
   }
   create() {
+    this.check = false;
+    if (this.gameForm.invalid) {
+      this.toastr.error('Nhập đầy đủ thông tin.');
+      this.check = true;
+      return;
+    }
     const imageUrl = this.getCurrentDateTime() + this.selectedFile.name;
     const filePath = `game/${imageUrl}`;
     const fileRef = this.storage.ref(filePath);

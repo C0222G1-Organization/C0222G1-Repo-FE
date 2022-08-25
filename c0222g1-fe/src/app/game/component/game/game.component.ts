@@ -30,7 +30,7 @@ export class GameComponent implements OnInit {
               private title: Title,
               private toastr: ToastrService,
               private route: Router) {
-    this.title.setTitle('Danh sách game');
+      this.title.setTitle('Danh sách game');
   }
 
   ngOnInit(): void {

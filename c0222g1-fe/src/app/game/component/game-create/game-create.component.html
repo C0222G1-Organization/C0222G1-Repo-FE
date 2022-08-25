@@ -8,7 +8,7 @@
       <div class="row mt-4">
         <div class="col-lg-6 px-3">
           <div class="form-floating textbox">
-            <input (keydown.enter)="create()"   type="text" class="form-control input" id="full-name"
+            <input (keydown.enter)="create()" type="text" class="form-control input" id="full-name"
                    placeholder="tên game" formControlName="name" value="" required
                    (change)="checkGameName($event.target.value)" autocomplete="off">
             <label for="full-name" style="color: white">
@@ -40,7 +40,7 @@
                 && gameForm.hasError('required', 'trailerUrl')">Không được để trống.
             </p>
             <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('trailerUrl').touched
-                && gameForm.hasError('pattern', 'trailerUrl')">Nhập link trailer youtube.
+                && gameForm.hasError('pattern', 'trailerUrl')">Nhập link youtube và phải có định dạng /embed.
             </p>
           </div>
         </div>
@@ -52,7 +52,8 @@
             <input (keydown.enter)="create()" (click)="checkImage()" accept="image/png, image/jpeg" type="file"
                    id="upload" multiple (change)="selectFile($event)" #userPhoto (change)="onFileSelected($event); "
                    name="image" autocomplete="off" hidden>
-            <label for="upload" class="input-img w-100 rounded">Hình ảnh:<span class="text-danger"> *</span></label>
+            <label for="upload" class="input-img w-100 rounded">Hình ảnh:<span class="text-danger">*</span></label>
+
             <div *ngIf="checkImgSize == true" class="form-text text-danger mt-1 px-2">Kích thước ảnh quá lớn.</div>
             <div *ngIf="checkImg == true && checkImgSize == false && regexImg == false"
                  class="form-text text-danger mt-1 px-2">Chọn ảnh.
@@ -75,8 +76,8 @@
       <div class="row mt-4">
         <div class="col-lg-12 px-3">
           <div class="form-floating ">
-            <ckeditor (keydown.enter)="create()" [editor]="Editor"  formControlName="content"><textarea class="form-control border-secondary input texarea " rows="4"
-                      id="content" placeholder="Nhập nội dung ở đây"></textarea></ckeditor>
+            <ckeditor [config]="{placeholder: 'Nhập nội dung ở đây'}"  (keydown.enter)="create()" [editor]="Editor" formControlName="content"><textarea
+              class="form-control border-secondary input texarea " rows="4"></textarea></ckeditor>
             <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('content').touched
                 && gameForm.hasError('required', 'content')">Nhập nội dung.
             </p>
@@ -90,11 +91,11 @@
 
       <div class="row mt-4">
         <div class="col-lg-12 px-3">
-          <div class="form-floating" formGroupName="gameCategory">
+          <div class="form-floating textbox" formGroupName="gameCategory">
             <select class="form-select border-secondary text-light select-type"
                     aria-label="Floating label select example"
                     formControlName="id" id="gameCategory">
-              <option class="option" style="height: 50px">Chọn thể loại game.</option>
+              <option value="">Chọn thể loại game.</option>
               <option *ngFor="let gameCategory of gameCategory"
                       [value]="gameCategory.id">{{gameCategory.name}}</option>
             </select>
@@ -115,8 +116,12 @@
             <button type="button" class="button w-100 h-100 rounded text-light" routerLink="/games">Quay Lại</button>
           </div>
         </div>
-        <div class="col-lg-6 px-3">
-          <button (click)="create()" type="submit" class="button-primary w-100 rounded text-light">Tạo mới</button>
+        <div class="col-lg-6 px-3 position-relative">
+          <button [disabled]="!check" (click)="create()" type="submit" class="button-primary w-100 rounded text-light">
+            Tạo mới
+          </button>
+          <div *ngIf="!check" class="spinner-border text-light spinner position-absolute" role="status">
+          </div>
         </div>
       </div>
     </form>
