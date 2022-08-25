@@ -137,20 +137,29 @@
             </thead>
             <tbody class="hiddenText">
             <tr
-              *ngFor="let employee of employees| paginate:{itemsPerPage:5, currentPage: page , totalItems: totalElements}, let i = index">
+              *ngFor="let employee of employees| paginate:{itemsPerPage:5, currentPage: page +1, totalItems: totalElements}, let i = index">
               <td><input class="card-notify-year-checkbox" type="checkbox" value="{{employee.id}}"
                          [(ngModel)]="employees[i].checked" (click)="checkEmployee(employee.id)" id="check"></td>
               <td>{{(i + 1 + size) }}</td>
               <td>{{employee.code}}</td>
-              <td>{{employee.name}}</td>
+              <td data-bs-toggle="modal" data-bs-target="#viewModal"
+                  (click)="getEmployee(employee)">{{employee.name}}</td>
               <td class="hiddenText" data-bs-toggle="tooltip" data-bs-placement="top"
-              title="{{employee.cmName}}, {{employee.disName}}, {{employee.proName}}">{{employee.cmName}}, {{employee.disName}}, {{employee.proName}}</td>
-              <td>{{employee.dob| date: 'dd/MM/yyyy'}}</td>
+                  title="{{employee.cmName}}, {{employee.disName}}, {{employee.proName}}"
+                  data-bs-toggle="modal" data-bs-target="#viewModal" (click)="getEmployee(employee)"
+              >{{employee.cmName}}
+                , {{employee.disName}}, {{employee.proName}}</td>
+              <td data-bs-toggle="modal" data-bs-target="#viewModal"
+                  (click)="getEmployee(employee)">{{employee.dob| date: 'dd/MM/yyyy'}}</td>
               <td class="hiddenText" data-bs-toggle="tooltip" data-bs-placement="top"
-              title="{{employee.email}}">{{employee.email}}</td>
-              <td>{{employee.phone}}</td>
-              <td>{{employee.posiName}}</td>
-              <td>{{exp(employee)}}</td>
+                  title="{{employee.email}}" data-bs-toggle="modal" data-bs-target="#viewModal"
+                  (click)="getEmployee(employee)">{{employee.email}}</td>
+              <td data-bs-toggle="modal" data-bs-target="#viewModal"
+                  (click)="getEmployee(employee)">{{employee.phone}}</td>
+              <td data-bs-toggle="modal" data-bs-target="#viewModal"
+                  (click)="getEmployee(employee)">{{employee.posiName}}</td>
+              <td data-bs-toggle="modal" data-bs-target="#viewModal"
+                  (click)="getEmployee(employee)">{{exp(employee)}}</td>
               <td>
                 <button class="btn btn-outline-secondary"><i class="fa-solid fa-pencil"
                                                              (click)="edit(employee.id)"></i>
@@ -185,20 +194,20 @@
         </pagination-controls>
       </div>
     </div>
-    <div class="row align-items-center">
-      <div class="w-100 d-flex justify-content-center">
-        <div class="col-auto m-1">
-          <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>
-        </div>
-        <div class="col-auto m-1">
-          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
-                 (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 40px">
-        </div>
-        <div class="col-auto m-1">
-          <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
-        </div>
-      </div>
-    </div>
+<!--    <div class="row align-items-center">-->
+<!--      <div class="w-100 d-flex justify-content-center">-->
+<!--        <div class="col-auto m-1">-->
+<!--          <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>-->
+<!--        </div>-->
+<!--        <div class="col-auto m-1">-->
+<!--          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"-->
+<!--                 (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 50px">-->
+<!--        </div>-->
+<!--        <div class="col-auto m-1">-->
+<!--          <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="col-md-1"></div>
   </div>
   <div class="container row d-flex" id="btn-outside">
@@ -224,9 +233,10 @@
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel1">Xóa nhân viên</h5>
       </div>
-      <ol style="width: 300px; margin-top: 10px">
-        <li style="color: #9a9a9a; font-size: 1.2rem">{{nameDelete}}</li>
-      </ol>
+      <div class="modal-body">
+        <p>Bạn có muốn xóa nhân viên <span style="color: red">{{nameDelete}}</span> có mã nhân viên là <span
+          style="color: red">{{codeDelete}}</span> ?</p>
+      </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteEmployee()">Xóa</button>
@@ -261,3 +271,31 @@
   </div>
 </div>
 
+<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModal1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewModal1">Thông tin nhân viên</h5>
+      </div>
+      <div class="modal-body">
+        <div class="container d-flex">
+          <div class="col-xl-6 justify-content-center">
+            <p>Họ và tên: <span style="color: #0d6efd">{{nameDelete}}</span></p>
+            <p>Ngày sinh: <span style="color: #0d6efd">{{getDob}}</span></p>
+            <p>Mã nhân viên: <span style="color: #0d6efd">{{codeDelete}}</span></p>
+            <p>Địa chỉ: <span style="color: #0d6efd">{{getAddress}}</span></p>
+          </div>
+          <div class="col-xl-6">
+            <p>Level: <span style="color: #0d6efd">{{getLevel}}</span></p>
+            <p>Chức vụ: <span style="color: #0d6efd">{{getPositionName}}</span></p>
+            <p>Email: <span style="color: #0d6efd">{{getPhone}}</span></p>
+            <p>Số điện thoại: <span style="color: #0d6efd">{{getPhone}}</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
