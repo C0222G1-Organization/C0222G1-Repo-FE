@@ -136,7 +136,7 @@ export class GameUpdateComponent implements OnInit {
   submit() {
     this.check = false;
     if (this.gameForm.invalid) {
-      this.toastr.error('Nhập đầy đủ thông tin.');
+      this.toastr.error('Nhập đầy đủ thông tin!');
       this.check = true;
       return;
     }
