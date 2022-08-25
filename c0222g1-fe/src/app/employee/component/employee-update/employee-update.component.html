@@ -10,12 +10,6 @@
         <div class="form-floating textbox mb-2">
           <input disabled autocomplete="off" formControlName="code" type="text" class="form-control input" id="Code-Employee"
                  placeholder="Mã nhân viên" style="padding-top: 10px">
-          <div *ngIf="employeeFormEdit.controls.code.hasError('required') && employeeFormEdit.controls.code.touched"
-               class="form-text text-danger mt-1 px-2">Không được để trống.
-          </div>
-          <div *ngIf="employeeFormEdit.controls.code.hasError('pattern') && employeeFormEdit.controls.code.touched"
-               class="form-text text-danger mt-1 px-2">Mã sai định dạng.
-          </div>
           <label for="Code-Employee" style="color: red">
             Mã nhân viên
             <span class="text-danger">*</span>
@@ -273,7 +267,7 @@
 
     <div class="text-center row">
       <div class="col-6" style="padding-right: 15px">
-        <button type="submit" class="btn btn-outline-secondary login-btn text-light" (click)="submitEmployee()">Lưu Lại</button>
+        <button type="submit" class="btn btn-outline-secondary login-btn text-light"(click)="submitEmployee()">Lưu Lại</button>
       </div>
       <div class="col-6" style="padding-right: 15px">
         <button type="submit" class="btn btn-outline-secondary login-btn text-light" (click)="cancel()">Hủy bỏ</button>

@@ -68,7 +68,6 @@ export class EmployeeListComponent implements OnInit {
       getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
       getFormSearch.address).subscribe((value: any) => {
         this.size = value.size * this.page;
-
         this.employees = value.content;
         this.totalElements = value.totalElements;
       }, error => {
