@@ -60,7 +60,6 @@ export class GameComponent implements OnInit {
   getPage(page) {
     if (page < 1 || page > this.totalPages) {
       this.toastr.error('Vui lòng nhập đúng');
-      this.toastr.error('Vui lòng nhập đúng');
     } else {
       this.page = page;
       if (this.gameName.length !== 0) {
