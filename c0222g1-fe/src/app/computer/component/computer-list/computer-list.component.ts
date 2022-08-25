@@ -18,7 +18,7 @@ export class ComputerListComponent implements OnInit {
     code: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
     location: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
     start: new FormControl('', this.checkStart),
-    end: new FormControl('', this.checkEnd),
+    end: new FormControl(''),
     typeId: new FormControl(''),
     status: new FormControl(''),
   }, this.checkDate);
@@ -56,7 +56,7 @@ export class ComputerListComponent implements OnInit {
       code: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
       location: new FormControl('', Validators.pattern('^[a-zA-z0-9]+$')),
       start: new FormControl('', this.checkStart),
-      end: new FormControl('', this.checkEnd),
+      end: new FormControl(''),
       typeId: new FormControl(''),
       status: new FormControl(''),
     }, this.checkDate);
@@ -113,7 +113,7 @@ export class ComputerListComponent implements OnInit {
         this.computers = list.content;
         this.totalItems = list.totalElements;
         this.totalPages = list.totalPages;
-        this.size = list.size;
+        this.size = list.size * this.page;
         this.number = list.number;
       }
       this.isAllCheckBoxChecked();
@@ -277,38 +277,6 @@ export class ComputerListComponent implements OnInit {
       } else {
         if (now.getMonth() === start.getMonth()) {
           if (now.getDate() >= start.getDate()) {
-            return null;
-          } else {
-            return {invalid: true};
-          }
-        } else {
-          return {invalid: true};
-        }
-      }
-    } else {
-      return {invalid: true};
-    }
-  }
-
-  /**
-   * Created by: PhucNQ
-   * Date created: 14/08/2022
-   * Function: checkEnd()
-   */
-  checkEnd(abstractControl: AbstractControl): any {
-    const end = new Date(abstractControl.value);
-    const now = new Date();
-    if (abstractControl.value === '') {
-      return null;
-    }
-    if (now.getFullYear() - end.getFullYear() < 0 && end.getFullYear()) {
-      return null;
-    } else if (now.getFullYear() - end.getFullYear() === 0) {
-      if (now.getMonth() < end.getMonth()) {
-        return null;
-      } else {
-        if (now.getMonth() === end.getMonth()) {
-          if (now.getDate() < end.getDate()) {
             return null;
           } else {
             return {invalid: true};
