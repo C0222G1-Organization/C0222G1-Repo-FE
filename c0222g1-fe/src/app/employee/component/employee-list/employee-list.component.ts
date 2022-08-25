@@ -76,6 +76,7 @@ export class EmployeeListComponent implements OnInit {
         this.size = value.size * this.page;
         this.employees = value.content;
         this.totalElements = value.totalElements;
+        this.totalPages = value.totalElements;
       }, error => {
         this.route.navigateByUrl('/500');
       }
@@ -205,7 +206,7 @@ export class EmployeeListComponent implements OnInit {
 
   getPage(page) {
     if (page < 1 || page > this.totalPages) {
-      this.toastr.error('Vui lòng nhập đúng');
+      return this.toastr.error('Vui lòng nhập đúng');
     }
     this.size = 5 * (page - 1);
     this.page = page - 1;

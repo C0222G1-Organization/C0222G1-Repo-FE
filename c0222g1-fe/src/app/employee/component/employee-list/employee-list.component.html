@@ -194,20 +194,20 @@
         </pagination-controls>
       </div>
     </div>
-<!--    <div class="row align-items-center">-->
-<!--      <div class="w-100 d-flex justify-content-center">-->
-<!--        <div class="col-auto m-1">-->
-<!--          <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>-->
-<!--        </div>-->
-<!--        <div class="col-auto m-1">-->
-<!--          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"-->
-<!--                 (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 50px">-->
-<!--        </div>-->
-<!--        <div class="col-auto m-1">-->
-<!--          <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <div class="row align-items-center">
+      <div class="w-100 d-flex justify-content-center">
+        <div class="col-auto m-1">
+          <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>
+        </div>
+        <div class="col-auto m-1">
+          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
+                 (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 50px">
+        </div>
+        <div class="col-auto m-1">
+          <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
+        </div>
+      </div>
+    </div>
     <div class="col-md-1"></div>
   </div>
   <div class="container row d-flex" id="btn-outside">
@@ -228,12 +228,12 @@
 
 <!--Start Delete Modal-->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel1">Xóa nhân viên</h5>
       </div>
-      <div class="modal-body">
+      <div class="modal-body text-center">
         <p>Bạn có muốn xóa nhân viên <span style="color: red">{{nameDelete}}</span> có mã nhân viên là <span
           style="color: red">{{codeDelete}}</span> ?</p>
       </div>
