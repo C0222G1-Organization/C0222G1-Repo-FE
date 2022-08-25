@@ -26,6 +26,7 @@ export class EmployeeCreateComponent implements OnInit {
   districtList: District[];
   provinceList: Province[];
   employee: Employee;
+  check = true;
   url: any;
   msg = '';
   selectedFile: File = null;
@@ -38,13 +39,12 @@ export class EmployeeCreateComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       phone: new FormControl('', [Validators.required, Validators.pattern('^(0|84+)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$')]),
       dob: new FormControl('', [Validators.required, this.check18Age]),
-      salary: new FormControl('', [Validators.required]),
-
+      salary: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(10)]),
       startWork: new FormControl('', [Validators.required]),
-      statusDelete: new FormControl(0, [Validators.required]),
-      image: new FormControl('', [Validators.required]),
+      statusDelete: new FormControl(0),
+      image: new FormControl(''),
       appUser: new FormGroup({
-        username: new FormControl('', [Validators.required]),
+        username: new FormControl('', [Validators.required, Validators.pattern('^[^ ][\\\\w\\\\W ]+[^ ]$')]),
         // tslint:disable-next-line:max-line-length
         password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'), Validators.required]),
       }),
@@ -54,6 +54,8 @@ export class EmployeeCreateComponent implements OnInit {
       district: new FormControl('', Validators.required)
     }, this.checkStartDate
   );
+
+
 
   constructor(private toastr: ToastrService,
               private employeeService: EmployeeService,
@@ -96,6 +98,13 @@ export class EmployeeCreateComponent implements OnInit {
   }
 
   createEmployee() {
+    this.check = false;
+    console.log(this.employeeForm);
+    if (this.employeeForm.invalid) {
+      this.toastr.error('Nhập đầy đủ thông tin.');
+      this.check = true;
+      return;
+    }
     this.employeeForm.patchValue({createDate: this.getCurrentDateTime()});
     this.employeeForm.patchValue({views: 0});
     const nameImg = this.getCurrentDateTime() + this.selectedFile.name;
