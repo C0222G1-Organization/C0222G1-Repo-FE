@@ -80,8 +80,10 @@ hr {
 }
 
 .box-img-new {
+  /*height: 24.84375em ;*/
+  /*width:  39.75em ;*/
   height: 24.84375em ;
-  width:  39.75em ;
+  width:  100% ;
   overflow: hidden;
 }
 
@@ -93,7 +95,7 @@ hr {
 
 .box-img-sub {
   height: 7.76875em;
-  width:  13.16625em ;
+  width:  100% ;
   overflow: hidden;
 }
 
@@ -114,14 +116,7 @@ hr {
 .bot {
   padding-top: 3em;
 }
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
+.z-10 {
+  z-index: 10;
 }

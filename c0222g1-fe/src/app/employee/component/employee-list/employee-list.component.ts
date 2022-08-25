@@ -207,11 +207,11 @@ export class EmployeeListComponent implements OnInit {
   getPage(page) {
     if (page < 1 || page > this.totalPages) {
       return this.toastr.error('Vui lòng nhập đúng');
+    } else {
+      this.size = 5 * (page - 1);
+      this.page = page - 1;
+      this.getAll();
     }
-    this.size = 5 * (page - 1);
-    this.page = page - 1;
-    this.getAll();
-
   }
 
   checkEmployee(id: number) {
