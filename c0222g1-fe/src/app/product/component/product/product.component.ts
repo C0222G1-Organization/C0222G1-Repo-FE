@@ -47,7 +47,7 @@ export class ProductComponent implements OnInit {
    */
 
   checkRole(): string {
-    return sessionStorage.getItem('roles');
+    return localStorage.getItem('roles');
   }
 
   /**

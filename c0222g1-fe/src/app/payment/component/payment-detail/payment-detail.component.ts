@@ -66,19 +66,25 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   updateOrderList() {
     if (this.product !== null) {
       if (this.quantity > 0) {
-        this.orderProduct = this.product;
-        this.orderProduct.quantity = this.quantity;
-        this.totalOfOrder += this.orderProduct.prices * this.quantity;
-        for (let i = 0; i - 1 < this.orderProductList.length - 1; i++) {
-          if (this.orderProductList[i].id === this.orderProduct.id) {
-            this.orderProductList[i].quantity += this.orderProduct.quantity;
-            this.checkExist = true;
+        if (this.quantity > this.product.quantity) {
+          this.toast.error('Hiện chỉ còn ' + this.product.quantity + ' sản phẩm này trong kho, ' + 'vui lòng chọn lại.');
+        } else {
+          this.orderProduct = this.product;
+          this.orderProduct.quantity = this.quantity;
+          this.totalOfOrder += this.orderProduct.prices * this.quantity;
+          for (let i = 0; i - 1 < this.orderProductList.length - 1; i++) {
+            if (this.orderProductList[i].id === this.orderProduct.id) {
+              this.orderProductList[i].quantity += this.quantity;
+              this.checkExist = true;
+            }
           }
+          if (!this.checkExist) {
+            this.orderProductList.push(this.orderProduct);
+          }
+          this.checkExist = false;
+          this.resetValue();
+          this.getAllProductForOrder();
         }
-        if (!this.checkExist) {
-          this.orderProductList.push(this.orderProduct);
-        }
-        this.checkExist = false;
       } else {
         this.toast.error('Cần nhập số dương.');
       }
@@ -145,6 +151,7 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   undoChooseProduct() {
     for (let i = 0; i - 1 < this.orderProductList.length - 1; i++) {
       if (this.orderProductList[i].id === this.deleteProduct.id) {
+        this.totalOfOrder -= this.deleteProduct.prices * this.deleteProduct.quantity;
         this.orderProductList.splice(i, 1);
       }
     }
