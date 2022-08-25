@@ -97,8 +97,8 @@ export class CustomerInformationComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadInfoCustomer();
-    this.endTime = this.convertStringToDate(sessionStorage.getItem('startTime'));
-    this.endTime.setSeconds(this.endTime.getSeconds() + Number(sessionStorage.getItem('remainingTime')));
+    this.endTime = this.convertStringToDate(localStorage.getItem('startTime'));
+    this.endTime.setSeconds(this.endTime.getSeconds() + Number(localStorage.getItem('remainingTime')));
     this.countDownDate();
   }
 
@@ -144,8 +144,8 @@ export class CustomerInformationComponent implements OnInit {
         name: new FormControl('', Validators.required)
       })
     }, [CustomValidators.mustMatch('password', 'confirmPassword')]);
-    if (sessionStorage.getItem('token')) {
-      const id = sessionStorage.getItem('customerId');
+    if (localStorage.getItem('token')) {
+      const id = localStorage.getItem('customerId');
       this.customerService.getCustomerByID(Number(id)).subscribe(value => {
           this.customer = value;
           console.log(value);
@@ -342,14 +342,14 @@ export class CustomerInformationComponent implements OnInit {
 
       if (this.difference < 1000) {
         clearInterval(this.loop);
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('roles');
-        sessionStorage.removeItem('username');
-        sessionStorage.removeItem('milisecsEndTime');
+        localStorage.removeItem('token');
+        localStorage.removeItem('roles');
+        localStorage.removeItem('username');
+        localStorage.removeItem('milisecsEndTime');
         this.authService.sendData('login', false);
         this.toast.error('Tài khoản hết giờ');
-        this.authService.setOutOfTime(Number(sessionStorage.getItem('customerId')), 0).subscribe(value => {
-          this.authService.returnComputer(Number(sessionStorage.getItem('computerId'))).subscribe();
+        this.authService.setOutOfTime(Number(localStorage.getItem('customerId')), 0).subscribe(value => {
+          this.authService.returnComputer(Number(localStorage.getItem('computerId'))).subscribe();
           this.route.navigate(['']);
         }, error => {
           this.toast.error('Lỗi tài khoản hết giờ');
@@ -358,9 +358,9 @@ export class CustomerInformationComponent implements OnInit {
       }
 
       if (this.countRequest >= 10) {
-        sessionStorage.setItem('remainingTime', String(Math.trunc(this.difference / 1000)));
+        localStorage.setItem('remainingTime', String(Math.trunc(this.difference / 1000)));
 
-        this.authService.setOutOfTime(Number(sessionStorage.getItem('customerId')), Math.trunc(this.difference / 1000)).subscribe(value => {
+        this.authService.setOutOfTime(Number(localStorage.getItem('customerId')), Math.trunc(this.difference / 1000)).subscribe(value => {
           // this.toartrs.success('đã update remaining time với server');
         }, error => {
           this.toast.error('Lỗi kết nối server: set out of time');
