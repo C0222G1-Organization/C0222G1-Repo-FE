@@ -12,6 +12,8 @@ export class GameService {
 
   constructor(private http: HttpClient) { }
   createGame(game: Game): Observable<any> {
+    console.log('check game');
+    console.log(game);
     return this.http.post<any>(API_URL + '/games', game);
   }
 
@@ -36,5 +38,8 @@ export class GameService {
   }
   getGameById(id: string): Observable<Game> {
     return this.http.get<Game>(API_URL + `/games/detail/${id}`);
+  }
+  checkGameName(name: string): Observable<string> {
+    return this.http.get<string>(API_URL + '/games/checkGameName/' + name);
   }
 }

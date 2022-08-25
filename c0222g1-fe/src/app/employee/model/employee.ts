@@ -1,8 +1,8 @@
-import {User} from './user';
-import {Position} from "./position";
-import {Commune} from "./commune";
-import {District} from "./district";
-import {Province} from "./province";
+import {AppUser} from './appuser';
+import {Position} from './position';
+import {Commune} from './commune';
+import {District} from './district';
+import {Province} from './province';
 
 export interface Employee {
   id?: number;
@@ -16,13 +16,13 @@ export interface Employee {
   statusDelete?: number;
   image?: string;
   position?: Position;
-  user?: User;
+  appUser?: AppUser;
   disName?: string;
   proName?: string;
   cmName?: string;
   posiName?: string;
-  commune?: Commune;
-  district?: District;
-  province?: Province;
+  commune: Commune;
+  district: District;
+  province: Province;
   workf: string;
 }

@@ -28,7 +28,7 @@ export class CustomerService {
    */
 
   public getAllCustomer(page, address, name, startDay, endDay, activeStatus): Observable<CustomerDTO> {
-    return this.httpClient.get<CustomerDTO>('http://localhost:8080/customer/searchCustomer?page=' + page
+    return this.httpClient.get<CustomerDTO>(this.ApiUrl_8080 + '/searchCustomer?page=' + page
       + '&address=' + address + '&name=' + name + '&starDay=' + startDay + '&endDay=' + endDay + '&activeStatus=' + activeStatus);
   }
 
@@ -39,19 +39,8 @@ export class CustomerService {
    * function: Delete customer by id
    */
   public deleteCustomerById(id): Observable<Customer> {
-    return this.httpClient.delete<Customer>('http://localhost:8080/customer/deleteCustomerBy?id=' + id);
+    return this.httpClient.delete<Customer>(this.ApiUrl_8080 + '/deleteCustomerBy?id=' + id);
   }
-
-
-  /**
-   * Create by: DuyNT
-   * Date Create: 11/08/2022
-   * function: get info of customer by id from database
-   */
-  public findCustomerById(id: number): Observable<Customer> {
-    return this.httpClient.get<Customer>(`${this.ApiUrl_8080}/${id}`);
-  }
-
 
   saveCustomer(customerDTO: UpdateCustomerDto): Observable<void> {
     console.log(customerDTO);
@@ -78,6 +67,11 @@ export class CustomerService {
     return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id, customer);
   }
 
+
+  updateCustomerDTO(id: number, customer: UpdateCustomerDto): Observable<UpdateCustomerDto> {
+    return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id, customer);
+  }
+
   checkUserName(userName: string): Observable<string> {
     return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkUserName/' + userName);
   }
@@ -94,7 +88,22 @@ export class CustomerService {
     return this.httpClient.get<string>(this.ApiUrl_8080 + '/checkPhone/' + phone);
   }
 
-  deleteListCustomer(lisCustomer): Observable<any> {
-    return this.httpClient.post<any>('http://localhost:8080/customer/deleteListCustomer/',lisCustomer);
+  updateCustomerInfo(id: number, customer: CustomerDTO): Observable<void> {
+    return this.httpClient.patch<void>(this.ApiUrl_8080 + '/update/' + id, customer);
+  }
+
+  checkMatchesPassword(password: string, id: number): Observable<string> {
+    return this.httpClient.get<string>(this.ApiUrl_8080 + '/matchesPassword/' + password + '/' + id);
+  }
+
+  /**
+   * Create by: LuanND
+   * Date Create: 17/08/2022
+   * Description: add new time remaining
+   * @param id: is ID object payment send to API
+   * @param remaining: time remaining customer can play
+   */
+  setTimeRemaining(id: number, remaining: number): Observable<any> {
+    return this.httpClient.get<string>(this.ApiUrl_8080 + `/setOutOfTime?id=${id}&remaining=${remaining}`);
   }
 }
