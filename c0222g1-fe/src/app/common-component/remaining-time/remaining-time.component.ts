@@ -20,7 +20,7 @@ export class RemainingTimeComponent implements OnInit {
   endTime: Date;
   remainingTimeBackEnd = 0;
   data: Map<string, any> = new Map<string, any>();
-  loop = 0;
+  loop: any;
   countRequest = 1;
   remainingTimeRequest = 0;
 
@@ -83,7 +83,6 @@ export class RemainingTimeComponent implements OnInit {
         document.getElementById('remaining-time-days').innerText = this.remainingTimeDays + ' ngày ';
       }
       if (document.getElementById('remaining-time-hours') === null) {
-        alert(document.getElementById('remaining-time-hours'));
         clearInterval(this.loop);
       }
       document.getElementById('remaining-time-hours').innerText = this.remainingTimeHours;
@@ -102,14 +101,12 @@ export class RemainingTimeComponent implements OnInit {
               this.remainingTimeRequest = Math.trunc(this.difference / 1000);
               this.authService.setOutOfTime(Number(sessionStorage.getItem('customerId')), this.remainingTimeRequest).subscribe(value2 => {
                 sessionStorage.setItem('remainingTime', String(this.remainingTimeRequest));
-                this.toartrs.success('set remaining time successful');
               }, error => {
                 this.toartrs.error('Lỗi ' + error.status + ' kết nối server: set out of time2');
               });
             }
             if (this.remainingTimeBackEnd > Number(sessionStorage.getItem('remainingTime'))) {
               sessionStorage.setItem('remainingTime', String(this.remainingTimeBackEnd));
-              this.toartrs.success('set remaining time successful');
             }
           }
         }, error => {

@@ -88,17 +88,6 @@ export class HomePageCustomerComponent implements OnInit {
 
       if (this.difference < 1000) {
         clearInterval(this.loop);
-        // sessionStorage.removeItem('token');
-        // sessionStorage.removeItem('roles');
-        // sessionStorage.removeItem('username');
-        // this.authService.sendData('login', false);
-        // this.toartrs.error('Tài khoản hết giờ');
-        // this.authService.setOutOfTime(this.customerId, 0).subscribe(value => {
-        //   this.router.navigate(['']);
-        // }, error => {
-        //   this.toartrs.error('Lỗi tài khoản hết giờ');
-        //   this.router.navigate(['']);
-        // });
       }
     }, 1000);
   }
