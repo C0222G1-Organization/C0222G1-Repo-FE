@@ -10,7 +10,6 @@ export class JwtInterceptor implements HttpInterceptor {
   // @ts-ignore
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let authReq  = req;
-    console.log(localStorage);
     if (localStorage.getItem('username') && localStorage.getItem('token')) {
       authReq = req.clone({
         setHeaders: {
@@ -20,7 +19,6 @@ export class JwtInterceptor implements HttpInterceptor {
         }
       });
     }
-    console.log(authReq);
     return next.handle(authReq);
   }
 }
