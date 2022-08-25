@@ -59,8 +59,7 @@
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('startUsedDate').touched
                 && formEditComputer.hasError('required', 'startUsedDate')">Ngày không được để trống.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('startUsedDate').dirty
-                && formEditComputer.hasError('dateerror')">Ngày đưa vào hoạt dộng phải bé hơn hoặc bằng ngày hiện tại.</p>
-
+                && formEditComputer.hasError('dateerror')">Ngày đưa vào hoạt dộng phải bé hơn ngày hiện tại.</p>
       <label for="start" style="color: white">
         Ngày đưa vào hoạt động
         <span class="text-danger">*</span>
@@ -74,8 +73,8 @@
         <span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').touched
                 && formEditComputer.hasError('required', 'configuration')">Vị trí máy không được để trống.</span>
         <span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').dirty
-                && formEditComputer.hasError('minlength', 'configuration')">Cấu hình tối thiếu 2 ký tự. &nbsp;&nbsp;</span>
-        <span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').touched
+                  && formEditComputer.hasError('minlength', 'configuration')">Cấu hình tối thiếu 2 ký tự. &nbsp;&nbsp;</span>
+        <span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').dirty
                 && formEditComputer.hasError('maxlength', 'configuration')">Cấu hình tối đa 20 ký tự.</span>
         <span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').dirty
                 && formEditComputer.hasError('pattern', 'configuration')">Cấu hình không được chứa ký tự đặc biệt.</span>
@@ -147,7 +146,7 @@
     <div>
     </div>
 
-    <div style="padding-right: 37px">
+    <div>
       <div class="row mb-5 mt-4 ms-5 justify-content-center">
         <button type="button" class="btn btn-outline-light w-25" (click)="cancel()">Hủy bỏ</button>
         <button type="submit" class="btn btn-primary w-25 ms-3">Sửa</button>
