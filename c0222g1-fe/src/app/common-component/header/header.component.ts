@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    sessionStorage.getItem('roles') === 'CUSTOMER' ? this.headerEmployee = false : this.headerEmployee = true;
+    localStorage.getItem('roles') === 'CUSTOMER' ? this.headerEmployee = false : this.headerEmployee = true;
     this.authService.checkData.subscribe(value => {
       if (value !== undefined) {
         this.data = value;
@@ -46,12 +46,12 @@ export class HeaderComponent implements OnInit {
     });
     this.checkLogin();
     this.checkRoles();
-    if (sessionStorage.getItem('loopTimeCustomer') !== null) {
-      if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+    if (localStorage.getItem('loopTimeCustomer') !== null) {
+      if (localStorage.getItem('loopTimeCustomer') === '0') {
         this.showTime = true;
       } else {
         this.showTime = false;
-        sessionStorage.setItem('loopTimeCustomer', '1');
+        localStorage.setItem('loopTimeCustomer', '1');
       }
     }
 
@@ -64,12 +64,12 @@ export class HeaderComponent implements OnInit {
     });
 
     setTimeout(() => {
-      if (sessionStorage.getItem('loopTimeCustomer') !== null) {
-        if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+      if (localStorage.getItem('loopTimeCustomer') !== null) {
+        if (localStorage.getItem('loopTimeCustomer') === '0') {
           this.showTime = true;
         } else {
           this.showTime = false;
-          sessionStorage.setItem('loopTimeCustomer', '1');
+          localStorage.setItem('loopTimeCustomer', '1');
         }
       }
     }, 2000);
@@ -81,20 +81,20 @@ export class HeaderComponent implements OnInit {
         this.data = value;
         if (this.data.has('login')) {
           this.login = this.data.get('login');
-          this.username = sessionStorage.getItem('name');
-          this.roles = sessionStorage.getItem('roles');
+          this.username = localStorage.getItem('name');
+          this.roles = localStorage.getItem('roles');
           this.checkRoles();
         }
         if (this.data.has('timeout')) {
-          sessionStorage.removeItem('token');
-          sessionStorage.removeItem('roles');
-          sessionStorage.removeItem('username');
-          sessionStorage.removeItem('milisecsEndTime');
-          sessionStorage.setItem('loopTimeCustomer', '1');
+          localStorage.removeItem('token');
+          localStorage.removeItem('roles');
+          localStorage.removeItem('username');
+          localStorage.removeItem('milisecsEndTime');
+          localStorage.setItem('loopTimeCustomer', '1');
           this.authService.sendData('login', false);
           this.toartrs.error('Tài khoản hết giờ');
-          this.authService.setOutOfTime(Number(sessionStorage.getItem('customerId')), 0).subscribe(value2 => {
-            this.authService.returnComputer(Number(sessionStorage.getItem('computerId'))).subscribe();
+          this.authService.setOutOfTime(Number(localStorage.getItem('customerId')), 0).subscribe(value2 => {
+            this.authService.returnComputer(Number(localStorage.getItem('computerId'))).subscribe();
             this.router.navigate(['']);
           }, error => {
             this.toartrs.error('Lỗi tài khoản hết giờ');
@@ -104,10 +104,10 @@ export class HeaderComponent implements OnInit {
 
       }
     });
-    if (sessionStorage.getItem('token')) {
+    if (localStorage.getItem('token')) {
       this.login = true;
-      this.username = sessionStorage.getItem('name');
-      this.roles = sessionStorage.getItem('roles');
+      this.username = localStorage.getItem('name');
+      this.roles = localStorage.getItem('roles');
       this.checkRoles();
     }
   }
@@ -153,8 +153,8 @@ export class HeaderComponent implements OnInit {
       this.serviceCard = false;
       this.statisticalCard = false;
     }
-    if (sessionStorage.getItem('loopTimeCustomer') !== null) {
-      if (sessionStorage.getItem('loopTimeCustomer') === '0') {
+    if (localStorage.getItem('loopTimeCustomer') !== null) {
+      if (localStorage.getItem('loopTimeCustomer') === '0') {
         this.urlNameHeader = 'customers/home-page';
         this.remainingTimeComponent = true;
       } else {
