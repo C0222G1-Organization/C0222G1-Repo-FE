@@ -11,6 +11,14 @@
   border-radius: 10px;
 }
 
+.top-game-img-container {
+  padding: 0;
+  top: -25px;
+  right: -25px;
+  margin: 0;
+  position: absolute;
+}
+
 .card-game-main {
   margin-left: 3px;
   margin-top: 16px;

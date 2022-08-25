@@ -43,7 +43,6 @@ export class CustomerService {
   }
 
   saveCustomer(customerDTO: UpdateCustomerDto): Observable<void> {
-    console.log(customerDTO);
     return this.httpClient.post<void>(this.ApiUrl_8080, customerDTO);
   }
 
@@ -62,12 +61,9 @@ export class CustomerService {
   getCustomerByID(id: number): Observable<UpdateCustomerDto> {
     return this.httpClient.get<UpdateCustomerDto>(this.ApiUrl_8080 + '/getCustomer/' + id);
   }
-
   updateCustomer(id: number, customer: Customer): Observable<UpdateCustomerDto> {
     return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id, customer);
   }
-
-
   updateCustomerDTO(id: number, customer: UpdateCustomerDto): Observable<UpdateCustomerDto> {
     return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id, customer);
   }

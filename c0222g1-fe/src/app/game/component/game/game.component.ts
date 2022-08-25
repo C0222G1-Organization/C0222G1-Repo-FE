@@ -60,7 +60,6 @@ export class GameComponent implements OnInit {
   getPage(page) {
     if (page < 1 || page > this.totalPages) {
       this.toastr.error('Vui lòng nhập đúng');
-      this.toastr.error('Vui lòng nhập đúng');
     } else {
       this.page = page;
       if (this.gameName.length !== 0) {
@@ -123,9 +122,9 @@ export class GameComponent implements OnInit {
   updatePlayedTimes(id: number) {
     this.gameService.updateGame(id, this.game).subscribe(res => {
         this.getGames(this.page - 1);
-        this.toastr.success('Đang khởi động game');
+        this.toastr.success('Đang tải game');
     }, error => {
-      this.toastr.error('Khởi động thất bại');
+      this.toastr.error('Tải thất bại');
     });
   }
 
@@ -184,11 +183,11 @@ export class GameComponent implements OnInit {
   }
 
   checkRole() {
-    if (sessionStorage.getItem('roles') === 'EMPLOYEE' || sessionStorage.getItem('roles') == 'ADMIN') {
+    if (localStorage.getItem('roles') === 'EMPLOYEE' || localStorage.getItem('roles') == 'ADMIN') {
       this.editState = true;
       this.playState = true;
     }
-    if (sessionStorage.getItem('roles') === 'CUSTOMER') {
+    if (localStorage.getItem('roles') === 'CUSTOMER') {
       this.playState = true;
       this.editState = false;
     }
