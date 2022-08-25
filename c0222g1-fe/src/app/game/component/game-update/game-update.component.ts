@@ -157,7 +157,7 @@ export class GameUpdateComponent implements OnInit {
               },
               error => {
                 this.check = true;
-                this.toastr.error('Chỉnh sửa thất bại thất bại, hãy thử lại.');
+                this.toastr.error('Chỉnh sửa thất bại thất bại, hãy thử lại!');
               }
             );
           });
