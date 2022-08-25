@@ -1,11 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Game} from '../../model/game';
 import {GameService} from '../../service/game.service';
 import {Title} from '@angular/platform-browser';
 import {ToastrService} from 'ngx-toastr';
 
 import {Route, Router} from '@angular/router';
-import {GameCreateComponent} from "../game-create/game-create.component";
 
 @Component({
   selector: 'app-game',
@@ -31,7 +30,7 @@ export class GameComponent implements OnInit {
               private title: Title,
               private toastr: ToastrService,
               private route: Router) {
-      this.title.setTitle('Danh sách game');
+    this.title.setTitle('Danh sách game');
   }
 
   ngOnInit(): void {
@@ -121,8 +120,8 @@ export class GameComponent implements OnInit {
 
   updatePlayedTimes(id: number) {
     this.gameService.updateGame(id, this.game).subscribe(res => {
-        this.getGames(this.page - 1);
-        this.toastr.success('Đang tải game');
+      this.getGames(this.page - 1);
+      this.toastr.success('Đang tải game');
     }, error => {
       this.toastr.error('Tải thất bại');
     });

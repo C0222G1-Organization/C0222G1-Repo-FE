@@ -13,8 +13,6 @@ import {formatDate} from '@angular/common';
 import {Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { Output, EventEmitter } from '@angular/core';
-
 @Component({
   selector: 'app-game-create',
   templateUrl: './game-create.component.html',
@@ -22,7 +20,6 @@ import { Output, EventEmitter } from '@angular/core';
 })
 export class GameCreateComponent implements OnInit {
   public Editor = ClassicEditor;
-  game: Game;
   gameForm: FormGroup;
   gameCategory: GameCategory[];
   selectedFile: File = null;
@@ -130,9 +127,10 @@ export class GameCreateComponent implements OnInit {
       finalize(() => {
         fileRef.getDownloadURL().subscribe((url) => {
           this.gameForm.patchValue({imageUrl: url});
+          console.log(url);
+          console.log(this.gameForm.value);
           this.gameService.createGame(this.gameForm.value).subscribe(
-            game => {
-              this.game = this.gameForm.value;
+            () => {
               this.router.navigateByUrl('/games');
               this.toastr.success('Tạo mới thàng công.');
             },
