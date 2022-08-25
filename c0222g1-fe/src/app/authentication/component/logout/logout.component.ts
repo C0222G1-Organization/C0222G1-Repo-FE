@@ -22,17 +22,17 @@ export class LogoutComponent implements OnInit {
   }
 
   logout() {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('username');
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
     this.authService.sendData('login', false);
-    if (sessionStorage.getItem('roles') === 'CUSTOMER') {
+    if (localStorage.getItem('roles') === 'CUSTOMER') {
       this.returnComputer();
     }
-    sessionStorage.removeItem('roles');
-    sessionStorage.setItem('loopTimeCustomer', '1');
-    sessionStorage.removeItem('remainingTime');
-    sessionStorage.removeItem('startTime');
-    sessionStorage.removeItem('endTime');
+    localStorage.removeItem('roles');
+    localStorage.setItem('loopTimeCustomer', '1');
+    localStorage.removeItem('remainingTime');
+    localStorage.removeItem('startTime');
+    localStorage.removeItem('endTime');
     clearInterval(this.loop);
     this.toartrs.success('Đã đăng xuất');
     this.authService.sendData('logout', 'logout');
@@ -55,9 +55,9 @@ export class LogoutComponent implements OnInit {
   }
 
   returnComputer() {
-    this.authService.returnComputer(Number(sessionStorage.getItem('computerId'))).subscribe(value => {
-      sessionStorage.removeItem('computerId');
-      sessionStorage.removeItem('computerCode');
+    this.authService.returnComputer(Number(localStorage.getItem('computerId'))).subscribe(value => {
+      localStorage.removeItem('computerId');
+      localStorage.removeItem('computerCode');
     });
   }
 

@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../../authentication/service/auth.service';
-import {JwtResponseCustomer} from '../../model/jwt-response-customer';
 import {Title} from '@angular/platform-browser';
 import {ToastrService} from 'ngx-toastr';
 import {Router} from '@angular/router';
@@ -24,7 +23,7 @@ export class HomePageCustomerComponent implements OnInit {
   days: any;
   loop: NodeJS.Timeout;
   endTime: Date;
-  customerId: number = Number(sessionStorage.getItem('customerId'));
+  customerId: number = Number(localStorage.getItem('customerId'));
 
   constructor(private authService: AuthService, private title: Title,
               private toartrs: ToastrService, private router: Router,
@@ -33,16 +32,16 @@ export class HomePageCustomerComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Trang chủ khách hàng');
-    document.getElementById('fullName').innerText = sessionStorage.getItem('name');
-    document.getElementById('startTime').innerText = sessionStorage.getItem('startTime');
-    this.endTime = this.convertStringToDate(sessionStorage.getItem('startTime'));
-    this.endTime.setSeconds(this.endTime.getSeconds() + Number(sessionStorage.getItem('remainingTime')));
+    document.getElementById('fullName').innerText = localStorage.getItem('name');
+    document.getElementById('startTime').innerText = localStorage.getItem('startTime');
+    this.endTime = this.convertStringToDate(localStorage.getItem('startTime'));
+    this.endTime.setSeconds(this.endTime.getSeconds() + Number(localStorage.getItem('remainingTime')));
     const endTime = this.datepipe.transform(this.endTime, 'HH:mm:ss dd-MM-yyyy');
     // @ts-ignore
-    sessionStorage.setItem('endTime', endTime);
+    localStorage.setItem('endTime', endTime);
     console.log(this.endTime);
     document.getElementById('endTime').innerText = endTime;
-    document.getElementById('computerCode').innerText = sessionStorage.getItem('computerCode');
+    document.getElementById('computerCode').innerText = localStorage.getItem('computerCode');
     this.countDownDate();
   }
 
