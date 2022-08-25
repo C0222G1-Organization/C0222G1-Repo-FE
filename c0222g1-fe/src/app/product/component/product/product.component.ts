@@ -35,27 +35,45 @@ export class ProductComponent implements OnInit {
 
 
   formProduct = new FormGroup({
-    nameProduct: new FormControl('', Validators.pattern('^[\-0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s?]+$'))
+    nameProduct: new FormControl('',
+      [Validators.pattern('^[0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s? ]+$'),
+        Validators.maxLength(25)])
   });
+
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: check role
+   */
 
   checkRole(): string {
     return sessionStorage.getItem('roles');
   }
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: show list product
+   */
   ngOnInit(): void {
     this.role = this.checkRole();
     this.titleService.setTitle('Danh sách dịch vụ');
     this.getAllProduct();
     this.getAllProductCategory();
-    if (this.totalElements === 1) {
-      this.productList.length = 0;
-      this.toast.error('Đã hết sản phẩm trong kho');
-    }
+    // if (this.totalElements === 1 ) {
+    //   this.productList.length = 0;
+    //   this.toast.error('Đã hết sản phẩm trong kho');
+    // }
     if (this.totalElements >= this.productList.length) {
       this.productList.length = 0;
     }
   }
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: Get all product
+   */
   getAllProduct() {
     this.productService.findAllProduct(this.name, this.page).subscribe((value: any) => {
       if (value != null) {
@@ -68,22 +86,38 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: Get all product category
+   */
   getAllProductCategory() {
     this.productService.findAllProductCategory().subscribe(value => {
       this.productCategoryList = value;
     });
   }
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: Search product
+   */
   search() {
+    // this.name = this.formProduct.value;
     this.name = this.name.trim();
     if (this.page !== 0) {
       this.page = 0;
     }
+    if (this.name === '') {
+      this.toast.info('Bạn cần nhập giá trị vào ô tìm kiếm');
+      this.ngOnInit();
+    }
     this.productService.findAllProduct(this.name, this.page).subscribe((value: any) => {
-      if (value !== null) {
+      if (value !== null && this.name !== '' && this.formProduct.valid) {
         this.productList = value.content;
         this.totalElements = value.totalElements;
         this.page = 0;
+        this.toast.success('Bạn đã tìm thấy ' + this.totalElements + ' kết quả' );
       }
       if (value === null) {
         this.toast.error('Không tìm thấy kết quả');
@@ -91,14 +125,36 @@ export class ProductComponent implements OnInit {
       }
     }, error => {
     }, () => {
+
     });
+
   }
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: Pagination
+   */
   getPage(event: number) {
     this.page = event - 1;
     this.getAllProduct();
   }
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: Get the value to delete product
+   */
+  valueOfDelete(nameProduct: string, id: number) {
+    this.nameProduct = nameProduct;
+    this.id = id;
+  }
+
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: Delete product
+   */
   delete() {
     this.productService.delete(this.id).subscribe(value => {
       if (this.productList.length === 1) {
@@ -117,10 +173,6 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  valueOfDelete(nameProduct: string, id: number) {
-    this.nameProduct = nameProduct;
-    this.id = id;
-  }
 
   getSelectedProducts() {
     this.selectedNameProducts = this.productList.filter(product => product.checked);
@@ -134,7 +186,9 @@ export class ProductComponent implements OnInit {
         break;
       }
     }
+    // Dùng để gửi tên các sản phẩm ứng với id
     this.getSelectedProducts();
+
   }
 
   isAllCheckBoxChecked() {
@@ -144,16 +198,18 @@ export class ProductComponent implements OnInit {
       } else {
         this.map.delete(value.id);
       }
-      console.log(value);
+
     });
     return this.productList.every(e => e.checked);
   }
 
+  // chọn tất cả record
   checkAllCheckBox(event: any) {
     this.productList.forEach(x => x.checked = event.target.checked);
     this.getSelectedProducts();
   }
 
+  // Xóa tất cả
   deleteProductList() {
     this.selectedIdProducts = this.productList.filter(product => product.checked).map(p => p.id);
     for (const product of this.selectedIdProducts) {

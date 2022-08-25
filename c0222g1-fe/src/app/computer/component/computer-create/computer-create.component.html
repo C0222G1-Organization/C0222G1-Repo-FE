@@ -17,11 +17,10 @@
         <span class="text-danger">*</span>
       </label>
     </div>
-
-    <div class="form-floating textbox mb-4">
-      <select disabled class="form-select select input" aria-haspopup="true"
+    <div class="form-floating textbox mb-
+      <select disabled="" class="form-select select input" aria-haspopup="true"
               id="status" formControlName="status" style="padding: 10px 15px 0 15px">
-        <option value="1" class="option" style="height: 50px">Bình thường</option>
+        <option  value="1" class="option" style="height: 50px" >Bình thường</option>
       </select>
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('status').touched
                 && formComputer.hasError('required', 'status')">Tình trạng máy không được để trống.</p>
@@ -43,7 +42,6 @@
         <div><span style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('location').dirty
                 && formComputer.hasError('location')">Không được trùng vị trí.</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="isExitsLocation == true">Vị trí này đã có máy.</span>
-        </div>
       </div>
       <label for="vi-tri" style="color: white">
         Vị trí máy
@@ -58,7 +56,7 @@
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('startUsedDate').touched
                 && formComputer.hasError('required', 'startUsedDate')">Ngày không được để trống.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.get('startUsedDate').dirty
-                && formComputer.hasError('dateerror')">Ngày đưa vào hoạt dộng phải bé hơn ngày hiện tại.</p>
+                && formComputer.hasError('dateerror')">Ngày đưa vào hoạt dộng phải bé hơn hoặc bằng ngày hiện tại.</p>
       <p style="color: red; font-size: 0.8rem" *ngIf="formComputer.controls.startUsedDate.hasError('not2000')
     &&formComputer.controls.startUsedDate.dirty">
         Quán không hoạt động trước năm 2000.

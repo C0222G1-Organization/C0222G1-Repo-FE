@@ -3,41 +3,65 @@
   <div [formGroup]="formSearch">
     <div class="row">
       <h2 class="text-center text-white">DANH SÁCH KHÁCH HÀNG</h2>
-      <div class="container text-white my-5">
-        <div class="row mb-2">
-          <h4 class="text-white">Tìm kiếm khách hàng</h4>
-        </div>
-        <div class="row mb-4">
-          <div class="col-3 d-flex outline">
-            <div class="col-6">
+      <div class=" text-white my-5">
+        <!--        row search 1-->
+        <div class="row" style="height: 80px">
+          <div class="col-4 d-flex outline">
+            <div class="col-5">
               <label for="nameCustomer">Tên khách hàng</label>
             </div>
-            <div class="col-4">
-              <input (keydown.enter)="getAllCustomer()" formControlName="nameCustomer" id="nameCustomer" type="text" class="input-search form-control"
+            <div class="col-7">
+              <input (keydown.enter)="getAllCustomer()" formControlName="nameCustomer" id="nameCustomer" type="text"
+                     class="input-search form-control"
                      placeholder="Nhập tên">
-            </div>
-          </div>
-          <div class="col-4 d-flex">
-            <div class="col-1"></div>
-            <div class="col-4">
-              <label for="starDate">Ngày sinh từ</label>
-            </div>
-            <div class="col-6">
-              <input (keydown.enter)="getAllCustomer()" formControlName="starDate" id="starDate" type="date" class="form-control input-search">
+
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.hasError('errorDate') && formSearch.touched">ngày không hợp lệ để tìm kiếm (lớn hơn
-                ngày bên dưới)
+                   *ngIf="formSearch.controls.nameCustomer.hasError('maxlength') && formSearch.controls.nameCustomer.dirty">
+                Bạn nhập quá dài.
               </div>
-              <!--              <div class=" text-danger" style="font-size: small;float: right"  *ngIf="!formSearch.invalid && formSearch.touched">00</div>-->
+              <div style="font-size: small" class="text-danger"
+                   *ngIf="formSearch.controls.nameCustomer.hasError('pattern') && formSearch.controls.nameCustomer.dirty">
+                Bạn nhập tên sai định dạng.
+              </div>
+              <div style="font-size: small" class="text-danger"
+                   *ngIf="formSearch.controls.nameCustomer.hasError('minlength') && formSearch.controls.nameCustomer.dirty">
+                Bạn nhập quá ngắn
+              </div>
             </div>
 
           </div>
-          <div class="col-3 d-flex">
+          <div class="col-4 d-flex">
+            <div class="col-4">
+              <label for="startDate">Ngày sinh từ</label>
+            </div>
+            <div class="col-8">
+              <input formControlName="starDate" id="startDate" type="date"
+                     class="form-control input-search " style="width: 200px">
+              <div style="font-size: small" class="text-danger"
+                   *ngIf="formSearch.get('starDate').hasError('errorDateAge16') && formSearch.get('starDate').dirty">
+                Ngày sinh phải lớn hơn 16 tuổi .
+              </div>
+              <div style="font-size: small" class="text-danger"
+                   *ngIf="formSearch.hasError('errorStartDateMoreEndDate') && formSearch.dirty">Ngày sinh phải nhỏ hơn
+                ngày đến.
+              </div>
+              <div style="font-size: small" class="text-danger"
+                   *ngIf="formSearch.get('starDate').hasError('errorDate1975') && formSearch.get('starDate').dirty">Bạn
+                nhập tuổi quá lớn.
+              </div>
+
+            </div>
+
+
+          </div>
+          <div class="col-4 d-flex">
+            <div class="col-2"></div>
             <div class="col-4">
               <label for="status">Trạng thái</label>
             </div>
-            <div class="col-4">
-              <select (keydown.enter)="getAllCustomer()" id="status" style="min-width: 100px" class="input-search form-control"
+            <div class="col-6">
+              <select (keydown.enter)="getAllCustomer()" id="status" style="min-width: 100px"
+                      class="input-search form-control"
                       formControlName="activeStatus">
                 <option value="">Tất cả</option>
                 <option value="1">Đang hoạt động</option>
@@ -45,40 +69,60 @@
               </select>
             </div>
           </div>
-          <div class="col-2 d-flex"></div>
         </div>
+        <!--        row search 2-->
         <div class="row ">
-          <div class="col-3 d-flex">
-            <div class="col-6">
+          <div class="col-4 d-flex">
+            <div class="col-5">
               <label for="address">Địa chỉ</label>
             </div>
-            <div class="col-4">
-              <input (keydown.enter)="getAllCustomer()" formControlName="address" id="address" type="text" class="input-search form-control"
+            <div class="col-7">
+              <input (keydown.enter)="getAllCustomer()" formControlName="address" id="address" type="text"
+                     class="input-search form-control"
                      placeholder="Nhập địa chỉ">
+              <div style="font-size: small" class="text-danger"
+                   *ngIf="formSearch.get('address').hasError('pattern') && formSearch.get('address').dirty">Nhập địa chỉ
+                sai định dạng.
+              </div>
+            </div>
+            <div style="font-size: small" class="text-danger"
+                 *ngIf="formSearch.controls.address.hasError('minlength') && formSearch.controls.address.dirty"> Vui
+              lòng nhập.
+            </div>
+            <div style="font-size: small" class="text-danger"
+                 *ngIf="formSearch.controls.address.hasError('maxlength') && formSearch.controls.address.dirty"> Bạn
+              nhập quá dài
             </div>
           </div>
           <div class="col-4 d-flex">
-            <div class="col-1"></div>
             <div class="col-4">
               <label for="endDate">Đến</label>
             </div>
-            <div class="col-6">
-              <input (keydown.enter)="getAllCustomer()" formControlName="endDate" id="endDate" type="date" class="input-search form-control">
+            <div class="col-8">
+              <input #endDate style="width: 200px" formControlName="endDate" id="endDate"
+                     type="date"
+                     class="input-search form-control">
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.get('endDate').hasError('errorDate') && formSearch.get('endDate').touched">ngày không hợp lệ để tìm kiếm (lớn hơn
-                ngày bên trên)
+                   *ngIf="formSearch.get('endDate').hasError('errorEndDate') && formSearch.get('endDate').dirty
+                   ">Ngày  không dược lớn hơn hiện tại
               </div>
               <div style="font-size: small" class="text-danger"
-                   *ngIf="formSearch.controls.endDate.hasError('errorEndDate') && formSearch.controls.endDate.dirty"> Không được lớn hơn ngày hiện tại
+                   *ngIf="formSearch.hasError('errorStartDateMoreEndDate') && formSearch.dirty">Ngày đến phải lớn hơn
+                ngày sinh.
               </div>
             </div>
-            <!--            <div class="col-1"></div>-->
           </div>
-          <div class="col-3 d-flex">
-            <div class="col-4"></div>
+          <div class="col-4 d-flex">
+            <div class="col-6"></div>
             <div class="col-6">
-              <button [disabled]="formSearch.invalid" class="btn btn-outline-secondary w-20 classDisabled" (click)="getAllCustomer()">
+              <button [disabled]="formSearch.invalid" class="btn btn-outline-secondary w-20 classDisabled"
+                      (click)="getAllCustomer()">
                 Tìm kiếm
+              </button>
+              <button style="margin-left: 15px" (click)="reload() "
+                      class="btn btn-outline-secondary w-20 classDisabled ">
+                <i class="fa-solid fa-arrows-rotate"></i>
+
               </button>
             </div>
 
@@ -88,9 +132,9 @@
       </div>
     </div>
   </div>
-<!--  table-->
-  <div style=" height: 400px">
-    <table class="table table-dark w-100">
+  <!--  table-->
+  <div style=" height: 370px">
+    <table class="table table-dark w-100" *ngIf="listCustomer.length!==0">
       <thead>
       <tr>
 
@@ -100,13 +144,13 @@
           </div>
         </th>
         <th>#</th>
-        <th scope="col">Họ và tên</th>
-        <th scope="col">Email</th>
-        <th scope="col">Ngày sinh</th>
-        <th class="w-10" scope="col">Địa chỉ</th>
-        <th scope="col">SĐT</th>
-        <th scope="col">Trạng thái</th>
-        <th colspan="2" scope="col">Chức năng</th>
+        <th class="th-w15" scope="col">Họ và tên</th>
+        <th class="th-w15" scope="col">Email</th>
+        <th class="th-w10" scope="col">Ngày sinh</th>
+        <th class="th-w20" scope="col">Địa chỉ</th>
+        <th class="th-w10" scope="col">SĐT</th>
+        <th class="th-w10" scope="col">Trạng thái</th>
+        <th scope="col">Chức năng</th>
       </tr>
       </thead>
       <tbody>
@@ -115,69 +159,91 @@
         <!--          <td><input type="checkbox" [checked]="statusCheckBox" (change)="getIdCheck(temp,$event.target.checked)"></td>-->
         <td><input class="card-notify-year-checkbox" type="checkbox" value="{{temp.id}}"
                    [(ngModel)]="listCustomer[i].checked "></td>
-        <td class="w-5">{{i + 1}}</td>
+        <td class="w-5">{{i + size + 1 }}</td>
         <td class="w-10">{{temp.name}}</td>
-        <td class="w-10">{{temp.email}}</td>
-        <td class="w-10">{{temp.dateOfBirth}}</td>
-        <td>{{temp.nameCommune}} - {{temp.nameDistrict}} - {{temp.nameProvince}} </td>
+        <td class="w-10 hiddenText" data-bs-toggle="tooltip" data-bs-placement="top"
+            title="{{temp.email}}">{{temp.email}}</td>
+        <td class="w-10">{{temp.dateOfBirth |date:'dd/MM/yyyy' }}</td>
+        <td class="hiddenText" data-bs-toggle="tooltip" data-bs-placement="top"
+            title="{{temp.nameCommune}} - {{temp.nameDistrict}} - {{temp.nameProvince}}">{{temp.nameCommune}}
+          - {{temp.nameDistrict}} - {{temp.nameProvince}} </td>
         <td class="w-10">{{temp.phoneNumber}}</td>
-        <td class="w-10">{{temp.activeStatus == 1 ? 'Đang hoạt động' : 'Ngưng hoạt động'}}</td>
+        <!--        <td class="w-10">{{temp.activeStatus == 1 ? 'Đang hoạt động' : 'Ngưng hoạt động'}}</td>-->
+        <td *ngIf="temp.activeStatus==1"><i style="margin-left: 25px; color: rgb(47,236,14);font-size: 10px"
+                                            class="fa-solid fa-circle"></i></td>
+        <td *ngIf="temp.activeStatus==0"><i style="margin-left: 25px; color: rgba(24,23,23,0.07)"
+                                            class="fa-solid fa-circle"></i></td>
         <td class="w-5">
           <button class="btn btn-outline-secondary" routerLink="/customers/edit/{{temp.id}}">
             <i class="fa-solid fa-pencil"></i>
           </button>
-        </td>
-        <td class="w-5">
-          <button [disabled]="map.size!==0" class="btn btn-outline-secondary ml-2" data-bs-toggle="modal"
+          <button [disabled]="map.size!==0" class="btn btn-outline-secondary " style="margin-left: 10px"
+                  data-bs-toggle="modal"
                   data-bs-target="#deleteModal" (click)="getIdDeleteInTable(temp)"><i class="fa-solid fa-trash"></i>
           </button>
         </td>
       </tr>
       <tr>
         <td colspan="9" class="container mt-2 justify-content-center" *ngIf="listCustomer.length == 0">
-          <img src="https://i.pinimg.com/originals/73/b0/05/73b0054acf8be08b254ba90945a19d09.gif"
-               style="width: 100%; height: 330px">
         </td>
+      </tr>
+      <tr>
       </tr>
 
       </tbody>
 
     </table>
-  </div>
-  <div>
-<!--    button create and delete all-->
-  <div class="row " id="btn-outside">
-    <div class="col-4">
-      <button routerLink="/customers/create" class="btn btn-outline-primary m-2">Thêm mới khách hàng</button>
-    </div>
-    <div class="col-4"></div>
-    <div class="col-4">
-      <div style="text-align: right" *ngIf="map.size!==0">
-        <button style="margin-right: 11px" class="btn btn-outline-primary " data-bs-toggle="modal"
-                data-bs-target="#deleteModal">Xóa
-        </button>
-      </div>
+    <div *ngIf="listCustomer.length==0" style="position: absolute ; top: 300px ; right: 40%">
+      <img src="https://i.giphy.com/media/HTSsuRrErs54g1Tqr5/giphy.webp"
+           style="width: 350px; height: 350px">
+      <h2 style="text-align: center ; color: white;margin-left: 50px">Không có khách hàng</h2>
     </div>
 
   </div>
-<!--    Pagination-->
-  <div style="justify-content: space-around;display: flex;" *ngIf="element!==0" >
-    <pagination-controls class="buttonPagination" style="color: black"
-                         (pageChange)=getPage($event)></pagination-controls>
-  </div>
+  <div>
+    <!--    button create and delete all-->
+    <div class="row " id="btn-outside">
+      <div class="col-4" >
+<div *ngIf="map.size!==0">
+  <button style="margin-right: 11px" class="btn btn-primary " data-bs-toggle="modal"
+          data-bs-target="#deleteModal">Xóa
+  </button>
+</div>
+
+      </div>
+      <div class="col-4" ></div>
+      <div class="col-4" style="text-align: right">
+        <div >
+          <button routerLink="/customers/create" class="btn btn-primary">Thêm mới khách hàng</button>
+
+        </div>
+      </div>
+
+    </div>
+    <div style="justify-content: space-around;display: flex;" *ngIf="element!==0">
+      <pagination-controls class="buttonPagination" style="color: black"
+                           (pageChange)=getPage($event)
+                           previousLabel="Trước"
+                           nextLabel="Sau"
+                           maxSize=7></pagination-controls>
+
+    </div>
+
   </div>
 </div>
 
 
-<!-- Delete Modal-->
-<div class="modal fade " id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content object">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel1">Xóa khách hàng</h5>
+        <h5 class="modal-title text-white" id="exampleModalLabel">Thông báo</h5>
       </div>
-      <div class="modal-body" *ngIf="map.size==0">
-        <table class="table table-dark">
+      <div class="modal-body text-white" *ngIf="map.size==0">
+        <h6>Bạn có muốn xóa khách hàng</h6>
+        <table style="width: 100%">
           <thead>
           <tr>
             <th scope="col">#</th>
@@ -192,8 +258,9 @@
           </tbody>
         </table>
       </div>
-      <div class="modal-body" *ngIf="map.size!==0">
-        <table class="table table-dark">
+      <div class="modal-body text-white" *ngIf="map.size!==0">
+        <h6>Bạn có muốn xóa khách hàng</h6>
+        <table style="width: 100%">
           <thead>
           <tr>
             <th scope="col">#</th>
@@ -207,22 +274,21 @@
           </tr>
           </tbody>
         </table>
-
       </div>
       <div class="modal-footer">
+
         <button (click)="close()" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button *ngIf="map.size ==0" type="button" class="btn btn-outline-primary" data-bs-dismiss="modal"
+        <button *ngIf="map.size ==0" type="button" class="btn btn-primary" data-bs-dismiss="modal"
                 (click)="deleteCustomer()">Xóa
         </button>
-        <button *ngIf="map.size!==0" type="button" class="btn btn-outline-primary" data-bs-dismiss="modal"
-                (click)="DeleteById()">Xóa1
+        <button *ngIf="map.size!==0" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                (click)="DeleteById()">
+          Xóa
         </button>
       </div>
     </div>
   </div>
 </div>
-
-
 
 </body>
 

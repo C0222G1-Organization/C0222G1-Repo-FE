@@ -22,7 +22,7 @@ export class HomePageCustomerComponent implements OnInit {
   minutes: any;
   hours: any;
   days: any;
-  loop: any;
+  loop: NodeJS.Timeout;
   endTime: Date;
   customerId: number = Number(sessionStorage.getItem('customerId'));
 
@@ -78,6 +78,9 @@ export class HomePageCustomerComponent implements OnInit {
       this.seconds = this.seconds < 10 ? '0' + this.seconds : this.seconds;
       if (this.days > 0) {
         document.getElementById('days').innerText = this.days + ' ngày ';
+      }
+      if (document.getElementById('hours') === null) {
+        clearInterval(this.loop);
       }
       document.getElementById('hours').innerText = this.hours;
       document.getElementById('mins').innerText = this.minutes;

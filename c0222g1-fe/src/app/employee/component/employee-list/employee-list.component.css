@@ -49,7 +49,7 @@ tbody tr:hover {
 .input-search {
   /*background: #484848 !important;*/
   color: #a8a8a8 !important;
-  width: 150px;
+  width: 170px;
   background-color: transparent;
   border-color: #a8a8a8;
   border-width: 1px;
@@ -78,7 +78,7 @@ thead > tr {
 .input-search-position-employee {
   /*background: #484848 !important;*/
   color: #a8a8a8 !important;
-  width: 10px !important;
+  width: 170px !important;
   background-color: transparent;
   border-color: #a8a8a8;
   border-width: 1px;
@@ -115,6 +115,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 tbody,thead.hiddenText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
+td.hiddenText {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
