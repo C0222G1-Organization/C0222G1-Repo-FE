@@ -83,17 +83,17 @@ export class ComputerEditComponent implements OnInit {
   }
 
   cancel() {
-    this.toast.error('Sửa thất bại', 'Computer');
+    this.toast.error('Sửa thất bại');
     this.route.navigateByUrl('/computers');
   }
 
   submit() {
     this.computerService.editComputer(this.id, this.formEditComputer.value).subscribe(value => {
-        this.toast.success('Sửa thành công', 'Computer');
+        this.toast.success('Sửa thành công');
         this.route.navigateByUrl('/computers');
       },
       error => {
-        this.toast.error('Sửa thất bại', 'Computer');
+        this.toast.error('Sửa thất bại');
       });
   }
 

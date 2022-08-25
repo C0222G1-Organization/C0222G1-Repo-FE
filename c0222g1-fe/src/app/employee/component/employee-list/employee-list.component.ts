@@ -8,7 +8,6 @@ import {Title} from '@angular/platform-browser';
 import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
 
-
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
@@ -36,6 +35,13 @@ export class EmployeeListComponent implements OnInit {
   selectedEmployee: any[] = [];
   totalPages: any;
   map = new Map;
+  codeDelete: string;
+  getAddress: string;
+  getDob: string;
+  getEmail: string;
+  getPhone: string;
+  getPositionName: string;
+  getLevel: number;
 
   constructor(private employeeService: EmployeeService,
               private title: Title,
@@ -46,7 +52,7 @@ export class EmployeeListComponent implements OnInit {
     this.formSearch = new FormGroup({
       code: new FormControl('', [Validators.pattern('^[A-Za-z0-9]+$'), Validators.maxLength(20)]),
       // tslint:disable-next-line:max-line-length
-      name: new FormControl('', [Validators.pattern('^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$'), Validators.maxLength(20)]),
+      name: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'), Validators.maxLength(20)]),
       dobfrom: new FormControl(''),
       dobend: new FormControl(''),
       workf: new FormControl(''),
@@ -68,9 +74,9 @@ export class EmployeeListComponent implements OnInit {
       getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
       getFormSearch.address).subscribe((value: any) => {
         this.size = value.size * this.page;
-
         this.employees = value.content;
         this.totalElements = value.totalElements;
+        this.totalPages = value.totalElements;
       }, error => {
         this.route.navigateByUrl('/500');
       }
@@ -93,11 +99,12 @@ export class EmployeeListComponent implements OnInit {
     this.employeeService.getEmployeeList(this.page, getFormSearch.code, getFormSearch.name, getFormSearch.dobfrom,
       getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
       getFormSearch.address).subscribe((value: any) => {
+      this.size = value.size * this.page;
       this.employees = value.content;
-      if (this.employees.isEmpty) {
-        this.toastr.warning('Không có dữ liệu phù hợp.');
-      }
       this.totalElements = value.totalElements;
+      if (this.employees.length === 0) {
+        this.toastr.error('Không có dữ liệu phù hợp.');
+      }
     });
   }
 
@@ -105,6 +112,13 @@ export class EmployeeListComponent implements OnInit {
   getEmployee(employee: Employee) {
     this.idDelete = employee.id;
     this.nameDelete = employee.name;
+    this.codeDelete = employee.code;
+    this.getEmail = employee.email;
+    this.getDob = employee.dob;
+    this.getPhone = employee.phone;
+    this.getPositionName = employee.posiName;
+    this.getAddress = employee.cmName + ', ' + employee.disName + ', ' + employee.proName;
+    this.getLevel = this.exp(employee);
   }
 
   deleteEmployeeList() {
@@ -112,12 +126,17 @@ export class EmployeeListComponent implements OnInit {
     for (const employee of this.selectedEmployee) {
       this.id = employee;
       this.employeeService.deleteEmployee(this.id).subscribe(value => {
-        this.page = 0;
       }, error => {
       }, () => {
-        console.log(this.employees.length);
         this.getAll();
       });
+    }
+    if (this.employees.length === this.selectedEmployee.length) {
+      if (this.page === 0) {
+        this.page = 0;
+      } else {
+        this.page -= 1;
+      }
     }
     if (this.selectedEmployee.length > 0) {
       this.toastr.success('Xóa nhân viên thành công');
@@ -126,7 +145,13 @@ export class EmployeeListComponent implements OnInit {
 
   deleteEmployee() {
     this.employeeService.deleteEmployee(this.idDelete).subscribe(value => {
-      this.page = 0;
+      if (this.employees.length === 1) {
+        if (this.page === 0) {
+          this.page = 0;
+        } else {
+          this.page -= 1;
+        }
+      }
       this.toastr.success('Xóa nhân viên thành công');
     }, error => {
       console.log(error);
@@ -137,14 +162,8 @@ export class EmployeeListComponent implements OnInit {
 
 
   exp(employee: Employee): number {
-
-
     const exp = this.level.getFullYear() - Number(employee.workf.substr(0, 4));
     return exp + 1;
-
-    const koko = this.level.getFullYear() - Number(employee.workf.substr(0, 4));
-    return koko + 1;
-
   }
 
   checkDayInFuture(abstractControl: AbstractControl): any {
@@ -166,7 +185,7 @@ export class EmployeeListComponent implements OnInit {
     if (abstractControl.value.workf === '' || abstractControl.value.workt === '') {
       return null;
     }
-    if (start < end) {
+    if (start > end) {
       return {errorDate: true};
     }
     return null;
@@ -179,7 +198,7 @@ export class EmployeeListComponent implements OnInit {
     if (abstractControl.value.dobfrom === '' || abstractControl.value.dobend === '') {
       return null;
     }
-    if (start < end) {
+    if (start > end) {
       return {errorDob: true};
     }
     return null;
@@ -187,27 +206,19 @@ export class EmployeeListComponent implements OnInit {
 
   getPage(page) {
     if (page < 1 || page > this.totalPages) {
-      this.toastr.error('Vui lòng nhập đúng');
+      return this.toastr.error('Vui lòng nhập đúng');
     }
-    this.page = page;
-    page = page - 1;
+    this.size = 5 * (page - 1);
+    this.page = page - 1;
+    this.getAll();
 
-    const getFormSearch = this.formSearch.value;
-    this.employeeService.getEmployeeList(page, getFormSearch.code, getFormSearch.name, getFormSearch.dobfrom,
-      getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
-      getFormSearch.address).subscribe((value: any) => {
-      this.size = value.size * page;
-      this.employees = value.content;
-      this.totalElements = value.totalElements;
-      this.totalPages = value.totalPages;
-    });
   }
 
   checkEmployee(id: number) {
     for (const employee of this.employees) {
       console.log(id);
       if (employee.id === id) {
-        employee.checked = employee.checked !== true;
+        employee.checked = !employee.checked;
         break;
       }
     }
@@ -248,6 +259,7 @@ export class EmployeeListComponent implements OnInit {
       address: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'), Validators.maxLength(20)]),
     }, [this.checkDate, this.checkDob]);
   }
+
   edit(id: number) {
     this.route.navigate(['/employees/edit', String(id)]);
   }
