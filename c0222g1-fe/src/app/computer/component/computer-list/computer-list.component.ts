@@ -48,7 +48,7 @@ export class ComputerListComponent implements OnInit {
   ngOnInit(): void {
     this.findAll();
     this.getAllComputerType();
-    sessionStorage.getItem('roles') === 'ADMIN' ? this.checkShow = true : this.checkShow = false;
+    localStorage.getItem('roles') === 'ADMIN' ? this.checkShow = true : this.checkShow = false;
   }
 
   reset() {

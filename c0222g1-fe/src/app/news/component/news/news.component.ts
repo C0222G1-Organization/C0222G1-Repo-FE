@@ -81,10 +81,10 @@ export class NewsComponent implements OnInit {
   }
 
   checkRole() {
-    if (sessionStorage.getItem('roles') === 'EMPLOYEE' || sessionStorage.getItem('roles') == 'ADMIN') {
+    if (localStorage.getItem('roles') === 'EMPLOYEE' || localStorage.getItem('roles') == 'ADMIN') {
       this.createState = true;
     }
-    if (sessionStorage.getItem('roles') === 'CUSTOMER') {
+    if (localStorage.getItem('roles') === 'CUSTOMER') {
       this.createState = false;
     }
   }
