@@ -29,18 +29,25 @@ export class StatisticComponent implements OnInit {
   statisticInput: InputStatistic;
   pastDay = this.datePipe.transform(new Date().setDate(new Date().getDate() - 30), 'yyyy-MM-dd');
   today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-  statisticForm = new FormGroup({
-    startDate: new FormControl(this.pastDay, this.dateNotExist),
-    endDate: new FormControl(this.today, this.dateInFuture),
-    sort: new FormControl('none'),
-    type: new FormControl('computer')
-  }, this.invalidDate);
   private myChart: Chart;
+  statisticForm: FormGroup;
   errorChart = true;
   errorServer = true;
   errorList = true;
+  dateHidden = false;
+  statisticDateHidden = false;
+  resetHidden = true;
+  time: string[] = ['1 week', '2 week', '1 month', '2 month', '1 quarter', '2 quarter', '1 year'];
 
   ngOnInit(): void {
+    this.statisticForm = new FormGroup({
+      startDate: new FormControl(this.pastDay, this.dateNotExist),
+      endDate: new FormControl(this.today, this.dateInFuture),
+      sort: new FormControl('none'),
+      type: new FormControl('computer')
+    }, this.invalidDate);
+    this.statisticForm.patchValue({startDate: this.pastDay, endDate: this.today, sort: 'none', type: 'computer'});
+    this.onSubmit();
   }
 
   invalidDate(abstractControl: AbstractControl) {
@@ -182,6 +189,8 @@ export class StatisticComponent implements OnInit {
   }
 
   onChange(value: any) {
+    this.dateHidden = true;
+    this.resetHidden = false;
     switch (value) {
       case '1 week':
         this.statisticForm.patchValue({
@@ -533,4 +542,15 @@ export class StatisticComponent implements OnInit {
     }
   }
 
+  hiddenStatisticDate(value: any) {
+    this.statisticDateHidden = true;
+    this.resetHidden = false;
+  }
+
+  onReset() {
+    this.statisticDateHidden = false;
+    this.dateHidden = false;
+    this.ngOnInit();
+    this.resetHidden = true;
+  }
 }

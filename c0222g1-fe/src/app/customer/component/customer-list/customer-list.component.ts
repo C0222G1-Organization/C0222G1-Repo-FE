@@ -36,11 +36,11 @@ export class CustomerListComponent implements OnInit {
     endDate: new FormControl('', this.checkEndDay),
     starDate: new FormControl('', this.checkedday),
     activeStatus: new FormControl(''),
-    address: new FormControl('', [Validators.maxLength(200), Validators.pattern('^[0-9a-zA-Z]*$')])
+    address: new FormControl('', [Validators.maxLength(100), Validators.pattern('^[0-9a-zA-Z, ]*$')])
   }, this.validateStarDayAndEndDay);
 
   ngOnInit(): void {
-    console.log("page" + this.page);
+    console.log('page' + this.page);
     this.getAllCustomer();
     console.log(this.length);
   }
@@ -51,7 +51,7 @@ export class CustomerListComponent implements OnInit {
     if (abstractControl.value.starDate === '' || abstractControl.value.endDate === '') {
       return null;
     }
-    if (startDay > endDate) {
+    if (startDay >= endDate) {
       return {errorStartDateMoreEndDate: true};
     }
   }
@@ -71,9 +71,6 @@ export class CustomerListComponent implements OnInit {
 
   getAllCustomer() {
     const getValueForm = this.formSearch.value;
-    console.log(getValueForm.name);
-    console.log(getValueForm.address);
-    console.log(getValueForm.activeStatus);
     this.customerService.getAllCustomer(this.page, getValueForm.address,
       getValueForm.nameCustomer,
       getValueForm.starDate,
@@ -115,10 +112,7 @@ export class CustomerListComponent implements OnInit {
     return null;
   }
 
-  getPage(page
-            :
-            number
-  ) {
+  getPage(page: number) {
     this.page = page - 1;
     for (const key of this.map.values()) {
       key.checked = false;
@@ -193,4 +187,26 @@ export class CustomerListComponent implements OnInit {
     }, this.validateStarDayAndEndDay);
   }
 
+  getValueAddress() {
+    console.log(this.formSearch.value.address);
+    const char = ',';
+    let count = 0;
+    for (let i = 0; i < this.formSearch.value.address.length; i++) {
+      if (char === this.formSearch.value.address[i]) {
+        count++;
+      }
+    }
+    console.log('count' + count);
+    if (count === 0) {
+      this.getAllCustomer();
+    }
+  }
+
+  getIdCheck(temp: CustomerDTO, checked: any) {
+    if (checked === true && temp.deleteStatus === 0) {
+      this.map.set(temp.id, temp);
+    } else {
+      this.map.delete(temp.id);
+        }
+  }
 }

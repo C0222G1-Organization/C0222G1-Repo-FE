@@ -28,7 +28,7 @@ export class CustomerService {
    */
 
   public getAllCustomer(page, address, name, startDay, endDay, activeStatus): Observable<CustomerDTO> {
-    return this.httpClient.get<CustomerDTO>('http://localhost:8080/customer/searchCustomer?page=' + page
+    return this.httpClient.get<CustomerDTO>(this.ApiUrl_8080 + '/searchCustomer?page=' + page
       + '&address=' + address + '&name=' + name + '&starDay=' + startDay + '&endDay=' + endDay + '&activeStatus=' + activeStatus);
   }
 
@@ -39,7 +39,7 @@ export class CustomerService {
    * function: Delete customer by id
    */
   public deleteCustomerById(id): Observable<Customer> {
-    return this.httpClient.delete<Customer>('http://localhost:8080/customer/deleteCustomerBy?id=' + id);
+    return this.httpClient.delete<Customer>(this.ApiUrl_8080 + '/deleteCustomerBy?id=' + id);
   }
 
   saveCustomer(customerDTO: UpdateCustomerDto): Observable<void> {
@@ -62,11 +62,6 @@ export class CustomerService {
   getCustomerByID(id: number): Observable<UpdateCustomerDto> {
     return this.httpClient.get<UpdateCustomerDto>(this.ApiUrl_8080 + '/getCustomer/' + id);
   }
-
-  updateCustomer(id: number, customer: Customer): Observable<UpdateCustomerDto> {
-    return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id, customer);
-  }
-
 
   updateCustomerDTO(id: number, customer: UpdateCustomerDto): Observable<UpdateCustomerDto> {
     return this.httpClient.patch<UpdateCustomerDto>(this.ApiUrl_8080 + '/' + id, customer);
@@ -92,8 +87,8 @@ export class CustomerService {
     return this.httpClient.patch<void>(this.ApiUrl_8080 + '/update/' + id, customer);
   }
 
-  checkMatchesPassword(password: string, id: number): Observable<string> {
-    return this.httpClient.get<string>(this.ApiUrl_8080 + '/matchesPassword/' + password + '/' + id);
+  checkMatchesPassword(password: string, id: number): Observable<boolean> {
+    return this.httpClient.get<boolean>(this.ApiUrl_8080 + '/matchesPassword/' + password + '/' + id);
   }
 
   /**
@@ -107,4 +102,3 @@ export class CustomerService {
     return this.httpClient.get<string>(this.ApiUrl_8080 + `/setOutOfTime?id=${id}&remaining=${remaining}`);
   }
 }
-

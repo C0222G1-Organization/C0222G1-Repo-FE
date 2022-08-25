@@ -29,8 +29,8 @@ export class RemainingTimeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.endTime = this.convertStringToDate(sessionStorage.getItem('startTime'));
-    this.endTime.setSeconds(this.endTime.getSeconds() + Number(sessionStorage.getItem('remainingTime')));
+    this.endTime = this.convertStringToDate(localStorage.getItem('startTime'));
+    this.endTime.setSeconds(this.endTime.getSeconds() + Number(localStorage.getItem('remainingTime')));
     console.log(this.endTime);
     setTimeout(() => {
       this.countDownDate();
@@ -83,7 +83,6 @@ export class RemainingTimeComponent implements OnInit {
         document.getElementById('remaining-time-days').innerText = this.remainingTimeDays + ' ngày ';
       }
       if (document.getElementById('remaining-time-hours') === null) {
-        alert(document.getElementById('remaining-time-hours'));
         clearInterval(this.loop);
       }
       document.getElementById('remaining-time-hours').innerText = this.remainingTimeHours;
@@ -95,19 +94,19 @@ export class RemainingTimeComponent implements OnInit {
         this.authService.sendData('timeout', 'timeout');
       }
       if (this.countRequest >= 5) {
-        this.authService.getRemainingTime(Number(sessionStorage.getItem('customerId'))).subscribe(value => {
+        this.authService.getRemainingTime(Number(localStorage.getItem('customerId'))).subscribe(value => {
           if (value !== undefined) {
             this.remainingTimeBackEnd = value.remaining_time;
-            if (this.remainingTimeBackEnd === Number(sessionStorage.getItem('remainingTime'))) {
+            if (this.remainingTimeBackEnd === Number(localStorage.getItem('remainingTime'))) {
               this.remainingTimeRequest = Math.trunc(this.difference / 1000);
-              this.authService.setOutOfTime(Number(sessionStorage.getItem('customerId')), this.remainingTimeRequest).subscribe(value2 => {
-                sessionStorage.setItem('remainingTime', String(this.remainingTimeRequest));
+              this.authService.setOutOfTime(Number(localStorage.getItem('customerId')), this.remainingTimeRequest).subscribe(value2 => {
+                localStorage.setItem('remainingTime', String(this.remainingTimeRequest));
               }, error => {
                 this.toartrs.error('Lỗi ' + error.status + ' kết nối server: set out of time2');
               });
             }
-            if (this.remainingTimeBackEnd > Number(sessionStorage.getItem('remainingTime'))) {
-              sessionStorage.setItem('remainingTime', String(this.remainingTimeBackEnd));
+            if (this.remainingTimeBackEnd > Number(localStorage.getItem('remainingTime'))) {
+              localStorage.setItem('remainingTime', String(this.remainingTimeBackEnd));
             }
           }
         }, error => {
