@@ -8,14 +8,14 @@
                 aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand text-white" routerLink=""> <img src="../../../assets/img/logo.png" width="80"/></a>
+        <a class="navbar-brand text-white" routerLink=""> <img src="assets/img/logo.png" width="80"/></a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item active">
               <a class="nav-link" style="color: #a8a8a8" routerLink="">Trang chủ</a>
             </li>
-            <li class="nav-item dropdown" *ngIf="employeeCard">
-              <div>
+            <li class="nav-item dropdown">
+              <div *ngIf="employeeCard">
                 <a class="nav-link" routerLink="employees" id="navbarDropdown" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #a8a8a8">
                   Nhân Viên
@@ -69,7 +69,10 @@
             </li>
           </ul>
           <form class="d-flex" *ngIf="login">
-            <a class="nav-link" style="color: #a8a8a8" *ngIf="showTime"><b><span id="dayss"></span> <span id="hourss">00</span>:<span id="minss">00</span>:<span id="secondss">00</span></b></a>
+<!--            <a class="nav-link" style="color: #a8a8a8" *ngIf="showTime"><b><span id="dayss"></span> <span id="hourss">00</span>:<span id="minss">00</span>:<span id="secondss">00</span></b></a>-->
+            <a class="nav-link" style="color: #a8a8a8" *ngIf="remainingTimeComponent">
+              <app-remaining-time></app-remaining-time>
+            </a>
 
             <a class="nav-link" style="color: #a8a8a8">Xin Chào</a>
             <a  class="btn btn-primary" routerLink="{{urlNameHeader}}">{{username}}</a>

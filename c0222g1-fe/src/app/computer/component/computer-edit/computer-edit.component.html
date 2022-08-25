@@ -10,7 +10,7 @@
                 && formEditComputer.hasError('required', 'code')">Mã máy không được để trống.</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="isExitsCode == true">Mã máy đã tồn tại.</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('code').dirty
-                && formEditComputer.hasError('pattern', 'code')">Mã máy phải có định dạng CPXXXX (X là số).</span></div>
+                && formEditComputer.hasError('pattern', 'code')">Mã máy phải có định dạng CPXXXX (ví dụ: CP0001...).</span></div>
       </div>
 
       <label for="vi-tri" style="color: white">
@@ -41,7 +41,7 @@
         <div><span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').touched
                 && formEditComputer.hasError('required', 'location')">Vị trí máy không được để trống.</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').dirty
-                && formEditComputer.hasError('pattern', 'location')">Vị trí máy phải có định dạng AXXX (X là số).</span></div>
+                && formEditComputer.hasError('pattern', 'location')">Vị trí máy phải có định dạng AXXXX (ví dụ: A0001...).</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('location').dirty
                 && formEditComputer.hasError('location')">Không được trùng vị trí.</span></div>
         <div><span style="color: red; font-size: 0.8rem" *ngIf="isExitsLocation == true">Vị trí này đã có máy.</span></div>
@@ -69,14 +69,16 @@
     <div class="form-floating textbox mb-3">
       <input type="text" class="form-control input" id="setting" placeholder="cấu hình" formControlName="configuration"
              style="padding-top: 10px" autocomplete="off">
-      <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').touched
-                && formEditComputer.hasError('required', 'configuration')">Vị trí máy không được để trống.</p>
-      <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').touched
-                && formEditComputer.hasError('minLength', 'configuration')">Cấu hình tối thiếu 2 ký tự.</p>
-      <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').touched
-                && formEditComputer.hasError('maxLength', 'configuration')">Cấu hình tối đa 20 ký tự.</p>
-      <p style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').touched
-                && formEditComputer.hasError('pattern', 'configuration')">Cấu hình không được chứa ký tự đặc biệt.</p>
+      <div>
+        <span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').touched
+                && formEditComputer.hasError('required', 'configuration')">Vị trí máy không được để trống.</span>
+        <span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').dirty
+                  && formEditComputer.hasError('minlength', 'configuration')">Cấu hình tối thiếu 2 ký tự. &nbsp;&nbsp;</span>
+        <span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').dirty
+                && formEditComputer.hasError('maxlength', 'configuration')">Cấu hình tối đa 20 ký tự.</span>
+        <span style="color: red; font-size: 0.8rem" *ngIf="formEditComputer.get('configuration').dirty
+                && formEditComputer.hasError('pattern', 'configuration')">Cấu hình không được chứa ký tự đặc biệt.</span>
+      </div>
       <label for="setting" style="color: white">
         Cấu hình
         <span class="text-danger">*</span>

@@ -23,7 +23,7 @@ export class ComputerCreateComponent implements OnInit {
       id: new FormControl(),
       code: new FormControl('', [Validators.required,
         Validators.pattern('^(CP)[0-9]{4}$')]),
-      status: new FormControl('', Validators.required),
+      status: new FormControl(1, Validators.required),
       location: new FormControl('', [Validators.required,
         Validators.pattern('^[A-Z][0-9]{4}$')]),
       startUsedDate: new FormControl('', [Validators.required, this.checkYear]),
@@ -70,7 +70,7 @@ export class ComputerCreateComponent implements OnInit {
 
 
   cancel() {
-    this.toast.error('Sửa thất bại', 'Computer');
+    this.toast.error('Sửa thất bại');
     this.route.navigateByUrl('/computers');
   }
 
@@ -84,7 +84,7 @@ export class ComputerCreateComponent implements OnInit {
       }
     }
     this.computerService.createComputer(this.formComputer.value).subscribe(value => {
-      this.toast.success('Thêm mới thành công!', 'Computer');
+      this.toast.success('Thêm mới thành công!');
       // this.formComputer.reset();
       this.route.navigateByUrl('/computers');
     });

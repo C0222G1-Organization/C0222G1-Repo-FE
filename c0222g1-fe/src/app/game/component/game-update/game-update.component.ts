@@ -39,8 +39,7 @@ export class GameUpdateComponent implements OnInit {
     createDate: new FormControl(this.getCurrentDateTime()),
     playedTimes: new FormControl(0),
     trailerUrl: new FormControl('', [Validators.required,
-      Validators.pattern('https?:\\/\\/(www\\.)?' +
-        '[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}b([-a-zA-Z0-9()@:%_+.~#?&//=]*)')]),
+      Validators.pattern('^https:\\/\\/www\\.youtube\\.com\\/embed\\/\\S*$')]),
     imageUrl: new FormControl('', [Validators.required]),
     content: new FormControl('', [Validators.required, Validators.minLength(15)]),
     gameCategory: new FormGroup({

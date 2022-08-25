@@ -35,7 +35,7 @@
                 && gameForm.hasError('required', 'trailerUrl')">Không được để trống.
             </p>
             <p style="color: red; font-size: 0.9rem" *ngIf="gameForm.get('trailerUrl').touched
-                && gameForm.hasError('pattern', 'trailerUrl')">Nhập link trailer youtube.
+                && gameForm.hasError('pattern', 'trailerUrl')">Nhập link youtube và phải có định dạng /embed.
             </p>
           </div>
         </div>
@@ -82,7 +82,7 @@
       <div class="row mt-4">
         <div class="col-lg-12 px-3">
           <div class="form-floating">
-            <ckeditor (keydown.enter)="submit()" [editor]="Editor"  formControlName="content"><textarea class="form-control border-secondary input texarea " rows="4" id="content"></textarea></ckeditor>
+            <ckeditor [config]="{placeholder: 'Nhập nội dung ở đây'}" (keydown.enter)="submit()" [editor]="Editor"  formControlName="content"><textarea class="form-control border-secondary input texarea " rows="4" id="content"></textarea></ckeditor>
             <div *ngIf="gameForm.controls.content.hasError('minlength') && gameForm.controls.content.dirty" class="form-text text-danger mt-1 px-2">Nội dung quá ngắn.</div>
           </div>
         </div>

@@ -3,7 +3,6 @@ import {Game} from '../../model/game';
 import {GameService} from '../../service/game.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ToastrService} from "ngx-toastr";
-import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-game-detail',
@@ -16,17 +15,13 @@ export class GameDetailComponent implements OnInit {
   id: number;
   playState = false;
   editState = false;
-  selectedName: string;
-  selectedId: number;
 
   constructor(
     private gameService: GameService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService,
-    private title: Title
+    private toastr: ToastrService
   ) {
-    this.title.setTitle('Chi tiết game');
   }
 
   ngOnInit(): void {
@@ -69,19 +64,5 @@ export class GameDetailComponent implements OnInit {
   editGame(id: number) {
     id = Number(id);
     this.router.navigateByUrl('games/edit/' + id);
-  }
-
-  getInfoGame(id: number, name: string) {
-    this.selectedId = id;
-    this.selectedName = name;
-  }
-
-  deleteGameById() {
-    this.gameService.deleteGameById(this.selectedId).subscribe(res => {
-      this.toastr.success('Xóa thành công');
-      this.router.navigateByUrl('/games');
-    }, error => {
-      this.toastr.error('Xóa thất bại');
-    });
   }
 }

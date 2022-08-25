@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 export class LogoutComponent implements OnInit {
   data: Map<string, any> = new Map<string, any>();
 
+  loop: any;
   constructor(private authService: AuthService, private toartrs: ToastrService, private router: Router) {
   }
 
@@ -21,14 +22,18 @@ export class LogoutComponent implements OnInit {
   }
 
   logout() {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('username');
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
     this.authService.sendData('login', false);
-    if (sessionStorage.getItem('roles') === 'CUSTOMER') {
+    if (localStorage.getItem('roles') === 'CUSTOMER') {
       this.returnComputer();
     }
-    sessionStorage.removeItem('roles');
-    sessionStorage.removeItem('loopTimeCustomer');
+    localStorage.removeItem('roles');
+    localStorage.setItem('loopTimeCustomer', '1');
+    localStorage.removeItem('remainingTime');
+    localStorage.removeItem('startTime');
+    localStorage.removeItem('endTime');
+    clearInterval(this.loop);
     this.toartrs.success('Đã đăng xuất');
     this.authService.sendData('logout', 'logout');
     setTimeout(() => {
@@ -50,9 +55,9 @@ export class LogoutComponent implements OnInit {
   }
 
   returnComputer() {
-    this.authService.returnComputer(Number(sessionStorage.getItem('computerId'))).subscribe(value => {
-      sessionStorage.removeItem('computerId');
-      sessionStorage.removeItem('computerCode');
+    this.authService.returnComputer(Number(localStorage.getItem('computerId'))).subscribe(value => {
+      localStorage.removeItem('computerId');
+      localStorage.removeItem('computerCode');
     });
   }
 
