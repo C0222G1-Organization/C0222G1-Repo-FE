@@ -32,19 +32,19 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (sessionStorage.getItem('usernameLogin') !== null) {
+    if (localStorage.getItem('usernameLogin') !== null) {
       this.rememberMeBox = true;
     }
     this.title.setTitle('Đăng nhập');
     this.jwtReponseCustomer.customer.id = 1;
-    if (sessionStorage.getItem('roles') !== null) {
-      this.redirectByRoles(sessionStorage.getItem('roles'));
+    if (localStorage.getItem('roles') !== null) {
+      this.redirectByRoles(localStorage.getItem('roles'));
     }
     this.loginForm = new FormGroup({
       // tslint:disable-next-line:max-line-length
-      username: new FormControl(sessionStorage.getItem('usernameLogin'), [Validators.required, Validators.minLength(6), Validators.maxLength(40)]),
+      username: new FormControl(localStorage.getItem('usernameLogin'), [Validators.required, Validators.minLength(6), Validators.maxLength(40)]),
       // tslint:disable-next-line:max-line-length
-      password: new FormControl(sessionStorage.getItem('passwordLogin'), [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$')]),
+      password: new FormControl(localStorage.getItem('passwordLogin'), [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$')]),
     });
   }
 
@@ -59,23 +59,23 @@ export class LoginComponent implements OnInit {
           if (value !== undefined) {
             this.roles = value.roles[0].authority;
             if (this.roles === 'CUSTOMER') {
-              sessionStorage.setItem('remainingTime', value.customer.remainingTime);
-              sessionStorage.setItem('computerCode', value.computerCode);
-              sessionStorage.setItem('computerId', value.computerId);
-              sessionStorage.setItem('name', value.customer.name);
-              sessionStorage.setItem('recordId', value.recordId);
-              sessionStorage.setItem('customerId', value.customer.id);
-              sessionStorage.setItem('loopTimeCustomer', '0');
+              localStorage.setItem('remainingTime', value.customer.remainingTime);
+              localStorage.setItem('computerCode', value.computerCode);
+              localStorage.setItem('computerId', value.computerId);
+              localStorage.setItem('name', value.customer.name);
+              localStorage.setItem('recordId', value.recordId);
+              localStorage.setItem('customerId', value.customer.id);
+              localStorage.setItem('loopTimeCustomer', '0');
               this.authService.sendData('customer', true);
             } else {
-              sessionStorage.setItem('name', value.employee.name);
-              sessionStorage.setItem('loopTimeCustomer', '1');
+              localStorage.setItem('name', value.employee.name);
+              localStorage.setItem('loopTimeCustomer', '1');
             }
 
-            sessionStorage.setItem('username', this.login.username);
+            localStorage.setItem('username', this.login.username);
             const tokenStr = 'Bearer ' + value.token;
-            sessionStorage.setItem('token', tokenStr);
-            sessionStorage.setItem('roles', this.roles);
+            localStorage.setItem('token', tokenStr);
+            localStorage.setItem('roles', this.roles);
             this.toartrs.success('Đăng nhập thành công');
             this.authService.sendData('login', true);
             setTimeout(() => {
@@ -84,13 +84,13 @@ export class LoginComponent implements OnInit {
 
             if (this.rememberMeBox) {
               this.login = this.loginForm.value;
-              sessionStorage.setItem('usernameLogin', this.login.username);
-              sessionStorage.setItem('passwordLogin', this.login.password);
+              localStorage.setItem('usernameLogin', this.login.username);
+              localStorage.setItem('passwordLogin', this.login.password);
             }
 
             this.currentDate = new Date();
             const startTime = this.datepipe.transform(this.currentDate, 'HH:mm:ss dd-MM-yyyy');
-            sessionStorage.setItem('startTime', startTime);
+            localStorage.setItem('startTime', startTime);
           }
         }, error => {
         if (error.status === 500) {
@@ -117,12 +117,12 @@ export class LoginComponent implements OnInit {
     this.rememberMeBox = !this.rememberMeBox;
     if (this.rememberMeBox) {
       this.login = this.loginForm.value;
-      sessionStorage.setItem('usernameLogin', this.login.username.toLowerCase());
-      sessionStorage.setItem('passwordLogin', this.login.password);
+      localStorage.setItem('usernameLogin', this.login.username.toLowerCase());
+      localStorage.setItem('passwordLogin', this.login.password);
       this.toartrs.success('Đã nhớ mật khẩu');
     } else {
-      sessionStorage.removeItem('usernameLogin');
-      sessionStorage.removeItem('passwordLogin');
+      localStorage.removeItem('usernameLogin');
+      localStorage.removeItem('passwordLogin');
       this.toartrs.success('Hủy nhớ mật khẩu');
     }
   }
