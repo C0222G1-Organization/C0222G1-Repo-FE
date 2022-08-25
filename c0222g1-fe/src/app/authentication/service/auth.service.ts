@@ -4,6 +4,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
 import {Router} from '@angular/router';
+import {environment} from '../../enviroment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,9 @@ export class AuthService {
   // @ts-ignore
   data = new BehaviorSubject<Map<string, any>>();
   checkData = this.data.asObservable();
-  URL_API = 'http://localhost:8080/';
+  URL_API = `${environment.apiUrl}/`;
 
-  constructor(private httpClient: HttpClient, private toartrs: ToastrService, private router: Router) {
+  constructor(private httpClient: HttpClient, private router: Router) {
   }
 
   sendData(key: string, value: any) {

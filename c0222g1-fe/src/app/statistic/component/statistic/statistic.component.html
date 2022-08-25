@@ -4,28 +4,28 @@
       <h1>THỐNG KÊ</h1>
     </div>
     <div class="row">
-      <div class="col-xl-4 col-lg-4 pt-0" style="color: white">
+      <div class="col-xl-3 col-lg-3 pt-0" style="color: white">
         <form [formGroup]="statisticForm" class="p-3">
           <div class="form-row justify-content-around">
-            <div class="form-group input">
+            <div class="form-group" [hidden]="statisticDateHidden">
               <label style="color: white" for="statisticTime" class="col-form-label fontFamily ">Thống kê thời gian gần
                 đây: </label>
-              <select id="statisticTime" class="form-control input"
+              <select id="statisticTime" class="form-control input form-select"
                       (change)="onChange($event.target.value)">
-                <option value='1 week'>1 Tuần</option>
-                <option value="2 week">2 Tuần</option>
-                <option value="1 month" selected>1 Tháng</option>
-                <option value="2 month">2 Tháng</option>
-                <option value="1 quarter">1 Quý</option>
-                <option value="2 quarter">2 Quý</option>
-                <option value="1 year">1 Năm</option>
+                <option [value]="time[0]">1 Tuần</option>
+                <option [value]="time[1]">2 Tuần</option>
+                <option [value]="time[2]" [selected]=time[2]>1 Tháng</option>
+                <option [value]="time[3]">2 Tháng</option>
+                <option [value]="time[4]">1 Quý</option>
+                <option [value]="time[5]">2 Quý</option>
+                <option [value]="time[6]">1 Năm</option>
               </select>
             </div>
-            <div class="form-group input">
+            <div class="form-group" [hidden]="dateHidden">
               <label style="color: white" for="startDate" class="col-form-label fontFamily">Ngày bắt đầu: </label>
               <input type="date" id="startDate"
                      class="form-control input"
-                     formControlName="startDate">
+                     formControlName="startDate" (change)="hiddenStatisticDate($event.target.value)">
               <small class="fontError text-danger"
                      *ngIf="statisticForm.hasError('dateNotValid')">
                 Ngày bắt đầu phải nhỏ hơn ngày kết thúc ít nhất 1 ngày.
@@ -39,10 +39,10 @@
                 Ngày không tồn tại.
               </small>
             </div>
-            <div class="form-group input">
+            <div class="form-group" [hidden]="dateHidden">
               <label style="color: white" for="endDate" class="col-form-label fontFamily">Ngày kết thúc: </label>
               <input type="date" id="endDate" class="form-control input"
-                     formControlName="endDate">
+                     formControlName="endDate" (change)="hiddenStatisticDate($event.target.value)">
               <small class="fontError text-danger" style="margin-top: 42px"
                      *ngIf="statisticForm.controls.endDate.hasError('futureDate')">
                 Ngày kết thúc phải trước ngày {{today|date: "dd-MM-yyyy"}}.
@@ -52,9 +52,9 @@
                 Ngày không tồn tại.
               </small>
             </div>
-            <div class="form-group input">
+            <div class="form-group">
               <label style="color: white" for="statisticWith" class="col-form-label fontFamily">Thống kê theo: </label>
-              <select id="statisticWith" class="form-control input"
+              <select id="statisticWith" class="form-control input form-select"
                       formControlName="type"
                       (change)="onChangeStatistic($event.target.value)">
                 <option value="computer" selected>Máy Tính</option>
@@ -62,48 +62,55 @@
                 <option value="account">Tài Khoản</option>
               </select>
             </div>
-            <div class="form-group input" [hidden]="statisticForm.value.type != 'computer'">
+            <div class="form-group" [hidden]="statisticForm.value.type != 'computer'">
               <label style="color: white" for="sort" class="col-form-label fontFamily">Sắp xếp theo: </label>
-              <select id="sort" class="form-control input"
+              <select id="sort" class="form-control input form-select"
                       formControlName="sort">
                 <option selected value="none">Không Sắp Xếp</option>
                 <option value="ascending">Thời Gian Tăng Dần</option>
                 <option value="decrease">Thời Gian Giảm Dần</option>
               </select>
             </div>
-            <div class="form-group input" [hidden]="statisticForm.value.type != 'month'">
+            <div class="form-group" [hidden]="statisticForm.value.type != 'month'">
               <label style="color: white" for="sortMonth" class="col-form-label fontFamily">Sắp xếp theo: </label>
-              <select id="sortMonth" class="form-control input"
+              <select id="sortMonth" class="form-control input form-select"
                       formControlName="sort">
                 <option selected value="none">Không Sắp Xếp</option>
                 <option value="ascending">Doanh Thu Tăng Dần</option>
                 <option value="decrease">Doanh Thu Giảm Dần</option>
               </select>
             </div>
-            <div class="form-group input" [hidden]="statisticForm.value.type != 'account'">
+            <div class="form-group" [hidden]="statisticForm.value.type != 'account'">
               <label style="color: white" for="sortAccount" class="col-form-label fontFamily">Sắp xếp theo: </label>
-              <select id="sortAccount" class="form-control input"
+              <select id="sortAccount" class="form-control input form-select"
                       formControlName="sort">
                 <option selected value="none">Không sắp xếp</option>
                 <option value="ascending">Doanh Thu Tăng Dần</option>
                 <option value="decrease">Doanh Thu Giảm Dần</option>
               </select>
             </div>
-            <div class="form-group pt-5">
-              <button type="button" class="btn btn-primary"
-                      [disabled]="statisticForm.invalid" (click)="onSubmit()">Thống kê
-              </button>
+            <div class="row">
+              <div class="pt-5 col-6">
+                <button type="button" class="btn btn-primary w-100"
+                        [disabled]="statisticForm.invalid" (click)="onSubmit()">Thống kê
+                </button>
+              </div>
+              <div class="pt-5 col-6" [hidden]="resetHidden">
+                <button type="button" class="btn btn-primary w-100"
+                        (click)="onReset()" style="width: auto">Đặt lại
+                </button>
+              </div>
             </div>
           </div>
         </form>
       </div>
-      <div class="col-xl-8 col-lg-8 mt-4 pr-3" [hidden]="errorChart">
+      <div class="col-xl-9 col-lg-9 mt-4" [hidden]="errorChart">
         <canvas style="background-color: white; padding-right: 20px; border-radius: 15px" id="myChart"></canvas>
       </div>
-      <div class="col-xl-8 col-lg-8 mt-4" [hidden]="errorList">
+      <div class="col-xl-8 col-lg-9 mt-4" [hidden]="errorList">
         <h2 style="color: red; text-align: center; margin-top: 20%" class="fontError pt-3">Không có dữ liệu.</h2>
       </div>
-      <div class="col-xl-8 col-lg-8 mt-4" [hidden]="errorServer">
+      <div class="col-xl-9 col-lg-9 mt-4" [hidden]="errorServer">
         <h2 style="color: red; text-align: center; margin-top: 20%" class="fontError pt-3">Không thể kết nối đến
           Server.</h2>
       </div>
