@@ -7,7 +7,7 @@
         <div class="form-floating textbox mb-4">
           <input type="text" class="form-control input"
                  id="full-name" placeholder="Họ và tên"
-                 style="padding-top: 10px" formControlName="name">
+                 style="padding-top: 10px" formControlName="name" autocomplete="off">
           <label for="full-name" style="color: white">
             Họ và tên
             <span class="text-danger">*</span>
@@ -38,7 +38,7 @@
           <div class="form-floating textbox mb-4">
             <input type="date" class="form-control input"
                    id="date-of-birth" placeholder="Họ và tên"
-                   style="padding-top: 10px" formControlName="dateOfBirth">
+                   style="padding-top: 10px" formControlName="dateOfBirth" autocomplete="off">
             <label for="date-of-birth" style="color: white">
               Ngày sinh
               <span class="text-danger">*</span>
@@ -60,7 +60,7 @@
           <div class="form-floating textbox mb-4">
             <input type="email" class="form-control input"
                    id="email" placeholder="Họ và tên"
-                   style="padding-top: 10px" formControlName="email" (change)="checkEmail($event.target.value)">
+                   style="padding-top: 10px" formControlName="email" (change)="checkEmail($event.target.value)" autocomplete="off">
             <label for="email" style="color: white">
               Email
               <span class="text-danger">*</span>
@@ -73,17 +73,17 @@
                  *ngIf="getEmail().invalid && (getEmail().touched || getEmail().dirty) && getEmail().errors.pattern">
               <small>Nhập đúng định dạng email.</small>
             </div>
-<!--            <div class="mb-3 text-danger"-->
-<!--                 *ngIf="isExitsEmail == true">-->
-<!--              <small>Email này đã tồn tại.</small>-->
-<!--            </div>-->
+            <div class="mb-3 text-danger"
+                 *ngIf="isExitsEmail == true">
+              <small>Email này đã tồn tại.</small>
+            </div>
           </div>
         </div>
         <div class="col-md-6 " style="padding-right: 15px">
           <div class="form-floating textbox mb-4" formGroupName="phoneNumber">
             <input type="text" class="form-control input"
                    id="phone-number" placeholder="Họ và tên"
-                   style="padding-top: 10px" formControlName="phone" (change)="checkPhone($event.target.value)">
+                   style="padding-top: 10px" formControlName="phone" (change)="checkPhone($event.target.value)" autocomplete="off">
             <label for="phone-number" style="color: white">
               Số điện thoại
               <span class="text-danger">*</span>
@@ -176,7 +176,7 @@
           <div class="form-floating textbox mb-4" formGroupName="userName">
             <input type="text" class="form-control input"
                    id="user-name" placeholder="Họ và tên"
-                   style="padding-top: 10px" formControlName="userName" (change)="checkUserName($event.target.value)">
+                   style="padding-top: 10px" formControlName="userName" (change)="checkUserName($event.target.value)" autocomplete="off">
             <label for="user-name" style="color: white">
               Tài khoản
               <span class="text-danger">*</span>
@@ -188,6 +188,14 @@
             <div class="mb-3 text-danger"
                  *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().errors.notBlank">
               <small>Không được để khoảng trắng hai đầu.</small>
+            </div>
+            <div class="mb-3 text-danger"
+                 *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().hasError('minlength')">
+              <small>Không được nhập dưới 5 ký tự.</small>
+            </div>
+            <div class="mb-3 text-danger"
+                 *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().hasError('maxlength')">
+              <small>Không được nhập lớn hơn 50 ký tự.</small>
             </div>
             <div class="mb-3 text-danger"
                  *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().errors.pattern">
@@ -205,7 +213,7 @@
             <div class="form-floating textbox">
               <input type="password" class="form-control input"
                      id="pass-word" placeholder="Mật khẩu"
-                     style="padding-top: 10px" formControlName="password">
+                     style="padding-top: 10px" formControlName="password" autocomplete="off">
               <label for="pass-word" style="color: white">
                 Mật khẩu
                 <span class="text-danger">*</span>
@@ -217,6 +225,14 @@
               <div class="mb-3 text-danger"
                    *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.pattern">
                 <small>Nhập đúng định dạng mật khẩu.</small>
+              </div>
+              <div class="mb-3 text-danger"
+                   *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().hasError('minlength')">
+                <small>Không được nhập nhỏ hơn 6 ký tự.</small>
+              </div>
+              <div class="mb-3 text-danger"
+                   *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().hasError('maxlength')">
+                <small>Không được nhập lớn hơn 50 ký tự.</small>
               </div>
             </div>
           </div>
@@ -246,20 +262,25 @@
           <div class="form-floating textbox">
             <input type="number" class="form-control input"
                    id="time" placeholder="Thời gian chơi(phút)"
-                   style="padding-top: 10px; width: 422px" formControlName="remainingTime">
+                   style="padding-top: 10px; width: 422px" formControlName="remainingTime" autocomplete="off">
             <label for="time" style="color: white">
-              Thời gian chơi
+              Thời gian chơi (Phút)
               <span class="text-danger">*</span>
             </label>
+            <div class="mb-3 text-danger"
+                 *ngIf="customerForm.controls.remainingTime.hasError('required')&& customerForm.controls.remainingTime.touched">
+              <small>Thời gian chơi không được để trống!</small>
+            </div>
           </div>
         </div>
       </div>
       <div class="row my-4">
         <div class="col-md-4 my-4"></div>
         <div class="col-md-4" style="text-align: center; width: 100%">
-          <button name="button" class="btn btn-primary btn-responsive w-25" style="height: 40px" (click)="submit()">Thêm
+          <button name="button" class="btn btn-primary btn-responsive w-25" style="height: 40px" [disabled]="!check" (click)="submit()">Thêm
             mới
           </button>
+          <div *ngIf="!check" class="spinner-border text-light spinner position-absolute" role="status"></div>
           <button name="button" class="btn btn-outline-light btn-responsive
         w-25 ms-3" style="height: 40px" (click)="cancel()">Hủy
           </button>

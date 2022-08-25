@@ -13,7 +13,6 @@ import {isDate} from 'rxjs/internal-compatibility';
 import {AuthService} from '../../../authentication/service/auth.service';
 import {CustomValidators} from './custom-validators';
 import {UpdateCustomer} from '../../model/update-customer';
-
 @Component({
   selector: 'app-customer-information',
   templateUrl: './customer-information.component.html',
@@ -34,7 +33,6 @@ export class CustomerInformationComponent implements OnInit {
   typePassword = false;
   typeConfirmPassword = false;
   checkToSave = false;
-
   endTimeMillisecs: any;
   cDateMillisecs: any;
   currentDate: any;
@@ -46,7 +44,6 @@ export class CustomerInformationComponent implements OnInit {
   loop: any;
   countRequest = 1;
   endTime: Date;
-
   customer: UpdateCustomerDto = {
     id: 0,
     name: '',
@@ -83,7 +80,6 @@ export class CustomerInformationComponent implements OnInit {
   districtList: District[];
   communeList: Commune[];
   customerForm: FormGroup;
-
   constructor(private activatedRoute: ActivatedRoute,
               private route: Router,
               private customerService: CustomerService,
@@ -93,15 +89,12 @@ export class CustomerInformationComponent implements OnInit {
               private authService: AuthService) {
     this.title.setTitle('Thông tin cá nhân');
   }
-
-
   ngOnInit(): void {
     this.loadInfoCustomer();
     this.endTime = this.convertStringToDate(localStorage.getItem('startTime'));
     this.endTime.setSeconds(this.endTime.getSeconds() + Number(localStorage.getItem('remainingTime')));
     this.countDownDate();
   }
-
   /**
    * Create by: DuyNT
    * Date Create: 11/08/2022
@@ -172,7 +165,6 @@ export class CustomerInformationComponent implements OnInit {
         });
     }
   }
-
   private check16Age(abstractControl: AbstractControl): any {
     if (abstractControl.value !== '') {
       const today = new Date();
@@ -187,7 +179,6 @@ export class CustomerInformationComponent implements OnInit {
       return {noneValue: true};
     }
   }
-
   checkDateNotExist(abstractControl: AbstractControl) {
     if (abstractControl.value !== '') {
       const v = abstractControl.value;
@@ -199,7 +190,6 @@ export class CustomerInformationComponent implements OnInit {
       return {dateNotExist: false};
     }
   }
-
   checkPhone($event: Event) {
     this.customerService.checkPhone(String($event)).subscribe(
       value => {
@@ -212,15 +202,12 @@ export class CustomerInformationComponent implements OnInit {
       this.isExitsPhone = false;
     }
   }
-
   getPhone() {
     return this.customerForm.get('phoneNumber').get('phone');
   }
-
   getEmail() {
     return this.customerForm.get('email').get('email');
   }
-
   getDistrictList($event: Event) {
     // @ts-ignore
     if ($event === '') {
@@ -240,7 +227,6 @@ export class CustomerInformationComponent implements OnInit {
         });
     }
   }
-
   getCommuneList($event: Event) {
     // @ts-ignore
     if ($event === '') {
@@ -252,7 +238,6 @@ export class CustomerInformationComponent implements OnInit {
         });
     }
   }
-
   checkEmail($event: Event) {
     this.isExitsEmail = false;
     if (String($event) === '' || String($event) === this.customer.email.email) {
@@ -267,7 +252,6 @@ export class CustomerInformationComponent implements OnInit {
       );
     }
   }
-
   /**
    * Create by: DuyNT
    * Date Create: 11/08/2022
@@ -284,7 +268,6 @@ export class CustomerInformationComponent implements OnInit {
     this.setType();
     this.setConfirmType();
   }
-
   /**
    * Create by: DuyNT
    * Date Create: 11/08/2022
@@ -298,7 +281,6 @@ export class CustomerInformationComponent implements OnInit {
       this.inputType = 'text';
     }
   }
-
   /**
    * Create by: DuyNT
    * Date Create: 11/08/2022
@@ -312,7 +294,6 @@ export class CustomerInformationComponent implements OnInit {
       this.confirmInputType = 'text';
     }
   }
-
   convertStringToDate(dateString: string): Date {
     const [timeComponents, dateComponents] = dateString.split(' ');
     const [day, month, year] = dateComponents.split('-');
@@ -320,7 +301,6 @@ export class CustomerInformationComponent implements OnInit {
     const date = new Date(+year, +month - 1, +day, +hours, +minutes, +seconds);
     return date;
   }
-
   countDownDate() {
     this.loop = setInterval(() => {
       this.currentDate = new Date();
@@ -331,15 +311,12 @@ export class CustomerInformationComponent implements OnInit {
       this.minutess = Math.floor(this.secondss / 60);
       this.hourss = Math.floor(this.minutess / 60);
       this.dayss = Math.floor(this.hourss / 24);
-
       this.hourss %= 24;
       this.minutess %= 60;
       this.secondss %= 60;
-
       this.hourss = this.hourss < 10 ? '0' + this.hourss : this.hourss;
       this.minutess = this.minutess < 10 ? '0' + this.minutess : this.minutess;
       this.secondss = this.secondss < 10 ? '0' + this.secondss : this.secondss;
-
       if (this.difference < 1000) {
         clearInterval(this.loop);
         localStorage.removeItem('token');
@@ -356,10 +333,8 @@ export class CustomerInformationComponent implements OnInit {
           this.route.navigate(['']);
         });
       }
-
       if (this.countRequest >= 10) {
         localStorage.setItem('remainingTime', String(Math.trunc(this.difference / 1000)));
-
         this.authService.setOutOfTime(Number(localStorage.getItem('customerId')), Math.trunc(this.difference / 1000)).subscribe(value => {
           // this.toartrs.success('đã update remaining time với server');
         }, error => {
@@ -369,11 +344,8 @@ export class CustomerInformationComponent implements OnInit {
       } else {
         this.countRequest++;
       }
-
     }, 1000);
   }
-
-
   onsubmit() {
     this.checkBeforeSaving();
     if (this.customerForm.value.password !== '' && this.customerForm.value.password === this.customerForm.value.confirmPassword) {
@@ -413,7 +385,6 @@ export class CustomerInformationComponent implements OnInit {
       });
     }
   }
-
   checkOldPassword(oldPassword: any) {
     this.oldPasswordToEdit = oldPassword;
     if (oldPassword !== '') {
@@ -432,7 +403,6 @@ export class CustomerInformationComponent implements OnInit {
       this.checkToSave = true;
     }
   }
-
   checkBeforeSaving() {
     if (this.customerForm.value.oldPassword !== '') {
       this.checkOldPassword(this.customerForm.value.oldPassword);
@@ -449,6 +419,3 @@ export class CustomerInformationComponent implements OnInit {
     }
   }
 }
-
-
-

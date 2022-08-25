@@ -12,7 +12,7 @@ label, p {
   color: #9a9a9a;
 }
 
-label {
+label{
   font-weight: bold;
 }
 
@@ -87,10 +87,6 @@ select {
   color: white;
 }
 
-.address-div {
+.address-div{
   width: 33%;
-}
-
-.error {
-  font-size: 0.9em;
 }
