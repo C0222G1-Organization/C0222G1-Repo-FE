@@ -8,7 +8,6 @@ import {Title} from '@angular/platform-browser';
 import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
 
-
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
@@ -92,6 +91,7 @@ export class EmployeeListComponent implements OnInit {
     this.employeeService.getEmployeeList(this.page, getFormSearch.code, getFormSearch.name, getFormSearch.dobfrom,
       getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
       getFormSearch.address).subscribe((value: any) => {
+      this.size = value.size * this.page;
       this.employees = value.content;
       if (this.employees.isEmpty) {
         this.toastr.warning('Không có dữ liệu phù hợp.');
@@ -190,7 +190,6 @@ export class EmployeeListComponent implements OnInit {
     }
     this.page = page;
     page = page - 1;
-
     const getFormSearch = this.formSearch.value;
     this.employeeService.getEmployeeList(page, getFormSearch.code, getFormSearch.name, getFormSearch.dobfrom,
       getFormSearch.dobend, getFormSearch.workf, getFormSearch.workt, getFormSearch.position,
@@ -247,6 +246,7 @@ export class EmployeeListComponent implements OnInit {
       address: new FormControl('', [Validators.pattern('^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ?]+$'), Validators.maxLength(20)]),
     }, [this.checkDate, this.checkDob]);
   }
+
   edit(id: number) {
     this.route.navigate(['/employees/edit', String(id)]);
   }

@@ -1,4 +1,5 @@
 
+
 <div class="row">
   <div class="col-12">
     <div class="form-floating textbox mb-2">
@@ -6,6 +7,35 @@
              placeholder="Mã nhân viên" style="padding-top: 10px">
       <div *ngIf="employeeForm.controls.code.hasError('required') && employeeForm.controls.code.touched"
            class="form-text text-danger mt-1 px-2">Không được để trống.
+
+<body>
+<div class="login-form">
+
+  <!--    <div class="logo"><img src="../images/logo.png"></div>-->
+
+  <h6 class="text-center mt-4">Đăng ký nhân viên</h6>
+  <form [formGroup]="employeeForm">
+    <div class="row">
+      <div class="col-12">
+        <div class="form-floating textbox mb-2">
+          <input autocomplete="off" formControlName="code" type="text" class="form-control input" id="Code-Employee"
+                 placeholder="Mã nhân viên" style="padding-top: 10px">
+          <div *ngIf="employeeForm.controls.code.hasError('required') && employeeForm.controls.code.touched"
+               class="form-text text-danger mt-1 px-2">Không được để trống.
+          </div>
+          <div *ngIf="employeeForm.controls.code.hasError('pattern') && employeeForm.controls.code.touched"
+               class="form-text text-danger mt-1 px-2">Mã sai định dạng.
+          </div>
+
+          <div *ngIf="employeeForm.controls.code.hasError('pattern') && employeeForm.controls.code.touched"
+               class="form-text text-danger mt-1 px-2">Mã sai định dạng.
+          </div>
+
+          <label for="Code-Employee" style="color: white">
+            Mã nhân viên
+            <span class="text-danger">*</span>
+          </label>
+        </div>
       </div>
       <div *ngIf="employeeForm.controls.code.hasError('pattern') && employeeForm.controls.code.touched"
            class="form-text text-danger mt-1 px-2">Định dạng mã nhân viên bắt buộc là EMPXXXX.
@@ -231,6 +261,27 @@
                style="padding-top: 10px">
         <div *ngIf="employeeForm.get('appUser').hasError('required','username') && employeeForm.get('appUser').get('username').touched"class="form-text text-danger mt-1 px-2">Không được để trống.</div>
 
+    <div class="row" formGroupName="appUser">
+      <div class="col-6" style="padding-right: 15px">
+        <div class="space-between form-floating textbox" style="margin:0px">
+          <div class="form-floating textbox">
+            <input autocomplete="off" formControlName="username" type="text" class="form-control input" id="appUser"
+                   placeholder="Tài khoản"
+                   style="padding-top: 10px">
+            <div *ngIf="employeeForm.get('appUser').hasError('required','username') && employeeForm.get('appUser').get('username').touched"class="form-text text-danger mt-1 px-2">Không được để trống.</div>
+
+            <div *ngIf="employeeForm.get('appUser').hasError('pattern','username') && employeeForm.get('appUser').get('username').touched" class="form-text text-danger mt-1 px-2">Không được để khoảng cách.</div>
+
+            <!--            <div *ngIf="employeeForm.controls.username.hasError('required') && employeeForm.controls.username.touched"class="form-text text-danger mt-1 px-2"></div>-->
+
+            <label for="appUser" style="color: white">
+              Tài khoản
+              <span class="text-danger">*</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
         <!--            <div *ngIf="employeeForm.controls.username.hasError('required') && employeeForm.controls.username.touched"class="form-text text-danger mt-1 px-2"></div>-->
 
         <label for="appUser" style="color: white">
@@ -260,6 +311,7 @@
   </div>
 </div>
 
+
 <div class="row mt-4">
   <div class="col-12 ">
     <label style="color: white">Ảnh cá nhân:<span class="text-danger">*</span></label>
@@ -268,6 +320,13 @@
              (change)="selectFile($event)" (change)="onFileSelected($event)" accept="image/*">
       <div *ngIf="employeeForm.controls.image.hasError('required') && employeeForm.controls.image.touched"
            class="form-text text-danger mt-1 px-2">Không được để trống.</div>
+
+    <div class="text-center row">
+      <div class="col-6" style="padding-right: 15px">
+        <button type="submit" class="btn btn-outline-secondary login-btn text-light" (click)="createEmployee()">Đăng ký</button>
+      </div>
+      <div class="col-6" style="padding-right: 15px">
+        <button type="submit" class="btn btn-outline-secondary login-btn text-light" (click)="cancel()">Hủy bỏ</button>
 
     </div>
   </div>
