@@ -25,7 +25,7 @@
               <span class="label-custom" style="justify-content: center"> Chọn tất cả</span>
             </label>
           </div>
-          <div style="float: right" *ngIf="(role === 'ADMIN' || role === 'EMPLOYEE')">
+          <div style="float: right" *ngIf="(role === 'ADMIN' || role === 'EMPLOYEE') && map.size > 0">
             <button class="btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#deleteAll">Xóa tất cả
             </button>
@@ -165,11 +165,6 @@
       <div class="modal-header">
         <p style="text-align: center; font-size: 1.5rem" class="modal-title w-100 text-center">Xóa
           dịch vụ</p>
-      </div>
-      <div *ngIf="map.size === 0">
-        <ol style="width: 300px; margin-top: 30px">
-          <span style="color: #9a9a9a; font-size: 1.2rem">Không có dịch vụ nào</span>
-        </ol>
       </div>
       <ol style="width: 300px; margin-top: 10px">
         <li style="color: #9a9a9a; font-size: 1.2rem"

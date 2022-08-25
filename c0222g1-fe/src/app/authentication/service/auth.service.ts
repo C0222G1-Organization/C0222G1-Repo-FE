@@ -31,6 +31,10 @@ export class AuthService {
     return this.httpClient.get<any>(this.URL_API + 'customer/setOutOfTime?id=' + id + '&remaining=' + remaining);
   }
 
+  getRemainingTime(id: number): Observable<any> {
+    return this.httpClient.get<any>(this.URL_API + 'customer/getRemainingTime/' + id );
+  }
+
   returnComputer(computerId: number): Observable<any> {
     return this.httpClient.get<any>(this.URL_API + 'computers/returnComputer/' + computerId);
   }
