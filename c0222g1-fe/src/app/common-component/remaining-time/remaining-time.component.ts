@@ -83,7 +83,6 @@ export class RemainingTimeComponent implements OnInit {
         document.getElementById('remaining-time-days').innerText = this.remainingTimeDays + ' ngày ';
       }
       if (document.getElementById('remaining-time-hours') === null) {
-        alert(document.getElementById('remaining-time-hours'));
         clearInterval(this.loop);
       }
       document.getElementById('remaining-time-hours').innerText = this.remainingTimeHours;

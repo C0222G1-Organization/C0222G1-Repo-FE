@@ -40,7 +40,7 @@ export class CustomerListComponent implements OnInit {
   }, this.validateStarDayAndEndDay);
 
   ngOnInit(): void {
-    console.log("page" + this.page);
+    console.log('page' + this.page);
     this.getAllCustomer();
     console.log(this.length);
   }
@@ -115,10 +115,7 @@ export class CustomerListComponent implements OnInit {
     return null;
   }
 
-  getPage(page
-            :
-            number
-  ) {
+  getPage(page: number) {
     this.page = page - 1;
     for (const key of this.map.values()) {
       key.checked = false;
