@@ -22,7 +22,7 @@ export class HomePageCustomerComponent implements OnInit {
   minutes: any;
   hours: any;
   days: any;
-  loop: any;
+  loop: NodeJS.Timeout;
   endTime: Date;
   customerId: number = Number(sessionStorage.getItem('customerId'));
 
@@ -79,23 +79,15 @@ export class HomePageCustomerComponent implements OnInit {
       if (this.days > 0) {
         document.getElementById('days').innerText = this.days + ' ngày ';
       }
+      if (document.getElementById('hours') === null) {
+        clearInterval(this.loop);
+      }
       document.getElementById('hours').innerText = this.hours;
       document.getElementById('mins').innerText = this.minutes;
       document.getElementById('seconds').innerText = this.seconds;
 
       if (this.difference < 1000) {
         clearInterval(this.loop);
-        // sessionStorage.removeItem('token');
-        // sessionStorage.removeItem('roles');
-        // sessionStorage.removeItem('username');
-        // this.authService.sendData('login', false);
-        // this.toartrs.error('Tài khoản hết giờ');
-        // this.authService.setOutOfTime(this.customerId, 0).subscribe(value => {
-        //   this.router.navigate(['']);
-        // }, error => {
-        //   this.toartrs.error('Lỗi tài khoản hết giờ');
-        //   this.router.navigate(['']);
-        // });
       }
     }, 1000);
   }

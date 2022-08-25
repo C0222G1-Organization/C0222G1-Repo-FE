@@ -23,14 +23,17 @@ export class CustomerInformationComponent implements OnInit {
   content = '';
   oldPassword: string;
   fakePassword = 'zxcxzczxczc!@!@#132';
+  oldPasswordToEdit: string;
+  isEditPassword = false;
+  matchOldPass: boolean;
+  openPasswordToEdit: boolean;
   isExitsEmail = false;
   isExitsPhone = false;
   inputType: string;
   confirmInputType: string;
   typePassword = false;
   typeConfirmPassword = false;
-  hour: any;
-  minutes: any;
+  checkToSave = false;
 
   endTimeMillisecs: any;
   cDateMillisecs: any;
@@ -122,6 +125,8 @@ export class CustomerInformationComponent implements OnInit {
         userName: new FormControl('', Validators.required)
       }),
       // tslint:disable-next-line:max-line-length
+      oldPassword: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,50}'), Validators.required]),
+      // tslint:disable-next-line:max-line-length
       password: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,50}'), Validators.required]),
       // tslint:disable-next-line:max-line-length
       confirmPassword: new FormControl('', [Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,50}'), Validators.required]),
@@ -143,6 +148,9 @@ export class CustomerInformationComponent implements OnInit {
       const id = sessionStorage.getItem('customerId');
       this.customerService.getCustomerByID(Number(id)).subscribe(value => {
           this.customer = value;
+          console.log(value);
+          console.log('value');
+          // alert(value.userName.userName);
           this.oldPassword = this.customer.password;
           this.customer.password = '';
           this.customerForm.patchValue(this.customer);
@@ -163,32 +171,6 @@ export class CustomerInformationComponent implements OnInit {
           this.customerService.getAllDistrict(this.customer.commune.district.province.id).subscribe(value => this.districtList = value);
         });
     }
-  }
-
-  onsubmit() {
-    const customerDTO: UpdateCustomer = this.customerForm.value;
-    if (this.customerForm.value.password === '') {
-      customerDTO.password = this.fakePassword;
-    }
-    customerDTO.id = this.customer.id;
-    console.log('DTO');
-    console.log(customerDTO);
-    this.customerService.updateCustomerInfo(this.customer.id, customerDTO).subscribe(res => {
-      this.loadInfoCustomer();
-      this.toast.success('Cập nhật thành công!');
-      this.content = '';
-    }, error => {
-      this.toast.error('Cập nhật không thành công!');
-      if (error.error.email !== undefined) {
-        this.toast.error(error.error.email);
-      }
-      if (error.error.userName !== undefined) {
-        this.toast.error(error.error.userName);
-      }
-      if (error.error.phoneNumber !== undefined) {
-        this.toast.error(error.error.phoneNumber);
-      }
-    });
   }
 
   private check16Age(abstractControl: AbstractControl): any {
@@ -229,7 +211,6 @@ export class CustomerInformationComponent implements OnInit {
     if (String($event) === '') {
       this.isExitsPhone = false;
     }
-    console.log(this.isExitsPhone);
   }
 
   getPhone() {
@@ -261,34 +242,30 @@ export class CustomerInformationComponent implements OnInit {
   }
 
   getCommuneList($event: Event) {
-    console.log($event);
     // @ts-ignore
     if ($event === '') {
       this.communeList = [];
     } else {
       this.customerService.getAllCommune(Number($event)).subscribe(
         value => {
-          console.log('value');
-          console.log(value);
           this.communeList = value;
-          console.log('commune list');
-          console.log(this.communeList);
         });
     }
   }
 
   checkEmail($event: Event) {
     this.isExitsEmail = false;
-    if (String($event) === '') {
+    if (String($event) === '' || String($event) === this.customer.email.email) {
       this.isExitsEmail = false;
-    }
-    this.customerService.checkEmail(String($event)).subscribe(
-      value => {
-        if (value) {
-          this.isExitsEmail = true;
+    } else {
+      this.customerService.checkEmail(String($event)).subscribe(
+        value => {
+          if (value) {
+            this.isExitsEmail = true;
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   /**
@@ -297,9 +274,12 @@ export class CustomerInformationComponent implements OnInit {
    * function: active edit on each input item
    */
   activeEdit(item: any) {
+    if (item === this.fakePassword) {
+      this.isEditPassword = true;
+    }
+    this.openPasswordToEdit = true;
     this.typePassword = true;
     this.typeConfirmPassword = true;
-    console.log(item);
     this.content = item;
     this.setType();
     this.setConfirmType();
@@ -311,7 +291,6 @@ export class CustomerInformationComponent implements OnInit {
    * function: set type to show or hidden password
    */
   setType() {
-    console.log(this.typePassword);
     this.typePassword = !this.typePassword;
     if (this.typePassword === false) {
       this.inputType = 'password';
@@ -326,7 +305,6 @@ export class CustomerInformationComponent implements OnInit {
    * function: set type to show or hidden confirm password
    */
   setConfirmType() {
-    console.log(this.typeConfirmPassword);
     this.typeConfirmPassword = !this.typeConfirmPassword;
     if (this.typeConfirmPassword === false) {
       this.confirmInputType = 'password';
@@ -380,8 +358,6 @@ export class CustomerInformationComponent implements OnInit {
       }
 
       if (this.countRequest >= 10) {
-        console.log(this.difference / 1000);
-        console.log(sessionStorage.getItem('remainingTime'));
         sessionStorage.setItem('remainingTime', String(Math.trunc(this.difference / 1000)));
 
         this.authService.setOutOfTime(Number(sessionStorage.getItem('customerId')), Math.trunc(this.difference / 1000)).subscribe(value => {
@@ -397,4 +373,82 @@ export class CustomerInformationComponent implements OnInit {
     }, 1000);
   }
 
+
+  onsubmit() {
+    this.checkBeforeSaving();
+    if (this.customerForm.value.password !== '' && this.customerForm.value.password === this.customerForm.value.confirmPassword) {
+      this.checkToSave = true;
+    }
+    if (this.checkToSave) {
+      const customerDTO: UpdateCustomer = this.customerForm.value;
+      if (this.customerForm.value.password === '') {
+        customerDTO.password = this.fakePassword;
+      }
+      customerDTO.id = this.customer.id;
+      this.customerService.updateCustomerInfo(this.customer.id, customerDTO).subscribe(res => {
+        if (this.isEditPassword === true && this.customerForm.value.oldPassword === '') {
+          this.toast.success('Giữ nguyên mật khẩu cũ.');
+        } else if (this.isEditPassword === true && this.customerForm.value.password === '') {
+          this.toast.success('Giữ nguyên mật khẩu cũ.');
+        } else {
+          this.toast.success('Cập nhật thành công.');
+        }
+        this.loadInfoCustomer();
+        this.openPasswordToEdit = false;
+        this.content = '';
+        this.matchOldPass = undefined;
+        this.isEditPassword = false;
+        this.checkToSave = false;
+      }, error => {
+        this.toast.error('Cập nhật không thành công.');
+        if (error.error.email !== undefined) {
+          this.toast.error(error.error.email);
+        }
+        if (error.error.userName !== undefined) {
+          this.toast.error(error.error.userName);
+        }
+        if (error.error.phoneNumber !== undefined) {
+          this.toast.error(error.error.phoneNumber);
+        }
+      });
+    }
+  }
+
+  checkOldPassword(oldPassword: any) {
+    this.oldPasswordToEdit = oldPassword;
+    if (oldPassword !== '') {
+      this.customerService.checkMatchesPassword(this.oldPasswordToEdit, this.customer.id).subscribe(result => {
+        if (result) {
+          this.matchOldPass = true;
+          this.checkToSave = false;
+          this.openPasswordToEdit = false;
+          this.content = this.fakePassword;
+        } else {
+          this.matchOldPass = false;
+          this.checkToSave = false;
+        }
+      });
+    } else {
+      this.checkToSave = true;
+    }
+  }
+
+  checkBeforeSaving() {
+    if (this.customerForm.value.oldPassword !== '') {
+      this.checkOldPassword(this.customerForm.value.oldPassword);
+      if (this.checkToSave === false) {
+        return true;
+      }
+    } else if (this.customerForm.value.oldPassword === '') {
+      this.checkToSave = true;
+    }
+    if (this.customerForm.value.password !== '' && this.customerForm.value.password === this.customerForm.value.confirmPassword) {
+      this.checkToSave = true;
+    } else if (this.customerForm.value.password === '' && this.customerForm.value.password === this.customerForm.value.confirmPassword) {
+      this.checkToSave = true;
+    }
+  }
 }
+
+
+
