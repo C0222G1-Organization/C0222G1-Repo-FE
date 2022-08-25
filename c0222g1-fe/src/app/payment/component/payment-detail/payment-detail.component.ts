@@ -140,8 +140,8 @@ export class PaymentDetailComponent implements OnInit, OnChanges {
   }
 
   getRecordById() {
-    if (sessionStorage.getItem('token')) {
-      const id = Number(sessionStorage.getItem('recordId'));
+    if (localStorage.getItem('token')) {
+      const id = Number(localStorage.getItem('recordId'));
       this.paymentDetailService.loadInfoRecordById(id).subscribe(value => {
         this.record = value;
       });
