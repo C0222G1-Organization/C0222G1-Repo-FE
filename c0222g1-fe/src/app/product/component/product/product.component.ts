@@ -40,24 +40,40 @@ export class ProductComponent implements OnInit {
         Validators.maxLength(25)])
   });
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: check role
+   */
+
   checkRole(): string {
     return sessionStorage.getItem('roles');
   }
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: show list product
+   */
   ngOnInit(): void {
     this.role = this.checkRole();
     this.titleService.setTitle('Danh sách dịch vụ');
     this.getAllProduct();
     this.getAllProductCategory();
-    if (this.totalElements === 1) {
-      this.productList.length = 0;
-      this.toast.error('Đã hết sản phẩm trong kho');
-    }
+    // if (this.totalElements === 1 ) {
+    //   this.productList.length = 0;
+    //   this.toast.error('Đã hết sản phẩm trong kho');
+    // }
     if (this.totalElements >= this.productList.length) {
       this.productList.length = 0;
     }
   }
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: Get all product
+   */
   getAllProduct() {
     this.productService.findAllProduct(this.name, this.page).subscribe((value: any) => {
       if (value != null) {
@@ -70,24 +86,38 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: Get all product category
+   */
   getAllProductCategory() {
     this.productService.findAllProductCategory().subscribe(value => {
       this.productCategoryList = value;
     });
   }
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: Search product
+   */
   search() {
     // this.name = this.formProduct.value;
     this.name = this.name.trim();
     if (this.page !== 0) {
       this.page = 0;
     }
-    // console.log(this.formProduct.value);
+    if (this.name === '') {
+      this.toast.info('Bạn cần nhập giá trị vào ô tìm kiếm');
+      this.ngOnInit();
+    }
     this.productService.findAllProduct(this.name, this.page).subscribe((value: any) => {
-      if (value !== null) {
+      if (value !== null && this.name !== '' && this.formProduct.valid) {
         this.productList = value.content;
         this.totalElements = value.totalElements;
         this.page = 0;
+        this.toast.success('Bạn đã tìm thấy ' + this.totalElements + ' kết quả' );
       }
       if (value === null) {
         this.toast.error('Không tìm thấy kết quả');
@@ -95,19 +125,36 @@ export class ProductComponent implements OnInit {
       }
     }, error => {
     }, () => {
+
     });
+
   }
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: Pagination
+   */
   getPage(event: number) {
     this.page = event - 1;
     this.getAllProduct();
   }
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: Get the value to delete product
+   */
   valueOfDelete(nameProduct: string, id: number) {
     this.nameProduct = nameProduct;
     this.id = id;
   }
 
+  /**
+   * Create by: TruongTX
+   * Date create: 14/08/2022
+   * function: Delete product
+   */
   delete() {
     this.productService.delete(this.id).subscribe(value => {
       if (this.productList.length === 1) {
@@ -126,8 +173,10 @@ export class ProductComponent implements OnInit {
     });
   }
 
+
   getSelectedProducts() {
     this.selectedNameProducts = this.productList.filter(product => product.checked);
+    console.log(this.selectedNameProducts);
   }
 
   checkProduct(id: number) {

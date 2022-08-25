@@ -10,6 +10,17 @@ select {
   min-width: 121px;
 }
 
+tbody tr:hover {
+  --bs-table-bg: transparent !important;
+  --bs-table-striped-bg: #2a2a2a !important;
+  --bs-table-striped-color: #a8a8a8 !important;
+  --bs-table-active-bg: #373b3e;
+  --bs-table-active-color: #fff;
+  --bs-table-hover-bg: #323539;
+  --bs-table-hover-color: #fff;
+  color: #fff !important;
+  border-color:  #2a2a2a !important
+}
 .table-dark {
   --bs-table-bg: #202020 !important;
   --bs-table-striped-bg: #2a2a2a !important;
@@ -114,4 +125,7 @@ label.hiddenText {
 }
 .th-w15{
   width: 15%;
+}
+.th-w20{
+  width: 20%;
 }

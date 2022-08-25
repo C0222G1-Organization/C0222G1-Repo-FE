@@ -70,7 +70,7 @@ export class ComputerCreateComponent implements OnInit {
 
 
   cancel() {
-    this.toast.error('Sửa thất bại', 'Máy tính');
+    this.toast.error('Sửa thất bại');
     this.route.navigateByUrl('/computers');
   }
 
@@ -84,7 +84,7 @@ export class ComputerCreateComponent implements OnInit {
       }
     }
     this.computerService.createComputer(this.formComputer.value).subscribe(value => {
-      this.toast.success('Thêm mới thành công!', 'Máy tính');
+      this.toast.success('Thêm mới thành công!');
       // this.formComputer.reset();
       this.route.navigateByUrl('/computers');
     });

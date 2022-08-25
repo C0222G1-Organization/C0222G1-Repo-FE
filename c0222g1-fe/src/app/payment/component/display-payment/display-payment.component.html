@@ -19,8 +19,8 @@
         </thead>
         <tbody *ngIf="listPayment.length != 0; else invalidList">
         <tr
-          *ngFor="let payment of listPayment  | paginate: {itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}">
-          <td>{{payment.id}}</td>
+          *ngFor="let payment of listPayment  | paginate: {itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}; let i=index">
+          <td>{{i + 1}}</td>
           <td>{{payment.paymentCode}}</td>
           <td>{{payment.record.computer.id}}</td>
           <td>{{payment.record.customer.name}}</td>
@@ -112,11 +112,6 @@
      aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content" style="background-color: #2A2A2A">
-<!--      <div class="modal-header">-->
-<!--        <h5 class="modal-title text-white">Hoá đơn thanh toán</h5>-->
-<!--        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">-->
-<!--        </button>-->
-<!--      </div>-->
       <div class="modal-body" id="body-result" *ngIf="obj != null">
         <div class="d-flex justify-content-center">
           <div class="row">
@@ -134,7 +129,8 @@
               </div>
               <div class="row mt-2 mb-2">
                 <div class="col-3 fw-bold text-white">Tổng thanh toán</div>
-                <div class="col-6 text-white">: {{obj.purchase_units[0]['amount']['value'] | currency : '' : '' : '0.0-0'}} VND</div>
+                <!--                obj.purchase_units[0]['amount']['value']-->
+                <div class="col-6 text-white">: {{totalPay | currency : '' : '' : '0.0-0'}} VND</div>
               </div>
               <div class="row mt-2 mb-2">
                 <div class="col-3 fw-bold text-white">Địa chỉ email</div>
@@ -169,7 +165,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="getAllPayment()" data-bs-dismiss="modal">Xác nhận</button>
+        <button type="button" class="btn btn-primary" (click)="checkList()" data-bs-dismiss="modal">Xác nhận</button>
       </div>
     </div>
   </div>
