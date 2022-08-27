@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": ".",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -24,8 +24,7 @@
       ],
       "https": [
         "node_modules/https-browserify"
-      ],
-      "@app*": ["src/app*"]
+      ]
     }
   },
   "angularCompilerOptions": {
