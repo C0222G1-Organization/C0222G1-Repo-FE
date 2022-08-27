@@ -3,14 +3,15 @@ import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Record} from '../model/record';
 import {PaymentDetail} from '../model/payment-detail';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentDetailService {
-  private RECORD_API = 'http://localhost:8080/record';
+  private RECORD_API = `${environment.apiUrl}` + '/record';
 
-  private PAYMENT_DETAIL_API = 'http://localhost:8080/paymentDetail';
+  private PAYMENT_DETAIL_API = `${environment.apiUrl}` + '/paymentDetail';
 
   constructor(private http: HttpClient) {
   }

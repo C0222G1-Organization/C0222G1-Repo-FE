@@ -1,14 +1,15 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpEvent, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {HttpClient, HttpEvent, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatisticService {
-  API_URL_COMPUTER = 'http://localhost:8080/statistic/by-computer';
-  API_URL_MONTH = 'http://localhost:8080/statistic/by-month';
-  API_URL_ACCOUNT = 'http://localhost:8080/statistic/by-account';
+  API_URL_COMPUTER = `${environment.apiUrl}` + '/statistic/by-computer';
+  API_URL_MONTH = `${environment.apiUrl}` + '/statistic/by-month';
+  API_URL_ACCOUNT = `${environment.apiUrl}` + '/statistic/by-account';
   httpOptions: any;
 
   constructor(public httpClient: HttpClient) {

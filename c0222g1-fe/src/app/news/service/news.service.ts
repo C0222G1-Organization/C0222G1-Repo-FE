@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import {environment} from '../../enviroment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {News} from '../model/news';
 import {GameCategory} from '../model/game-category';
+import {environment} from '../../../environments/environment';
+
 const API_URL = `${environment.apiUrl}`;
 @Injectable({
   providedIn: 'root'

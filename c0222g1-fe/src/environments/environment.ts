@@ -5,7 +5,7 @@
 // tslint:disable-next-line:prefer-const
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080',
+  apiUrl: 'https://trungdc.synology.me:5152/internet-cafe-api',
   firebaseConfig: {
     apiKey: 'AIzaSyDMjrR-SKVJY8Kp3fCGtRpq1P1rJOHiums',
     authDomain: 'c0222g1.firebaseapp.com',

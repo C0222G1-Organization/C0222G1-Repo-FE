@@ -1,17 +1,20 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Province} from '../model/province';
 import {District} from '../model/district';
 import {Commune} from '../model/commune';
 import {UpdateCustomerDto} from '../model/customer-update-dto';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CreateCustomerService {
-  API_URL = 'http://localhost:8080/';
-  constructor(private http: HttpClient) { }
+  API_URL = `${environment.apiUrl}` + '/';
+
+  constructor(private http: HttpClient) {
+  }
 
   getAllProvince(): Observable<Province[]> {
     return this.http.get<Province[]>(this.API_URL + 'address/province');
@@ -24,6 +27,7 @@ export class CreateCustomerService {
   getAllCommune(districtId: number): Observable<Commune[]> {
     return this.http.get<Commune[]>(this.API_URL + 'address/commune/' + districtId);
   }
+
   createCustomer(updateCustomerDto: UpdateCustomerDto): Observable<void> {
     return this.http.post<void>(this.API_URL + 'customer', updateCustomerDto);
   }

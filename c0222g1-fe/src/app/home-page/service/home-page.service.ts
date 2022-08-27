@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {environment} from '../../enviroment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 // @ts-ignore
 import {Game} from '../model/game';
+import {environment} from '../../../environments/environment';
 
 const API_URL = `${environment.apiUrl}`;
 @Injectable({
@@ -37,7 +37,6 @@ export class HomePageService {
   }
 
   updateGame(id: number, game: Game): Observable<Game> {
-    console.log(game)
     return this.http.put<Game>(API_URL + `/games/${id}`, game);
   }
 }

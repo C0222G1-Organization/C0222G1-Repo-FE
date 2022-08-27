@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  apiUrl: 'https://trungdc.synology.me:5152/internet-cafe-api',
   firebaseConfig: {
     apiKey: 'AIzaSyDMjrR-SKVJY8Kp3fCGtRpq1P1rJOHiums',
     authDomain: 'c0222g1.firebaseapp.com',

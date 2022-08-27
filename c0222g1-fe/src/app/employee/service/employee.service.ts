@@ -1,15 +1,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-
-import {environment} from '../../enviroment';
-
 import {Province} from '../model/province';
 import {Employee} from '../model/employee';
 
 import {Position} from '../model/position';
 import {District} from '../model/district';
 import {Commune} from '../model/commune';
+import {environment} from '../../../environments/environment';
 
 const apiUrl = `${environment.apiUrl}`;
 

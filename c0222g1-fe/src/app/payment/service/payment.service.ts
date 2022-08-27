@@ -4,13 +4,14 @@ import {Observable} from 'rxjs';
 import {Payment} from '../model/payment';
 import {Record} from '../model/record';
 import {ReponseBody} from '../model/reponse-body';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentService {
-  URL_API_PAYMENT = 'http://localhost:8080/payment';
-  URL_API_SEND_MAIL = 'http://localhost:8080/mail/send';
+  URL_API_PAYMENT = `${environment.apiUrl}` + '/payment';
+  URL_API_SEND_MAIL = `${environment.apiUrl}` + '/mail/send';
 
   constructor(private httpClient: HttpClient) {
   }

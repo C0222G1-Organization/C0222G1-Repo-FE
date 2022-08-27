@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {environment} from '../../enviroment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {SearchDto} from '../model/search-dto';
 import {ComputerType} from '../model/computer-type';
 import {Computer} from '../model/computer';
+import {environment} from '../../../environments/environment';
 
 const API_URL = `${environment.apiUrl}`;
 
