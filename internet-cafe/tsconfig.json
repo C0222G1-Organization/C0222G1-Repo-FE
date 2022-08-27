@@ -25,7 +25,7 @@
       "https": [
         "node_modules/https-browserify"
       ],
-      "app*": ["src/app*"]
+      "@app*": ["src/app*"]
     }
   },
   "angularCompilerOptions": {
