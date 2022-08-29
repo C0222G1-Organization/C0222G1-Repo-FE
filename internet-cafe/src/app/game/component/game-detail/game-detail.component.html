@@ -1,0 +1,73 @@
+<div class="container-fluid">
+  <div class="container">
+    <div class="row mb-2">
+      <div class="col-6">
+        <h3 class="text-white">{{game.name}}</h3>
+      </div>
+      <div *ngIf="editState" class="col-6 d-flex justify-content-end p-0">
+        <button class="btn-second" (click)="editGame(game.id)">Chỉnh sửa</button>
+        <button class="btn-second" (click)="getInfoGame(game.id, game.name)" style="margin-left: 1rem"
+                data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+        <iframe style="width: 100%; height: 500px" [src]="game.trailerUrl | safe"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+      </div>
+      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-0">
+        <div class="row mb-3 p-0" style="margin-left: 2rem;">
+          <img class="p-0" [src]="game.imageUrl" alt="Card image cap">
+        </div>
+        <div class="row mb-2 p-0" style="margin-left: 2rem;">
+          <h4 class="text-white p-0">{{game.name}}</h4>
+        </div>
+        <div class="row mb-3 p-0" style="margin-left: 2rem;">
+          <div class="col-6 p-0">
+            <button class="text-white btn-grey">{{game.gameCategory.name}}</button>
+          </div>
+          <div class="col-6">
+          </div>
+        </div>
+        <div class="row mb-4 p-0" style="margin-left: 2rem;">
+          <div class="row">
+            <p class="text-content p-0">Ngày phát hành: {{game.createDate | date:"dd/MM/yy"}}</p>
+          </div>
+          <div class="row">
+            <span class="text-content p-0"><button
+              class="btn-grey text-white">{{game.playedTimes}}</button> lượt chơi</span>
+          </div>
+        </div>
+        <div class="row" style="margin-left: 2rem">
+          <button class="btn-second" style="padding: 15px 0" (click)="playGame()">CHƠI NGAY</button>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row text-white">
+      <div id="content" class="text text-light w-100 img-fluid" [innerHTML]="game.content">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content object">
+      <div class="modal-header">
+        <h5 class="modal-title text-white" id="exampleModalLabel">Thông báo</h5>
+      </div>
+      <div class="modal-body text-white">
+        Bạn có chắc chắn muốn xóa game <b>{{this.selectedName}}</b> hay không?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-second-non-border" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" (click)="deleteGameById()" class="btn-main text-white" data-bs-dismiss="modal">Xóa
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

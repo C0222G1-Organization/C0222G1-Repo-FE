@@ -1,0 +1,33 @@
+<div class="container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 mx-auto">
+        <img class="w-100" src="{{news.imageUrl}}">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-10 mx-auto">
+        <h2 class="text-light title mt-4">{{news.title}}</h2>
+      </div>
+    </div>
+    <div class="row my-5">
+      <div class="col-10 d-flex justify-content-between mx-auto">
+        <div class="border-start border-2">
+          <p class="text-light m-0 pl">{{news.createDate | date}}</p>
+        </div>
+        <div class="border-start border-2">
+          <p class="text-light m-0 pl">tác giả {{news.author | titlecase}}</p>
+        </div>
+        <div class="border-start border-2">
+          <p class="text-light m-0 pl">{{news.views}} lượt xem</p>
+        </div>
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-10 mx-auto d-flex justify-content-center">
+          <div id="content" class="text text-light w-100 img-fluid" [innerHTML]="news.content">
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

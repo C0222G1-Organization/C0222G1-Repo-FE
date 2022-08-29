@@ -1,0 +1,208 @@
+<div class="container mt-5" id="table-computer">
+  <div class="row">
+    <h2 class="text-center text-white">DANH SÁCH MÁY</h2>
+  </div>
+  <div class="row">
+    <div class="container">
+      <div class="">
+        <div class="container-input">
+          <div class="form">
+            <form [formGroup]="formSearch">
+              <div class="fields">
+                <div class="input-field input-search">
+                  <label>Mã máy</label>
+                  <input (keydown.enter)="search()" type="text" class="input-search" formControlName="code" placeholder="Nhập mã máy">
+                  <span style="color: red; font-size: 0.8rem" *ngIf="formSearch.get('code').dirty
+                && formSearch.hasError('pattern', 'code')">Không được nhập khoảng trắng</span>
+                </div>
+                <div class="input-field">
+                  <label>Ngày bắt đầu sử dụng</label>
+                  <input (keydown.enter)="search()" type="date" formControlName="start" class="input-search">
+                  <span style="color: red; font-size: 0.8rem" *ngIf="formSearch.get('start').dirty
+                && formSearch.hasError('invalid', 'start')">Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày hiện tại và năm phải lớn 1950</span>
+                </div>
+                <div class="input-field">
+                  <label>Trạng thái</label>
+                  <select style="min-width: 100px" formControlName="status" class="input-search form-select">
+                    <option value="">--Chọn trạng thái--</option>
+                    <option value="1">Bình thường</option>
+                    <option value="0">Bảo trì</option>
+                  </select>
+                </div>
+                <div class="input-field">
+                  <label>Vị trí</label>
+                  <input (keydown.enter)="search()" type="text" class="input-search" formControlName="location" placeholder="Nhập vị trí máy">
+                </div>
+                <div class="input-field">
+                  <label>Ngày kết thúc sử dụng</label>
+                  <input (keydown.enter)="search()" type="date" formControlName="end" class="input-search">
+                </div>
+                <div class="input-field">
+                  <label>Loại máy</label>
+                  <select style="min-width: 100px" formControlName="typeId" class="input-search form-select">
+                    <option value="">--Chọn loại máy--</option>
+                    <option *ngFor="let type of computerTypes" value="{{type.id}}">{{type.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+            <div class="input-field">
+              <button class="btn btn-outline-secondary mb-2" (click)="search()" [disabled]="formSearch.invalid"
+                      style="right: 0">Tìm kiếm
+              </button>
+              <button class="btn btn-outline-secondary mb-2" (click)="reset()" style="right: 0"><i
+                class="fa-solid fa-arrows-rotate"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="container">
+      <table class="table table-dark w-100 table-responsive">
+        <thead>
+        <tr>
+          <th scope="col">
+            <input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)">
+            #
+          </th>
+          <th scope="col">Mã Máy</th>
+          <th scope="col">Trạng thái</th>
+          <th scope="col">Vị trí</th>
+          <th scope="col">Thời gian bắt đầu</th>
+          <th scope="col">Cấu hình</th>
+          <th scope="col">Loại máy</th>
+          <th scope="col">Nhà sản xuất</th>
+          <th scope="col">Bảo hành</th>
+          <th scope="col" *ngIf="checkShow">Chức năng</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+          *ngFor="let computer of computers | paginate : { itemsPerPage: itemsPerPage, currentPage: page + 1, totalItems: totalItems}; index as i">
+          <td>
+            <input class="card-notify-year-checkbox" type="checkbox" value="{{computer.id}}"
+                   [(ngModel)]="computers[i].checked">
+            {{i + size + number + 1}}
+          </td>
+          <td>{{computer.code}}</td>
+          <td *ngIf="computer.status.includes('1',0)">Bình thường</td>
+          <td *ngIf="computer.status.includes('0',0)">Bảo trì</td>
+          <td>{{computer.location}}</td>
+          <td>{{computer.start | date: "dd/MM/yyyy"}}</td>
+          <td>{{computer.configuration}}</td>
+          <td *ngIf="computer.type.includes('1',0)">Máy VIP</td>
+          <td *ngIf="computer.type.includes('2',0)">Máy Thường</td>
+          <td>{{computer.manufacturer}}</td>
+          <td>{{computer.warranty}} năm</td>
+          <td *ngIf="checkShow">
+            <button class="btn btn-outline-secondary color-icon" routerLink="/computers/edit/{{computer.id}}"><i
+              class="fa-solid fa-pencil"></i></button>
+            <button class="btn btn-outline-secondary " (click)="getInfo(computer)" data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        </tr>
+        <tr *ngIf="computers.length == 0">
+          <td colspan="10">
+            <div class="container mt-2 justify-content-center">
+              <img src="https://i.giphy.com/media/HTSsuRrErs54g1Tqr5/giphy.webp" style="width: 100%; height: 350px">
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="computers.length == 0">
+          <th style="text-align: center; font-size: 1.3rem" colspan="10">
+            Không có máy nào
+          </th>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row d-flex" *ngIf="checkShow" id="btn-outside">
+    <div class="col-4">
+      <button class="btn btn-primary m-2" routerLink="/computers/create">Thêm mới máy</button>
+    </div>
+    <div class="col-4"></div>
+    <div class="col-4">
+      <div class="float-end">
+        <button class="btn btn-danger m-2" *ngIf="map.size != 0" data-bs-toggle="modal"
+                data-bs-target="#deleteAllModal">Xóa
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="computers.length != 0" class="row mb-0" style="margin-top: 1rem;">
+    <div class="w-100 d-flex justify-content-center">
+      <pagination-controls (pageChange)="getPage(page = $event)"
+                           previousLabel="Trước"
+                           nextLabel="Sau"
+                           autoHide="true"
+                           maxSize=7>
+      </pagination-controls>
+    </div>
+  </div>
+  <div class="row align-items-center" *ngIf="totalPages > 1">
+    <div class="w-100 d-flex justify-content-center">
+      <div class="col-auto m-1">
+        <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>
+      </div>
+      <div class="col-auto m-1">
+        <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
+               (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 50px">
+      </div>
+      <div class="col-auto m-1">
+        <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Start Delete Modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel1">Xác nhận thông tin máy</h5>
+      </div>
+      <div class="modal-body">
+        Bạn chắc chắn có muốn xóa máy có mã máy <span style="font-weight: bold; font-size: 1.2rem; color: #be2b2c">{{computerCodeDelete}}</span> không?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-danger" (click)="delete()" data-bs-dismiss="modal">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Delete Modal-->
+
+<!--Start Delete Modal-->
+<div class="modal fade" id="deleteAllModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xác nhận thông tin máy muốn xóa</h5>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="map.size == 0" style="font-weight: bold">
+          Không có máy nào được chọn!
+        </div>
+        <div class="container" *ngIf="map.size != 0">
+          <h6>Bạn chắc chắn có muốn xóa các máy có mã máy là:</h6>
+          <ol style="width: 300px; margin-top: 10px">
+            <li *ngFor="let c of map | keyvalue; index as i" style="color: #be2b2c; font-weight: bold; font-size: 1.2rem">
+              &nbsp;&nbsp;{{c.value.code}}
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-danger" (click)="deleteMultiComputer()" data-bs-dismiss="modal">Xóa
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Delete Modal-->

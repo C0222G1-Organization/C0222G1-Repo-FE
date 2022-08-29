@@ -1,0 +1,301 @@
+<div class="container mt-5" id="table-computer">
+  <div class="row">
+    <h2 class="text-center text-white">DANH SÁCH NHÂN VIÊN</h2>
+    <form [formGroup]="formSearch" novalidate>
+      <div class="container text-white my-5">
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6">
+            <div class="row my-2">
+              <div class=" col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="codeE" style="color: white" class="col-form-label fontFamily">Nhập mã: </label>
+                  <input id="codeE" type="text" class="input-search form-control m-0" style="margin-right: 0"
+                         placeholder="Nhập mã" formControlName="code">
+                  <small class="fontError text-danger" *ngIf="formSearch.controls.code.hasError('pattern')">
+                    Không được nhập ký tự đặc biệt.
+                  </small>
+                  <small class="fontError text-danger" *ngIf="formSearch.controls.code.hasError('maxlength')">
+                    Không được nhập quá 20 ký tự.
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="dobfrom" style="color: white" class="col-form-label fontFamily">Ngày sinh bắt
+                    đầu: </label>
+                  <input id="dobfrom" type="date" class="form-control input-search" formControlName="dobfrom">
+                  <p class="text-danger" *ngIf="formSearch.hasError('errorDob') &&
+                                                        (formSearch.controls.dobfrom.dirty || formSearch.controls.dobfrom.touched)">
+                    Không được nhập trước ngày kết thúc.
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="dobend" style="color: white" class="col-form-label fontFamily">Ngày sinh đến: </label>
+                  <input id="dobend" type="date" class="form-control input-search" formControlName="dobend">
+                </div>
+              </div>
+              <div class="col-lg-3 col-xl-3 w-15 form-group">
+                <div>
+                  <label for="position" style="color: white" class="col-form-label fontFamily">Vị trí: </label>
+                  <select id="position" class="input-search-position-employee w-100 form-select"
+                          formControlName="position">
+                    <option selected value="" class="w-100">Vui lòng chọn</option>
+                    <option *ngFor="let item of positions" [ngValue]="item.id">{{item.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6">
+            <div class="row">
+              <div class="col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="address" style="color: white" class="col-form-label fontFamily">Địa chỉ: </label>
+                  <input id="address" type="text" class="input-search form-control m-0" style="margin-right: 0"
+                         placeholder="Nhập địa chỉ" formControlName="address">
+                  <p class="text-danger" *ngIf="formSearch.controls.address.hasError('check18') &&
+                                      (formSearch.controls.address.dirty || formSearch.controls.address.touched)">
+                    Không được nhập ký tự đặc biệt.
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="workf" style="color: white" class="col-form-label fontFamily">Ngày vào làm: </label>
+                  <input id="workf" type="date" class="input-search form-control" formControlName="workf">
+                  <p class="text-danger" *ngIf="formSearch.hasError('errorDate') &&
+                                                        (formSearch.controls.workf.dirty || formSearch.controls.workf.touched)">
+                    Không được nhập sau ngày kết thúc.
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="workt" style="color: white" class="col-form-label fontFamily">Ngày vào làm đến: </label>
+                  <input id="workt" type="date" class="form-control input-search" formControlName="workt">
+                  <p class="text-danger" *ngIf="formSearch.controls.workt.hasError('futureDate') &&
+                                                        (formSearch.controls.workt.dirty || formSearch.controls.workt.touched)">
+                    Không được nhập sau ngày hiện tại.
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-xl-3 w-15">
+                <div>
+                  <label for="nameE" style="color: white" class="col-form-label fontFamily">Tên nhân viên: </label>
+                  <input id="nameE" type="text" class="input-search form-control m-0" style="margin-right: 0"
+                         placeholder="Nhập tên nhân viên" formControlName="name">
+                  <p class="text-danger" *ngIf="formSearch.controls.name.hasError('pattern') &&
+                                      (formSearch.controls.name.dirty || formSearch.controls.name.touched)">
+                    Không được nhập ký tự đặc biệt.
+                  </p>
+                  <p class="text-danger" *ngIf="formSearch.controls.name.hasError('maxlength') &&
+                                      (formSearch.controls.name.dirty || formSearch.controls.name.touched)">
+                    Không được nhập quá 20 ký tự.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-8 col-sm-8 col-md-8 col-lg-8 mt-3">
+            <button class="btn btn-outline-secondary" (click)="search()" [disabled]="formSearch.invalid"
+                    style="right: 0; margin-right: 10px">Tìm kiếm
+            </button>
+            <button class="btn btn-outline-secondary" (click)="reset()"><i class="fa-solid fa-arrows-rotate"
+                                                                           style="color: #9a9a9a"></i></button>
+          </div>
+          <div class="col-4 col-sm-4 col-md-4 col-lg-4">
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="container">
+          <table class="table table-dark w-100" *ngIf="totalElements>0">
+            <thead class="hiddenText">
+            <tr>
+              <th><input type="checkbox" [checked]="isAllCheckBoxChecked1()" (change)="checkMultipleCheckBox($event)">
+              </th>
+              <th scope="col">STT</th>
+              <th scope="col">Mã nhân viên</th>
+              <th scope="col">Họ và tên</th>
+              <th scope="col">Địa chỉ</th>
+              <th scope="col">Ngày sinh</th>
+              <th scope="col">Email</th>
+              <th scope="col">Số điện thoại</th>
+              <th scope="col">Vị trí</th>
+              <th scope="col">Level</th>
+              <th scope="col">Chức năng</th>
+            </tr>
+            </thead>
+            <tbody class="hiddenText">
+            <tr
+              *ngFor="let employee of employees| paginate:{itemsPerPage:5, currentPage: page +1, totalItems: totalElements}, let i = index">
+              <td><input class="card-notify-year-checkbox" type="checkbox" value="{{employee.id}}"
+                         [(ngModel)]="employees[i].checked" (click)="checkEmployee(employee.id)" id="check"></td>
+              <td>{{(i + 1 + size) }}</td>
+              <td>{{employee.code}}</td>
+              <td data-bs-toggle="modal" data-bs-target="#viewModal"
+                  (click)="getEmployee(employee)">{{employee.name}}</td>
+              <td class="hiddenText" data-bs-toggle="tooltip" data-bs-placement="top"
+                  title="{{employee.cmName}}, {{employee.disName}}, {{employee.proName}}"
+                  data-bs-toggle="modal" data-bs-target="#viewModal" (click)="getEmployee(employee)"
+              >{{employee.cmName}}
+                , {{employee.disName}}, {{employee.proName}}</td>
+              <td data-bs-toggle="modal" data-bs-target="#viewModal"
+                  (click)="getEmployee(employee)">{{employee.dob| date: 'dd/MM/yyyy'}}</td>
+              <td class="hiddenText" data-bs-toggle="tooltip" data-bs-placement="top"
+                  title="{{employee.email}}" data-bs-toggle="modal" data-bs-target="#viewModal"
+                  (click)="getEmployee(employee)">{{employee.email}}</td>
+              <td data-bs-toggle="modal" data-bs-target="#viewModal"
+                  (click)="getEmployee(employee)">{{employee.phone}}</td>
+              <td data-bs-toggle="modal" data-bs-target="#viewModal"
+                  (click)="getEmployee(employee)">{{employee.posiName}}</td>
+              <td data-bs-toggle="modal" data-bs-target="#viewModal"
+                  (click)="getEmployee(employee)">{{exp(employee)}}</td>
+              <td>
+                <button class="btn btn-outline-secondary"><i class="fa-solid fa-pencil"
+                                                             (click)="edit(employee.id)"></i>
+                </button>
+
+                <button class="btn btn-outline-secondary" data-bs-toggle="modal"
+                        data-bs-target="#deleteModal" (click)="getEmployee(employee)"><i class="fa-solid fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div *ngIf="totalElements === 0" style="margin-left: 250px;position: center">
+            <img src="https://i.giphy.com/media/HTSsuRrErs54g1Tqr5/giphy.webp" style="height: 300px; width: 500px">
+            <br>
+            <span style="margin-left: 150px; font-size: 1.3rem; color: #9a9a9a">Không có kết quả nào.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="employees.length > 0">
+    <div class="col-md-2"></div>
+    <div class="row mb-0" style="margin-top: 1rem;">
+      <div class="w-100 d-flex justify-content-center">
+        <pagination-controls (pageChange)="getPage(page = $event)"
+                             previousLabel="Trước"
+                             nextLabel="Sau"
+                             autoHide="true"
+                             maxSize=7>
+        </pagination-controls>
+      </div>
+    </div>
+    <div class="row align-items-center">
+      <div class="w-100 d-flex justify-content-center">
+        <div class="col-auto m-1">
+          <label for="goToPage" class="col-form-label text-white">Đi đến trang</label>
+        </div>
+        <div class="col-auto m-1">
+          <input #specificPage type="number" id="goToPage" class="form-control form-control-sm input input-text"
+                 (keydown.enter)="getPage(specificPage.value)" aria-describedby="goToPage" style="width: 50px">
+        </div>
+        <div class="col-auto m-1">
+          <button class="btn-sm btn-main text-white" (click)="getPage(specificPage.value)">Đi</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+  <div class="container row d-flex" id="btn-outside">
+    <div class="col-3 p-0">
+      <button class="btn btn-primary m-2" routerLink="/employees/create">Thêm mới nhân viên</button>
+    </div>
+    <div class="col-6"></div>
+    <div class="col-3" style="right: 0">
+      <div class="float-end" *ngIf="employees.length>0">
+        <button class="btn btn-outline-secondary" style="right: 0" data-bs-toggle="modal"
+                data-bs-target="#deleteGroupModal" id="btn">Xóa tất cả
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Start Delete Modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel1">Xóa nhân viên</h5>
+      </div>
+      <div class="modal-body text-center">
+        <p>Bạn có muốn xóa nhân viên <span style="color: red">{{nameDelete}}</span> có mã nhân viên là <span
+          style="color: red">{{codeDelete}}</span> ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteEmployee()">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Delete Modal-->
+
+<div class="modal fade" id="deleteGroupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel2">Xóa nhân viên</h5>
+      </div>
+      <div *ngIf="selectedEmployee.length===0">
+        <p class="text text-danger">Không có nhân viên nào được chọn.</p>
+      </div>
+      <div class="modal-body" *ngIf="selectedEmployee.length >0">
+        Bạn có chắc chắn muốn xóa những nhân viên này không?
+        <ol>
+          <li *ngFor="let selectEmployee of selectedEmployee">{{selectEmployee.name}}</li>
+        </ol>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteEmployeeList()"
+                [disabled]="selectedEmployee.length == 0">Xóa
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModal1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewModal1">Thông tin nhân viên</h5>
+      </div>
+      <div class="modal-body">
+        <div class="container d-flex">
+          <div class="col-xl-6 justify-content-center">
+            <p>Họ và tên: <span style="color: #0d6efd">{{nameDelete}}</span></p>
+            <p>Ngày sinh: <span style="color: #0d6efd">{{getDob}}</span></p>
+            <p>Mã nhân viên: <span style="color: #0d6efd">{{codeDelete}}</span></p>
+            <p>Địa chỉ: <span style="color: #0d6efd">{{getAddress}}</span></p>
+          </div>
+          <div class="col-xl-6">
+            <p>Level: <span style="color: #0d6efd">{{getLevel}}</span></p>
+            <p>Chức vụ: <span style="color: #0d6efd">{{getPositionName}}</span></p>
+            <p>Email: <span style="color: #0d6efd">{{getPhone}}</span></p>
+            <p>Số điện thoại: <span style="color: #0d6efd">{{getPhone}}</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,293 @@
+<body class="d-flex justify-content-center">
+<div class="login-form">
+  <h6 class="text-center">THÊM MỚI KHÁCH HÀNG</h6>
+  <form [formGroup]="customerForm">
+    <div class="row my-4">
+      <div class="col-md-6" style="padding-right: 15px">
+        <div class="form-floating textbox mb-4">
+          <input type="text" class="form-control input"
+                 id="full-name" placeholder="Họ và tên"
+                 style="padding-top: 10px" formControlName="name" autocomplete="off">
+          <label for="full-name" style="color: white">
+            Họ và tên
+            <span class="text-danger">*</span>
+          </label>
+          <div class="mb-3 text-danger"
+               *ngIf="customerForm.controls.name.hasError('required')&& customerForm.controls.name.touched">
+            <small>Họ và tên không được để trống.</small>
+          </div>
+          <div class="mb-3 text-danger"
+               *ngIf="customerForm.controls.name.hasError('pattern')&& customerForm.controls.name.touched">
+            <small>Họ và tên không chứa ký tự đặc biệt.</small>
+          </div>
+          <div class="mb-3 text-danger"
+               *ngIf="customerForm.controls.name.hasError('minlength')&& customerForm.controls.name.touched">
+            <small>Không được nhập nhỏ hơn 5 ký tự.</small>
+          </div>
+          <div class="mb-3 text-danger"
+               *ngIf="customerForm.controls.name.hasError('maxlength')&& customerForm.controls.name.touched">
+            <small>Không được nhập lớn hơn 50 ký tự.</small>
+          </div>
+          <div class="mb-3 text-danger"
+               *ngIf="customerForm.controls.name.hasError('notBlank')&& customerForm.controls.name.touched">
+            <small>Không được để khoảng trắng.</small>
+          </div>
+        </div>
+      </div>
+        <div class="col-md-6" style="padding-right: 15px">
+          <div class="form-floating textbox mb-4">
+            <input type="date" class="form-control input"
+                   id="date-of-birth" placeholder="Họ và tên"
+                   style="padding-top: 10px" formControlName="dateOfBirth" autocomplete="off">
+            <label for="date-of-birth" style="color: white">
+              Ngày sinh
+              <span class="text-danger">*</span>
+            </label>
+            <div class="mb-3 text-danger"
+                 *ngIf="customerForm.controls.dateOfBirth.hasError('required')&& customerForm.controls.dateOfBirth.touched">
+              <small>Ngày sinh không được để trống hoặc không có ngày này.</small>
+            </div>
+            <div class="mb-3 text-danger"
+                 *ngIf="customerForm.controls.dateOfBirth.hasError('not16') &&
+                                      (customerForm.controls.dateOfBirth.dirty)">
+              <small>Ngày sinh phải lớn hơn 16 tuổi.</small>
+            </div>
+          </div>
+        </div>
+    </div>
+      <div class="row my-4">
+        <div class="col-md-6" style="padding-right: 15px" formGroupName="email">
+          <div class="form-floating textbox mb-4">
+            <input type="email" class="form-control input"
+                   id="email" placeholder="Họ và tên"
+                   style="padding-top: 10px" formControlName="email" (change)="checkEmail($event.target.value)" autocomplete="off">
+            <label for="email" style="color: white">
+              Email
+              <span class="text-danger">*</span>
+            </label>
+            <div class="mb-3 text-danger"
+                 *ngIf="getEmail().invalid && (getEmail().touched || getEmail().dirty) && getEmail().errors.required">
+              <small>Email không được để trống.</small>
+            </div>
+            <div class="mb-3 text-danger"
+                 *ngIf="getEmail().invalid && (getEmail().touched || getEmail().dirty) && getEmail().errors.pattern">
+              <small>Nhập đúng định dạng email.</small>
+            </div>
+            <div class="mb-3 text-danger"
+                 *ngIf="isExitsEmail == true">
+              <small>Email này đã tồn tại.</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 " style="padding-right: 15px">
+          <div class="form-floating textbox mb-4" formGroupName="phoneNumber">
+            <input type="text" class="form-control input"
+                   id="phone-number" placeholder="Họ và tên"
+                   style="padding-top: 10px" formControlName="phone" (change)="checkPhone($event.target.value)" autocomplete="off">
+            <label for="phone-number" style="color: white">
+              Số điện thoại
+              <span class="text-danger">*</span>
+            </label>
+            <div class="mb-3 text-danger"
+                 *ngIf="getPhone().invalid && (getPhone().touched || getPhone().dirty) && getPhone().errors.required">
+              <small>Số điện thoại không được để trống.</small>
+            </div>
+            <div class="mb-3 text-danger"
+                 *ngIf="getPhone().invalid && (getPhone().touched || getPhone().dirty) && getPhone().errors.pattern">
+              <small>Nhập đúng định dạng số điện thoại.</small>
+            </div>
+            <div class="mb-3 text-danger"
+                 *ngIf="isExitsPhone == true">
+              <small>Số điện thoại này đã tồn tại.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-4">
+        <div class="col-4" style="padding-right: 15px">
+          <div class="form-floating textbox">
+            <select class="form-select select input"
+                    aria-haspopup="true" id="city"
+                    style="padding: 10px 15px 0 15px" (change)="getDistrictList($event.target.value)"
+                    formControlName="province">
+              <option value="">Chọn thành phố</option>
+              <option class="options" value="{{province.id}}"
+                      *ngFor="let province of provinceList"
+                      style="height: 50px">{{province.name}}</option>
+            </select>
+            <label for="city" style="color: white">
+              Thành phố
+              <span class="text-danger">*</span>
+            </label>
+            <div class="mb-3 text-danger"
+                 *ngIf="customerForm.controls.province.hasError('required') &&
+                                      (customerForm.controls.province.dirty || customerForm.controls.province.touched)">
+              <small>Trường này không được để trống!</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-4" style="padding-right: 15px">
+          <div class="form-floating textbox">
+            <select (change)="getCommuneList($event.target.value)" formControlName="district"
+                    class="form-select select input"
+                    aria-haspopup="true" id="district" style="padding: 10px 15px 0 15px">
+              <option value="" class="option" style="height: 50px">Chọn quận</option>
+              <option value="{{district.id}}"
+                      *ngFor="let district of districtList"
+                      class="option" style="height: 50px">{{district.name}}</option>
+            </select>
+            <label for="district" style="color: white">
+              Quận
+              <span class="text-danger">*</span>
+            </label>
+            <div class="mb-3 text-danger"
+                 *ngIf="customerForm.controls.district.hasError('required') &&
+                                      (customerForm.controls.district.dirty || customerForm.controls.district.touched)">
+              <small>Trường này không được để trống!</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-4" style="padding-right: 15px">
+          <div class="form-floating textbox">
+            <select class="form-select select input"
+                    aria-haspopup="true" id="ward" style="padding: 10px 15px 0 15px" formControlName="commune">
+              <option value="" class="option" style="height: 50px">Chọn phường</option>
+              <option [ngValue]="commune"
+                      *ngFor="let commune of communeList"
+                      class="option" style="height: 50px">{{commune.name}}</option>
+            </select>
+            <label for="ward" style="color: white">
+              Phường
+              <span class="text-danger">*</span>
+            </label>
+            <div class="mb-3 text-danger"
+                 *ngIf="customerForm.controls.commune.hasError('required') &&
+                                      (customerForm.controls.commune.dirty || customerForm.controls.commune.touched)">
+              <small>Trường này không được để trống!</small>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-md-6 my-4" style="padding-right: 15px">
+          <div class="form-floating textbox mb-4" formGroupName="userName">
+            <input type="text" class="form-control input"
+                   id="user-name" placeholder="Họ và tên"
+                   style="padding-top: 10px" formControlName="userName" (change)="checkUserName($event.target.value)" autocomplete="off">
+            <label for="user-name" style="color: white">
+              Tài khoản
+              <span class="text-danger">*</span>
+            </label>
+            <div class="mb-3 text-danger"
+                 *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().errors.required">
+              <small>Tài khoản không được để trống.</small>
+            </div>
+            <div class="mb-3 text-danger"
+                 *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().errors.notBlank">
+              <small>Không được để khoảng trắng hai đầu.</small>
+            </div>
+            <div class="mb-3 text-danger"
+                 *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().hasError('minlength')">
+              <small>Không được nhập dưới 5 ký tự.</small>
+            </div>
+            <div class="mb-3 text-danger"
+                 *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().hasError('maxlength')">
+              <small>Không được nhập lớn hơn 50 ký tự.</small>
+            </div>
+            <div class="mb-3 text-danger"
+                 *ngIf="getUser().invalid && (getUser().touched || getUser().dirty) && getUser().errors.pattern">
+              <small>Nhập sai định dạng</small>
+            </div>
+            <div class="mb-3 text-danger"
+                 *ngIf="isExitsUser == true">
+              <small>Tài khoản đã tồn tại.</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 my-4" style="padding-right: 15px">
+          <div class="form-floating textbox mb-4">
+            <div class="form-floating textbox">
+              <input type="password" class="form-control input"
+                     id="pass-word" placeholder="Mật khẩu"
+                     style="padding-top: 10px" formControlName="password" autocomplete="off">
+              <label for="pass-word" style="color: white">
+                Mật khẩu
+                <span class="text-danger">*</span>
+              </label>
+              <div class="mb-3 text-danger"
+                   *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.required">
+                <small>Mật khẩu không được để trống.</small>
+              </div>
+              <div class="mb-3 text-danger"
+                   *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().errors.pattern">
+                <small>Nhập đúng định dạng mật khẩu.</small>
+              </div>
+              <div class="mb-3 text-danger"
+                   *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().hasError('minlength')">
+                <small>Không được nhập nhỏ hơn 6 ký tự.</small>
+              </div>
+              <div class="mb-3 text-danger"
+                   *ngIf="getPassword().invalid && (getPassword().touched || getPassword().dirty) && getPassword().hasError('maxlength')">
+                <small>Không được nhập lớn hơn 50 ký tự.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" >
+        <div class="col-md-6">
+          <div class="form-floating textbox">
+            <select  disabled class="form-select select input" aria-haspopup="true" id="status"
+                    style="padding: 10px 15px 0 15px; width: 422px; height: 60px"
+                    formControlName="activeStatus">
+              <option value="1" class="option">Đang hoạt động</option>
+            </select>
+            <label for="status" style="color: white">
+              Trạng thái
+              <span class="text-danger">*</span>
+            </label>
+            <div class="mb-3 text-danger"
+                 *ngIf="customerForm.controls.activeStatus.hasError('required')&& customerForm.controls.activeStatus.touched">
+              <small>Trạng thái không được để trống!</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-floating textbox">
+            <input type="number" class="form-control input"
+                   id="time" placeholder="Thời gian chơi(phút)"
+                   style="padding-top: 10px; width: 422px" formControlName="remainingTime" autocomplete="off">
+            <label for="time" style="color: white">
+              Thời gian chơi (Phút)
+              <span class="text-danger">*</span>
+            </label>
+            <div class="mb-3 text-danger"
+                 *ngIf="customerForm.controls.remainingTime.hasError('required')&& customerForm.controls.remainingTime.touched">
+              <small>Thời gian chơi không được để trống!</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-4">
+        <div class="col-md-4 my-4"></div>
+        <div class="col-md-4" style="text-align: center; width: 100%">
+          <button name="button" class="btn btn-primary btn-responsive w-25" style="height: 40px" [disabled]="!check" (click)="submit()">Thêm
+            mới
+          </button>
+          <div *ngIf="!check" class="spinner-border text-light spinner position-absolute" role="status"></div>
+          <button name="button" class="btn btn-outline-light btn-responsive
+        w-25 ms-3" style="height: 40px" (click)="cancel()">Hủy
+          </button>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+  </form>
+</div>
+</body>
+

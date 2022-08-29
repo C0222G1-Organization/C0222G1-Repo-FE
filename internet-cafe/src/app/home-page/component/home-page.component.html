@@ -1,0 +1,182 @@
+<div class="container-fluid">
+  <div class="container">
+    <!--   carousel-->
+    <div *ngIf="topCarouselGames.length != 0" class="row mb-2">
+      <div class="col-xl-9 col-lg-12 col-md-12 col-sm-12">
+        <div class="row">
+          <div class="container-img-carousel">
+            <img [src]="activeCarouselUrl" class="d-block image-carousel" alt="...">
+            <button (click)="playGame()" class="btn-image-carousel">Tải ngay</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-0 col-md-0 col-sm-0">
+        <div class="row top-game-hidden" style="margin-left: 1rem">
+          <div class="row mb-4" *ngFor="let game of topCarouselGames; index as i" routerLink="games/detail/{{game.id}}"
+               style="cursor: pointer">
+            <div class="row progress-main position-relative">
+              <div class="row position-absolute card-game-main">
+                <div class="col-8">
+                  <div class="row">
+                    <img [src]="game.imageUrl" class="top-game-image" alt="...">
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="row" style="padding-top: 25px">
+                    <p class="text-white">{{game.name}}</p>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="i == 0" class="top-game-img-container d-flex justify-content-end">
+                <img src="assets/img/top-game/top-1.png" width="70"/>
+              </div>
+              <div *ngIf="i == 1" class="top-game-img-container d-flex justify-content-end">
+                <img src="assets/img/top-game/top-2.png" width="70"/>
+              </div>
+              <div *ngIf="i == 2" class="top-game-img-container d-flex justify-content-end">
+                <img src="assets/img/top-game/top-3.png" width="70"/>
+              </div>
+              <div class="progress-bar-main" *ngIf="enableProgress(i)" [ngStyle]="{'width': progressWidth + '%'}"
+                   aria-valuenow="25"
+                   aria-valuemin="0"
+                   aria-valuemax="100">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--  popular games-->
+    <div class="row">
+      <div class="row">
+        <h4 class="text-white"><i class="fa-solid icon-body fa-fire-flame-curved"></i>Game thịnh hành</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="row" style="flex-wrap: wrap; justify-content: start">
+        <div *ngFor="let game of popularGames" class="container-list-img" data-aos="fade-left">
+          <img class="card-img-top image image-pointer" routerLink="games/detail/{{game.id}}"
+               [src]="game.imageUrl"
+               alt="Card image cap">
+          <div *ngIf="editState" class="middle">
+            <div class="row mb-2">
+              <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
+            </div>
+            <div class="row">
+              <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
+                      data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa
+              </button>
+            </div>
+          </div>
+          <div class="card-body row" style="justify-items: center">
+            <div class="row mb-2">
+              <a class="text-white text-decoration-none" routerLink="games/detail/{{game.id}}">{{game.name}}</a>
+            </div>
+            <div class="row">
+              <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
+                                                            class="btn-second btn-sm">Tải</button>
+                {{ game.playedTimes}} lượt Tải</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="popularGames.length == 0">
+        <h5 class="text-white" style="margin-left: 1rem">Danh sách rỗng. Không có game thịnh hành</h5>
+      </div>
+
+      <!-- recommended games-->
+      <div class="row object">
+        <div class="row mb-2">
+          <h4 class="text-white"><i class="fa-solid icon-body fa-gift"></i>Game đề xuất</h4>
+        </div>
+        <div class="row">
+          <div *ngFor="let game of hotGames" class="col-6 container-img" data-aos="fade-right">
+            <div class="row mb-3">
+              <img [src]="game.imageUrl" routerLink="games/detail/{{game.id}}"
+                   class="d-block image image-pointer" alt="...">
+            </div>
+            <div *ngIf="editState" class="middle-md">
+              <div class="row mb-2">
+                <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
+              </div>
+              <div class="row">
+                <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
+                        data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa
+                </button>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <a class="text-white text-decoration-none" routerLink="games/detail/{{game.id}}">{{game.name}}</a>
+            </div>
+            <div class="row">
+              <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
+                                                            class="btn-second btn-sm">Tải</button>
+                {{ game.playedTimes}} lượt Tải</span>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="hotGames.length == 0">
+          <h5 class="text-white" style="margin-left: 1rem">Danh sách rỗng. Không có game đề xuất</h5>
+        </div>
+      </div>
+      <!--  new games-->
+      <div class="row">
+        <div class="row">
+          <h4 class="text-white"><i class="fa-solid icon-body fa-wand-sparkles"></i>Game mới</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row" style="flex-wrap: wrap; justify-content: start">
+          <div *ngFor="let game of newGames" class="card container-list-img bg-dark" data-aos="fade-left">
+            <img class="card-img-top image image-pointer" routerLink="games/detail/{{game.id}}"
+                 [src]="game.imageUrl"
+                 alt="Card image cap">
+            <div *ngIf="editState" class="middle">
+              <div class="row mb-2">
+                <button class="btn-second" routerLink="/games/edit/{{game.id}}"> Chỉnh sửa</button>
+              </div>
+              <div class="row">
+                <button class="btn-second" (click)="getInfoGame(game.id, game.name)"
+                        data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa
+                </button>
+              </div>
+            </div>
+            <div class="card-body row" style="justify-items: center">
+              <div class="row mb-2">
+                <a class="text-white text-decoration-none" routerLink="games/detail/{{game.id}}">{{game.name}}</a>
+              </div>
+              <div class="row">
+              <span class="card-text text-content"> <button (click)="getGameAndUpdate(game.id)"
+                                                            class="btn-second btn-sm">Tải</button>
+                {{ game.playedTimes}} lượt Tải</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="newGames.length == 0">
+        <h5 class="text-white" style="margin-left: 1rem">Danh sách rỗng. Không có game mới</h5>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content object">
+          <div class="modal-header">
+            <h5 class="modal-title text-white" id="exampleModalLabel">Thông báo</h5>
+          </div>
+          <div class="modal-body text-white">
+            Bạn có chắc chắn muốn xóa game <b>{{this.selectedName}}</b> hay không?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-second-non-border" data-bs-dismiss="modal">Đóng</button>
+            <button type="button" (click)="deleteGameById()" class="btn-main text-white" data-bs-dismiss="modal">Xóa
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

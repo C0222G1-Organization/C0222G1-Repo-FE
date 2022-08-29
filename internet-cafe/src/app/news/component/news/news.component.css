@@ -1,0 +1,122 @@
+a:hover {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: #727272;
+}
+
+.search {
+  border-radius: 2em;
+  background-color: rgba(0,0,0,0);
+  border: none;
+  background-color: #2A2A2A;
+  color: white;
+  padding: .6em 1em;
+}
+
+.search:focus {
+  color: #ffff;
+}
+
+.bg {
+  background-color:  #121212;
+}
+
+.search:focus {
+  outline: none !important;
+  border: none !important;
+}
+
+.card {
+  cursor: pointer;
+  border: none;
+  background-color: rgba(0,0,0,0) !important;
+}
+
+.card:hover img {
+  opacity: .8;
+  transition: .3s;
+}
+
+small {
+  color: white;
+}
+
+.card:hover small {
+  color: #fff;
+  transition: .5s;
+}
+
+hr {
+  color: #cccc;
+}
+
+.news:hover img {
+  opacity: .8;
+  transition: .3s;
+}
+
+.news:hover {
+  cursor: pointer;
+}
+
+.clear {
+  background-color: rgba(0,0,0,0);
+}
+
+.img-new {
+  height: 22em !important;
+}
+
+.img-sub {
+  height: 7.403125em !important;
+  overflow: hidden;
+}
+
+.img-mx {
+  margin: auto 0;
+}
+
+.box-img-new {
+  /*height: 24.84375em ;*/
+  /*width:  39.75em ;*/
+  height: 24.84375em ;
+  width:  100% ;
+  overflow: hidden;
+}
+
+.img-fit {
+  object-fit: cover;
+  height: 100% ;
+  width:  100%;
+}
+
+.box-img-sub {
+  height: 7.76875em;
+  width:  100% ;
+  overflow: hidden;
+}
+
+.borderr {
+  border-bottom: .1px solid #444444 !important;
+}
+
+.card:hover .borderr {
+  border-bottom: .1px solid white !important;
+  transition: .5s;
+}
+
+.sub-news:hover small {
+  border-bottom: .1px solid white !important;
+  transition: .5s;
+}
+
+.bot {
+  padding-top: 3em;
+}
+
+.z-10 {
+  z-index: 10;
+}
