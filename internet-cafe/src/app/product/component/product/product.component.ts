@@ -60,10 +60,7 @@ export class ProductComponent implements OnInit {
     this.titleService.setTitle('Danh sách dịch vụ');
     this.getAllProduct();
     this.getAllProductCategory();
-    // if (this.totalElements === 1 ) {
-    //   this.productList.length = 0;
-    //   this.toast.error('Đã hết sản phẩm trong kho');
-    // }
+    this.map.clear();
     if (this.totalElements >= this.productList.length) {
       this.productList.length = 0;
     }
